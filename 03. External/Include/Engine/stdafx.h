@@ -15,3 +15,11 @@
 #include <Windows.h>
 
 #include "global.h"
+
+
+#include<iostream>
+using namespace std;
+//콘솔창키기
+#ifdef _DEBUG
+#pragma comment(linker,"/entry:wWinMainCRTStartup /subsystem:console")
+#endif
