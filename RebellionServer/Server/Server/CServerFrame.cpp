@@ -121,22 +121,22 @@ void CServerFrame::DoWorker()
 
 			//printf("%d", user_id);
 			SOCKET c_sock = over_ex->c_sock;
-			if (-1 == user_id) {
-				closesocket(c_sock);
-			}
-			else {
-				CreateIoCompletionPort(reinterpret_cast<HANDLE>(c_sock), _iocp, user_id, 0);
-				//CObject& newPlayer = m_objects[user_id];
-				newPlayer.SetSocket(c_sock);
-				newPlayer.SetID(user_id);
-				newPlayer.SetPrevSize(0);
-				newPlayer.ClearViewList();
-				newPlayer.m_recvOver.wsabuf.buf = newPlayer.m_recvOver.net_buf;
-				newPlayer.m_recvOver.wsabuf.len = MAX_BUFFER;
-				newPlayer.m_recvOver.event_type = EV_RECV;
-				DWORD flags = 0;
-				WSARecv(c_sock, &newPlayer.m_recvOver.wsabuf, 1, NULL, &flags, &newPlayer.m_recvOver.over, NULL);
-			}
+			//if (-1 == user_id) {
+			//	closesocket(c_sock);
+			//}
+			//else {
+			//	CreateIoCompletionPort(reinterpret_cast<HANDLE>(c_sock), _iocp, user_id, 0);
+			//	//CObject& newPlayer = m_objects[user_id];
+			//	newPlayer.SetSocket(c_sock);
+			//	newPlayer.SetID(user_id);
+			//	newPlayer.SetPrevSize(0);
+			//	newPlayer.ClearViewList();
+			//	newPlayer.m_recvOver.wsabuf.buf = newPlayer.m_recvOver.net_buf;
+			//	newPlayer.m_recvOver.wsabuf.len = MAX_BUFFER;
+			//	newPlayer.m_recvOver.event_type = EV_RECV;
+			//	DWORD flags = 0;
+			//	WSARecv(c_sock, &newPlayer.m_recvOver.wsabuf, 1, NULL, &flags, &newPlayer.m_recvOver.over, NULL);
+			//}
 
 			c_sock = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
 			over_ex->c_sock = c_sock;
