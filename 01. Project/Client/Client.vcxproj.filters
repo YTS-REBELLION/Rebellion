@@ -11,6 +11,8 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="..\..\RebellionServer\Server\Server\Protocol.h" />
+    <ClInclude Include="Extern.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />

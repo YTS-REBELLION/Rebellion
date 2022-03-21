@@ -2,11 +2,13 @@
 
 #include <iostream>
 #include <chrono>
+#include <cstring>
 
 #define SERVER_PORT 9000
 #define MAX_BUFFER 1024
 
 #define NPC_ID_START 10000
+
 
 #define CS_LOGIN				1
 #define CS_LOGOUT				2	
@@ -33,7 +35,6 @@
 #define SC_PLAYER_DIE		15
 #define SC_DEFENCE			16
 #define SC_RETURN			17
-
 
 constexpr int MAX_PW_LEN = 12;
 constexpr int MAX_ID_LEN = 50;

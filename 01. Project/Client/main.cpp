@@ -3,7 +3,7 @@
 #include "stdafx.h"
 #include "main.h"
 
-#include <Engine/global.h>
+#include "Engine/global.h"
 #include <Engine/core.h>
 
 #ifdef _DEBUG
@@ -38,6 +38,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_CLIENT, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
+
+    g_net.Connect();
+    //g_net.로그인패킷
+    g_net.Receive();
+
 
     // 응용 프로그램 초기화를 수행합니다:
     if (!InitInstance (hInstance, nCmdShow))

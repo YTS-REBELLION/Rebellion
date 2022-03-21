@@ -8,8 +8,7 @@ SOCKET g_socket;
 struct EXOVER
 {
 	WSAOVERLAPPED	over;
-	ENUMOP		op;
-	char			io_buf[MAX_BUF_SIZE];
+	char			io_buf[MAX_BUFFER];
 	union {
 		WSABUF			wsabuf;
 		SOCKET			c_socket;
@@ -62,6 +61,9 @@ void CNetwork::Connect()
 	recvAddr.sin_port = htons(9000);
 
 	int ret = connect(g_socket, (SOCKADDR*)&recvAddr, sizeof(recvAddr));
+
+
+
 
 	if (ret == SOCKET_ERROR)
 		err_quit("connect error");
