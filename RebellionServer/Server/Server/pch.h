@@ -10,14 +10,14 @@
 // 여기에 미리 컴파일하려는 헤더 추가
 #include <iostream>
 #include <chrono>
-
+#include "CServerFrame.h"
 using namespace std;
 using namespace chrono;
 
 #include <WS2tcpip.h>
 #pragma comment(lib, "Ws2_32.lib")
 #pragma comment(lib, "lua53.lib")
-
+#pragma comment(lib,"WS2tcpip")
 //extern "C" {
 //#include "lua.h"
 //#include "lauxlib.h"

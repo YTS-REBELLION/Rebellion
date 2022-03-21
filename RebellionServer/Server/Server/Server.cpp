@@ -4,10 +4,12 @@
 #include "pch.h"
 #include <iostream>
 
+CServerFrame g_server;
 
 
 int main()
 {
     std::cout << "Hello World!\n";
+    g_server.Progress();
 }
 

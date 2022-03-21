@@ -2,6 +2,7 @@
 #pragma once
 
 #include "pch.h"
+#include "Protocol.h"
 
 #define MASTER 99999999
 #define VEC3_TOWN_ENTRANCE_POS Vec3(-3000.f, 0.f, 5683.f)

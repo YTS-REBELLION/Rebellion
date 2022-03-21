@@ -1,10 +1,11 @@
 #include "pch.h"
+
 #include "Player.h"
 
-Player::Player()
+CPlayer::CPlayer()
 {
 }
 
-Player::~Player()
+CPlayer::~CPlayer()
 {
 }

@@ -9,6 +9,7 @@
 #pragma comment (lib, "mswsock.lib")
 #pragma comment(lib,"WS2tcpip.lib")
 
+#include "CObject.h"
 
 class CError;
 

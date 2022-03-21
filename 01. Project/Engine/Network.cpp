@@ -5,6 +5,9 @@
 
 
 SOCKET g_socket;
+int packetTest;
+int g_myid = -1;
+
 struct EXOVER
 {
 	WSAOVERLAPPED	over;
@@ -16,7 +19,7 @@ struct EXOVER
 	int id;
 };
 
-void err_quit(const char* msg)
+void CNetwork::err_quit(const char* msg)
 {
 	LPVOID lpmsgBuf;
 	FormatMessage(
@@ -122,7 +125,7 @@ void CNetwork::Process_Data(char* net_buf, size_t& io_byte)
 
 }
 
-void CNetwork::Send_Packet(void* packet)
+void CNetwork::Send_Packet(void* _packet)
 {
 	EXOVER dataBuf;
 	char* packet = reinterpret_cast<char*>(_packet);
@@ -132,7 +135,7 @@ void CNetwork::Send_Packet(void* packet)
 	dataBuf.wsabuf.buf = (char*)packet;
 	dataBuf.over = _overlapped;
 
-	testpacket = dataBuf.wsabuf.len;
+	packetTest = dataBuf.wsabuf.len;
 
 
 	//if (WSASend(g_Socket, &dataBuf.wsabuf, 1, (LPDWORD)&sent, 0, &dataBuf.over, NULL) == SOCKET_ERROR)
@@ -151,8 +154,25 @@ void CNetwork::Send_Packet(void* packet)
 
 void CNetwork::Send_LogIn_Packet()
 {
+	cs_packet_login packet;
+	packet.size = sizeof(packet);
+	packet.type = CS_LOGIN;
+
+	char name[MAX_ID_LEN];
+	string namestring;
+	std::cout << "name : ";
+	std::cin >> name;
+
+	sprintf_s(packet.name, name);
+	strcpy_s(name, packet.name);
+	
+	std::cout << "CS_LOGIN PACKET : " << g_myid << std::endl;
+
+	Send_Packet(&packet);
 
 
+}
 
-
+void CNetwork::err_quit(const char* msg)
+{
 }
