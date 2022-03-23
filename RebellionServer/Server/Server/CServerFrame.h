@@ -1,13 +1,9 @@
 #pragma once
-#include <WS2tcpip.h>
 #include <vector>
 #include <thread>
 #include <queue>
 #include <mutex>
 
-#include <MSWSock.h>
-#pragma comment (lib, "mswsock.lib")
-#pragma comment(lib,"WS2tcpip.lib")
 
 #include "CObject.h"
 
@@ -16,25 +12,25 @@ class CError;
 
 class CServerFrame {
 	// socket 관련 구조체
-	SOCKET			_listenSocket;
-	SOCKET			_clientSocket;
-	SOCKADDR_IN		_clientAddr;
-	DWORD			_flags;
-	int				_addrLen;
+	SOCKET												_listenSocket;
+	SOCKET												_clientSocket;
+	SOCKADDR_IN											_clientAddr;
+	DWORD												_flags;
+	int													_addrLen;
 
 	//thread
-	std::thread					_timerThread;
-	std::vector<std::thread>	_workerThread;
-	HANDLE						_iocp;
+	std::thread											_timerThread;
+	std::vector<std::thread>							_workerThread;
+	HANDLE												_iocp;
 	
 	//class
 	CError* _error;
 
 	// timer
-	std::mutex					_timerLock;
-	std::priority_queue<EVENT>	_timerQueue;
+	std::mutex											_timerLock;
+	std::priority_queue<EVENT>							_timerQueue;
 	std::chrono::time_point <std::chrono::system_clock> _prevTime;
-	std::chrono::duration<float> _elapsedTime;
+	std::chrono::duration<float>						_elapsedTime;
 
 	bool _useDB;
 

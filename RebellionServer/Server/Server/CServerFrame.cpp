@@ -53,6 +53,7 @@ void CServerFrame::InitServer()
 
 	// init objcet
 
+
 	CreateIoCompletionPort(reinterpret_cast<HANDLE>(_listenSocket), _iocp, 999999, 0);
 	SOCKET c_sock = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
 	OVER_EX acceptOver;
@@ -67,6 +68,7 @@ void CServerFrame::InitServer()
 	_workerThread.reserve(WORKER_THREAD_NUM);
 	for (int i = 0; i < WORKER_THREAD_NUM;++i)
 		_workerThread.emplace_back(CreateWorkerThread());
+
 
 	_timerThread = CreateTimerThread();
 

@@ -103,6 +103,10 @@ void CSender::SendEnterPacket(SOCKET s, int id, float x, float y, float z, int o
 	SendPacket(s, &packet);
 }
 
+void CSender::SendStopPacket(SOCKET s, int id)
+{
+}
+
 void CSender::SendPlayerDiePacket(SOCKET s, int id)
 {
 	sc_packet_player_die packet;
@@ -111,6 +115,10 @@ void CSender::SendPlayerDiePacket(SOCKET s, int id)
 	packet.type = SC_PLAYER_DIE;
 
 	SendPacket(s, &packet);
+}
+
+void CSender::SendNPCDiePacket(SOCKET s, int id, int type)
+{
 }
 
 
@@ -122,6 +130,10 @@ void CSender::SendPlayerAttackPacket(SOCKET s, int id)
 	packet.size = sizeof(packet);
 
 	SendPacket(s, &packet);
+}
+
+void CSender::SendTransformPacket(SOCKET s, int id, bool b)
+{
 }
 
 
