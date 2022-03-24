@@ -9,7 +9,7 @@ CServerFrame g_server;
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    std::cout << "Start Server Progress\n";
     g_server.Progress();
 }
 

@@ -66,8 +66,6 @@ void CNetwork::Connect()
 	int ret = connect(g_socket, (SOCKADDR*)&recvAddr, sizeof(recvAddr));
 
 
-
-
 	if (ret == SOCKET_ERROR)
 		err_quit("connect error");
 
@@ -82,7 +80,7 @@ void CNetwork::Connect()
 
 void CNetwork::Receive()
 {
-	EXOVER* dataBuf = new EXOVER{};
+	EXOVER*	 dataBuf = new EXOVER{};
 	DWORD	 recvByte = 0;
 	DWORD	 flags = 0;
 	dataBuf->over = _overlapped;
