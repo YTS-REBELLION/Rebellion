@@ -8,6 +8,7 @@
 #include "CObject.h"
 
 class CError;
+class CSender;
 
 
 class CServerFrame {
@@ -25,6 +26,12 @@ class CServerFrame {
 	
 	//class
 	CError* _error;
+	CSender* _sender;
+
+
+	CObject												_objects[10000];
+
+
 
 	// timer
 	std::mutex											_timerLock;
@@ -50,7 +57,7 @@ public:
 	std::thread CreateWorkerThread();
 	std::thread CreateTimerThread();
 
-
+	void InitClients();
 	void DoWorker();
 	void DoTimer();
 

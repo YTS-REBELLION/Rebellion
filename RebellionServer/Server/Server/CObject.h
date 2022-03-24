@@ -56,6 +56,7 @@ class CObject
 	//ÁÂÇ¥			_nextPos;
 	int				_nextPosIndex;
 
+public:
 	std::atomic<STATUS> _status = ST_FREE;
 
 	

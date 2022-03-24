@@ -2,16 +2,35 @@
 #include "Error.h"
 #include "Protocol.h"
 #include "Shared.h"
+#include "Sender.h"
 #include "CServerFrame.h"
+
 
 constexpr int WORKER_THREAD_NUM{ 4 };
 CServerFrame::CServerFrame()
 {
+	_useDB = false;
+	_dummpyIndex = 0;
+	_prevTime = std::chrono::system_clock::now();
+	_error = new CError;
+	_sender = new CSender;
+
 
 }
 CServerFrame::~CServerFrame()
 {
+	if (nullptr != _error) {
+		delete _error;
+		_error = nullptr;
 
+	}
+	if (nullptr != _sender) {
+		delete _sender;
+		_sender = nullptr;
+	}
+	_timerThread.join();
+	for (std::thread& t : _workerThread)
+		t.join();
 }
 
 void CServerFrame::Progress()
@@ -52,7 +71,7 @@ void CServerFrame::InitServer()
 
 
 	// init objcet
-
+	InitClients();
 
 	CreateIoCompletionPort(reinterpret_cast<HANDLE>(_listenSocket), _iocp, 999999, 0);
 	SOCKET c_sock = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
@@ -80,12 +99,67 @@ void CServerFrame::InitServer()
 
 std::thread CServerFrame::CreateWorkerThread()
 {
+	std::cout << "CreateWorkerThread()" << std::endl;
 	return std::thread([this] {this->DoWorker(); });
 }
 
 std::thread CServerFrame::CreateTimerThread()
 {
 	return std::thread([this] {this->DoTimer(); });
+}
+
+void CServerFrame::InitClients()
+{
+	std::cout << "InitClients" << endl;
+	for (int i = 0; i < NPC_ID_START; ++i) {
+		_objects[i].SetIsDummy(false);
+		_objects[i]._status = ST_FREE;
+		_objects[i].SetID(i);
+		_objects[i].SetSpeed(i);
+		_objects[i].SetMyType(PLAYER);
+
+		int idx = 0;
+		float x, z;
+		switch (idx) {
+		case 0:
+			x = -1700.f;
+			z = 3800.f;
+			break;
+		case 1:
+			x = -1900.f;
+			z = 4600.f;
+			break;
+		case 2:
+			x = -2100.f;
+			z = 5300.f;
+			break;
+		case 3:
+			x = -2300.f;
+			z = 4300.f;
+			break;
+		case 4:
+			x = -2500.f;
+			z = 5000.f;
+			break;
+		case 5:
+			x = -2800.f;
+			z = 4000.f;
+			break;
+		}
+		idx = (idx + 1) % 6;
+		//Vec3 pos;
+		//pos.x = x;
+		//pos.y = 0.f;
+		//pos.z = z;
+		_objects[i].SetCurrentExp(0);
+		_objects[i].SetMaxExp(100);
+		_objects[i].SetCurrentHp(200);
+		_objects[i].SetMaxHp(200);
+		//_objects[i].SetPos(pos);
+		_objects[i].SetDamage(50);
+		_objects[i].SetLevel(1);
+		_objects[i].SetIsAttack(false);
+	}
 }
 
 void CServerFrame::DoWorker()

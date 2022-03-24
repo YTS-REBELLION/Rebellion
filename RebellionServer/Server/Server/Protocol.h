@@ -40,6 +40,8 @@ constexpr int MAX_PW_LEN = 12;
 constexpr int MAX_ID_LEN = 50;
 constexpr int MAX_STR_LEN = 50;
 
+constexpr unsigned char PLAYER = 0;
+
 #pragma pack(push,1)
 
 struct sc_packet_login_ok {
