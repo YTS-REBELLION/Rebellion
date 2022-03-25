@@ -9,5 +9,5 @@ extern D3D12_DEPTH_STENCIL_DESC g_arrDepthStencilDesc[(UINT)DEPTH_STENCIL_TYPE::
 
 
 
-// 서버
-extern CNetwork g_net;
+//// 서버
+//extern CNetwork g_net;
