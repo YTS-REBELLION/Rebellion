@@ -4,6 +4,9 @@
 #include <chrono>
 #include <cstring>
 
+
+//const char* SERVERIP = "127.0.0.1";
+
 #define SERVER_PORT 9000
 #define MAX_BUFFER 1024
 

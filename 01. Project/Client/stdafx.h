@@ -11,6 +11,7 @@
 // Windows 헤더 파일
 #include <windows.h>
 
+
 // C 런타임 헤더 파일입니다.
 #include <stdlib.h>
 #include <malloc.h>
@@ -19,5 +20,3 @@
 
 
 // 여기서 프로그램에 필요한 추가 헤더를 참조합니다.
-#include "../Engine/extern.h"
-

@@ -43,7 +43,6 @@ using namespace Microsoft::WRL;
 #include <list>
 #include <map>
 
-
 using std::vector;
 using std::list;
 using std::map;

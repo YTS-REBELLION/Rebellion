@@ -47,8 +47,8 @@
     <Filter Include="04. GameObject\Script">
       <UniqueIdentifier>{cbb81f79-d307-4371-9e99-ab9e93821102}</UniqueIdentifier>
     </Filter>
-    <Filter Include="99.Network">
-      <UniqueIdentifier>{fb6729e9-c372-483d-953b-bfc95aca195b}</UniqueIdentifier>
+    <Filter Include="05.Network">
+      <UniqueIdentifier>{bb6f126c-94fb-478b-b583-85c2089dd314}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -167,7 +167,7 @@
     </ClInclude>
     <ClInclude Include="..\..\03. External\Include\FBXLoader\fbxsdk.h" />
     <ClInclude Include="Network.h">
-      <Filter>99.Network</Filter>
+      <Filter>05.Network</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -272,7 +272,7 @@
       <Filter>Module</Filter>
     </ClCompile>
     <ClCompile Include="Network.cpp">
-      <Filter>99.Network</Filter>
+      <Filter>05.Network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

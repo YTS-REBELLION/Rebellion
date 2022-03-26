@@ -1,0 +1,683 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.31.31104.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "commandLine": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.31.31103\\bin\\HostX64\\x64\\c1xx.dll\" -ACf{1F7B090C-16DB-4822-966A-A93D26ED4681} -ACpmspft140.dll -Alint -D_PREFAST_ -D_AST_FE_ -Analyze -zm0x00007FF62D949CC0 -allChunksReserved -il C:\\Users\\pig75\\AppData\\Local\\Temp\\_CL_0e748715ast -typedil -f Shader.cpp -Ze -D_MSC_EXTENSIONS -Zp16 -pc \\:/ -D_MSC_VER=1931 -D_MSC_FULL_VER=193131104 -D_MSC_BUILD=0 -D_M_AMD64=100 -ZILP448 -D_M_X64=100 -D_WIN64 -D_WIN32 -GR -D_CPPRTTI -nologo -W 3 -diagnostics:column -Ot -DCODE_ANALYSIS -D_DEBUG -D_LIB -D_UNICODE -DUNICODE -EHs -D_CPPUNWIND -EHc -D__MSVC_RUNTIME_CHECKS -RTCs -RTCu -MDd -D_DEBUG -D_MT -D_DLL -GS -D_M_FP_PRECISE -Zc:wchar_t -Zc:forScope -permissive -Yustdafx.h -Fpx64\\Debug\\Engine_debug.pch -Fox64\\Debug\\Shader.obj -FdC:\\Users\\pig75\\OneDrive\\Desktop\\Rebellion\\03. External\\Library\\Engine\\Engine_debug.pdb -external:W 3 -Gd -analyze:projectdirectory C:\\Users\\pig75\\OneDrive\\Desktop\\Rebellion\\01. Project\\Engine -analyze:rulesetdirectory ;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Team Tools\\Static Analysis Tools\\\\Rule Sets; -analyze:ruleset C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Team Tools\\Static Analysis Tools\\Rule Sets\\NativeRecommendedRules.ruleset -analyze:quiet -analyze:plugin C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.31.31103\\bin\\HostX64\\x64\\EspXEngine.dll -FC -errorreport:prompt -I C:\\Users\\pig75\\OneDrive\\Desktop\\Rebellion\\03. External\\Include\\FBXLoader\\fbxsdk\\ -I C:\\Users\\pig75\\OneDrive\\Desktop\\Rebellion\\03. External\\Include\\FBXLoader\\ -I C:\\Users\\pig75\\OneDrive\\Desktop\\Rebellion\\03. External\\Include\\ -I C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.31.31103\\include -I C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.31.31103\\atlmfc\\include -I C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Auxiliary\\VS\\include -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\ucrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\um -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\shared -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\winrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\cppwinrt -I C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.8\\Include\\um -external:I C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.31.31103\\include -I C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.31.31103\\include -external:I C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.31.31103\\atlmfc\\include -I C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.31.31103\\atlmfc\\include -external:I C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Auxiliary\\VS\\include -I C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Auxiliary\\VS\\include -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\ucrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\ucrt -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\um -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\um -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\shared -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\shared -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\winrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\winrt -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\cppwinrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\cppwinrt -external:I C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.8\\Include\\um -I C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.8\\Include\\um",
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/03. External/Include/DirectTex/DirectXTex.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "c8e863278f003e7dfe1afd676688dc467cc431b8c940dd3f347e4208fa0e4969"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/RenderMgr.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "35f2fbc0a3d768f86f3f227cd2c343b2c8c3d466940b3a68179e7dda305ec240"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/stdafx.h"
+          },
+          "hashes": {
+            "sha-256": "4bfed1586097563d735510d2ca567cc7591da47daf47f6a0a40874d3bbe6853a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/targetver.h"
+          },
+          "hashes": {
+            "sha-256": "85f7176f7524945ebf5ea4da8232b424e0dad37cb61080bdc9d7a46c297f2821"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/global.h"
+          },
+          "hashes": {
+            "sha-256": "e65b41562626532728d1dabd6a98aff960245dbf65b58b9dfec5847457e515c0"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/simplemath.h"
+          },
+          "hashes": {
+            "sha-256": "8475aea0e7f79b53fa180ef4258e15e064624c680a4e08d2b73eaff839a4ec9a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/simplemath.inl"
+          },
+          "hashes": {
+            "sha-256": "6b856cf3644be71e484ca2b8f3cc301f4450cea7cd061b3ab75fb28c2d2d86d2"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/d3dx12.h"
+          },
+          "hashes": {
+            "sha-256": "c71d645f5119fa83c7c765fbfd7d37a6803051e90801b18d3aabef8110cab59b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/define.h"
+          },
+          "hashes": {
+            "sha-256": "08246cd1ad52e107a267d56d0ca951b511de2801d0e9eff672581a575a874a6b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/struct.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "78c623817a983229b2c6c0ba4d947f18b9783fa433803b3970c850eac4f6decb"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/extern.h"
+          },
+          "hashes": {
+            "sha-256": "970e92bee3273a71eeb20a5120e4ffc1c177ddd5344505a50bd995c1333a4203"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/network.h"
+          },
+          "hashes": {
+            "sha-256": "ad5a1212458e3b162eb20bb16c9b94c25118f959e1bb1b2275de0fcb47ac5bca"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/rebellionserver/server/server/protocol.h"
+          },
+          "hashes": {
+            "sha-256": "7a0f9e2b13e8d7e672bfb20308e2b635a205eb26454d4687194b95d818f87178"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/func.h"
+          },
+          "hashes": {
+            "sha-256": "ca6224454aea67d4dffdffe6ba2c7991675f712e2dd0aab1c82c13889bd0c977"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/rendermgr.h"
+          },
+          "hashes": {
+            "sha-256": "c763abac693bda521ae5e62326ff2ca6a54800d0708730291d65aa87fc727137"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/ptr.h"
+          },
+          "hashes": {
+            "sha-256": "3968131c978b9a6f535eebabf093019a76af1795dd293b744df22edff919113e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/texture.h"
+          },
+          "hashes": {
+            "sha-256": "b80a2c97861255dcfbca8b986fb8e55fd4a115110c7ee7ac74e0976b6f2ffa1d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/resource.h"
+          },
+          "hashes": {
+            "sha-256": "7571928de1ea828f8ace0eac5f3ea1a820741baae2327a8aa49a85a5e9675b8d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/entity.h"
+          },
+          "hashes": {
+            "sha-256": "c6e332bc324b180ee1c01cd79456d9337abab8051a4c3336f32c74406711b117"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/03. external/include/directtex/directxtex.inl"
+          },
+          "hashes": {
+            "sha-256": "fc1478a4b6255105cb8396d00b9455932cac54ceb2e7a2a88a7b6ac2e516069a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/device.h"
+          },
+          "hashes": {
+            "sha-256": "827cb1a8c2901e66d4206cd01ac510279db7b23c1022eb13b2995d431c66119e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/camera.h"
+          },
+          "hashes": {
+            "sha-256": "3bd7414698983ad9718991017b12d40dae932bdf368df782a5553d18ba149855"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/component.h"
+          },
+          "hashes": {
+            "sha-256": "f6b57810e3c78e1113b406fcb9f7372a9dad726596ece7c82379381967863dfe"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/gameobject.h"
+          },
+          "hashes": {
+            "sha-256": "1c0fcef5b9aa93df9fa0b977bbc569dc6478795bd0b130deeb72affea1ea2515"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/frustum.h"
+          },
+          "hashes": {
+            "sha-256": "277a3d59c7bf01386b997f77fe47648c58121b28fbab1dcc92f2eca693cae1ca"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/scenemgr.h"
+          },
+          "hashes": {
+            "sha-256": "a41be39cb08f62374089a434d11986c914db34ceace3bd051f4767c7a48266b3"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/constantbuffer.h"
+          },
+          "hashes": {
+            "sha-256": "85749f7b9336c1afeedf72691f16823647742187b2625fea83bc414a408059c9"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/timemgr.h"
+          },
+          "hashes": {
+            "sha-256": "da09765810908fe8b498f3c5b76be2ccb1344a96070a6c19ea38dad02b3e57d3"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/eventmgr.h"
+          },
+          "hashes": {
+            "sha-256": "5bfcfacdb6b199f2ec3a8c839bf05aff8e9afb804eaab89a7af4b95ae6737934"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/playerscript.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "e36421dc181c30a2164433c43ac60c5429d822fa01a44b04002ae46e812d3618"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/playerscript.h"
+          },
+          "hashes": {
+            "sha-256": "ca1e3745e64ea73e65cdedd2ef7054494bd45cf6b118b8d8960707dfd993ba3f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/script.h"
+          },
+          "hashes": {
+            "sha-256": "237559cd1ba7fccae5034a3981b7888549b5d5a2dd13ecbcd2cfaf82cf89db05"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/transform.h"
+          },
+          "hashes": {
+            "sha-256": "122e182c4128c035ee0dea33d117d787f346d21a618616b9339eb63134652db7"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/meshrender.h"
+          },
+          "hashes": {
+            "sha-256": "70c46c7a505a89c8b74ba7303fb5ce7cadb9fea51d272dc9fb39c0d0d2255b87"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/mesh.h"
+          },
+          "hashes": {
+            "sha-256": "3d2f604b7d45a4404afe3e28337ad1b23b5113891a01045c207a15dfdcf616b5"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/shader.h"
+          },
+          "hashes": {
+            "sha-256": "3a273810c4ae3a3275ad5ba2a660a142be2f01e47b26e4d4460dca91ad34fe6a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/material.h"
+          },
+          "hashes": {
+            "sha-256": "4526a7f7a4ad575f88615812e24b88ab8dacbd0c3bfc3b58c42a900dec9cada5"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/keymgr.h"
+          },
+          "hashes": {
+            "sha-256": "cf7f611012ff312ac3a473dd3f368dd419319ea9d8d29097016ec730a7c2c5b5"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/resmgr.h"
+          },
+          "hashes": {
+            "sha-256": "d5f2346dbddabfb53433186403f6c1a77e39db236222617169f4ba88beea3bd7"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/pathmgr.h"
+          },
+          "hashes": {
+            "sha-256": "66eda8f5f5ddbc00c919044788db0caf55d6bd30591a4ddff7677e18def06d1b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/scene.h"
+          },
+          "hashes": {
+            "sha-256": "effbc9b98fa8ed3d982bb4a7899db835c21ed1dde963efa7c483b3a86c81dde3"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/layer.h"
+          },
+          "hashes": {
+            "sha-256": "d4e80c78fcce6437edef5ef7cad6189b6c981cfa7972120e98bd7ddee5b5409e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/testscript.h"
+          },
+          "hashes": {
+            "sha-256": "84ae33d1edea9e5728729319dae672b6640f6bb8508249be8d10984e509f35b8"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/pathmgr.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "55c8ae5f0502a8247ef47ad1fdb3f8d78ce34834acab47e9503205dc5a686901"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/Network.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "a41a6365a2d90f58eb6da65750720874c08d3c8f09558c94999ab76e5817d9b8"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/meshrender.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "a9f487eec5d97c8b277b6bfa8d7431a7647f8e46ae0e20d4dcbc73891e76fe7c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/Mesh.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "532b66b49142ecd5258b628797aca7d5e3c9d9bc1cd2c20853200077af008d45"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/Material.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "7c05a32673f81f8f81d7539a5e41c90de718a532217f7446fb012402747ec28b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/core.h"
+          },
+          "hashes": {
+            "sha-256": "14834fa8be46d16c38e8171184ae09741a82f6cf43d0be5d59261ec0dee63e67"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/Layer.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "5b8bc9ce7b50aeee2555b4a75940cd097bc8e257448de73975424b59c8050219"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/KeyMgr.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "932b829e75db1267b47648ec87e128197e13ad60b1ff271eb383a42b873717a9"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/GameObject.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "f03eeb1cc2c68d88fb51701ad39b5699d612ca4a43ec840fe0b3761b57b6aecf"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/func.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "326be312cf853e4343732fda62b37cbe913f77dc54970df50dd08b0571823b19"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/frustum.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "b2c5bf8d7b5f0054cd43febbfd8ee3474ad4acdcc18495cda3ab3e871d793684"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/eventmgr.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "dffe1681ce68b9a367765229c0d338177198c2cc93dd5d53c2cc748a6d8ccd4a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/entity.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "7c71a62ea805ff935c1e7deb6fe6e08e521c7d706c0972863105c1e6fdc22d61"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/Device.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "8a50bf31061eaff1a1288f9afdbea3c72192a7e04a4c1c2788af86ca0d54d496"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/desc.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "bca4693b8453711917532b0733daf242419c454fd020e235f628bf84e6bda9d4"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/core.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "f3c2d0d594a7cc37ad40e0fede2b3e78ebacafc9c084d73df994a3a485133970"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/ConstantBuffer.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "6421edae296e823c234e9e930e5e90fd7243cf08aa1847873706428623558f17"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/Component.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "4d4d0cee8a03b661bde0ac17f61a4ca05c8cb07dd1c5b2d999c268e76f5067d3"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/camera.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "cea423469a8bf05b33e4ec0bc9485f8f6842c2ad30d20fad7b83ca651a0754d7"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/transform.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "6477d012817116fd229e3ce2973aa54ba378d73894f5df8f3ac998144da2fd49"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/toolcamscript.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "10d6786dba2a2b904f001f61efca231c3dc20c6b488a21b4edb25ea332a824a6"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/toolcamscript.h"
+          },
+          "hashes": {
+            "sha-256": "2dfee7984ea1b063717c246fa3875ce6a47994f53f660e4c4b5c7a743de2b6fe"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/timemgr.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "83922d54461eb01e92272f6efed422fb7d3026a9bc06fb974a6c33b9526ebba0"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/texture.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "1d436ad23419fff4d1b954d56eccc5bf324ef2005eeb35612a99f7222d5220bd"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/testscript.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "ccd99f313f6cfbfb44e35ec5ec9a9a8ad7c8566c2dd47cac17c62c5e5d344095"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/simplemath.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "3833e20137b63afda1d4fe0e5dec9ae34138750d5f6fc04b23b269ec8c3cf06a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/shader.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "52ccf331f27b3c8b727643228747469a571dfaec672adceb83026bf2d8af34d9"
+          }
+        }
+      ]
+    }
+  ]
+}

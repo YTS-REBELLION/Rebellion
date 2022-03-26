@@ -1,0 +1,1082 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "ruleId": "C6001",
+          "message": {
+            "text": "초기화되지 않은 메모리 '*pParameters_1_0.DescriptorTable.pDescriptorRanges'을(를) 사용하고 있습니다."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                },
+                "region": {
+                  "startLine": 2130,
+                  "startColumn": 63,
+                  "endLine": 2130,
+                  "endColumn": 157
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "D3DX12SerializeVersionedRootSignature",
+                  "decoratedName": "?D3DX12SerializeVersionedRootSignature@@YAJPEBUD3D12_VERSIONED_ROOT_SIGNATURE_DESC@@W4D3D_ROOT_SIGNATURE_VERSION@@PEAPEAUID3D10Blob@@2@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "codeFlows": [
+            {
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2038,
+                            "startColumn": 21
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2040,
+                            "startColumn": 22
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2043,
+                            "startColumn": 13
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2045,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2046,
+                            "startColumn": 39
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2051,
+                            "startColumn": 17
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2053,
+                            "startColumn": 29
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2054,
+                            "startColumn": 55
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2056,
+                            "startColumn": 34
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2057,
+                            "startColumn": 27
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2058,
+                            "startColumn": 44
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2062,
+                            "startColumn": 26
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2064,
+                            "startColumn": 25
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2066,
+                            "startColumn": 35
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2066,
+                            "startColumn": 44
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2068,
+                            "startColumn": 29
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2069,
+                            "startColumn": 62
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2070,
+                            "startColumn": 65
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2072,
+                            "startColumn": 60
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2087,
+                            "startColumn": 29
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2088,
+                            "startColumn": 69
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2090,
+                            "startColumn": 46
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2091,
+                            "startColumn": 39
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2092,
+                            "startColumn": 62
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2096,
+                            "startColumn": 38
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2098,
+                            "startColumn": 37
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2100,
+                            "startColumn": 47
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2100,
+                            "startColumn": 56
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2111,
+                            "startColumn": 62
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2112,
+                            "startColumn": 63
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2113,
+                            "startColumn": 61
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2066,
+                            "startColumn": 71
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2066,
+                            "startColumn": 44
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2068,
+                            "startColumn": 29
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2069,
+                            "startColumn": 62
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2070,
+                            "startColumn": 65
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2072,
+                            "startColumn": 60
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2087,
+                            "startColumn": 29
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2088,
+                            "startColumn": 69
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2090,
+                            "startColumn": 46
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2091,
+                            "startColumn": 39
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2092,
+                            "startColumn": 62
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2096,
+                            "startColumn": 38
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2098,
+                            "startColumn": 37
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2100,
+                            "startColumn": 47
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2100,
+                            "startColumn": 56
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2111,
+                            "startColumn": 62
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2112,
+                            "startColumn": 63
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2113,
+                            "startColumn": 61
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2066,
+                            "startColumn": 71
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2066,
+                            "startColumn": 44
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2118,
+                            "startColumn": 25
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2120,
+                            "startColumn": 53
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2121,
+                            "startColumn": 28
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2124,
+                            "startColumn": 25
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2126,
+                            "startColumn": 35
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2126,
+                            "startColumn": 44
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2128,
+                            "startColumn": 71
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2130,
+                            "startColumn": 41
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2126,
+                            "startColumn": 71
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2126,
+                            "startColumn": 44
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2128,
+                            "startColumn": 71
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2130,
+                            "startColumn": 41
+                          }
+                        },
+                        "message": {
+                          "text": "'*pParameters_1_0.DescriptorTable.pDescriptorRanges'이(가) 초기화되지 않았습니다."
+                        }
+                      },
+                      "kinds": [
+                        "declaration"
+                      ],
+                      "importance": "essential"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+                          },
+                          "region": {
+                            "startLine": 2130,
+                            "startColumn": 63
+                          }
+                        },
+                        "message": {
+                          "text": "'*pParameters_1_0.DescriptorTable.pDescriptorRanges'이(가) 사용되는데 초기화되지 않았을 수 있습니다."
+                        }
+                      },
+                      "kinds": [
+                        "usage"
+                      ],
+                      "importance": "essential"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.31.31104.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "commandLine": "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.31.31103\\bin\\HostX64\\x64\\c1xx.dll\" -ACf{1F7B090C-16DB-4822-966A-A93D26ED4681} -ACpmspft140.dll -Alint -D_PREFAST_ -D_AST_FE_ -Analyze -zm0x00007FF62D949CC0 -il C:\\Users\\pig75\\AppData\\Local\\Temp\\_CL_a727634east -typedil -f stdafx.cpp -Ze -D_MSC_EXTENSIONS -Zp16 -pc \\:/ -D_MSC_VER=1931 -D_MSC_FULL_VER=193131104 -D_MSC_BUILD=0 -D_M_AMD64=100 -ZILP448 -D_M_X64=100 -D_WIN64 -D_WIN32 -GR -D_CPPRTTI -nologo -W 3 -diagnostics:column -Ot -DCODE_ANALYSIS -D_DEBUG -D_LIB -D_UNICODE -DUNICODE -EHs -D_CPPUNWIND -EHc -D__MSVC_RUNTIME_CHECKS -RTCs -RTCu -MDd -D_DEBUG -D_MT -D_DLL -GS -D_M_FP_PRECISE -Zc:wchar_t -Zc:forScope -permissive -Ycstdafx.h -Fpx64\\Debug\\Engine_debug.pch -Fox64\\Debug\\stdafx.obj -FdC:\\Users\\pig75\\OneDrive\\Desktop\\Rebellion\\03. External\\Library\\Engine\\Engine_debug.pdb -external:W 3 -Gd -analyze:projectdirectory C:\\Users\\pig75\\OneDrive\\Desktop\\Rebellion\\01. Project\\Engine -analyze:rulesetdirectory ;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Team Tools\\Static Analysis Tools\\\\Rule Sets; -analyze:ruleset C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Team Tools\\Static Analysis Tools\\Rule Sets\\NativeRecommendedRules.ruleset -analyze:quiet -analyze:plugin C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.31.31103\\bin\\HostX64\\x64\\EspXEngine.dll -FC -errorreport:prompt -I C:\\Users\\pig75\\OneDrive\\Desktop\\Rebellion\\03. External\\Include\\FBXLoader\\fbxsdk\\ -I C:\\Users\\pig75\\OneDrive\\Desktop\\Rebellion\\03. External\\Include\\FBXLoader\\ -I C:\\Users\\pig75\\OneDrive\\Desktop\\Rebellion\\03. External\\Include\\ -I C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.31.31103\\include -I C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.31.31103\\atlmfc\\include -I C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Auxiliary\\VS\\include -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\ucrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\um -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\shared -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\winrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\cppwinrt -I C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.8\\Include\\um -external:I C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.31.31103\\include -I C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.31.31103\\include -external:I C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.31.31103\\atlmfc\\include -I C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.31.31103\\atlmfc\\include -external:I C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Auxiliary\\VS\\include -I C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Auxiliary\\VS\\include -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\ucrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\ucrt -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\um -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\um -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\shared -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\shared -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\winrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\winrt -external:I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\cppwinrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22000.0\\cppwinrt -external:I C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.8\\Include\\um -I C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.8\\Include\\um",
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///C:/Users/pig75/OneDrive/Desktop/Rebellion/01. Project/Engine/d3dx12.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "c71d645f5119fa83c7c765fbfd7d37a6803051e90801b18d3aabef8110cab59b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/stdafx.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "8c25fb60d6fce97620fda7cc73dd77183ea30670b01df826d9e6be9b17733bc1"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/stdafx.h"
+          },
+          "hashes": {
+            "sha-256": "4bfed1586097563d735510d2ca567cc7591da47daf47f6a0a40874d3bbe6853a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/targetver.h"
+          },
+          "hashes": {
+            "sha-256": "85f7176f7524945ebf5ea4da8232b424e0dad37cb61080bdc9d7a46c297f2821"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/global.h"
+          },
+          "hashes": {
+            "sha-256": "e65b41562626532728d1dabd6a98aff960245dbf65b58b9dfec5847457e515c0"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/simplemath.h"
+          },
+          "hashes": {
+            "sha-256": "8475aea0e7f79b53fa180ef4258e15e064624c680a4e08d2b73eaff839a4ec9a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/simplemath.inl"
+          },
+          "hashes": {
+            "sha-256": "6b856cf3644be71e484ca2b8f3cc301f4450cea7cd061b3ab75fb28c2d2d86d2"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/define.h"
+          },
+          "hashes": {
+            "sha-256": "08246cd1ad52e107a267d56d0ca951b511de2801d0e9eff672581a575a874a6b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/struct.h"
+          },
+          "hashes": {
+            "sha-256": "78c623817a983229b2c6c0ba4d947f18b9783fa433803b3970c850eac4f6decb"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/extern.h"
+          },
+          "hashes": {
+            "sha-256": "970e92bee3273a71eeb20a5120e4ffc1c177ddd5344505a50bd995c1333a4203"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/network.h"
+          },
+          "hashes": {
+            "sha-256": "ad5a1212458e3b162eb20bb16c9b94c25118f959e1bb1b2275de0fcb47ac5bca"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/rebellionserver/server/server/protocol.h"
+          },
+          "hashes": {
+            "sha-256": "7a0f9e2b13e8d7e672bfb20308e2b635a205eb26454d4687194b95d818f87178"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/pig75/onedrive/desktop/rebellion/01. project/engine/func.h"
+          },
+          "hashes": {
+            "sha-256": "ca6224454aea67d4dffdffe6ba2c7991675f712e2dd0aab1c82c13889bd0c977"
+          }
+        }
+      ]
+    }
+  ]
+}
