@@ -9,6 +9,8 @@ CServerFrame g_server;
 
 int main()
 {
+    std::wcout.imbue(locale("Korean"));
+
     std::cout << "Start Server Progress\n";
     g_server.Progress();
 }

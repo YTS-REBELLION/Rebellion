@@ -31,6 +31,9 @@ CServerFrame::~CServerFrame()
 	_timerThread.join();
 	for (std::thread& t : _workerThread)
 		t.join();
+
+	closesocket(_listenSocket);
+	WSACleanup();
 }
 
 void CServerFrame::Progress()
@@ -68,7 +71,6 @@ void CServerFrame::InitServer()
 	listen(_listenSocket, SOMAXCONN);
 
 	_iocp = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, NULL, 0);
-
 
 	// init objcet
 	InitClients();
@@ -205,9 +207,17 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		std::cout <<"ID : " << id << "플레이어 등장" << std::endl;
 		cs_packet_login* packet = reinterpret_cast<cs_packet_login*>(buf);
 
+		char name[MAX_ID_LEN];
+		strcpy_s(name, packet->name);
+
+		cout << "플레이어 이름 " << name << endl;
+		
+		_sender->SendLoginOkPacket(_objects[id].GetSocket(), id, 
+			0.f, 0.f, 0.f, 10, 20, 30, 40, 50, 60);
 
 
-		_sender->SendLoginFailPacket(_objects[id].GetSocket());
+
+		//_sender->SendLoginFailPacket(_objects[id].GetSocket());
 
 
 
@@ -220,7 +230,7 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 
 
 	}
-				 break;
+	break;
 	}
 
 
@@ -229,7 +239,7 @@ void CServerFrame::Disconnect(int id)
 {
 	_sender->SendLeavePacket(_objects[id].GetSocket(), id, _objects[id].GetMyType());
 	_objects[id].ClientLock();
-	_objects[id]._status = ST_ALLOC;
+	_objects[id]._status = ST_INGAME;
 	closesocket(_objects[id].GetSocket());
 	for (int i = 0; i < NPC_ID_START; ++i) {
 		CObject& cl = _objects[id];
@@ -248,11 +258,6 @@ void CServerFrame::Disconnect(int id)
 	_objects[id]._status = ST_FREE;
 	_objects[id].ClientLock();
 
-
-
-
-
-
 }
 void CServerFrame::DoWorker()
 {
@@ -263,23 +268,35 @@ void CServerFrame::DoWorker()
 		ULONG_PTR key;
 		WSAOVERLAPPED* over;
 
-		GetQueuedCompletionStatus(_iocp, &ioBytes, &key, &over, INFINITE);
+		int ret = GetQueuedCompletionStatus(_iocp, &ioBytes, &key, &over, INFINITE);
 
-		OVER_EX* over_ex = reinterpret_cast<OVER_EX*>(over);
+		
+
+		OVER_EX* exp_over = reinterpret_cast<OVER_EX*>(over);
 		int id = static_cast<int>(key);
 		//CObject& cl = m_objects[id];
+		if (FALSE == ret) {
+			int err_no = WSAGetLastError();
+			_error->error_display("GQCS Error : ", err_no);
+			std::cout << std::endl;
+			Disconnect(id);
+			if (exp_over->event_type == EV_SEND)
+				delete exp_over;
+			continue;
+		}
+
 
 		//std::cout << over_ex->event_type << std::endl;
 		//std::cout << over_ex->c_sock << std::endl;
 
-		switch (over_ex->event_type) {
+		switch (exp_over->event_type) {
 		case EV_ACCEPT: {
 			printf("Accept Player\n");
-			int user_id = -1;
+			int user_id = 0;
 			for (int i = 0; i < NPC_ID_START; ++i) {
 				_objects[i].ClientLock();
 				if (ST_FREE == _objects[i]._status) {
-					_objects[i]._status = ST_ALLOC;
+					_objects[i]._status = ST_INGAME;
 					_objects[i].ClientUnLock();
 					user_id = i;
 					break;
@@ -287,33 +304,51 @@ void CServerFrame::DoWorker()
 				_objects[i].ClientUnLock();
 			}
 
-			//printf("%d", user_id);
-			SOCKET c_sock = over_ex->c_sock;
+			printf("지금 들어온 플레이어 %d\n", user_id);
+			SOCKET c_sock = exp_over->c_sock;
 			if (-1 == user_id) {
 				closesocket(c_sock);
 			}
 			else {
+				cout << user_id << " 에게 보낼 선물 준비중\n";
 				CreateIoCompletionPort(reinterpret_cast<HANDLE>(c_sock), _iocp, user_id, 0);
+
 				CObject& newPlayer = _objects[user_id];
 				newPlayer.SetSocket(c_sock);
 				newPlayer.SetID(user_id);
 				newPlayer.SetPrevSize(0);
 				newPlayer.ClearViewList();
+				
+
+
+				ZeroMemory(&newPlayer._recvOver, sizeof(newPlayer._recvOver));
 				newPlayer._recvOver.wsabuf.buf = newPlayer._recvOver.net_buf;
 				newPlayer._recvOver.wsabuf.len = MAX_BUFFER;
 				newPlayer._recvOver.event_type = EV_RECV;
+				
+
 				DWORD flags = 0;
-				WSARecv(c_sock, &newPlayer._recvOver.wsabuf, 1, 
+
+
+
+				int ret = WSARecv(c_sock, &newPlayer._recvOver.wsabuf, 1,
 					NULL, &flags, &newPlayer._recvOver.over, NULL);
+				
+				if (SOCKET_ERROR == ret) {
+					int err_no = WSAGetLastError();
+					if (ERROR_IO_PENDING != err_no)
+						_error->error_display("ACCEPT RECV", err_no);
+				}
+				
 			}
 
+			ZeroMemory(&exp_over->over, sizeof(exp_over));
 			c_sock = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
-			over_ex->c_sock = c_sock;
-			ZeroMemory(&over_ex->over, sizeof(over_ex->over));
-			AcceptEx(_listenSocket, c_sock, over_ex->net_buf, NULL, sizeof(sockaddr_in) + 16, 
-				sizeof(sockaddr_in) + 16, NULL, &over_ex->over);
-
+			exp_over->c_sock = c_sock;
+			AcceptEx(_listenSocket, c_sock, exp_over->net_buf, NULL, sizeof(sockaddr_in) + 16, 
+				sizeof(sockaddr_in) + 16, NULL, &exp_over->over);
 			break;
+
 		}
 
 		case EV_RECV: {
@@ -333,9 +368,9 @@ void CServerFrame::DoWorker()
 
 		case EV_SEND:
 			if (0 == ioBytes) {
-				//Disconnect(id);
+				Disconnect(id);
 			}
-			delete over_ex;
+			delete exp_over;
 			break;
 
 		

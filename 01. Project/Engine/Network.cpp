@@ -82,6 +82,7 @@ void CNetwork::Connect()
 
 void CNetwork::Receive()
 {
+	
 	EXOVER*	 dataBuf = new EXOVER{};
 	DWORD	 recvByte = 0;
 	DWORD	 flags = 0;
@@ -99,6 +100,7 @@ void CNetwork::Receive()
 	{
 		if (WSAGetLastError() == WSAEWOULDBLOCK)
 		{
+			
 		}
 	}
 	else
@@ -117,9 +119,20 @@ void CNetwork::ProcessPacket(char* ptr)
 	//case 로그인 패킷:
 	case SC_LOGIN_OK:
 	{
+		
 		sc_packet_login_ok* p = reinterpret_cast<sc_packet_login_ok*>(ptr);
-		
-		
+		std::cout << "로그인 성공" << std::endl;
+		std::cout << p->c_exp << std::endl;
+		std::cout << p->c_hp << std::endl;
+		std::cout << p->damage << std::endl;
+		std::cout << p->id << std::endl;
+		std::cout << p->level << std::endl;
+		std::cout << p->m_exp << std::endl;
+		std::cout << p->m_hp << std::endl;
+		std::cout << p->size << std::endl;
+		std::cout << p->type << std::endl;
+		std::cout << p->c_exp << std::endl;
+
 
 	}
 	break;
@@ -176,6 +189,8 @@ void CNetwork::Send_Packet(void* _packet)
 
 	packetTest = dataBuf.wsabuf.len;
 
+	std::cout << "Packet Send : " << packetTest << std::endl;
+
 
 	//if (WSASend(g_Socket, &dataBuf.wsabuf, 1, (LPDWORD)&sent, 0, &dataBuf.over, NULL) == SOCKET_ERROR)
 	if (WSASend(g_socket, &dataBuf.wsabuf, 1, (LPDWORD)&sent, 0, &dataBuf.over, NULL) == SOCKET_ERROR)
@@ -193,6 +208,7 @@ void CNetwork::Send_Packet(void* _packet)
 
 void CNetwork::Send_LogIn_Packet()
 {
+
 	cs_packet_login packet;
 	packet.size = sizeof(packet);
 	packet.type = CS_LOGIN;

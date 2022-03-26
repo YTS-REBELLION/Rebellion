@@ -18,8 +18,11 @@ CSender::~CSender()
 // public function
 void CSender::SendLoginOkPacket(SOCKET s, int id, float xPos, float yPos, float zPos, short damage, short c_hp, short m_hp, short level, short c_exp, short m_exp)
 {
+
 	sc_packet_login_ok packet;
 	packet.id = id;
+	packet.type = SC_LOGIN_OK;
+
 	packet.x = xPos;
 	packet.y = yPos;
 	packet.z = zPos;
@@ -30,7 +33,6 @@ void CSender::SendLoginOkPacket(SOCKET s, int id, float xPos, float yPos, float 
 	packet.c_exp = c_exp;
 	packet.m_exp = m_exp;
 	packet.size = sizeof(packet);
-	packet.type = SC_LOGIN_OK;
 	SendPacket(s, &packet);
 }
 
@@ -196,10 +198,10 @@ void CSender::SendPacket(SOCKET s, void* buff)
 	memcpy(send_over->net_buf, packet, packet_size);
 	send_over->wsabuf.buf = send_over->net_buf;
 	send_over->wsabuf.len = packet_size;
-	/*int ret =*/ WSASend(s, &send_over->wsabuf, 1, 0, 0, &send_over->over, 0);
-	//if (0 != ret) {
-	//	int err_no = WSAGetLastError();
-	//	if (WSA_IO_PENDING != err_no)
-	//		m_error->error_display("WSASend Error :", err_no);
-	//}
+	int ret = WSASend(s, &send_over->wsabuf, 1, 0, 0, &send_over->over, 0);
+	if (0 != ret) {
+		int err_no = WSAGetLastError();
+		if (WSA_IO_PENDING != err_no)
+			m_error->error_display("WSASend Error :", err_no);
+	}
 }
