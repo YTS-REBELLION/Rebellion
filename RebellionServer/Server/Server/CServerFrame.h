@@ -60,10 +60,11 @@ public:
 	void InitClients();
 	void DoWorker();
 	void DoTimer();
-
+	void RecvPacketProcess(int, int);
 	void AddTimer(EVENT ev);
+	void ProcessPacket(int , char*);
 
-
+	void Disconnect(int);
 
 
 

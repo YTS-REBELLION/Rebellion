@@ -58,8 +58,10 @@ class CObject
 
 public:
 	std::atomic<STATUS> _status = ST_FREE;
+	OVER_EX _recvOver;
+	char _packetBuf[MAX_PACKET_SIZE];
 
-	
+
 public:
 	CObject();
 	~CObject();

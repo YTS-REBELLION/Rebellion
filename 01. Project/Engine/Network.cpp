@@ -119,20 +119,16 @@ void CNetwork::ProcessPacket(char* ptr)
 	{
 		sc_packet_login_ok* p = reinterpret_cast<sc_packet_login_ok*>(ptr);
 		
-		p->c_exp = 0;
-		p->c_hp = 0;
-		p->damage = 0;
-		p->id = 0;
-		p->level = 0;
-		p->m_exp = 0;
-		p->m_hp = 0;
-		p->size = sizeof(p);
-		p->x = 0;
-		p->y = 0;
-		p->z = 0;
+		
 
 	}
 	break;
+
+	case SC_LOGIN_FAIL: {
+		std::cout << "로그인 페일" << std::endl;
+
+		exit(0);
+	}
 	//case 입장 패킷:
 	}
 
@@ -200,15 +196,18 @@ void CNetwork::Send_LogIn_Packet()
 	cs_packet_login packet;
 	packet.size = sizeof(packet);
 	packet.type = CS_LOGIN;
-
+	
 	char name[MAX_ID_LEN];
 	string namestring;
 	std::cout << "name : ";
 	std::cin >> name;
 
+
+
 	sprintf_s(packet.name, name);
 	strcpy_s(name, packet.name);
-	
+	g_myid++;
+
 	std::cout << "CS_LOGIN PACKET : " << g_myid << std::endl;
 
 	Send_Packet(&packet);

@@ -161,7 +161,99 @@ void CServerFrame::InitClients()
 		_objects[i].SetIsAttack(false);
 	}
 }
+void CServerFrame::RecvPacketProcess(int id, int iobytes)
+{
+	OVER_EX& recvOver = _objects[id]._recvOver;
+	
+	int restBytes = iobytes;
+	char* p = recvOver.net_buf;
+	int packetSize = 0;
 
+	if (0 != _objects[id].GetPrevSize()) {
+		packetSize = _objects[id]._packetBuf[0];
+
+	}
+	while (restBytes > 0) {
+		if (0 == packetSize) {
+			packetSize = *p; // p[0]
+		}
+
+		if (packetSize <= restBytes + _objects[id].GetPrevSize()) {
+			memcpy(_objects[id]._packetBuf + _objects[id].GetPrevSize(),
+				p, packetSize - _objects[id].GetPrevSize());
+
+			p += packetSize - _objects[id].GetPrevSize();
+			restBytes -= packetSize - _objects[id].GetPrevSize();
+			packetSize = 0;
+			ProcessPacket(id, _objects[id]._packetBuf);
+			_objects[id].SetPrevSize(0);
+		}
+		else {
+			memcpy(_objects[id]._packetBuf + _objects[id].GetPrevSize(), p, restBytes);
+			_objects[id].SetPrevSize(_objects[id].GetPrevSize() + restBytes);
+			restBytes = 0;
+			p += restBytes;
+		}
+	}
+
+
+}
+void CServerFrame::ProcessPacket(int id, char* buf)
+{
+	switch (buf[1]) {
+	case CS_LOGIN: {
+		std::cout <<"ID : " << id << "플레이어 등장" << std::endl;
+		cs_packet_login* packet = reinterpret_cast<cs_packet_login*>(buf);
+
+
+
+		_sender->SendLoginFailPacket(_objects[id].GetSocket());
+
+
+
+		// DB 구현 예정
+
+		// DB에 정보가 있을 때
+
+
+
+
+
+	}
+				 break;
+	}
+
+
+}
+void CServerFrame::Disconnect(int id)
+{
+	_sender->SendLeavePacket(_objects[id].GetSocket(), id, _objects[id].GetMyType());
+	_objects[id].ClientLock();
+	_objects[id]._status = ST_ALLOC;
+	closesocket(_objects[id].GetSocket());
+	for (int i = 0; i < NPC_ID_START; ++i) {
+		CObject& cl = _objects[id];
+		if (id == cl.GetID())
+			continue;
+
+		if (ST_ACTIVE == cl._status) {
+			cl.ClientLock();
+			cl.EraseViewList(id);
+			cl.ClientUnLock();
+			_sender->SendLeavePacket(cl.GetSocket(), id, _objects[id].GetMyType());
+		}
+
+
+	}
+	_objects[id]._status = ST_FREE;
+	_objects[id].ClientLock();
+
+
+
+
+
+
+}
 void CServerFrame::DoWorker()
 {
 	printf("Start worker_thread\n");
@@ -183,57 +275,61 @@ void CServerFrame::DoWorker()
 		switch (over_ex->event_type) {
 		case EV_ACCEPT: {
 			printf("Accept Player\n");
-			//int user_id = -1;
-			//for (int i = 0; i < NPC_ID_START; ++i) {
-			//	//m_objects[i].ClientLock();
-			//	if (ST_FREE == m_objects[i].m_status) {
-			//		m_objects[i].m_status = ST_ALLOC;
-			//		m_objects[i].ClientUnLock();
-			//		user_id = i;
-			//		break;
-			//	}
-			//	m_objects[i].ClientUnLock();
-			//}
+			int user_id = -1;
+			for (int i = 0; i < NPC_ID_START; ++i) {
+				_objects[i].ClientLock();
+				if (ST_FREE == _objects[i]._status) {
+					_objects[i]._status = ST_ALLOC;
+					_objects[i].ClientUnLock();
+					user_id = i;
+					break;
+				}
+				_objects[i].ClientUnLock();
+			}
 
 			//printf("%d", user_id);
 			SOCKET c_sock = over_ex->c_sock;
-			//if (-1 == user_id) {
-			//	closesocket(c_sock);
-			//}
-			//else {
-			//	CreateIoCompletionPort(reinterpret_cast<HANDLE>(c_sock), _iocp, user_id, 0);
-			//	//CObject& newPlayer = m_objects[user_id];
-			//	newPlayer.SetSocket(c_sock);
-			//	newPlayer.SetID(user_id);
-			//	newPlayer.SetPrevSize(0);
-			//	newPlayer.ClearViewList();
-			//	newPlayer.m_recvOver.wsabuf.buf = newPlayer.m_recvOver.net_buf;
-			//	newPlayer.m_recvOver.wsabuf.len = MAX_BUFFER;
-			//	newPlayer.m_recvOver.event_type = EV_RECV;
-			//	DWORD flags = 0;
-			//	WSARecv(c_sock, &newPlayer.m_recvOver.wsabuf, 1, NULL, &flags, &newPlayer.m_recvOver.over, NULL);
-			//}
+			if (-1 == user_id) {
+				closesocket(c_sock);
+			}
+			else {
+				CreateIoCompletionPort(reinterpret_cast<HANDLE>(c_sock), _iocp, user_id, 0);
+				CObject& newPlayer = _objects[user_id];
+				newPlayer.SetSocket(c_sock);
+				newPlayer.SetID(user_id);
+				newPlayer.SetPrevSize(0);
+				newPlayer.ClearViewList();
+				newPlayer._recvOver.wsabuf.buf = newPlayer._recvOver.net_buf;
+				newPlayer._recvOver.wsabuf.len = MAX_BUFFER;
+				newPlayer._recvOver.event_type = EV_RECV;
+				DWORD flags = 0;
+				WSARecv(c_sock, &newPlayer._recvOver.wsabuf, 1, 
+					NULL, &flags, &newPlayer._recvOver.over, NULL);
+			}
 
 			c_sock = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
 			over_ex->c_sock = c_sock;
 			ZeroMemory(&over_ex->over, sizeof(over_ex->over));
-			AcceptEx(_listenSocket, c_sock, over_ex->net_buf, NULL, sizeof(sockaddr_in) + 16, sizeof(sockaddr_in) + 16, NULL, &over_ex->over);
+			AcceptEx(_listenSocket, c_sock, over_ex->net_buf, NULL, sizeof(sockaddr_in) + 16, 
+				sizeof(sockaddr_in) + 16, NULL, &over_ex->over);
 
 			break;
 		}
 
-		//case EV_RECV: {
-		//	if (0 == ioBytes) {
-		//		//Disconnect(id);
-		//	}
-		//	else {
-		//		//RecvPacketConstruct(id, ioBytes);
-		//		//ZeroMemory(&m_objects[id].m_recvOver.over, sizeof(m_objects[id].m_recvOver.over));
-		//		DWORD flags = 0;
-		//		WSARecv(m_objects[id].GetSocket(), &m_objects[id].m_recvOver.wsabuf, 1, NULL, &flags, &m_objects[id].m_recvOver.over, NULL);
-		//	}
-		//	break;
-		//}
+		case EV_RECV: {
+			cout << "RECV PACKET" << endl;
+			if (0 == ioBytes) {
+				Disconnect(id);
+			}
+			else {
+				RecvPacketProcess(id, ioBytes);
+				ZeroMemory(&_objects[id]._recvOver.over, sizeof(_objects[id]._recvOver.over));
+				DWORD flags = 0;
+				WSARecv(_objects[id].GetSocket(), &_objects[id]._recvOver.wsabuf, 1, 
+					NULL, &flags, &_objects[id]._recvOver.over, NULL);
+			}
+			break;
+		}
 
 		case EV_SEND:
 			if (0 == ioBytes) {
