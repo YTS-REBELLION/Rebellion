@@ -3,6 +3,9 @@
 
 #include "Transform.h"
 #include "MeshRender.h"
+#include "Collider2D.h"
+#include "Animator2D.h"
+#include "Animation2D.h"
 
 #include "EventMgr.h"
 #include "TimeMgr.h"
@@ -53,10 +56,10 @@ public:
 	static void EableObject(CGameObject* _pTarget);
 	static void Disable(CGameObject* _pTarget);
 
-//protected:
-//	virtual void OnCollisionEnter(CCollider2D* _pOther) {}
-//	virtual void OnCollision(CCollider2D* _pOther) {}
-//	virtual void OnCollisionExit(CCollider2D* _pOther) {}
+protected:
+	virtual void OnCollisionEnter(CCollider2D* _pOther) {}
+	virtual void OnCollision(CCollider2D* _pOther) {}
+	virtual void OnCollisionExit(CCollider2D* _pOther) {}
 
 public:
 	virtual void SaveToScene(FILE* _pFile) {}
@@ -71,7 +74,7 @@ public:
 	CScript(UINT _iScriptType);
 	virtual ~CScript();
 
-	//friend class CCollider2D;
-	//friend class CCOllider3D;
+	friend class CCollider2D;
+	friend class CCOllider3D;
 };
 

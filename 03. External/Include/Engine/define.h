@@ -46,6 +46,8 @@ enum class CONST_REGISTER
 	b2 = 2,
 	b3 = 3,
 	b4 = 4,	
+	b5 = 5,
+
 	END,	
 };
 
@@ -71,6 +73,7 @@ enum class TEXTURE_REGISTER
 enum class RES_TYPE
 {
 	MATERIAL,
+	MESHDATA,
 	MESH,
 	TEXTURE,
 	SOUND,
@@ -197,9 +200,9 @@ enum class DEPTH_STENCIL_TYPE
 	GRATER,
 	GRATER_EQUAL,
 
-	NO_DEPTHTEST,
-	NO_DEPTHTEST_NO_WRITE,
-
+	NO_DEPTHTEST,	//±Ì¿Ã ≈◊Ω∫∆Æ X, ±Ì¿Ã±‚∑œ o
+	NO_DEPTHTEST_NO_WRITE, // ±Ì¿Ã≈◊Ω∫∆Æ X, ±Ì¿Ã±‚∑œ X
+	LESS_NO_WRITE,	// Less ±Ì¿Ã≈◊Ω∫∆Æ, ±Ì¿Ã±‚∑œ X
 	END,
 };
 
@@ -284,14 +287,12 @@ enum class MRT_TYPE
 	END,
 };
 
-enum class FBX_TYPE
+
+enum class SHADER_POV
 {
-	PLAYER,
-	DESERT_MAP,
-	NEW_DESERT_MAP,
-	MONSTER,
-	NPC,
-	ANI,
-	ITEM,
-	END,
+	DEFERRED,
+	FORWARD,
+	POST_EFFECT,
+	LIGHTING,
+	COMPUTE, // GPGPU
 };

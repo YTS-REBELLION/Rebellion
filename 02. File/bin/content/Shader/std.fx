@@ -1,4 +1,5 @@
 #include "value.fx"
+#include "func.fx"
 
 #ifndef _STD
 #define _STD
@@ -8,54 +9,79 @@ struct VS_INPUT
     float3 vPos : POSITION; // sementic (지시자) 정점 Layout 과 연동       
     float4 vColor : COLOR;    
     float2 vUV : TEXCOORD;
+    float3 vNormal : NORMAL;
+    float3 vTangent : TANGENT;
+    float3 vBinormal : BINORMAL;
 };
 
 struct VS_OUTPUT
 {
     float4 vOutPos : SV_Position; 
     float4 vOutColor : COLOR;
+    float3 vViewNormal : NORMAL;
+    float3 vViewTangent : TANGENT;
+    float3 vViewBinormal : BINORMAL;    
+    float3 vViewPos : POSITION;
     float2 vUV : TEXCOORD;
 };
 
 // ==================
 // Test Vertex Shader
+// g_tex_0 : Color Texture
+// g_tex_1 : Normal Map
 // ==================
 VS_OUTPUT VS_Test(VS_INPUT _input)
 {
     VS_OUTPUT output = (VS_OUTPUT) 0;      
-    
-    //float4 vWorldPos = mul(float4(_input.vPos, 1.f), g_matWorld);
-    //float4 vViewPos = mul(vWorldPos, g_matView);
-    //float4 vProjPos = mul(vViewPos, g_matProj);
-    
+  
     output.vOutPos = mul(float4(_input.vPos, 1.f), g_matWVP);
+    output.vViewPos = mul(float4(_input.vPos, 1.f), g_matWV).xyz;
+    
+    output.vViewNormal = normalize(mul(float4(_input.vNormal, 0.f), g_matWV)).xyz;
+    output.vViewTangent = normalize(mul(float4(_input.vTangent, 0.f), g_matWV)).xyz;
+    output.vViewBinormal = normalize(mul(float4(_input.vBinormal, 0.f), g_matWV)).xyz;    
+    
     output.vOutColor = _input.vColor;
+    
     
     output.vUV = _input.vUV;
 
     return output;
 }
 
-// Rasterizer 
-// 정점쉐이더에서 반환한 투영좌표를 통해서
-// Target 버퍼에서 호출 되어야 하는 Pixel 을 찾아낸다.
-
-// Cull Mode 옵션에 따라, 제거 할 Toplogy 를 선별한다.
-// CULL_BACK(ccw)
-
-// Pixel Shader
-// Rasterizer 에서 검출한 픽셀들마다 호출 되는 함수
-// 정점에서 반환한 색상값을 타겟에 출력한다.
 float4 PS_Test(VS_OUTPUT _input) : SV_Target
 {
-    float fRatio = _input.vOutPos.x / 1280.f;
-
-    if(g_int_0 == 1)
-        return float4(1.f, 0.2f, 0.2f, 1.f);
-    if (g_int_0 == 2)
-        return float4(0.2f, 0.2f, 1.f, 1.f);
+    float4 vOutColor = g_tex_0.Sample(g_sam_0, _input.vUV);
+    float4 vNormal = g_tex_1.Sample(g_sam_0, _input.vUV);   
+    vNormal = vNormal * 2.f - 1.f; // 표면 좌표에서의 Normal
+        
+    // 표면 좌표계 기준의 Normal 방향을
+    // 현재 표면 기준으로 가져올 회전 행렬
+    float3x3 matTBN =
+    {
+        _input.vViewTangent,
+        _input.vViewBinormal,
+        _input.vViewNormal
+    };
     
-    return g_tex_0.Sample(g_sam_0, _input.vUV);
+    // 표면 좌표 방향에 행렬을 곱해서 View Space 표면으로 가져온다.
+    float3 vViewNormal = mul(vNormal.xyz, matTBN);
+    
+    tLightColor tCol = (tLightColor) 0.f;
+    
+    for (int i = 0; i < g_iLight3DCount; ++i)
+    {
+        tLightColor tTemp = CalLight(i, vViewNormal, _input.vViewPos);
+        tCol.vDiff += tTemp.vDiff;
+        tCol.vSpec += tTemp.vSpec;
+        tCol.vAmb += tTemp.vAmb;
+    }
+        
+    vOutColor = vOutColor * tCol.vDiff 
+                 + tCol.vSpec 
+                 + tCol.vAmb;   
+    
+    return vOutColor;
 }
 
 

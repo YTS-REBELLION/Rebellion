@@ -25,7 +25,7 @@ public:
 
 public:
 	virtual void Load(const wstring& _strPath/*최종 경로*/) {};
-	virtual void Save(const wstring& _strPath/*최종 경로*/) {};
+	virtual void Save(const wstring& _strPath/*상대 경로*/) {};
 
 public:
 	virtual CResource* Clone() { return nullptr; }
@@ -42,4 +42,3 @@ public:
 	template<typename T>
 	friend class Ptr;
 };
-

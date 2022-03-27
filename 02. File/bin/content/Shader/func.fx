@@ -46,9 +46,7 @@ tLightColor CalLight(int _iLightIdx, float3 _vViewNormal, float3 _vViewPos)
     float3 vEye = normalize(_vViewPos);
     fSpecPow = saturate(dot(-vEye, vReflect));    
     fSpecPow = pow(fSpecPow, 10);
-    
-    
-    
+ 
     tCol.vDiff = fDiffPow * g_Light3D[_iLightIdx].tCol.vDiff * fRatio;
     tCol.vSpec = fSpecPow * g_Light3D[_iLightIdx].tCol.vSpec * fRatio;
     tCol.vAmb = g_Light3D[_iLightIdx].tCol.vAmb;

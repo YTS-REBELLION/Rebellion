@@ -25,25 +25,25 @@ void CToolCamScript::update()
 		fSpeed *= 5.f;
 	}
 
-	if (KEY_HOLD(KEY_TYPE::KEY_UP))
+	if (KEY_HOLD(KEY_TYPE::KEY_W))
 	{
 		Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 		vPos += vFront * fSpeed * DT;
 	}
 
-	if (KEY_HOLD(KEY_TYPE::KEY_DOWN))
+	if (KEY_HOLD(KEY_TYPE::KEY_S))
 	{
 		Vec3 vBack = -Transform()->GetWorldDir(DIR_TYPE::FRONT);
 		vPos += vBack * fSpeed * DT;
 	}
 
-	if (KEY_HOLD(KEY_TYPE::KEY_LEFT))
+	if (KEY_HOLD(KEY_TYPE::KEY_A))
 	{
 		Vec3 vLeft = -Transform()->GetWorldDir(DIR_TYPE::RIGHT);
 		vPos += vLeft * fSpeed * DT;
 	}
 
-	if (KEY_HOLD(KEY_TYPE::KEY_RIGHT))
+	if (KEY_HOLD(KEY_TYPE::KEY_D))
 	{
 		Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
 		vPos += vRight * fSpeed * DT;

@@ -23,20 +23,15 @@ using namespace DirectX;
 using namespace DirectX::PackedVector;
 using namespace Microsoft::WRL;
 
+
 // Fbx Loader
-//#include "fbxsdk.h"
-//
-////#ifdef _DEBUG
-////#include "fbxsdk.h"
-////#else
-////#include "../../03. External/Include/FBXLoader/fbxsdk.h"
-////#endif
-//
-//#ifdef _DEBUG
-//#pragma comment(lib, "FBXLoader/x64/debug/libfbxsdk-md.lib")
-//#else
-//#pragma comment(lib, "FBXLoader/x64/release/libfbxsdk-md.lib")
-//#endif
+#include "fbxsdk.h"
+
+#ifdef _DEBUG
+#pragma comment(lib, "FBXLoader/x64/debug/libfbxsdk-md.lib")
+#else
+#pragma comment(lib, "FBXLoader/x64/release/libfbxsdk-md.lib")
+#endif
 
 #include <string>
 #include <vector>
@@ -55,4 +50,3 @@ using std::make_pair;
 #include "struct.h" // 구조체 설계
 #include "extern.h" // extern 변수
 #include "func.h"   // 전역 함수
-

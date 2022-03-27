@@ -121,5 +121,5 @@ void CKeyMgr::update()
 	GetCursorPos(&m_ptMouse);
 	ScreenToClient(CRenderMgr::GetInst()->GetHwnd(), &m_ptMouse);
 
-	m_vDragDir = Vec2((float)(m_ptMouse.x - m_ptOldMouse.x)*0.05f, (float)(m_ptOldMouse.y - m_ptMouse.y)*0.05f);
+	m_vDragDir = Vec2((float)(m_ptMouse.x - m_ptOldMouse.x), (float)(m_ptOldMouse.y - m_ptMouse.y));
 }

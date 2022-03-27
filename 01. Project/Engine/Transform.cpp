@@ -52,6 +52,9 @@ void CTransform::finalupdate()
 	{
 		memcpy(m_vWorldDir, m_vLocalDir, sizeof(Vec3) * 3);
 	}
+
+	// 역행렬 계산
+	m_matWorldInv = XMMatrixInverse(nullptr, m_matWorld);
 }
 
 void CTransform::UpdateData()
@@ -59,6 +62,7 @@ void CTransform::UpdateData()
 	static CConstantBuffer* pCB = CDevice::GetInst()->GetCB(CONST_REGISTER::b0);
 
 	g_transform.matWorld = m_matWorld;
+	g_transform.matWorldInv = m_matWorldInv;
 	g_transform.matWV = g_transform.matWorld * g_transform.matView;
 	g_transform.matWVP = g_transform.matWV * g_transform.matProj;
 

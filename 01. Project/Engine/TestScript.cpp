@@ -16,3 +16,14 @@ void CTestScript::update()
 
 }
 
+void CTestScript::OnCollisionEnter(CCollider2D * _pOther)
+{
+	// DeleteObject(GetObj());	
+	// AddChild(_pOther->GetObj());
+	// ClearParent();
+}
+
+void CTestScript::OnCollisionExit(CCollider2D * _pOther)
+{
+	int a = 1;
+}

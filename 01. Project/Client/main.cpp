@@ -1,11 +1,12 @@
 ﻿// Client.cpp : 응용 프로그램에 대한 진입점을 정의합니다.
+//
 
 #include "stdafx.h"
 #include "main.h"
 
 #include <Engine/global.h>
 #include <Engine/core.h>
-#include "Server.h"
+
 #ifdef _DEBUG
 #pragma comment(lib, "Engine/Engine_debug.lib")
 #else
@@ -13,9 +14,7 @@
 #endif
 
 
-
-
-
+#define MAX_LOADSTRING 100
 
 // 전역 변수:
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
@@ -41,14 +40,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_CLIENT, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
-
-    
-
-    g_net.Connect();
-
-    g_net.Send_LogIn_Packet();
-    g_net.Receive();
-
 
     // 응용 프로그램 초기화를 수행합니다:
     if (!InitInstance (hInstance, nCmdShow))
@@ -77,8 +68,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				DispatchMessage(&msg);
 			}
 		}
-        g_net.Receive();
-
+		
 		// Game Running
 		CCore::GetInst()->progress();
     }

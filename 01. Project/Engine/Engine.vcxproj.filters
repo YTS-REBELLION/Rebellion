@@ -35,6 +35,9 @@
     <Filter Include="Manager\SceneMgr">
       <UniqueIdentifier>{1d96dc12-b567-4188-88bc-4308ff797f37}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. GameObject\Component\Animator2D">
+      <UniqueIdentifier>{1ad6d4cd-3b25-4ca4-9376-52fce0a50319}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Module">
       <UniqueIdentifier>{b674ed6a-839c-45e0-8818-fd0d2df95659}</UniqueIdentifier>
     </Filter>
@@ -47,8 +50,11 @@
     <Filter Include="04. GameObject\Script">
       <UniqueIdentifier>{cbb81f79-d307-4371-9e99-ab9e93821102}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05.Network">
-      <UniqueIdentifier>{bb6f126c-94fb-478b-b583-85c2089dd314}</UniqueIdentifier>
+    <Filter Include="Manager\ResMgr">
+      <UniqueIdentifier>{780d6568-f989-431b-be7a-d3c34b23aa99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\MRT">
+      <UniqueIdentifier>{4f14963d-c0d9-4fff-8025-3322001b56a0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +126,9 @@
     <ClInclude Include="MeshRender.h">
       <Filter>04. GameObject\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Collider2D.h">
+      <Filter>04. GameObject\Component</Filter>
+    </ClInclude>
     <ClInclude Include="Script.h">
       <Filter>04. GameObject\Component</Filter>
     </ClInclude>
@@ -138,8 +147,14 @@
     <ClInclude Include="Material.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="ResMgr.h">
-      <Filter>Manager</Filter>
+    <ClInclude Include="Animator2D.h">
+      <Filter>04. GameObject\Component\Animator2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation2D.h">
+      <Filter>04. GameObject\Component\Animator2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Resource</Filter>
     </ClInclude>
     <ClInclude Include="SimpleMath.h">
       <Filter>0. Defalt</Filter>
@@ -150,6 +165,15 @@
     <ClInclude Include="Frustum.h">
       <Filter>04. GameObject\Component\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="Light2D.h">
+      <Filter>04. GameObject\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Light3D.h">
+      <Filter>04. GameObject\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionMgr.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
     <ClInclude Include="RenderMgr.h">
       <Filter>Rendering</Filter>
     </ClInclude>
@@ -159,17 +183,37 @@
     <ClInclude Include="TestScript.h">
       <Filter>04. GameObject\Script</Filter>
     </ClInclude>
+    <ClInclude Include="BulletScript.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterScript.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
     <ClInclude Include="ToolCamScript.h">
       <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="ResMgr.h">
+      <Filter>Manager\ResMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="GridScript.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="resource1.h" />
+    <ClInclude Include="MRT.h">
+      <Filter>Rendering\MRT</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshData.h">
+      <Filter>Resource</Filter>
     </ClInclude>
     <ClInclude Include="FBXLoader.h">
       <Filter>Module</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\03. External\Include\FBXLoader\fbxsdk.h" />
-    <ClInclude Include="Network.h">
-      <Filter>05.Network</Filter>
+    <ClInclude Include="Animator3D.h">
+      <Filter>04. GameObject\Component</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\RebellionServer\Server\Server\Protocol.h" />
+    <ClInclude Include="Collider.h">
+      <Filter>04. GameObject\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -221,6 +265,9 @@
     <ClCompile Include="MeshRender.cpp">
       <Filter>04. GameObject\Component</Filter>
     </ClCompile>
+    <ClCompile Include="Collider2D.cpp">
+      <Filter>04. GameObject\Component</Filter>
+    </ClCompile>
     <ClCompile Include="Script.cpp">
       <Filter>04. GameObject\Component</Filter>
     </ClCompile>
@@ -239,8 +286,14 @@
     <ClCompile Include="Material.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
-    <ClCompile Include="ResMgr.cpp">
-      <Filter>Manager</Filter>
+    <ClCompile Include="Animation2D.cpp">
+      <Filter>04. GameObject\Component\Animator2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Animator2D.cpp">
+      <Filter>04. GameObject\Component\Animator2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Resource</Filter>
     </ClCompile>
     <ClCompile Include="func.cpp">
       <Filter>0. Defalt</Filter>
@@ -254,6 +307,15 @@
     <ClCompile Include="Frustum.cpp">
       <Filter>04. GameObject\Component\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Light2D.cpp">
+      <Filter>04. GameObject\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Light3D.cpp">
+      <Filter>04. GameObject\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionMgr.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
     <ClCompile Include="RenderMgrInit.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
@@ -266,14 +328,38 @@
     <ClCompile Include="TestScript.cpp">
       <Filter>04. GameObject\Script</Filter>
     </ClCompile>
+    <ClCompile Include="BulletScript.cpp">
+      <Filter>04. GameObject\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterScript.cpp">
+      <Filter>04. GameObject\Script</Filter>
+    </ClCompile>
     <ClCompile Include="ToolCamScript.cpp">
       <Filter>04. GameObject\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="ResMgr.cpp">
+      <Filter>Manager\ResMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="ResMgrInit.cpp">
+      <Filter>Manager\ResMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="GridScript.cpp">
+      <Filter>04. GameObject\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="MRT.cpp">
+      <Filter>Rendering\MRT</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshData.cpp">
+      <Filter>Resource</Filter>
     </ClCompile>
     <ClCompile Include="FBXLoader.cpp">
       <Filter>Module</Filter>
     </ClCompile>
-    <ClCompile Include="Network.cpp">
-      <Filter>05.Network</Filter>
+    <ClCompile Include="Animator3D.cpp">
+      <Filter>04. GameObject\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>04. GameObject\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -289,10 +375,21 @@
     <FxCompile Include="func.fx">
       <Filter>ShaderCode</Filter>
     </FxCompile>
+    <FxCompile Include="tool.fx">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="light.fx">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
       <Filter>0. Defalt</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Engine.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

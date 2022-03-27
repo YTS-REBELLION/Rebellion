@@ -18,6 +18,9 @@ struct VTX
 	Vec3 vTangent;
 	Vec3 vNormal;	
 	Vec3 vBinormal;
+
+	Vec4 vWeights;
+	Vec4 vIndices;
 };
 
 struct tDBG
@@ -36,13 +39,15 @@ struct tLightColor
 
 // 상수버퍼 메모리
 struct tTransform
-{	
+{
 	Matrix matWorld;
 	Matrix matView;
 	Matrix matProj;
-
 	Matrix matWV;
 	Matrix matWVP;
+	Matrix matWorldInv;
+	Matrix matViewInv;
+	Matrix matProjInv;
 };
 
 extern tTransform g_transform;
@@ -72,6 +77,53 @@ struct tMtrlParam
 
 	int				m_iArrTex[(UINT)SHADER_PARAM::TEX_END - (UINT)SHADER_PARAM::TEX_0];
 };
+
+
+struct tAnim2D
+{
+	Vec2 vLT;			// UV 좌상단
+	Vec2 vLen;			// UV 길이
+	Vec2 vOffset;		// Offset Pos
+	int  IsAnim2D;		// Animation2D 컴포넌트 사용여부
+	int  iPadding;
+};
+
+struct tLight2D
+{
+	Vec4 vLightPos;
+	Vec4 vLightColor;
+	Vec4 vLightDir;
+	int   iLightType;
+	float fRange;
+	float fAngle;
+	int   ipadding;
+};
+
+struct tLight2DInfo
+{
+	tLight2D	arrLight2D[100];
+	UINT		iCount;
+};
+
+struct tLight3D
+{
+	tLightColor tColor;
+	Vec4		vLightPos;
+	Vec4		vLightDir;
+	int			iLightType;
+	float		fRange;
+	float		fAngle;
+	int			iPadding;
+};
+
+struct tLight3DInfo
+{
+	tLight3D arrLight3D[100];
+	UINT	 iCurCount;
+	Vec3     vPadding;
+};
+
+
 
 //================
 // Struct of FBX 
@@ -138,3 +190,38 @@ typedef struct _tagContainer
 	}
 
 }tContainer;
+
+// Animation
+struct tMTKeyFrame
+{
+	double	dTime;
+	int		iFrame;
+	Vec3	vTranslate;
+	Vec3	vScale;
+	Vec4	qRot;
+};
+
+struct tMTBone
+{
+	wstring				strBoneName;
+	int					iDepth;
+	int					iParentIndx;
+	Matrix				matOffset;	// Offset 행렬(뼈 -> 루트 까지의 행렬)
+	Matrix				matBone;   // 이거 안씀
+	vector<tMTKeyFrame>	vecKeyFrame;
+};
+
+struct tMTAnimClip
+{
+	wstring		strAnimName;
+	int			iStartFrame;
+	int			iEndFrame;
+	int			iFrameLength;
+
+	double		dStartTime;
+	double		dEndTime;
+	double		dTimeLength;
+	float		fUpdateTime; // 이거 안씀
+
+	FbxTime::EMode eMode;
+};

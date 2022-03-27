@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "MeshRender.h"
+#include "Collider2D.h"
 #include "Script.h"
 
 #include "SceneMgr.h"

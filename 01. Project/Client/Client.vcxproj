@@ -73,23 +73,23 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <LibraryPath>$(SolutionDir)03. External\Library\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)03. External\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)03. External\Include\;$(SolutionDir)03. External\Include\FBXLoader\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)02. File\bin_debug\</OutDir>
-    <IncludePath>$(SolutionDir)03. External\Include\;$(SolutionDir)03. External\Include\FBXLoader\;$(SolutionDir)03. External\Include\FBXLoader\fbxsdk\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)03. External\Include\;$(SolutionDir)03. External\Include\FBXLoader\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)03. External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <LibraryPath>$(SolutionDir)03. External\Library\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)03. External\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)03. External\Include\;$(SolutionDir)03. External\Include\FBXLoader\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)02. File\bin\</OutDir>
-    <IncludePath>$(SolutionDir)03. External\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)03. External\Include\;$(SolutionDir)03. External\Include\FBXLoader\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)03. External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -111,9 +111,9 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>false</SDLCheck>
+      <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>false</ConformanceMode>
+      <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

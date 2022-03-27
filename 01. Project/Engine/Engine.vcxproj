@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -73,28 +73,28 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <ReferencePath>$(VC_ReferencesPath_x86);</ReferencePath>
-    <IncludePath>$(SolutionDir)03. External\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)03. External\Include\;$(SolutionDir)03. External\Include\FBXLoader\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)03. External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)03. External\Library\Engine\</OutDir>
     <TargetName>$(ProjectName)_debug</TargetName>
-    <ReferencePath>$(SolutionDir)03. External\Library\;$(ReferencePath)</ReferencePath>
-    <IncludePath>$(SolutionDir)03. External\Include\FBXLoader\fbxsdk\;$(SolutionDir)03. External\Include\FBXLoader\;$(SolutionDir)03. External\Include\;$(IncludePath)</IncludePath>
+    <ReferencePath>$(VC_ReferencesPath_x64);</ReferencePath>
+    <IncludePath>$(SolutionDir)03. External\Include\;$(SolutionDir)03. External\Include\FBXLoader\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)03. External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <ReferencePath>$(VC_ReferencesPath_x86);</ReferencePath>
-    <IncludePath>$(SolutionDir)03. External\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)03. External\Include\;$(SolutionDir)03. External\Include\FBXLoader\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)03. External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)03. External\Library\Engine\</OutDir>
     <ReferencePath>$(VC_ReferencesPath_x64);</ReferencePath>
-    <IncludePath>$(SolutionDir)03. External\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)03. External\Include\;$(SolutionDir)03. External\Include\FBXLoader\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)03. External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -116,7 +116,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>false</SDLCheck>
+      <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
     </ClCompile>
@@ -166,9 +166,16 @@ call EngineCopy.bat</Command>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\03. External\Include\FBXLoader\fbxsdk.h" />
-    <ClInclude Include="..\..\RebellionServer\Server\Server\Protocol.h" />
+    <ClInclude Include="Animation2D.h" />
+    <ClInclude Include="Animator2D.h" />
+    <ClInclude Include="Animator3D.h" />
+    <ClInclude Include="BulletScript.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collider.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Collider2D.h" />
+    <ClInclude Include="CollisionMgr.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="Core.h" />
@@ -178,30 +185,35 @@ call EngineCopy.bat</Command>
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EventMgr.h" />
     <ClInclude Include="extern.h" />
-    <ClInclude Include="FBXLoader.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="FBXLoader.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="func.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="global.h" />
+    <ClInclude Include="GridScript.h" />
     <ClInclude Include="KeyMgr.h" />
     <ClInclude Include="Layer.h" />
+    <ClInclude Include="Light2D.h" />
+    <ClInclude Include="Light3D.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshData.h" />
     <ClInclude Include="MeshRender.h" />
-    <ClInclude Include="Network.h" />
+    <ClInclude Include="MonsterScript.h" />
+    <ClInclude Include="MRT.h" />
     <ClInclude Include="PathMgr.h" />
     <ClInclude Include="PlayerScript.h" />
     <ClInclude Include="Ptr.h" />
     <ClInclude Include="RenderMgr.h" />
     <ClInclude Include="ResMgr.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneMgr.h" />
     <ClInclude Include="Script.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleMath.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="struct.h" />
     <ClInclude Include="targetver.h" />
@@ -212,7 +224,16 @@ call EngineCopy.bat</Command>
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Animation2D.cpp" />
+    <ClCompile Include="Animator2D.cpp" />
+    <ClCompile Include="Animator3D.cpp" />
+    <ClCompile Include="BulletScript.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collider.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Collider2D.cpp" />
+    <ClCompile Include="CollisionMgr.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="Core.cpp" />
@@ -220,29 +241,34 @@ call EngineCopy.bat</Command>
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EventMgr.cpp" />
-    <ClCompile Include="FBXLoader.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="FBXLoader.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="func.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GridScript.cpp" />
     <ClCompile Include="KeyMgr.cpp" />
     <ClCompile Include="Layer.cpp" />
+    <ClCompile Include="Light2D.cpp" />
+    <ClCompile Include="Light3D.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshData.cpp" />
     <ClCompile Include="MeshRender.cpp" />
-    <ClCompile Include="Network.cpp" />
+    <ClCompile Include="MonsterScript.cpp" />
+    <ClCompile Include="MRT.cpp" />
     <ClCompile Include="PathMgr.cpp" />
     <ClCompile Include="PlayerScript.cpp" />
     <ClCompile Include="RenderMgr.cpp" />
     <ClCompile Include="RenderMgrInit.cpp" />
     <ClCompile Include="ResMgr.cpp" />
+    <ClCompile Include="ResMgrInit.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
     <ClCompile Include="Script.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleMath.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -257,6 +283,24 @@ call EngineCopy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="func.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="light.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
@@ -310,6 +354,24 @@ call EngineCopy.bat</Command>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </ObjectFileOutput>
     </FxCompile>
+    <FxCompile Include="tool.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ObjectFileOutput>
+    </FxCompile>
     <FxCompile Include="value.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
@@ -331,6 +393,9 @@ call EngineCopy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Engine.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
