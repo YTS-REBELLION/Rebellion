@@ -49,8 +49,7 @@ void CServerFrame::InitServer()
 			_error->error_display("Listen Socket Error : ", err_no);
 
 	}
-	std::cout << _listenSocket << std::endl;
-
+	
 	SOCKADDR_IN serverAddr;
 	ZeroMemory(&serverAddr, sizeof(SOCKADDR_IN));
 	serverAddr.sin_family = AF_INET;
@@ -94,6 +93,7 @@ void CServerFrame::InitServer()
 
 	EVENT ev{ MASTER, std::chrono::high_resolution_clock::now() + 200ms,EV_BROADCAST,0 };
 	AddTimer(ev);
+
 
 	_timerThread.join();
 	for (std::thread& t : _workerThread)
@@ -206,7 +206,7 @@ void CServerFrame::RecvPacketProcess(int id, int iobytes)
 void CServerFrame::ProcessPacket(int id, char* buf)
 {
 	switch (buf[1]) {
-	case CS_LOGIN: {
+	case CS_PACKET_LOGIN: {
 		std::cout <<"ID : " << id << "플레이어 등장" << std::endl;
 		cs_packet_login* packet = reinterpret_cast<cs_packet_login*>(buf);
 
@@ -284,7 +284,7 @@ void CServerFrame::DoWorker()
 
 		//std::cout << over_ex->event_type << std::endl;
 		//std::cout << over_ex->c_sock << std::endl;
-		std::cout << exp_over->c_sock << std::endl;
+		//std::cout << exp_over->c_sock << std::endl;
 
 
 		switch (exp_over->event_type) {
@@ -336,6 +336,14 @@ void CServerFrame::DoWorker()
 					if (ERROR_IO_PENDING != err_no) {
 						std::cout << err_no << " - \n";
 						_error->error_display("ACCEPT RECV", err_no);
+					}
+				
+				}
+				if (SOCKET_ERROR == ret) {
+					int err_no = WSAGetLastError();
+					if (WSAEWOULDBLOCK == err_no) {
+						_error->error_display("ACCEPT RECV", err_no);
+
 					}
 				}
 				

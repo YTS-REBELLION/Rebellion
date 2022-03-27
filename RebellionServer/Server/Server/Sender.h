@@ -12,10 +12,10 @@ public:
 public:
 	void SendLoginOkPacket(SOCKET s, int id, float xPos, float yPos, float zPos, short damage, short c_hp, short m_hp, short level, short c_exp, short m_exp);
 	void SendLoginFailPacket(SOCKET s);
-	void SendLeavePacket(SOCKET s, int id, int objType);
+	void SendLeaveObjectPacket(SOCKET s, int id, int objType);
 	void SendNPCAttackPacket(SOCKET s, int id, float x, float z);
 	void SendMovePacket(SOCKET s, int mover, float x, float y, float z, float dx, float dy, float dz, char status, std::chrono::time_point<std::chrono::system_clock> time);
-	void SendEnterPacket(SOCKET s, int id, float x, float y, float z, int objType);
+	void SendPutObjectPacket(SOCKET s, int id, float x, float y, float z, int objType);
 	void SendStopPacket(SOCKET s, int id);
 	void SendPlayerDiePacket(SOCKET s, int id);
 	void SendNPCDiePacket(SOCKET s, int id, int type);

@@ -7,37 +7,37 @@
 
 //const char* SERVERIP = "127.0.0.1";
 
-#define SERVER_PORT 9000
+const short SERVER_PORT = 9000;
+
 #define MAX_BUFFER 1024
 #define MAX_PACKET_SIZE 255
 #define NPC_ID_START 10000
 
 
-#define CS_LOGIN				1
-#define CS_LOGOUT				2	
-#define CS_ATTACK				6
-#define CS_TRANSFORM			7
-#define CS_TELEPORT				8
-#define CS_CHAT					9
-#define CS_MOUSE_MOVE_PACKET	10
-#define CS_POSITION				11
-#define CS_DEFENCE				12
-#define CS_QUEST_DONE			13
-#define CS_INV					14
+const char  CS_PACKET_LOGIN = 1;
+const char  CS_PACKET_LOGOUT = 2;
+const char  CS_PACKET_ATTACK = 3;
+const char  CS_PACKET_TELEPORT = 4;
+const char  CS_PACKET_CHAT = 5;
+const char  CS_PACKET_MOUSE_MOVE = 6;
+const char  CS_PAKCET_POSITION = 7;
+const char  CS_PACKET_DEFENCE = 8;
+const char  CS_PACKET_QUEST_DONE = 9;
 
-#define SC_LOGIN_OK			1
-#define SC_LOGIN_FAIL		2
-#define SC_MOVE_DIRECTION	3
-#define SC_ENTER			6
-#define SC_LEAVE			7
-#define SC_STAT_CHANGE		8
-#define SC_CHAT				9
-#define SC_NPC_ATTACK		12
-#define SC_PLAYER_ATTACK	13
-#define SC_HP_CHANGE		14
-#define SC_PLAYER_DIE		15
-#define SC_DEFENCE			16
-#define SC_RETURN			17
+const char  SC_PACKET_LOGIN_OK = 1;
+const char  SC_PACKET_LOGIN_FAIL = 2;
+const char  SC_PACKET_MOVE_DIRECTION = 3;
+const char  SC_PACKET_PUT_OBJECT = 4;
+const char  SC_PACKET_LEAVE_OBJECT = 5;
+const char  SC_PACKET_STAT_CHANGE = 6;
+const char  SC_PACKET_CHAT = 7;
+
+const char SC_PACKET_NPC_ATTACK = 8;
+const char SC_PACKET_PLAYER_ATTACK = 9;
+const char SC_PACKET_HP_CHANGE = 10;
+const char SC_PACKET_PLAYER_DIE = 11;
+const char SC_PACKET_DEFENCE = 12;
+const char SC_PACKET_RETURN = 13;
 
 constexpr int MAX_PW_LEN = 12;
 constexpr int MAX_ID_LEN = 50;

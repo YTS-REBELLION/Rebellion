@@ -167,6 +167,7 @@ call EngineCopy.bat</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\03. External\Include\FBXLoader\fbxsdk.h" />
+    <ClInclude Include="..\..\RebellionServer\Server\Server\Protocol.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConstantBuffer.h" />

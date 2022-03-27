@@ -3,6 +3,7 @@
 
 
 CNetwork g_net;
+const char* SERVER_IP = "127.0.0.1";
 
 SOCKET g_socket;
 int packetTest;
@@ -52,7 +53,7 @@ void CNetwork::Connect()
 	ZeroMemory(&recvAddr, 0, sizeof(recvAddr));
 
 	recvAddr.sin_family = AF_INET;
-	recvAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+	recvAddr.sin_addr.s_addr = inet_addr(SERVER_IP);
 	recvAddr.sin_port = htons(SERVER_PORT);
 
 	if (connect(g_socket, (SOCKADDR*)&recvAddr, sizeof(recvAddr)) == SOCKET_ERROR)
@@ -66,6 +67,7 @@ void CNetwork::Connect()
 			int i = 0;
 		}
 	}
+
 	std::cout << "connect" << std::endl;
 
 	//if (ret == SOCKET_ERROR)
@@ -91,21 +93,19 @@ void CNetwork::Receive()
 	int fg = 0;
 
 	int ret = recv(g_socket, recvbuf, sizeof(recvbuf), fg);
-	if (ret <= 0)return;
+	if (ret <= 0)
+		return;
 
 	size_t retbytesize = ret;
 
 
-	if (ret < 0)
+	if (WSAGetLastError() == WSAEWOULDBLOCK)
 	{
-		if (WSAGetLastError() == WSAEWOULDBLOCK)
-		{
-		}
+		//pass
 	}
-	else
-	{
-		Process_Data(recvbuf, retbytesize);
-	}
+	
+	Process_Data(recvbuf, retbytesize);
+	
 
 
 }
@@ -116,7 +116,8 @@ void CNetwork::ProcessPacket(char* ptr)
 	std::cout << "Process Packet" << std::endl;
 	switch (ptr[1]) {
 	//case 로그인 패킷:
-	case SC_LOGIN_OK:
+	
+	case SC_PACKET_LOGIN_OK:
 	{
 		
 		sc_packet_login_ok* p = reinterpret_cast<sc_packet_login_ok*>(ptr);
@@ -136,7 +137,7 @@ void CNetwork::ProcessPacket(char* ptr)
 	}
 	break;
 
-	case SC_LOGIN_FAIL: {
+	case SC_PACKET_LOGIN_FAIL: {
 		std::cout << "로그인 페일" << std::endl;
 
 		exit(0);
@@ -210,7 +211,7 @@ void CNetwork::Send_LogIn_Packet()
 
 	cs_packet_login packet;
 	packet.size = sizeof(packet);
-	packet.type = CS_LOGIN;
+	packet.type = CS_PACKET_LOGIN;
 	
 	char name[MAX_ID_LEN];
 	string namestring;

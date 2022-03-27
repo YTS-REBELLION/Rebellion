@@ -169,6 +169,7 @@
     <ClInclude Include="Network.h">
       <Filter>05.Network</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\RebellionServer\Server\Server\Protocol.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />

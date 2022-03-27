@@ -21,7 +21,7 @@ void CSender::SendLoginOkPacket(SOCKET s, int id, float xPos, float yPos, float 
 
 	sc_packet_login_ok packet;
 	packet.id = id;
-	packet.type = SC_LOGIN_OK;
+	packet.type = SC_PACKET_LOGIN_OK;
 
 	packet.x = xPos;
 	packet.y = yPos;
@@ -41,12 +41,12 @@ void CSender::SendLoginFailPacket(SOCKET s)
 	sc_packet_login_fail packet;
 
 	packet.size = sizeof(packet);
-	packet.type = SC_LOGIN_FAIL;
+	packet.type = SC_PACKET_LOGIN_FAIL;
 
 	SendPacket(s, &packet);
 }
 
-void CSender::SendLeavePacket(SOCKET s, int id, int objType)
+void CSender::SendLeaveObjectPacket(SOCKET s, int id, int objType)
 {
 	////printf("%d¹ø Leave º¸³¿ / Å¸ÀÔ: %d\n", id, objType);
 
@@ -54,7 +54,7 @@ void CSender::SendLeavePacket(SOCKET s, int id, int objType)
 	packet.id = id;
 	packet.objectType = objType;
 	packet.size = sizeof(packet);
-	packet.type = SC_LEAVE;
+	packet.type = SC_PACKET_LEAVE_OBJECT;
 
 	SendPacket(s, &packet);
 }
@@ -64,7 +64,7 @@ void CSender::SendNPCAttackPacket(SOCKET s, int id, float x, float z)
 	sc_packet_npc_attack packet;
 	packet.id = id;
 	packet.size = sizeof(packet);
-	packet.type = SC_NPC_ATTACK;
+	packet.type = SC_PACKET_NPC_ATTACK;
 	packet.x = x;
 	//packet.yNor = y;
 	packet.z = z;
@@ -90,7 +90,7 @@ void CSender::SendMovePacket(SOCKET s, int mover, float x, float y, float z, flo
 	SendPacket(s, &packet);
 }
 
-void CSender::SendEnterPacket(SOCKET s, int id, float x, float y, float z, int objType)
+void CSender::SendPutObjectPacket(SOCKET s, int id, float x, float y, float z, int objType)
 {
 	//printf("Enter º¸³Â´Ù\n");
 	sc_packet_enter packet;
@@ -100,7 +100,7 @@ void CSender::SendEnterPacket(SOCKET s, int id, float x, float y, float z, int o
 	packet.z = z;
 	packet.size = sizeof(packet);
 	packet.objectType = objType;
-	packet.type = SC_ENTER;
+	packet.type = SC_PACKET_PUT_OBJECT;
 
 	SendPacket(s, &packet);
 }
@@ -114,7 +114,7 @@ void CSender::SendPlayerDiePacket(SOCKET s, int id)
 	sc_packet_player_die packet;
 	packet.id = id;
 	packet.size = sizeof(packet);
-	packet.type = SC_PLAYER_DIE;
+	packet.type = SC_PACKET_PLAYER_DIE;
 
 	SendPacket(s, &packet);
 }
@@ -128,7 +128,7 @@ void CSender::SendPlayerAttackPacket(SOCKET s, int id)
 {
 	sc_packet_player_attack packet;
 	packet.id = id;
-	packet.type = SC_PLAYER_ATTACK;
+	packet.type = SC_PACKET_PLAYER_ATTACK;
 	packet.size = sizeof(packet);
 
 	SendPacket(s, &packet);
@@ -143,7 +143,7 @@ void CSender::SendTransformPacket(SOCKET s, int id, bool b)
 void CSender::SendStatChangePacket(SOCKET s, short level, short currentHp, short maxHp, short currentExp, short maxExp)
 {
 	sc_packet_stat_change packet;
-	packet.type = SC_STAT_CHANGE;
+	packet.type = SC_PACKET_STAT_CHANGE;
 	packet.size = sizeof(packet);
 	packet.level = level;
 	packet.c_hp = currentHp;
@@ -157,7 +157,7 @@ void CSender::SendStatChangePacket(SOCKET s, short level, short currentHp, short
 void CSender::SendHpPacket(SOCKET s, short currentHp)
 {
 	sc_packet_hp packet;
-	packet.type = SC_HP_CHANGE;
+	packet.type = SC_PACKET_HP_CHANGE;
 	packet.size = sizeof(packet);
 	packet.c_hp = currentHp;
 
@@ -167,7 +167,7 @@ void CSender::SendHpPacket(SOCKET s, short currentHp)
 void CSender::SendDefencePacket(SOCKET s, int id, bool kind)
 {
 	sc_packet_defence packet;
-	packet.type = SC_DEFENCE;
+	packet.type = SC_PACKET_DEFENCE;
 	packet.size = sizeof(packet);
 	packet.id = id;
 	packet.kind = kind;
@@ -178,7 +178,7 @@ void CSender::SendDefencePacket(SOCKET s, int id, bool kind)
 void CSender::SendDummyPacket(SOCKET s, int id, unsigned time)
 {
 	sc_packet_return packet;
-	packet.type = SC_RETURN;
+	packet.type = SC_PACKET_RETURN;
 	packet.size = sizeof(packet);
 	packet.id = id;
 	packet.moveTime = time;
