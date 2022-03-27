@@ -235,7 +235,7 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 }
 void CServerFrame::Disconnect(int id)
 {
-	_sender->SendLeavePacket(_objects[id].GetSocket(), id, _objects[id].GetMyType());
+	_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), id, _objects[id].GetMyType());
 	_objects[id].ClientLock();
 	_objects[id]._status = ST_INGAME;
 	closesocket(_objects[id].GetSocket());
@@ -248,7 +248,7 @@ void CServerFrame::Disconnect(int id)
 			cl.ClientLock();
 			cl.EraseViewList(id);
 			cl.ClientUnLock();
-			_sender->SendLeavePacket(cl.GetSocket(), id, _objects[id].GetMyType());
+			_sender->SendLeaveObjectPacket(cl.GetSocket(), id, _objects[id].GetMyType());
 		}
 
 

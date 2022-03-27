@@ -56,6 +56,9 @@
     <Filter Include="Rendering\MRT">
       <UniqueIdentifier>{4f14963d-c0d9-4fff-8025-3322001b56a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Network">
+      <UniqueIdentifier>{00bc92b1-cc2f-4305-9f82-488340dc6010}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -214,6 +217,10 @@
     <ClInclude Include="Collider.h">
       <Filter>04. GameObject\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Network.h">
+      <Filter>05.Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\RebellionServer\Server\Server\Protocol.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -360,6 +367,9 @@
     </ClCompile>
     <ClCompile Include="Collider.cpp">
       <Filter>04. GameObject\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Network.cpp">
+      <Filter>05.Network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

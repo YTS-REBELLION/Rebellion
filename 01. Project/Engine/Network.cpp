@@ -53,7 +53,9 @@ void CNetwork::Connect()
 	ZeroMemory(&recvAddr, 0, sizeof(recvAddr));
 
 	recvAddr.sin_family = AF_INET;
-	recvAddr.sin_addr.s_addr = inet_addr(SERVER_IP);
+	//recvAddr.sin_addr.s_addr = inet_addr(SERVER_IP);
+	inet_pton(AF_INET, SERVER_IP, &(recvAddr.sin_addr));
+	
 	recvAddr.sin_port = htons(SERVER_PORT);
 
 	if (connect(g_socket, (SOCKADDR*)&recvAddr, sizeof(recvAddr)) == SOCKET_ERROR)
