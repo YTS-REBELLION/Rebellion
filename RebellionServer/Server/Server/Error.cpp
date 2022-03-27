@@ -20,7 +20,7 @@ void CError::error_display(const char* msg, int err_no)
 		(LPTSTR)&lpMsgBuf, 0, NULL);
 	std::cout << msg;
 	std::wcout << L"¿¡·¯ " << lpMsgBuf << std::endl;
-	DebugBreak();
-	while (true);
+	/*DebugBreak();
+	while (true);*/
 	LocalFree(lpMsgBuf);
 }

@@ -20,3 +20,9 @@
 
 
 // 여기서 프로그램에 필요한 추가 헤더를 참조합니다.
+#ifdef UNICODE
+#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
+#else
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+#endif
+#define MAX_LOADSTRING 100

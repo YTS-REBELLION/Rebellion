@@ -44,7 +44,7 @@ void CNetwork::Connect()
 	g_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	ULONG l = 1;
 
-	ioctlsocket(g_socket, FIONBIO, (unsigned long*)&l);
+	int ret = ioctlsocket(g_socket, FIONBIO, (unsigned long*)&l);
 
 	if (g_socket == INVALID_SOCKET)
 		err_quit("WSASocket");
@@ -100,7 +100,6 @@ void CNetwork::Receive()
 	{
 		if (WSAGetLastError() == WSAEWOULDBLOCK)
 		{
-			
 		}
 	}
 	else

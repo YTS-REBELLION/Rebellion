@@ -28,12 +28,9 @@ CServerFrame::~CServerFrame()
 		delete _sender;
 		_sender = nullptr;
 	}
-	_timerThread.join();
-	for (std::thread& t : _workerThread)
-		t.join();
-
-	closesocket(_listenSocket);
-	WSACleanup();
+	
+	
+	
 }
 
 void CServerFrame::Progress()
@@ -45,14 +42,14 @@ void CServerFrame::InitServer()
 {
 	WSADATA WSAData;
 	WSAStartup(MAKEWORD(2, 2), &WSAData);
-	_listenSocket = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+	_listenSocket = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
 	if (INVALID_SOCKET == _listenSocket) {
 		int err_no = WSAGetLastError();
 		if (WSA_IO_PENDING != err_no)
 			_error->error_display("Listen Socket Error : ", err_no);
 
 	}
-
+	std::cout << _listenSocket << std::endl;
 
 	SOCKADDR_IN serverAddr;
 	ZeroMemory(&serverAddr, sizeof(SOCKADDR_IN));
@@ -75,13 +72,15 @@ void CServerFrame::InitServer()
 	// init objcet
 	InitClients();
 
-	CreateIoCompletionPort(reinterpret_cast<HANDLE>(_listenSocket), _iocp, 999999, 0);
-	SOCKET c_sock = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+	CreateIoCompletionPort(reinterpret_cast<HANDLE>(_listenSocket), _iocp, 10000, 0);
+	SOCKET c_sock = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, 0, WSA_FLAG_OVERLAPPED);
 	OVER_EX acceptOver;
 	
 	ZeroMemory(&acceptOver.over, sizeof(acceptOver.over));
 	acceptOver.event_type = EV_ACCEPT;
 	acceptOver.c_sock = c_sock;
+	acceptOver.wsabuf.len = static_cast<int>(c_sock);
+
 	AcceptEx(_listenSocket, c_sock, acceptOver.net_buf, NULL, sizeof(sockaddr_in) + 16,
 		sizeof(sockaddr_in) + 16, NULL, &acceptOver.over);
 
@@ -96,7 +95,11 @@ void CServerFrame::InitServer()
 	EVENT ev{ MASTER, std::chrono::high_resolution_clock::now() + 200ms,EV_BROADCAST,0 };
 	AddTimer(ev);
 
-
+	_timerThread.join();
+	for (std::thread& t : _workerThread)
+		t.join();
+	closesocket(_listenSocket);
+	WSACleanup();
 }
 
 std::thread CServerFrame::CreateWorkerThread()
@@ -224,11 +227,6 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		// DB 구현 예정
 
 		// DB에 정보가 있을 때
-
-
-
-
-
 	}
 	break;
 	}
@@ -270,12 +268,10 @@ void CServerFrame::DoWorker()
 
 		int ret = GetQueuedCompletionStatus(_iocp, &ioBytes, &key, &over, INFINITE);
 
-		
-
 		OVER_EX* exp_over = reinterpret_cast<OVER_EX*>(over);
 		int id = static_cast<int>(key);
 		//CObject& cl = m_objects[id];
-		if (FALSE == ret) {
+		/*if (FALSE == ret) {
 			int err_no = WSAGetLastError();
 			_error->error_display("GQCS Error : ", err_no);
 			std::cout << std::endl;
@@ -283,11 +279,13 @@ void CServerFrame::DoWorker()
 			if (exp_over->event_type == EV_SEND)
 				delete exp_over;
 			continue;
-		}
+		}*/
 
 
 		//std::cout << over_ex->event_type << std::endl;
 		//std::cout << over_ex->c_sock << std::endl;
+		std::cout << exp_over->c_sock << std::endl;
+
 
 		switch (exp_over->event_type) {
 		case EV_ACCEPT: {
@@ -312,7 +310,7 @@ void CServerFrame::DoWorker()
 			else {
 				cout << user_id << " 에게 보낼 선물 준비중\n";
 				CreateIoCompletionPort(reinterpret_cast<HANDLE>(c_sock), _iocp, user_id, 0);
-
+				cout << "ACCEPT c_sock " << c_sock << endl;
 				CObject& newPlayer = _objects[user_id];
 				newPlayer.SetSocket(c_sock);
 				newPlayer.SetID(user_id);
@@ -321,7 +319,6 @@ void CServerFrame::DoWorker()
 				
 
 
-				ZeroMemory(&newPlayer._recvOver, sizeof(newPlayer._recvOver));
 				newPlayer._recvOver.wsabuf.buf = newPlayer._recvOver.net_buf;
 				newPlayer._recvOver.wsabuf.len = MAX_BUFFER;
 				newPlayer._recvOver.event_type = EV_RECV;
@@ -336,8 +333,10 @@ void CServerFrame::DoWorker()
 				
 				if (SOCKET_ERROR == ret) {
 					int err_no = WSAGetLastError();
-					if (ERROR_IO_PENDING != err_no)
+					if (ERROR_IO_PENDING != err_no) {
+						std::cout << err_no << " - \n";
 						_error->error_display("ACCEPT RECV", err_no);
+					}
 				}
 				
 			}
