@@ -124,16 +124,11 @@ void CNetwork::ProcessPacket(char* ptr)
 		
 		sc_packet_login_ok* p = reinterpret_cast<sc_packet_login_ok*>(ptr);
 		std::cout << "로그인 성공" << std::endl;
-		std::cout << p->c_exp << std::endl;
-		std::cout << p->c_hp << std::endl;
-		std::cout << p->damage << std::endl;
-		std::cout << p->id << std::endl;
-		std::cout << p->level << std::endl;
-		std::cout << p->m_exp << std::endl;
-		std::cout << p->m_hp << std::endl;
-		std::cout << p->size << std::endl;
-		std::cout << p->type << std::endl;
-		std::cout << p->c_exp << std::endl;
+		std::cout << "아이디 : " << p->id << std::endl;
+		std::cout <<"경험치 : " << p->c_exp <<"/"<<p->m_exp << std::endl;
+		std::cout <<"체력 : " <<p->c_hp<<"/"<<p->m_hp << std::endl;
+		std::cout <<"공격력 : " <<p->damage << std::endl;
+		std::cout <<"레벨 : " <<p->level << std::endl;
 
 
 	}
