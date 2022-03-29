@@ -13,7 +13,7 @@ CToolCamScript::CToolCamScript()
 	, m_fScaleSpeed(1.f)
 {
 
-	m_pPlayer = NULL;
+	m_pPlayer = nullptr;
 	m_VecObj.clear();
 }
 
@@ -131,20 +131,33 @@ void CToolCamScript::Player_Mode()
 	float fScale = Camera()->GetScale();
 	float fSpeed = m_fSpeed;
 
+	
+		CSceneMgr::GetInst()->FindPlayerPos(L"Player Object");
+		if (CSceneMgr::GetInst()->m_bfindcheck)
+		{
+			
+			
+			vPos.x = CSceneMgr::GetInst()->m_vSavePos.x;
+			vPos.y = CSceneMgr::GetInst()->m_vSavePos.y+100;
+			vPos.z = CSceneMgr::GetInst()->m_vSavePos.z-800;
+		}
+			
 
+		//m_pPlayer= dynamic_cast<CPlayerScript*>(CSceneMgr::GetInst()->testvec.back());
+		
+		//m_pPlayer = GetObj()->GetScript<CPlayerScript>();
+					
+	//CSceneMgr::GetInst()->FindGameObjectByTag(L"Player Object", m_VecObj);
+	//wstring temp = m_VecObj[0]->GetName();
 
-	/*CSceneMgr::GetInst()->FindGameObjectByTag(L"Player", m_VecObj);
-	m_VecObj.front()->Transform()->GetLocalPos();
+	//vPos = m_VecObj.front()->Transform()->GetLocalPos();
 
-	if (m_pPlayer)
-	{
-		vPos = m_pPlayer->Transform()->GetLocalPos() + Vec3(50.f, 0.f, 0.f);
-
-
-
-	}*/
+	
 	
 	Transform()->SetLocalPos(vPos);
+
+	
+	cout << "posX:" << vPos.x << "posY:" << vPos.y << "posZ:" << vPos.z << endl;
 }
 
 void CToolCamScript::Cenematic0_Mode()
@@ -191,8 +204,12 @@ void CToolCamScript::Cenematic0_Mode()
 
 		////한바뀌돌면 원래 위치로
 		if (vRot.y >= 6.1f)
+		{
+			vRot.y = 0;
 			m_CameraMode = PLAYER_IDLE;
-		//vPos = m_pPlayer->Transform()->GetLocalPos() + Vec3(50.f, 0.f, 0.f);
+
+		}
+		
 	}
 
 	Transform()->SetLocalPos(vPos);

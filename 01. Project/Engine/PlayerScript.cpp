@@ -24,6 +24,8 @@ void CPlayerScript::awake()
 
 void CPlayerScript::update()
 {
+
+
 	Vec3 vPos = Transform()->GetLocalPos();
 	Vec3 vRot = Transform()->GetLocalRot();
 
