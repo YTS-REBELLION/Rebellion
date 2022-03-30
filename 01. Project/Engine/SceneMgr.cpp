@@ -48,6 +48,7 @@ void CSceneMgr::ChangeScene(CScene * _pNextScene)
 CSceneMgr::CSceneMgr()
 	: m_pCurScene(nullptr)	
 {
+	testvec.empty();
 }
 
 CSceneMgr::~CSceneMgr()
@@ -390,6 +391,22 @@ void CSceneMgr::FindGameObjectByTag(const wstring& _strTag, vector<CGameObject*>
 	}	
 }
 
+void CSceneMgr::FindPlayerPos(const wstring& _strTag)
+{
+	for (int i = 0; i < MAX_LAYER; ++i)
+	{
+		const vector<CGameObject*>& vecObject = m_pCurScene->GetLayer(i)->GetObjects();
+		for (size_t j = 0; j < vecObject.size(); ++j)
+		{
+			if (_strTag == vecObject[j]->GetName())
+			{
+				m_vSavePos = { vecObject[j]->Transform()->GetLocalPos().x ,vecObject[j]->Transform()->GetLocalPos().y
+					,vecObject[j]->Transform()->GetLocalPos().z };
+				m_bfindcheck = true;
+			}
+		}
+	}
+}
 
 bool Compare(CGameObject* _pLeft, CGameObject* _pRight)
 {
