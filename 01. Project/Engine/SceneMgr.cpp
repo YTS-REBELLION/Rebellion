@@ -155,20 +155,20 @@ void CSceneMgr::init()
 
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pMainCam);
 	
-	// UI Camera
-	CGameObject* pUICam = new CGameObject;
-	pUICam->SetName(L"MainCam");
-	pUICam->AddComponent(new CTransform);
-	pUICam->AddComponent(new CCamera);	
+	//// UI Camera
+	//CGameObject* pUICam = new CGameObject;
+	//pUICam->SetName(L"MainCam");
+	//pUICam->AddComponent(new CTransform);
+	//pUICam->AddComponent(new CCamera);	
 
-	pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHGRAPHIC);
-	pUICam->Camera()->SetFar(100.f);	
-	pUICam->Camera()->SetLayerCheck(30, true);	
+	//pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHGRAPHIC);
+	//pUICam->Camera()->SetFar(100.f);	
+	//pUICam->Camera()->SetLayerCheck(30, true);	
 
-	m_pCurScene->FindLayer(L"Default")->AddGameObject(pUICam);
+	//m_pCurScene->FindLayer(L"Default")->AddGameObject(pUICam);
 
 
-	CreateTargetUI();
+	//CreateTargetUI();
 
 	// ====================
 	// 3D Light Object 추가
@@ -190,7 +190,7 @@ void CSceneMgr::init()
 	// =============
 	// FBX 파일 로드
 	// =============
-	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\House.fbx");
+	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Basic_Bandit.fbx");
 	//pMeshData->Save(pMeshData->GetPath());
 	// MeshData 로드
 	//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\House.mdat", L"MeshData\\monster.mdat");
@@ -198,8 +198,8 @@ void CSceneMgr::init()
 	pObject = pMeshData->Instantiate();
 	pObject->SetName(L"House");
 	pObject->FrustumCheck(false);
-	pObject->Transform()->SetLocalPos(Vec3(250.f, 125.f, 250.f));
-	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Transform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
 	m_pCurScene->AddGameObject(L"Default", pObject, false);
 
 	// ==================
@@ -276,29 +276,29 @@ void CSceneMgr::init()
 	//m_pCurScene->FindLayer(L"Player")->AddGameObject(pObject);
 
 
-	// ====================
-	// Monster 오브젝트 생성
-	// ====================
-	pObject = new CGameObject;
-	pObject->SetName(L"Monster Object");
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CMeshRender);	
+	//// ====================
+	//// Monster 오브젝트 생성
+	//// ====================
+	//pObject = new CGameObject;
+	//pObject->SetName(L"Monster Object");
+	//pObject->AddComponent(new CTransform);
+	//pObject->AddComponent(new CMeshRender);	
 
-	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(0.f, 200.f, 500.f));
-	pObject->Transform()->SetLocalScale(Vec3(100.f, 100.f, 1.f));
+	//// Transform 설정
+	//pObject->Transform()->SetLocalPos(Vec3(0.f, 200.f, 500.f));
+	//pObject->Transform()->SetLocalScale(Vec3(100.f, 100.f, 1.f));
 
-	// MeshRender 설정
-	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));	
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pNormalTargetTex.GetPointer());
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
+	//// MeshRender 설정
+	//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	//pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));	
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pNormalTargetTex.GetPointer());
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
 
-	 //Script 설정
-	 pObject->AddComponent(new CMonsterScript);
+	// //Script 설정
+	// pObject->AddComponent(new CMonsterScript);
 
-	// AddGameObject
-	m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
+	//// AddGameObject
+	//m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
 
 	// ====================
 	// Skybox 오브젝트 생성
