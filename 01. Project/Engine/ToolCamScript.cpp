@@ -27,11 +27,11 @@ void CToolCamScript::update()
 
 	Vec3 vPos = Transform()->GetLocalPos();
 	
-
+	Mouse_Move();
 	if (true == m_bMouseFix)
 	{
 		Fix_Mouse();
-		Mouse_Move();
+				
 	}
 
 	
@@ -90,17 +90,15 @@ void CToolCamScript::update()
 		Camera()->SetScale(fScale);
 	}
 
-	if (KEY_HOLD(KEY_TYPE::KEY_RBTN))
-	{
-		Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
-		Vec3 vRot = Transform()->GetLocalRot();
-
-		vRot.x -= vDrag.y * DT * 3.f;
-		vRot.y += vDrag.x * DT * 1.5f;
-
-		Transform()->SetLocalRot(vRot);
-
-	}
+	
+		
+		//Vec3 temp = CSceneMgr::GetInst()->m_vSaveRot;
+		////Vec2 vDrag = GetDragDir(); //CKeyMgr::GetInst()->GetDragDir();
+		//Vec3 vRot = Transform()->GetLocalRot();
+		//vRot = temp;
+		//Transform()->SetLocalRot(vRot);
+		////cout << "dirx:" << vRot.x << "diry:" << vRot.y << endl;
+		//cout << "vRot:" << vRot.x <<","<< vRot.y<< endl;
 	
 	
 }
@@ -130,6 +128,19 @@ void CToolCamScript::Player_Mode()
 	Vec3 vPos = Transform()->GetLocalPos();
 	float fScale = Camera()->GetScale();
 	float fSpeed = m_fSpeed;
+	
+	Vec3 vRot = Transform()->GetLocalRot();
+	Vec3 vRight = Transform()->GetLocalDir(DIR_TYPE::RIGHT);
+	Vec3 vLook = Transform()->GetLocalDir(DIR_TYPE::FRONT);
+	Vec3 vBackLook = -vLook;
+	Vec3 vRightLook = vLook + vRight;
+	Vec3 vLeftLook = vLook - vRight;
+	vRight = Vector3::Normalize(vRight);
+	vBackLook = Vector3::Normalize(vBackLook);
+	vRightLook = Vector3::Normalize(vRightLook);
+	vLeftLook = Vector3::Normalize(vLeftLook);
+	vLook = Vector3::Normalize(vLook);
+
 
 	
 		CSceneMgr::GetInst()->FindPlayerPos(L"Player Object");
@@ -138,8 +149,8 @@ void CToolCamScript::Player_Mode()
 			
 			
 			vPos.x = CSceneMgr::GetInst()->m_vSavePos.x;
-			vPos.y = CSceneMgr::GetInst()->m_vSavePos.y+100;
-			vPos.z = CSceneMgr::GetInst()->m_vSavePos.z-800;
+			vPos.y = CSceneMgr::GetInst()->m_vSavePos.y+200;
+			vPos.z = CSceneMgr::GetInst()->m_vSavePos.z-600;
 		}
 			
 
@@ -225,6 +236,17 @@ void CToolCamScript::Fix_Mouse()
 }
 void CToolCamScript::Mouse_Move()
 {
+	// ¸¶¿ì½º ÁÂÇ¥	
 
+
+	m_ptOldMouse = m_ptMouse;
+	GetCursorPos(&m_ptMouse);
+	ScreenToClient(CRenderMgr::GetInst()->GetHwnd(), &m_ptMouse);
+
+	m_vDragDir = Vec2((float)(m_ptMouse.x - m_ptOldMouse.x) * 0.05f, (float)(m_ptOldMouse.y - m_ptMouse.y) * 0.05f);
+
+
+	
+	
 
 }
