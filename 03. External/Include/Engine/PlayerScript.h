@@ -18,5 +18,9 @@ public:
 public:
 	CPlayerScript();
 	virtual ~CPlayerScript();
+
+public:
+	void Move_Player();
+	
 };
 

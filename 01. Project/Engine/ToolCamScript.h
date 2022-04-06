@@ -38,5 +38,14 @@ public:
 	CPlayerScript* m_pPlayer;
 	CameraState m_CameraMode = PLAYER_IDLE;
 	vector<CGameObject*> m_VecObj;
+	Vec2 GetDragDir() { return m_vDragDir; }
+
+private:
+	
+	POINT				m_ptMouse;
+	POINT				m_ptOldMouse;
+
+	Vec2				m_vDragDir;
+	Vec3				m_vMouseRot = { 0.f,0.f,0.f };
 };
 

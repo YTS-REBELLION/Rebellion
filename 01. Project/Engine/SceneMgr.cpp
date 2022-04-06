@@ -403,6 +403,9 @@ void CSceneMgr::FindPlayerPos(const wstring& _strTag)
 				m_vSavePos = { vecObject[j]->Transform()->GetLocalPos().x ,vecObject[j]->Transform()->GetLocalPos().y
 					,vecObject[j]->Transform()->GetLocalPos().z };
 				m_bfindcheck = true;
+
+				m_vSaveRot=vecObject[j]->Transform()->GetLocalRot();
+
 			}
 		}
 	}

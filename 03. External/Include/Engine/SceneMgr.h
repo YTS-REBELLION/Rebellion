@@ -25,6 +25,7 @@ public:
 	void FindPlayerPos(const wstring& _strTag);
 	
 	Vec3 m_vSavePos;
+	Vec3 m_vSaveRot;
 	bool m_bfindcheck = false;
 	vector<CGameObject*> testvec;
 
