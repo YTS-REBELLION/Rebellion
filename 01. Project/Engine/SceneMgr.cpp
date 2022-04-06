@@ -197,11 +197,11 @@ void CSceneMgr::init()
 	//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\House.mdat", L"MeshData\\monster.mdat");
 	
 	pObject = pMeshData->Instantiate();
-	pObject->SetName(L"House");
+	pObject->SetName(L"Player");
 	pObject->FrustumCheck(false);
-	pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-	pObject->Transform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-	m_pCurScene->AddGameObject(L"Default", pObject, false);
+	pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 10.f));
+	pObject->Transform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+	m_pCurScene->AddGameObject(L"Player", pObject, false);
 
 	// ==================
 	// Map 오브젝트 생성

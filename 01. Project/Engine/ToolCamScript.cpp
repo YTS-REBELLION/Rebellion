@@ -27,15 +27,12 @@ void CToolCamScript::update()
 
 	Vec3 vPos = Transform()->GetLocalPos();
 	
-	Mouse_Move();
+	//Mouse_Move();
 	if (true == m_bMouseFix)
 	{
-		Fix_Mouse();
+		//Fix_Mouse();
 				
 	}
-
-	
-
 
 	float fScale = Camera()->GetScale();
 	float fSpeed = m_fSpeed;
@@ -143,14 +140,14 @@ void CToolCamScript::Player_Mode()
 
 
 	
-		CSceneMgr::GetInst()->FindPlayerPos(L"Player Object");
+		CSceneMgr::GetInst()->FindPlayerPos(L"Player");
 		if (CSceneMgr::GetInst()->m_bfindcheck)
 		{
 			
 			
 			vPos.x = CSceneMgr::GetInst()->m_vSavePos.x;
-			vPos.y = CSceneMgr::GetInst()->m_vSavePos.y+200;
-			vPos.z = CSceneMgr::GetInst()->m_vSavePos.z-600;
+			vPos.y = CSceneMgr::GetInst()->m_vSavePos.y+10;
+			vPos.z = CSceneMgr::GetInst()->m_vSavePos.z-50;
 		}
 			
 
@@ -231,22 +228,16 @@ void CToolCamScript::Fix_Mouse()
 
 	ClientToScreen(CRenderMgr::GetInst()->GetHwnd(), &ptMouse);
 	SetCursorPos(ptMouse.x, ptMouse.y);
-
-
 }
+
 void CToolCamScript::Mouse_Move()
 {
 	// ¸¶¿ì½º ÁÂÇ¥	
-
 
 	m_ptOldMouse = m_ptMouse;
 	GetCursorPos(&m_ptMouse);
 	ScreenToClient(CRenderMgr::GetInst()->GetHwnd(), &m_ptMouse);
 
 	m_vDragDir = Vec2((float)(m_ptMouse.x - m_ptOldMouse.x) * 0.05f, (float)(m_ptOldMouse.y - m_ptMouse.y) * 0.05f);
-
-
-	
-	
 
 }

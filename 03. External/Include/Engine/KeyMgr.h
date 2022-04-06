@@ -86,6 +86,6 @@ public:
 	KEY_STATE GetKeyState(KEY_TYPE _eKey) { return m_vecKey[(UINT)_eKey].eState; }
 	const POINT & GetMousePos() { return m_ptMouse; }
 	const POINT & GetPrevMousePos() { return m_ptOldMouse; }
-	//Vec2 GetDragDir() { return m_vDragDir; }
+	Vec2 GetDragDir() { return m_vDragDir; }
 };
 
