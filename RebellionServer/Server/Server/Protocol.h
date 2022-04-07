@@ -11,7 +11,8 @@ const short SERVER_PORT = 9000;
 
 #define MAX_BUFFER 1024
 #define MAX_PACKET_SIZE 255
-#define NPC_ID_START 10000
+#define NPC_ID_START 10
+//#define NPC_ID_START 10000
 
 
 const char  CS_PACKET_LOGIN = 1;

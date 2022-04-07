@@ -98,8 +98,9 @@ void CServerFrame::InitServer()
 	_timerThread.join();
 	for (std::thread& t : _workerThread)
 		t.join();
-	closesocket(_listenSocket);
-	WSACleanup();
+
+	/*closesocket(_listenSocket);
+	WSACleanup();*/
 }
 
 std::thread CServerFrame::CreateWorkerThread()
@@ -254,7 +255,7 @@ void CServerFrame::Disconnect(int id)
 
 	}
 	_objects[id]._status = ST_FREE;
-	_objects[id].ClientLock();
+	_objects[id].ClientUnLock();
 
 }
 void CServerFrame::DoWorker()

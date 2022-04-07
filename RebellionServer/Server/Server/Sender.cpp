@@ -193,7 +193,8 @@ void CSender::SendPacket(SOCKET s, void* buff)
 
 	int packet_size = packet[0];
 	OVER_EX* send_over = new OVER_EX;
-	memset(send_over, 0x00, sizeof(OVER_EX));
+	ZeroMemory(&send_over->over, sizeof(OVER_EX));
+
 	send_over->event_type = EV_SEND;
 	memcpy(send_over->net_buf, packet, packet_size);
 	send_over->wsabuf.buf = send_over->net_buf;
