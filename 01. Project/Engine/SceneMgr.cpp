@@ -48,7 +48,6 @@ void CSceneMgr::ChangeScene(CScene * _pNextScene)
 CSceneMgr::CSceneMgr()
 	: m_pCurScene(nullptr)	
 {
-	testvec.empty();
 }
 
 CSceneMgr::~CSceneMgr()
@@ -138,23 +137,6 @@ void CSceneMgr::init()
 	m_pCurScene->GetLayer(31)->SetName(L"Tool");
 
 	CGameObject* pObject = nullptr;
-
-	// ==================
-	// Camera Object 생성
-	// ==================
-	//Main Camera
-	CGameObject* pMainCam = new CGameObject;
-	pMainCam->SetName(L"MainCam");
-	pMainCam->AddComponent(new CTransform);
-	pMainCam->AddComponent(new CCamera);
-	pMainCam->AddComponent(new CToolCamScript);
-
-	pMainCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
-	pMainCam->Camera()->SetFar(100000.f);
-	pMainCam->Camera()->SetLayerAllCheck();
-	pMainCam->Camera()->SetLayerCheck(30, false);
-
-	m_pCurScene->FindLayer(L"Default")->AddGameObject(pMainCam);
 	
 	//// UI Camera
 	//CGameObject* pUICam = new CGameObject;
@@ -191,7 +173,7 @@ void CSceneMgr::init()
 	// =============
 	// FBX 파일 로드
 	// =============
-	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Basic_Bandit.fbx");
+	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nIdle1.fbx");
 	//pMeshData->Save(pMeshData->GetPath());
 	// MeshData 로드
 	//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\House.mdat", L"MeshData\\monster.mdat");
@@ -199,34 +181,56 @@ void CSceneMgr::init()
 	pObject = pMeshData->Instantiate();
 	pObject->SetName(L"Player");
 	pObject->FrustumCheck(false);
-	pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 10.f));
-	pObject->Transform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+	pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Transform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+
+	pObject->AddComponent(new CPlayerScript);
+	CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
 	m_pCurScene->AddGameObject(L"Player", pObject, false);
+
+	// ==================
+	// Camera Object 생성
+	// ==================
+	//Main Camera
+	CGameObject* pMainCam = new CGameObject;
+	pMainCam->SetName(L"MainCam");
+	pMainCam->AddComponent(new CTransform);
+	pMainCam->AddComponent(new CCamera);
+	pMainCam->AddComponent(new CToolCamScript);
+
+	pMainCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
+	pMainCam->Camera()->SetFar(100000.f);
+	pMainCam->Camera()->SetLayerAllCheck();
+	pMainCam->Camera()->SetLayerCheck(30, false);
+
+	CToolCamScript* PlayerCamScript = pMainCam->GetScript<CToolCamScript>();
+	PlayerCamScript->SetCameraToPlayer(pObject);
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(pMainCam);
 
 	// ==================
 	// Map 오브젝트 생성
 	// ==================
-	//pObject = new CGameObject;
-	//pObject->SetName(L"Map Object");
-	//pObject->AddComponent(new CTransform);
-	//pObject->AddComponent(new CMeshRender);
+	pObject = new CGameObject;
+	pObject->SetName(L"Map Object");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
 
-	//// Transform 설정
-	//pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-	//pObject->Transform()->SetLocalScale(Vec3(1000.f, 1000.f, 1.f));
-	//pObject->Transform()->SetLocalRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
+	// Transform 설정
+	pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Transform()->SetLocalScale(Vec3(1000.f, 1000.f, 1.f));
+	pObject->Transform()->SetLocalRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
 
-	//// MeshRender 설정
-	//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	//pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
-	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
+	// MeshRender 설정
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
+	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
 
 	////Script 설정
 	//pMapObject->AddComponent(new CPlayerScript);
 
 	// AddGameObject
-	//m_pCurScene->FindLayer(L"Map")->AddGameObject(pObject);
+	m_pCurScene->FindLayer(L"Map")->AddGameObject(pObject);
 
 	// ===================
 	// Player 오브젝트 생성
@@ -391,25 +395,6 @@ void CSceneMgr::FindGameObjectByTag(const wstring& _strTag, vector<CGameObject*>
 	}	
 }
 
-void CSceneMgr::FindPlayerPos(const wstring& _strTag)
-{
-	for (int i = 0; i < MAX_LAYER; ++i)
-	{
-		const vector<CGameObject*>& vecObject = m_pCurScene->GetLayer(i)->GetObjects();
-		for (size_t j = 0; j < vecObject.size(); ++j)
-		{
-			if (_strTag == vecObject[j]->GetName())
-			{
-				m_vSavePos = { vecObject[j]->Transform()->GetLocalPos().x ,vecObject[j]->Transform()->GetLocalPos().y
-					,vecObject[j]->Transform()->GetLocalPos().z };
-				m_bfindcheck = true;
-
-				m_vSaveRot=vecObject[j]->Transform()->GetLocalRot();
-
-			}
-		}
-	}
-}
 
 bool Compare(CGameObject* _pLeft, CGameObject* _pRight)
 {
