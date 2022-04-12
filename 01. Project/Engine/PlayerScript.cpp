@@ -32,25 +32,25 @@ void CPlayerScript::update()
 	//Vec3 vPos = Transform()->GetLocalPos();
 	//Vec3 vRot = Transform()->GetLocalRot();
 
-	if (KEY_HOLD(KEY_TYPE::KEY_UP))
+	if (KEY_HOLD(KEY_TYPE::KEY_W))
 	{
 		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::FRONT);
 		localPos += WorldDir * 200.f * DT;
 	}
 
-	if (KEY_HOLD(KEY_TYPE::KEY_DOWN))
+	if (KEY_HOLD(KEY_TYPE::KEY_S))
 	{
 		WorldDir = playerTrans->GetWorldDir(DIR_TYPE::FRONT);
 		localPos += WorldDir * 200.f * DT;
 	}
 
-	if (KEY_HOLD(KEY_TYPE::KEY_LEFT))
+	if (KEY_HOLD(KEY_TYPE::KEY_A))
 	{	
 		WorldDir = playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
 		localPos += WorldDir * 200.f * DT;
 	}
 
-	if (KEY_HOLD(KEY_TYPE::KEY_RIGHT))
+	if (KEY_HOLD(KEY_TYPE::KEY_D))
 	{
 		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
 		localPos += WorldDir * 200.f * DT;
