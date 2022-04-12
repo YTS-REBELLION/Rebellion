@@ -19,8 +19,6 @@ void CPlayerScript::awake()
 	m_pCloneMtrl = m_pOriginMtrl->Clone();
 
 	}
-	if (KEY_HOLD(KEY_TYPE::KEY_S))
-	{
 
 void CPlayerScript::update()
 {
