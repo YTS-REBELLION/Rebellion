@@ -4,7 +4,7 @@
 #include "Camera.h"
 
 #include "RenderMgr.h"
-#include"PlayerScript.h"
+#include "PlayerScript.h"
 
 
 CToolCamScript::CToolCamScript()
@@ -23,17 +23,7 @@ CToolCamScript::~CToolCamScript()
 
 void CToolCamScript::update()
 {
-	CameraMode();
-
-	Vec3 vPos = Transform()->GetLocalPos();
-	
-	//Mouse_Move();
-	if (true == m_bMouseFix)
-	{
-		//Fix_Mouse();
-				
-	}
-
+	/*Vec3 vPos = Transform()->GetLocalPos();
 	float fScale = Camera()->GetScale();
 	float fSpeed = m_fSpeed;
 
@@ -220,7 +210,18 @@ void CToolCamScript::Cenematic0_Mode()
 		
 	}
 
+	Transform()->SetLocalPos(vPos);*/
+
+	Vec3 vPos = Transform()->GetLocalPos();
+	CTransform* vPlayerPos = m_pPlayer->Transform();//g_Object.find(g_myid)->second->Transform();
+
+	float fDistance = 300.f; //200.f;
+
+	vPos = vPlayerPos->GetLocalPos() + (vPlayerPos->GetWorldDir(DIR_TYPE::FRONT) * fDistance);
+	vPos.y = vPlayerPos->GetLocalPos().y + 200.f;
+
 	Transform()->SetLocalPos(vPos);
+	Transform()->SetLocalRot(vPlayerPos->GetLocalRot() + Vec3(XM_PI / 8.5, XM_PI, 0.f));
 }
 void CToolCamScript::Fix_Mouse()
 {

@@ -16,12 +16,19 @@ class CToolCamScript :
 private:
 	float		m_fSpeed;
 	float		m_fScaleSpeed;
+	CGameObject* m_pPlayer;
+
+public:	
 	bool		m_bCine1 = false;
 	bool		m_bCheckFin1 = false;
 	float checktime = 0.f;
 	bool		m_bMouseFix = false;
 public:
 	virtual void update();
+	void SetCameraToPlayer(CGameObject* Player) {
+		m_pPlayer = Player;
+	}
+
 	void CameraMode();
 	void Player_Mode();
 	void Cenematic0_Mode();
