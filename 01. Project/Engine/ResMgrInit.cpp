@@ -182,6 +182,23 @@ void CResMgr::CreateDefaultShader()
 
 	pShader->Create(SHADER_POV::LIGHTING);
 	AddRes(L"MergeLightShader", pShader);
+
+
+	//// ==================
+	//// trail Shader
+	//// ==================
+	//pShader = new CShader;
+	//pShader->CreateVertexShader(L"Shader\\trail.fx", "VS_TRAIL", "vs_5_0");
+	//pShader->CreatePixelShader(L"Shader\\trail.fx", "PS_TRAIL", "ps_5_0");
+	//pShader->SetRasterizerType(RS_TYPE::CULL_FRONT);
+	//pShader->SetDepthStencilType(DEPTH_STENCIL_TYPE::LESS_EQUAL);
+	//pShader->Create(SHADER_POV::FORWARD);
+	//AddRes(L"TrailShader", pShader);
+
+
+
+	
+
 }
 
 
