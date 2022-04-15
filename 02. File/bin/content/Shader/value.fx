@@ -1,14 +1,7 @@
 #ifndef _VALUE
 #define _VALUE
 
-texture			g_BaseTexture;
-//
-//sampler BaseSampler = sampler_state
-//{
-//    texture = g_BaseTexture;
-//    minfilter = linear;
-//    magfilter = linear;
-//};
+
 
 // struct
 struct tLight2DInfo

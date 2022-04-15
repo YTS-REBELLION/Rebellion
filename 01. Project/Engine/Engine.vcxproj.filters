@@ -221,6 +221,9 @@
       <Filter>05.Network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\RebellionServer\Server\Server\Protocol.h" />
+    <ClInclude Include="Sword.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -370,6 +373,9 @@
     </ClCompile>
     <ClCompile Include="Network.cpp">
       <Filter>05.Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Sword.cpp">
+      <Filter>04. GameObject\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

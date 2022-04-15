@@ -31,6 +31,8 @@
 #include "MonsterScript.h"
 #include "ToolCamScript.h"
 #include "GridScript.h"
+#include "Sword.h"
+
 
 #include "meshdata.h"
 
@@ -359,6 +361,42 @@ void CSceneMgr::init()
 	// Player Layer 와 Monster Layer 는 충돌 검사 진행
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Monster");
 	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Bullet", L"Monster");
+
+
+
+
+
+	
+	
+	//Ptr<CMeshData> pMeshData2 = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale_Weapon_Sword.fbx");
+	//
+	//pObject = pMeshData2->Instantiate();
+	
+	
+// SWORD 오브젝트 생성
+// ====================
+pObject = new CGameObject;
+pObject->SetName(L"SWORD");
+pObject->AddComponent(new CTransform);
+pObject->AddComponent(new CMeshRender);	
+
+// Transform 설정
+pObject->Transform()->SetLocalPos(Vec3(20.f, 20.f, 20.f));
+pObject->Transform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+
+// MeshRender 설정
+pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));	
+
+
+ //Script 설정
+ pObject->AddComponent(new CSword);
+
+// AddGameObject
+m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);
+
+
+
 	
 	m_pCurScene->awake();
 	m_pCurScene->start();
