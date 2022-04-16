@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "PlayerScript.h"
 #include "TestScript.h"
+#include "Network.h"
 
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
@@ -36,24 +37,41 @@ void CPlayerScript::update()
 	{
 		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::FRONT);
 		localPos += WorldDir * 200.f * DT;
+		
+		system_clock::time_point start = system_clock::now();
+
+		g_net.Send_Move_Packet( localPos, WorldDir, vRot.y, start, DT);
+
 	}
 
 	if (KEY_HOLD(KEY_TYPE::KEY_S))
 	{
 		WorldDir = playerTrans->GetWorldDir(DIR_TYPE::FRONT);
 		localPos += WorldDir * 200.f * DT;
+		system_clock::time_point start = system_clock::now();
+
+		g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+
 	}
 
 	if (KEY_HOLD(KEY_TYPE::KEY_A))
 	{	
 		WorldDir = playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
 		localPos += WorldDir * 200.f * DT;
+		system_clock::time_point start = system_clock::now();
+
+		g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+
 	}
 
 	if (KEY_HOLD(KEY_TYPE::KEY_D))
 	{
 		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
 		localPos += WorldDir * 200.f * DT;
+		system_clock::time_point start = system_clock::now();
+
+		g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+
 	}
 
 	if (KEY_HOLD(KEY_TYPE::KEY_LBTN))

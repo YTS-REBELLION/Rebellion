@@ -13,3 +13,10 @@
 
 #pragma comment(lib,"WS2_32.lib")
 #pragma comment(lib, "MSWSock.lib")
+
+using namespace std;
+
+using namespace chrono;
+
+class Vector3;
+class Matrix;

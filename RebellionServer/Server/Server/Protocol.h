@@ -24,6 +24,8 @@ const char  CS_PACKET_MOUSE_MOVE = 6;
 const char  CS_PAKCET_POSITION = 7;
 const char  CS_PACKET_DEFENCE = 8;
 const char  CS_PACKET_QUEST_DONE = 9;
+const char	CS_PACKET_MOVE = 10;
+
 
 const char  SC_PACKET_LOGIN_OK = 1;
 const char  SC_PACKET_LOGIN_FAIL = 2;
@@ -208,6 +210,17 @@ struct cs_packet_move {
 	char	size;
 	char	type;
 	char	direction;
+	float	rotate;
+	Vec3	localPos;
+	Vec3	dirVec;
+	float	speed;
+	float	deltaTime;
+
+	system_clock::time_point start;
+	short	moveTime;
+	bool	movings;
+
+
 };
 
 struct cs_packet_run {

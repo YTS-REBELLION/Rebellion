@@ -216,20 +216,42 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 
 		cout << "플레이어 이름 " << name << endl;
 		
-		_sender->SendLoginOkPacket(_objects[id].GetSocket(), id, 
-			0.f, 0.f, 0.f, 10, 20, 30, 40, 50, 60);
+		_sender->SendLoginOkPacket(_objects[id].GetSocket(), _objects[id].GetID(),
+			0.f, 0.f, 0.f, _objects[id].GetDamage(),_objects[id].GetCurrentHp(),
+			_objects[id].GetMaxHp(), _objects[id].GetLevel(),
+			_objects[id].GetCurrentExp(), _objects[id].GetMaxExp());
 
 
 
-		//_sender->SendLoginFailPacket(_objects[id].GetSocket());
+
 
 
 
 		// DB 구현 예정
 
 		// DB에 정보가 있을 때
+		
+		//_sender->SendLoginFailPacket(_objects[id].GetSocket());
+
 	}
-	break;
+							break;
+	case CS_PACKET_MOUSE_MOVE: {
+		std::cout << "ID : " << id << "이동" << std::endl;
+		cs_packet_move* packet = reinterpret_cast<cs_packet_move*>(buf);
+
+
+
+	}
+
+
+
+							break;
+
+	case CS_PACKET_TELEPORT: {
+
+
+	}
+						   break;
 	}
 
 

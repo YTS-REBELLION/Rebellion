@@ -123,13 +123,12 @@ void CNetwork::ProcessPacket(char* ptr)
 	{
 		
 		sc_packet_login_ok* p = reinterpret_cast<sc_packet_login_ok*>(ptr);
-		std::cout << "로그인 성공" << std::endl;
-		std::cout << "아이디 : " << p->id << std::endl;
-		std::cout <<"경험치 : " << p->c_exp <<"/"<<p->m_exp << std::endl;
-		std::cout <<"체력 : " <<p->c_hp<<"/"<<p->m_hp << std::endl;
-		std::cout <<"공격력 : " <<p->damage << std::endl;
-		std::cout <<"레벨 : " <<p->level << std::endl;
-
+		std::cout << "플레이어 아이디 : "<<p->id << std::endl;
+		std::cout << "플레이어 데미지 : "<<p->damage << std::endl;
+		std::cout << "플레이어 체력 "<<p->c_hp<< " / " <<p->m_hp << std::endl;
+		std::cout << "플레이어 레벨 : "<<p->level << std::endl;
+		std::cout << "플레이어 경험치 : " << p->c_exp << " / " << p->m_exp << std::endl;
+		
 
 	}
 	break;
@@ -226,4 +225,41 @@ void CNetwork::Send_LogIn_Packet()
 	Send_Packet(&packet);
 
 
+}
+void CNetwork::Send_Move_Packet(unsigned const char& dir, const Vec3& localPos, const Vec3& dirVec,
+	const float& rotate, const system_clock::time_point& startTime,
+	const float& delta, const bool& movings)
+{
+	cs_packet_move packet;
+
+	packet.type = CS_PACKET_MOVE;
+	packet.size = sizeof(packet);
+	packet.direction = dir;
+
+	packet.rotate = rotate;
+
+	packet.start = startTime;
+	packet.deltaTime = delta;
+	packet.movings = movings;
+
+	Send_Packet(&packet);
+
+
+
+}
+
+void CNetwork::Send_Move_Packet(const Vec3& localPos, const Vec3& dirVec, const float& rotate, const system_clock::time_point& startTime, const float& delta)
+{
+
+	cs_packet_move packet;
+
+	packet.type = CS_PACKET_MOVE;
+	packet.size = sizeof(packet);
+
+	packet.rotate = rotate;
+
+	packet.start = startTime;
+	packet.deltaTime = delta;
+
+	Send_Packet(&packet);
 }
