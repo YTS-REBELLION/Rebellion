@@ -1,91 +1,100 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="소스 파일">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="etc">
+      <UniqueIdentifier>{d127aed9-b36a-4f7f-a6bf-c7f48a8afdb9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="etc\DxMath">
+      <UniqueIdentifier>{9c40625f-e6ba-49e4-8794-da8fb1a9c217}</UniqueIdentifier>
     </Filter>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="etc\lua">
+      <UniqueIdentifier>{281705dd-57fc-449c-8782-274ba80b0dab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.MainServer">
+      <UniqueIdentifier>{c9c35727-9195-42c8-bc66-08e3e730b35a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1.Network">
+      <UniqueIdentifier>{36ae0bec-6567-4263-934a-9a0b545d34ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2.Objects">
+      <UniqueIdentifier>{6e99c0ea-dc64-4996-b091-a100f3fee50b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3.DataBase">
+      <UniqueIdentifier>{23ceb29c-49c7-4051-814b-2e8686cf9908}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="CServerFrame.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Error.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="CObject.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>0.MainServer</Filter>
     </ClCompile>
     <ClCompile Include="Sender.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>1.Network</Filter>
+    </ClCompile>
+    <ClCompile Include="CServerFrame.cpp">
+      <Filter>1.Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Error.cpp">
+      <Filter>1.Network</Filter>
+    </ClCompile>
+    <ClCompile Include="CObject.cpp">
+      <Filter>2.Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>2.Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>etc</Filter>
     </ClCompile>
     <ClCompile Include="DataBase.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>3.DataBase</Filter>
     </ClCompile>
     <ClCompile Include="SimpleMath.cpp">
-      <Filter>리소스 파일</Filter>
+      <Filter>etc\DxMath</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="global.h">
+      <Filter>etc</Filter>
+    </ClInclude>
     <ClInclude Include="pch.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CServerFrame.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Error.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Protocol.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>etc</Filter>
     </ClInclude>
     <ClInclude Include="Shared.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CObject.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>etc</Filter>
     </ClInclude>
     <ClInclude Include="Sender.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>1.Network</Filter>
+    </ClInclude>
+    <ClInclude Include="CServerFrame.h">
+      <Filter>1.Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Protocol.h">
+      <Filter>etc</Filter>
+    </ClInclude>
+    <ClInclude Include="Error.h">
+      <Filter>1.Network</Filter>
+    </ClInclude>
+    <ClInclude Include="CObject.h">
+      <Filter>2.Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>2.Objects</Filter>
     </ClInclude>
     <ClInclude Include="DataBase.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>3.DataBase</Filter>
     </ClInclude>
     <ClInclude Include="SimpleMath.h">
-      <Filter>리소스 파일</Filter>
+      <Filter>etc\DxMath</Filter>
     </ClInclude>
-    <ClInclude Include="global.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="lua53.lib">
-      <Filter>리소스 파일</Filter>
-    </Library>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
-      <Filter>리소스 파일</Filter>
+      <Filter>etc\DxMath</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="lua53.lib">
+      <Filter>etc\lua</Filter>
+    </Library>
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 //
 
 #include "pch.h"
-#include <iostream>
+#include "CServerFrame.h"
 
 CServerFrame g_server;
 

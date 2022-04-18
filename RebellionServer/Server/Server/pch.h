@@ -8,13 +8,27 @@
 #define PCH_H
 
 // 여기에 미리 컴파일하려는 헤더 추가
+// 기본적으로 쓰는 것들
 #include <iostream>
 #include <chrono>
+
+#include <vector>
+#include <thread>
+#include <queue>
+#include <mutex>
+
+#include <unordered_set>
+#include <atomic>
+
+
 
 using namespace std;
 using namespace chrono;
 
 #include <WS2tcpip.h>
+#include <MSWSock.h>
+
+#pragma comment (lib, "MSWSock.LIB")
 #pragma comment(lib, "lua53.lib")
 #pragma comment(lib,"WS2_32.lib")
 
@@ -25,7 +39,18 @@ using namespace chrono;
 //}
 //
 
+#include <d3d12.h>
+#include "SimpleMath.h"
+#pragma comment(lib, "d3d12")
+typedef DirectX::SimpleMath::Vector2 Vec2;
+typedef DirectX::SimpleMath::Vector3 Vec3;
+typedef DirectX::SimpleMath::Vector4 Vec4;
+using DirectX::SimpleMath::Matrix;
 
+#include "../../../01. Project/Engine/define.h"
 #include "Protocol.h"
+#include "Shared.h"
+
+
 
 #endif //PCH_H

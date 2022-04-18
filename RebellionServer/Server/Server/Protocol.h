@@ -211,7 +211,7 @@ struct cs_packet_move {
 	char	type;
 	char	direction;
 	float	rotate;
-
+	
 	Vec3	localPos;
 	Vec3	dirVec;
 	float	speed;

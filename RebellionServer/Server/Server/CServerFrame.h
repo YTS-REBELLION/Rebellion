@@ -1,13 +1,5 @@
 #pragma once
-#include <vector>
-#include <thread>
-#include <queue>
-#include <mutex>
 
-
-#include <MSWSock.h>
-
-#pragma comment (lib, "MSWSock.LIB")
 #include "CObject.h"
 
 class CError;
