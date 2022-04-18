@@ -366,34 +366,25 @@ void CSceneMgr::init()
 	
 	
 
-// SWORD 오브젝트 생성
-// ====================
+	// SWORD 오브젝트 생성
+	// ====================
+	CGameObject* SwordObject = nullptr;
+	SwordObject = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\sword_2.fbx");
+	SwordObject = pMeshData->Instantiate();
+	SwordObject->SetName(L"Player_Sword");
+	SwordObject->FrustumCheck(false);
+	//SwordObject->AddComponent(new CTransform);
+	//SwordObject->AddComponent(new CMeshRender);
 
+	// Transform 설정
+	SwordObject->Transform()->SetLocalPos(Vec3(20.f, 20.f, 20.f));
+	SwordObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 
-
-pObject = new CGameObject;
-
-pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Basic_Bandit.fbx");
-pObject = pMeshData->Instantiate();
-
-pObject->SetName(L"Player_Sword");
-pObject->AddComponent(new CTransform);
-pObject->AddComponent(new CMeshRender);	 
-
-// Transform 설정
-pObject->Transform()->SetLocalPos(Vec3(20.f, 20.f, 20.f));
-pObject->Transform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-
- //Script 설정
- pObject->AddComponent(new CSword);
-
- // MeshRender 설정
- pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh"));
- pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-
-// AddGameObject
-
-m_pCurScene->AddGameObject(L"Default", pObject, false);
+	 //Script 설정
+	SwordObject->AddComponent(new CSword);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", SwordObject, false);
 
 
 	
