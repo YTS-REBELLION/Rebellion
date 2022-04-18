@@ -2,9 +2,8 @@
 #pragma once
 
 #include "pch.h"
-#include "Protocol.h"
 
-#define MASTER 99999999
+#define MASTER 99'999'999
 #define VEC3_TOWN_ENTRANCE_POS Vec3(-3000.f, 0.f, 5683.f)
 
 constexpr float VIEW_RADIUS = 2500.f;
@@ -66,6 +65,10 @@ struct OBSTACLE {
 };
 
 #include <d3d12.h>
+#include "SimpleMath.h"
 #pragma comment(lib, "d3d12")
-
+typedef DirectX::SimpleMath::Vector2 Vec2;
+typedef DirectX::SimpleMath::Vector3 Vec3;
+typedef DirectX::SimpleMath::Vector4 Vec4;
+using DirectX::SimpleMath::Matrix;
 

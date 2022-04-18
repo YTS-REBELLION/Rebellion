@@ -167,20 +167,26 @@
     </ClCompile>
     <ClCompile Include="Sender.cpp" />
     <ClCompile Include="Server.cpp" />
+    <ClCompile Include="SimpleMath.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CObject.h" />
     <ClInclude Include="CServerFrame.h" />
     <ClInclude Include="DataBase.h" />
     <ClInclude Include="Error.h" />
+    <ClInclude Include="global.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Protocol.h" />
     <ClInclude Include="Sender.h" />
     <ClInclude Include="Shared.h" />
+    <ClInclude Include="SimpleMath.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="lua53.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SimpleMath.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

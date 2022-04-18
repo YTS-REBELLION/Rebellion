@@ -39,6 +39,9 @@
     <ClCompile Include="DataBase.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="SimpleMath.cpp">
+      <Filter>리소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -68,10 +71,21 @@
     <ClInclude Include="DataBase.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="SimpleMath.h">
+      <Filter>리소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="global.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="lua53.lib">
       <Filter>리소스 파일</Filter>
     </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SimpleMath.inl">
+      <Filter>리소스 파일</Filter>
+    </None>
   </ItemGroup>
 </Project>

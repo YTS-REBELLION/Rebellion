@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include <chrono>
+//#include <chrono>
 #include <cstring>
 
 
@@ -211,16 +211,17 @@ struct cs_packet_move {
 	char	type;
 	char	direction;
 	float	rotate;
+
 	Vec3	localPos;
 	Vec3	dirVec;
 	float	speed;
 	float	deltaTime;
 
-	system_clock::time_point start;
+	system_clock::time_point startTime;
 	short	moveTime;
 	bool	movings;
 
-
+	
 };
 
 struct cs_packet_run {
