@@ -236,16 +236,16 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 
 	}
 							break;
-	case CS_PACKET_MOUSE_MOVE: {
+	case CS_PACKET_MOVE: {
 		std::cout << "ID : " << id << "이동" << std::endl;
 		cs_packet_move* packet = reinterpret_cast<cs_packet_move*>(buf);
 
+		cout << "방향 : " << packet->direction << endl;
+		cout << "회전 : " << packet->rotate << endl;
+		cout << "무빙스 : " << packet->movings << endl;
 
 
 	}
-
-
-
 							break;
 
 	case CS_PACKET_TELEPORT: {

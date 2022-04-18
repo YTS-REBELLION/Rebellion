@@ -1,8 +1,6 @@
 #pragma once
 
-#include <iostream>
-//#include <chrono>
-#include <cstring>
+
 
 
 //const char* SERVERIP = "127.0.0.1";
@@ -217,10 +215,9 @@ struct cs_packet_move {
 	float	speed;
 	float	deltaTime;
 
-	system_clock::time_point startTime;
+	std::chrono::system_clock::time_point start;
 	short	moveTime;
 	bool	movings;
-
 	
 };
 
