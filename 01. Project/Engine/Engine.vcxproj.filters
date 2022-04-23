@@ -59,6 +59,9 @@
     <Filter Include="05.Network">
       <UniqueIdentifier>{00bc92b1-cc2f-4305-9f82-488340dc6010}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. GameObject\Script\01.AssemblyPoint">
+      <UniqueIdentifier>{73003f8c-0d9d-4945-b5d2-6276ccbf79c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -221,8 +224,17 @@
       <Filter>05.Network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\RebellionServer\Server\Server\Protocol.h" />
+    <ClInclude Include="GuardHouse.h">
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClInclude>
     <ClInclude Include="Sword.h">
-      <Filter>04. GameObject\Script</Filter>
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="GateHouse.h">
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree.h">
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -374,8 +386,17 @@
     <ClCompile Include="Network.cpp">
       <Filter>05.Network</Filter>
     </ClCompile>
+    <ClCompile Include="GuardHouse.cpp">
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClCompile>
     <ClCompile Include="Sword.cpp">
-      <Filter>04. GameObject\Script</Filter>
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="GateHouse.cpp">
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="Tree.cpp">
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

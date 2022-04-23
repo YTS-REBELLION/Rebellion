@@ -190,8 +190,10 @@ call EngineCopy.bat</Command>
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="func.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GateHouse.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="GridScript.h" />
+    <ClInclude Include="GuardHouse.h" />
     <ClInclude Include="KeyMgr.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="Light2D.h" />
@@ -225,6 +227,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="TimeMgr.h" />
     <ClInclude Include="ToolCamScript.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="Tree.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation2D.cpp" />
@@ -248,7 +251,9 @@ call EngineCopy.bat</Command>
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="func.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GateHouse.cpp" />
     <ClCompile Include="GridScript.cpp" />
+    <ClCompile Include="GuardHouse.cpp" />
     <ClCompile Include="KeyMgr.cpp" />
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="Light2D.cpp" />
@@ -285,6 +290,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="TimeMgr.cpp" />
     <ClCompile Include="ToolCamScript.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="func.fx">

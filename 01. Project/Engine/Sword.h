@@ -19,8 +19,6 @@ public:
 	CSword();
 	virtual ~CSword();
 
-public:
-	
 
 };
 

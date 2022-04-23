@@ -29,7 +29,7 @@ void CSword::update()
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
 	Vec3 vRot = Transform()->GetLocalRot();
 	
-	vRot.y -= DT * 5;
+	vRot.y -= DT * 5.f;
 
 	Transform()->SetLocalPos(localPos);
 	Transform()->SetLocalRot(vRot);

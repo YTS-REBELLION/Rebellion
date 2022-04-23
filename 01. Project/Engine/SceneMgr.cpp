@@ -33,6 +33,10 @@
 #include "GridScript.h"
 #include "Sword.h"
 
+#include"GuardHouse.h"
+#include"GateHouse.h"
+#include"Tree.h"
+
 
 #include "meshdata.h"
 
@@ -217,24 +221,31 @@ void CSceneMgr::init()
 	// ==================
 	// Map 오브젝트 생성
 	// ==================
-	pObject = new CGameObject;
-	pObject->SetName(L"Map Object");
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CMeshRender);
 
-	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-	pObject->Transform()->SetLocalScale(Vec3(1000.f, 1000.f, 1.f));
-	pObject->Transform()->SetLocalRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
+	for (int j = 0; j < 3; ++j)
+	{
+		for (int i = 0; i < 3; ++i)
+		{
+			pObject = new CGameObject;
+			pObject->SetName(L"Map Object");
+			pObject->AddComponent(new CTransform);
+			pObject->AddComponent(new CMeshRender);
 
-	// MeshRender 설정
-	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
+			// Transform 설정
+			pObject->Transform()->SetLocalPos(Vec3(i * 1000.f - 1000.f, 0.f, j*1000.f-1000.f));
+			pObject->Transform()->SetLocalScale(Vec3(1000.f, 1000.f, 1.f));
+			pObject->Transform()->SetLocalRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
 
-	////Script 설정
-	//pMapObject->AddComponent(new CPlayerScript);
+			// MeshRender 설정
+			pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+			pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
+			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
+
+			// AddGameObject
+			m_pCurScene->FindLayer(L"Map")->AddGameObject(pObject);
+		}
+	}
 
 	// AddGameObject
 	m_pCurScene->FindLayer(L"Map")->AddGameObject(pObject);
@@ -385,6 +396,76 @@ void CSceneMgr::init()
 	SwordObject->AddComponent(new CSword);
 	// AddGameObject
 	m_pCurScene->AddGameObject(L"Default", SwordObject, false);
+
+
+	// obstacle 오브젝트 생성
+	// ====================
+	CGameObject* GuardHouseObject = nullptr;
+	GuardHouseObject = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Guardhouses.fbx");
+	GuardHouseObject = pMeshData->Instantiate();
+	GuardHouseObject->SetName(L"Guard_houses");
+	GuardHouseObject->FrustumCheck(false);
+	//SwordObject->AddComponent(new CTransform);
+	//SwordObject->AddComponent(new CMeshRender);
+
+	// Transform 설정
+	GuardHouseObject->Transform()->SetLocalPos(Vec3(1000.f, 160.f, -500.f));
+	GuardHouseObject->Transform()->SetLocalScale(Vec3(0.3f, 0.3f, 0.3f));
+
+	//Script 설정
+	GuardHouseObject->AddComponent(new CGuardHouse);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", GuardHouseObject, false);
+
+	// ===========================================================================================
+	CGameObject* GateHouseObject = nullptr;
+	GateHouseObject = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Gatehouses.fbx");
+	GateHouseObject = pMeshData->Instantiate();
+	GateHouseObject->SetName(L"Gate_houses");
+	GateHouseObject->FrustumCheck(false);
+	//SwordObject->AddComponent(new CTransform);
+	//SwordObject->AddComponent(new CMeshRender);
+
+	// Transform 설정
+	GateHouseObject->Transform()->SetLocalPos(Vec3(-1000.f, 100.f, -500.f));
+	GateHouseObject->Transform()->SetLocalScale(Vec3(0.3f, 0.3f, 0.3f));
+
+	//Script 설정
+	GateHouseObject->AddComponent(new CGateHouse);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", GateHouseObject, false);
+
+	//===========================================================================================
+	for (int i = 0; i < 5;  ++i)
+	{
+		CGameObject* Treebject = nullptr;
+		Treebject = new CGameObject;
+		pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Tree.fbx");
+		Treebject = pMeshData->Instantiate();
+		Treebject->SetName(L"Tree");
+		Treebject->FrustumCheck(false);
+		//SwordObject->AddComponent(new CTransform);
+		//SwordObject->AddComponent(new CMeshRender);
+
+		// Transform 설정
+		Treebject->Transform()->SetLocalPos(Vec3(-500.f, 160.f, -1000.f+i*500));
+		Treebject->Transform()->SetLocalScale(Vec3(0.1f, 0.1f, 0.1f));
+
+		//Script 설정
+		Treebject->AddComponent(new CTree);
+		// AddGameObject
+		m_pCurScene->AddGameObject(L"Default", Treebject, false);
+
+	}
+
+
+
+
+
+
+
 
 
 	

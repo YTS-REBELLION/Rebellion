@@ -81,16 +81,16 @@ void CPlayerScript::update()
 	if (KEY_HOLD(KEY_TYPE::KEY_S))
 	{
 
-		vPos += vLook;
+		vPos += 2.5 * vLook;
 
 		if (KEY_HOLD(KEY_TYPE::KEY_D))
 		{
-			vRot.y -= DT * XM_PI;
+			vRot.y -= 2.5*DT * XM_PI;
 
 		}
 		else if (KEY_HOLD(KEY_TYPE::KEY_A))
 		{
-			vRot.y += DT * XM_PI;
+			vRot.y += 2.5 * DT * XM_PI;
 		}
 
 
@@ -98,16 +98,16 @@ void CPlayerScript::update()
 	if (KEY_HOLD(KEY_TYPE::KEY_W))
 	{
 
-		vPos -= vLook;
+		vPos -= 2.5 * vLook;
 
 		if (KEY_HOLD(KEY_TYPE::KEY_D))
 		{
-			vRot.y += DT * XM_PI;
+			vRot.y += 2.5 * DT * XM_PI;
 
 		}
 		else if (KEY_HOLD(KEY_TYPE::KEY_A))
 		{
-			vRot.y -= DT * XM_PI;
+			vRot.y -= 2.5 * DT * XM_PI;
 		}
 
 
@@ -115,13 +115,13 @@ void CPlayerScript::update()
 
 	else if (KEY_HOLD(KEY_TYPE::KEY_D))
 	{
-		vPos -= vRight;
+		vPos -= 2.5 * vRight;
 
 	}
 
 	else if (KEY_HOLD(KEY_TYPE::KEY_A))
 	{
-		vPos += vRight;
+		vPos += 2.5 * vRight;
 
 	}
 
