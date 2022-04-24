@@ -74,10 +74,10 @@ void CServerFrame::InitServer()
 
 	CreateIoCompletionPort(reinterpret_cast<HANDLE>(_listenSocket), _iocp, 10000, 0);
 	SOCKET c_sock = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, 0, WSA_FLAG_OVERLAPPED);
-	OVER_EX acceptOver;
+	EXP_OVER acceptOver;
 	
 	ZeroMemory(&acceptOver.over, sizeof(acceptOver.over));
-	acceptOver.event_type = EV_ACCEPT;
+	acceptOver.event_type = OP_ACCEPT;
 	acceptOver.c_sock = c_sock;
 	acceptOver.wsabuf.len = static_cast<int>(c_sock);
 
@@ -117,6 +117,7 @@ std::thread CServerFrame::CreateTimerThread()
 
 void CServerFrame::InitClients()
 {
+
 	std::cout << "InitClients" << endl;
 	for (int i = 0; i < NPC_ID_START; ++i) {
 		_objects[i].SetIsDummy(false);
@@ -170,7 +171,7 @@ void CServerFrame::InitClients()
 }
 void CServerFrame::RecvPacketProcess(int id, int iobytes)
 {
-	OVER_EX& recvOver = _objects[id]._recvOver;
+	EXP_OVER& recvOver = _objects[id]._recvOver;
 	
 	int restBytes = iobytes;
 	char* p = recvOver.net_buf;
@@ -240,9 +241,10 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		std::cout << "ID : " << id << "이동" << std::endl;
 		cs_packet_move* packet = reinterpret_cast<cs_packet_move*>(buf);
 
-		cout << "방향 : " << packet->direction << endl;
-		cout << "회전 : " << packet->rotate << endl;
-		cout << "무빙스 : " << packet->movings << endl;
+
+
+		cout << " 좌표 x : " << packet->localPos.x << "좌표 z : " << packet->localPos.z << endl;
+
 
 
 	}
@@ -292,7 +294,7 @@ void CServerFrame::DoWorker()
 
 		int ret = GetQueuedCompletionStatus(_iocp, &ioBytes, &key, &over, INFINITE);
 
-		OVER_EX* exp_over = reinterpret_cast<OVER_EX*>(over);
+		EXP_OVER* exp_over = reinterpret_cast<EXP_OVER*>(over);
 		int id = static_cast<int>(key);
 		//CObject& cl = m_objects[id];
 		/*if (FALSE == ret) {
@@ -312,7 +314,7 @@ void CServerFrame::DoWorker()
 
 
 		switch (exp_over->event_type) {
-		case EV_ACCEPT: {
+		case OP_ACCEPT: {
 			printf("Accept Player\n");
 			int user_id = 0;
 			for (int i = 0; i < NPC_ID_START; ++i) {
@@ -345,7 +347,7 @@ void CServerFrame::DoWorker()
 
 				newPlayer._recvOver.wsabuf.buf = newPlayer._recvOver.net_buf;
 				newPlayer._recvOver.wsabuf.len = MAX_BUFFER;
-				newPlayer._recvOver.event_type = EV_RECV;
+				newPlayer._recvOver.event_type = OP_RECV;
 				
 
 				DWORD flags = 0;
@@ -382,7 +384,7 @@ void CServerFrame::DoWorker()
 
 		}
 
-		case EV_RECV: {
+		case OP_RECV: {
 			cout << "RECV PACKET" << endl;
 			if (0 == ioBytes) {
 				Disconnect(id);
@@ -397,14 +399,15 @@ void CServerFrame::DoWorker()
 			break;
 		}
 
-		case EV_SEND:
+		case OP_SEND:
 			if (0 == ioBytes) {
 				Disconnect(id);
 			}
 			delete exp_over;
 			break;
-
-		
+		case EV_BROADCAST:
+			MoveUpdate();
+			break;
 		default:
 			std::cout << "Unknown EVENT\n";
 			while (true);
@@ -424,3 +427,453 @@ void CServerFrame::AddTimer(EVENT ev)
 }
 
 
+//void CServerFrame::Activate_Player_Move_Event(int target, int player_id)
+//{
+//	EXP_OVER* exp_over = new EXP_OVER;
+//	exp_over->comp_op = OP_PLAYER_MOVE;
+//	exp_over -
+//
+//}
+
+
+void CServerFrame::ActivateNPC(int id)
+{
+	STATUS oldState = ST_SLEEP;
+	std::atomic_compare_exchange_strong(&_objects[id]._status, &oldState, ST_ACTIVE);
+
+}
+
+void CServerFrame::MoveUpdate()
+{
+	time_point<system_clock> curTime = system_clock::now();
+
+	for (auto& obj : _objects) {
+		if (ST_ACTIVE != obj._status) continue;
+		if (false == IsPlayer(obj.GetID())) {
+			if (false == obj.GetIsAttack()) {
+				if (obj.GetMoveType() == RANDOM)
+					DoRandomMove(obj.GetID());
+				else DoTargetMove(obj.GetID());
+			}
+		}
+		else UpdatePlayerPos(obj.GetID());
+	}
+	_elapsedTime = curTime - _prevTime;
+
+	_prevTime = curTime;
+
+	EVENT ev{ MASTER, high_resolution_clock::now() + 200ms, EV_BROADCAST,0 };
+	AddTimer(ev);
+
+}
+
+bool CServerFrame::IsPlayer(int id)
+{
+	return id < NPC_ID_START;
+}
+
+bool CServerFrame::IsNearNPC(int player, int npc)
+{
+	Vec3 A_vPos;
+	A_vPos = _objects[player].GetPos();
+
+	Vec3 B_vPos;
+	B_vPos = _objects[npc].GetPos();
+
+	float distance = Vec3::Distance(A_vPos, B_vPos);
+
+	/*if (O_DRAKKEN == m_objects[player].GetMyType()) {
+		if (distance > 70.f) return false;
+	}
+	else if (O_PLAYER == m_objects[player].GetMyType()) {
+		if (distance > 500.f) return false;
+	}*/
+
+	return true;
+}
+
+void CServerFrame::DoRandomMove(int id)
+{
+	
+	Vec3 Pos;
+	Pos.x = _objects[id].GetPos().x;
+	Pos.y = _objects[id].GetPos().y;
+	Pos.z = _objects[id].GetPos().z;
+
+	float speed = _objects[id].GetSpeed();
+
+	int index = _objects[id].GetNextPosIndex();
+	Vec3 nextPos = _objects[id].GetNextPos(index);
+
+	Vec3 dir;
+	dir.x = nextPos.x - Pos.x;
+	dir.y = nextPos.y - Pos.y;
+	dir.z = nextPos.z - Pos.z;
+	Vec3 nor = dir.Normalize();
+
+	Pos.x += _elapsedTime.count() * speed * nor.x;
+	Pos.y += _elapsedTime.count() * speed * nor.y;
+	Pos.z += _elapsedTime.count() * speed * nor.z;
+
+
+	_objects[id].SetPos(Pos);
+	_objects[id].SetLook(nor);
+
+	float distance = Vec3::Distance(nextPos, _objects[id].GetPos());
+
+	if (distance < 50.f) {
+		index = index + 1;
+		if (index >= 3) index = 0;
+		_objects[id].SetNextPosIndex(index);
+	}
+
+
+	for (int i = 0; i < NPC_ID_START; ++i) {
+		if (ST_ACTIVE != _objects[i]._status) continue;
+		if (true == IsNear(i, id)) {
+			_objects[i].ClientLock();
+			if (0 != _objects[i].GetViewListCount(id)) {
+				_objects[i].ClientUnLock();
+				_sender->SendMovePacket(_objects[i].GetSocket(), id, _objects[id].GetPos().x, _objects[id].GetPos().y,
+					_objects[id].GetPos().z, _objects[id].GetLook().x, 
+					_objects[id].GetLook().y, _objects[id].GetLook().z, WALK,
+					std::chrono::system_clock::now());
+			}
+			else {
+				_objects[i].InsertViewList(id);
+				_objects[i].ClientUnLock();
+				_sender->SendPutObjectPacket(_objects[i].GetSocket(), id, _objects[id].GetPos().x,
+					_objects[id].GetPos().y, _objects[id].GetPos().z,
+					_objects[id].GetMyType());
+			}
+		}
+		else {
+			_objects[i].ClientLock();
+			if (0 != _objects[i].GetViewListCount(id)) {
+				_objects[i].EraseViewList(id);
+				_objects[i].ClientUnLock();
+				_sender->SendLeaveObjectPacket(_objects[i].GetSocket(), id, _objects[id].GetMyType());
+			}
+			else {
+				_objects[i].ClientUnLock();
+			}
+		}
+	}
+
+	for (int i = 0; i < NPC_ID_START; ++i) {
+		if (true == IsNear(id, i)) {
+			if (ST_ACTIVE == _objects[i]._status) {
+				return;
+			}
+		}
+	}
+	_objects[id]._status = ST_SLEEP;
+
+}
+
+bool CServerFrame::IsNear(int a, int b)
+{
+
+	if (abs(_objects[a].GetPos().x - _objects[b].GetPos().x) > VIEW_RADIUS) return false;
+	if (abs(_objects[a].GetPos().z - _objects[b].GetPos().z) > VIEW_RADIUS) return false;
+	return true;
+}
+
+void CServerFrame::DoTargetMove(int npc_id)
+{
+	
+	Vec3 Pos;
+	int player_id = _objects[npc_id].GetTargetID();
+
+	if (ST_ACTIVE != _objects[npc_id]._status) return;
+	if (ST_ACTIVE != _objects[player_id]._status) return;
+	if (RANDOM == _objects[npc_id].GetMoveType()) return;
+
+	if (true == IsPlayer(npc_id)) {
+		std::cout << "ID :" << npc_id << " is not NPC!!\n";
+		while (true);
+	}
+
+	//if (false == IsNearNPC(player_id, npc_id)) {
+	//	_objects[npc_id].SetMoveType(RANDOM);
+	//	_objects[npc_id].SetTargetID(-1);
+	//	char type = _objects[npc_id].GetMyType();
+
+	//	/*switch (type) {
+	//	case O_BARGHEST: m_objects[npc_id].SetSpeed(BARGHEST_WALK_SPEED); break;
+	//	case O_GRIFFON: m_objects[npc_id].SetSpeed(GRIFFON_WALK_SPEED); break;
+	//	case O_DRAGON:m_objects[npc_id].SetSpeed(DRAGON_WALK_SPEED); break;
+	//	}*/
+	//	return;
+	//}
+
+	float speed = _objects[npc_id].GetSpeed();
+	Pos.x = _objects[npc_id].GetPos().x;
+	Pos.y = _objects[npc_id].GetPos().y;
+	Pos.z = _objects[npc_id].GetPos().z;
+	Vec3 dir;
+	dir.x = _objects[player_id].GetPos().x - Pos.x;
+	dir.y = _objects[player_id].GetPos().y - Pos.y;
+	dir.z = _objects[player_id].GetPos().z - Pos.z;
+	Vec3 nor = dir.Normalize();
+
+	//std::cout << nor.x << ", " << nor.y << ", " << nor.z << std::endl;
+	//std::cout << m_elapsedTime.count() << std::endl;
+
+	Vec3 A_vPos;
+	A_vPos = _objects[player_id].GetPos();
+
+	Vec3 B_vPos;
+	B_vPos = _objects[npc_id].GetPos();
+
+	float distance = Vec3::Distance(A_vPos, B_vPos);
+
+	bool closed = false;
+	/*switch (m_objects[npc_id].GetMyType()) {
+	case O_DRAGON:
+		if (O_DRAKKEN == m_objects[player_id].GetMyType()) {
+			if (distance < 490.f) closed = true;
+		}
+		else if (O_PLAYER == m_objects[player_id].GetMyType()) {
+			if (distance < 310.f) closed = true;
+		}
+		break;
+	case O_BARGHEST:
+	case O_GRIFFON:
+		if (O_DRAKKEN == m_objects[player_id].GetMyType()) {
+			if (distance < 310.f) closed = true;
+		}
+		else if (O_PLAYER == m_objects[player_id].GetMyType()) {
+			if (distance < 130.f) closed = true;
+		}
+		break;
+	}*/
+
+	if (true == closed) {
+		if (false == _objects[npc_id].GetIsAttack()) {
+			_objects[npc_id].SetIsAttack(true);
+
+			EVENT new_ev{ npc_id, std::chrono::high_resolution_clock::now() + 2s, EV_ATTACK, 0 };
+			AddTimer(new_ev);
+
+			// 방어 넣으면 여기
+			if (false == _objects[player_id].GetIsDefence()) {
+				_objects[player_id].SetCurrentHp(_objects[player_id].GetCurrentHp() - _objects[npc_id].GetDamage());
+				_sender->SendHpPacket(_objects[player_id].GetSocket(), _objects[player_id].GetCurrentHp());
+				//printf("Hp: %d\n", m_objects[player_id].GetCurrentHp());
+
+				if (0 >= _objects[player_id].GetCurrentHp()) {
+					// 죽음
+					short level = _objects[player_id].GetLevel();
+					short hp = _objects[player_id].GetCurrentHp();
+					short changeHp = hp - (50 * level);
+					if (0 > changeHp) changeHp = 0;
+					_objects[player_id].SetCurrentExp(changeHp);
+					_objects[player_id].SetCurrentHp(50);
+					_objects[player_id].SetPos(VEC3_TOWN_ENTRANCE_POS);
+					_sender->SendPlayerDiePacket(_objects[player_id].GetSocket(), player_id);
+					std::unordered_set<int> vl = _objects[player_id].GetViewList();
+					for (const auto& id : vl) {
+						if (false == IsPlayer(id)) continue;
+						if (ST_ACTIVE != _objects[id]._status) continue;
+						_sender->SendPlayerDiePacket(_objects[id].GetSocket(), player_id);
+					}
+				}
+			}
+			//////////////////////
+
+			for (auto& cl : _objects) {
+				if (false == IsPlayer(cl.GetID())) continue;
+				if (false == IsNear(cl.GetID(), npc_id)) continue;
+				cl.ClientLock();
+				if (ST_ACTIVE == cl._status) {
+					_sender->SendNPCAttackPacket(cl.GetSocket(), npc_id, Pos.x, Pos.z);
+				}
+				cl.ClientUnLock();
+			}
+		}
+		return;
+	}
+
+	Pos.x += _elapsedTime.count() * speed * nor.x;
+	Pos.y += _elapsedTime.count() * speed * nor.y;
+	Pos.z += _elapsedTime.count() * speed * nor.z;
+
+	bool check = false;
+	for (int i = 0; i < NUM_OBSTACLES; ++i) {
+		if (-999 == _obstacles[i].xScale) break;
+
+		Vec3 pPos;
+		pPos.x = Pos.x;
+		pPos.y = Pos.y;
+		pPos.z = Pos.z;
+		Vec3 oPos;
+		oPos.x = _obstacles[i].xPos;
+		oPos.y = _obstacles[i].yPos;
+		oPos.z = _obstacles[i].zPos;
+		float r = _obstacles[i].zScale;
+
+		float distance = Vec3::Distance(pPos, oPos);
+
+		if (distance <= r) {
+			check = true;
+			break;
+		}
+	}
+
+	if (false == check) {
+		_objects[npc_id].SetPos(Pos);
+	}
+
+	_objects[npc_id].SetLook(nor);
+
+	char status;
+	//if (O_BARGHEST == m_objects[npc_id].GetMyType()) status = RUN;
+	//else status = WALK;
+
+	for (int i = 0; i < NPC_ID_START; ++i) {
+		if (ST_ACTIVE != _objects[i]._status) continue;
+		if (true == IsNear(i, npc_id)) {
+			_objects[i].ClientLock();
+			if (0 != _objects[i].GetViewListCount(npc_id)) {
+				_objects[i].ClientUnLock();
+				_sender->SendMovePacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos().x,
+					_objects[npc_id].GetPos().y,  _objects[npc_id].GetPos().z, 
+					_objects[npc_id].GetLook().x, _objects[npc_id].GetLook().y,
+					_objects[npc_id].GetLook().z, status, std::chrono::system_clock::now());
+			}
+			else {
+				_objects[i].InsertViewList(npc_id);
+				_objects[i].ClientUnLock();
+				_sender->SendPutObjectPacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos().x,
+					_objects[npc_id].GetPos().y, _objects[npc_id].GetPos().z, 
+					_objects[npc_id].GetMyType());
+			}
+		}
+		else {
+			_objects[i].ClientLock();
+			if (0 != _objects[i].GetViewListCount(npc_id)) {
+				_objects[i].EraseViewList(npc_id);
+				_objects[i].ClientUnLock();
+				_sender->SendLeaveObjectPacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetMyType());
+			}
+			else {
+				_objects[i].ClientUnLock();
+			}
+		}
+	}
+}
+
+
+void CServerFrame::UpdatePlayerPos(int id)
+{
+
+	unordered_set<int> vl = _objects[id].GetViewList();
+	for (const int& npc : vl) {
+		if (true == IsPlayer(npc)) continue;
+		if (ST_ACTIVE != _objects[npc]._status) continue;
+		if (true == IsNearNPC(id, npc)) {
+			_objects[npc].SetMoveType(TARGET);
+			_objects[npc].SetTargetID(id);
+			char type = _objects[npc].GetMyType();
+			/*switch (type) {
+			case O_BARGHEST: m_objects[npc].SetSpeed(BARGHEST_RUN_SPEED); break;
+			case O_GRIFFON: m_objects[npc].SetSpeed(GRIFFON_WALK_SPEED); break;
+			case O_DRAGON:m_objects[npc].SetSpeed(DRAGON_RUN_SPEED); break;
+			}*/
+		}
+	}
+
+	//if (false == m_objects[id].GetIsMove()) { 
+		//if (false == m_objects[id].GetIsHeal()) {
+		//	if (m_objects[id].GetMaxHp() > m_objects[id].GetCurrentHp()) {
+		//		m_objects[id].SetIsHeal(true);
+		//		EVENT ev{ id, std::chrono::high_resolution_clock::now() + 3s, EV_HEAL, 0 };
+		//		AddTimer(ev);
+		//	}
+		//}
+		//return;
+	//}
+
+	Vec3 pos = _objects[id].GetPos();
+	Vec3 look = _objects[id].GetLook();
+
+	_objects[id].ClientLock();
+
+	std::unordered_set<int> oldViewList = _objects[id].GetViewList();
+	_objects[id].ClientUnLock();
+	std::unordered_set<int> newViewList;
+
+	for (auto& cl : _objects) {
+		if (false == IsNear(cl.GetID(), id)) continue;
+		if (ST_SLEEP == cl._status) ActivateNPC(cl.GetID());
+		if (ST_ACTIVE != cl._status) continue;
+		if (cl.GetID() == id) continue;
+		newViewList.insert(cl.GetID());
+	}
+
+	for (auto& np : newViewList) {
+		if (0 == oldViewList.count(np)) {	// Object가 시야에 새로 들어왔을 때.
+			_objects[id].ClientLock();
+			_objects[id].InsertViewList(np);
+			_objects[id].ClientUnLock();
+			_sender->SendPutObjectPacket(_objects[id].GetSocket(), np, _objects[np].GetPos().x, 
+				_objects[np].GetPos().y, _objects[np].GetPos().z,
+				_objects[np].GetMyType());
+			if (false == IsPlayer(np)) continue;
+			_objects[np].ClientLock();
+			if (0 == _objects[np].GetViewListCount(id)) {
+				_objects[np].InsertViewList(id);
+				_objects[np].ClientUnLock();
+				_sender->SendPutObjectPacket(_objects[np].GetSocket(), id, _objects[id].GetPos().x, 
+					_objects[id].GetPos().y, _objects[id].GetPos().z,
+					_objects[id].GetMyType());
+			}
+			else {
+				_objects[np].ClientUnLock();
+				_sender->SendMovePacket(_objects[np].GetSocket(), id, _objects[id].GetPos().x, _objects[id].GetPos().y, 
+					_objects[id].GetPos().z, _objects[id].GetLook().x, _objects[id].GetLook().y, 
+					_objects[id].GetLook().z, _objects[id].GetWalkStatus(), 
+					std::chrono::system_clock::now());
+			}
+		}
+		else {							// Object가 계속 시야에 존재하고 있을 떄.
+			if (false == IsPlayer(np)) continue;
+			_objects[np].ClientLock();
+			if (0 != _objects[np].GetViewListCount(id)) {
+				_objects[np].ClientUnLock();
+				_sender->SendMovePacket(_objects[np].GetSocket(), id, _objects[id].GetPos().x, _objects[id].GetPos().y,
+					_objects[id].GetPos().z, 
+					
+					_objects[id].GetLook().x, _objects[id].GetLook().y, 
+					_objects[id].GetLook().z, _objects[id].GetWalkStatus(),
+					std::chrono::system_clock::now());
+			}
+			else {
+				_objects[np].ClientUnLock();
+				_objects[np].InsertViewList(id);
+				_sender->SendPutObjectPacket(_objects[np].GetSocket(), id, _objects[id].GetPos().x, _objects[id].GetPos().y, 
+					_objects[id].GetPos().z, _objects[id].GetMyType());
+			}
+		}
+	}
+
+	for (auto& op : oldViewList) {		// Object가 시야에서 벗어났을 때.
+		if (0 == newViewList.count(op)) {
+			_objects[id].ClientLock();
+			_objects[id].EraseViewList(op);
+			_objects[id].ClientUnLock();
+			_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), op, _objects[op].GetMyType());
+			if (false == IsPlayer(op)) continue;
+			_objects[op].ClientLock();
+			if (0 != _objects[op].GetViewListCount(id)) {
+				_objects[op].EraseViewList(id);
+				_objects[op].ClientUnLock();
+				_sender->SendLeaveObjectPacket(_objects[op].GetSocket(), id, _objects[id].GetMyType());
+			}
+			else {
+				_objects[op].ClientUnLock();
+			}
+		}
+	}
+}

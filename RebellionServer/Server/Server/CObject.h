@@ -14,7 +14,10 @@ class CObject
 
 	//ÁÂÇ¥
 
-
+	Vec3			_pos;
+	Vec3			_look;
+	Vec3			_up;
+	Vec3			_right;
 
 	float			_speed;
 
@@ -50,13 +53,17 @@ class CObject
 
 	MOVE_TYPE		_moveType;
 	int				_targetID;
-
-	//ÁÂÇ¥			_nextPos;
 	int				_nextPosIndex;
+
+	Vec3			_nextPos[3];
+	
+
+
+
 
 public:
 	std::atomic<STATUS> _status = ST_FREE;
-	OVER_EX _recvOver;
+	EXP_OVER _recvOver;
 	char _packetBuf[MAX_PACKET_SIZE];
 
 
@@ -77,8 +84,11 @@ public:
 	void ClientLock() { _clientLock.lock(); }
 	void ClientUnLock() { _clientLock.unlock(); }
 	// ÁÂÇ¥ Get Set
+	Vec3 GetPos() const { return _pos; }
+	void SetPos(Vec3 pos) { _pos = pos; }
 
-
+	Vec3 GetLook() const { return _look; }
+	void SetLook(Vec3 l) { _look = l; }
 
 	//----------------
 
@@ -148,5 +158,15 @@ public:
 
 	int GetNextPosIndex() const { return _nextPosIndex; }
 	void SetNextPosIndex(int i) { _nextPosIndex = i; }
+	Vec3 GetNextPos(int i) const { return _nextPos[i]; }
+	void SetNextPos(int i, float x, float y, float z) { 
+		_nextPos[i].x = x;
+		_nextPos[i].y = y; 
+		_nextPos[i].z = z;
+
+	}
+
+
+
 };
 

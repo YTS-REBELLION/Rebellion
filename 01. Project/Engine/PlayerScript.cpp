@@ -37,7 +37,8 @@ void CPlayerScript::update()
 	{
 		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::FRONT);
 		localPos += WorldDir * 200.f * DT;
-		
+		cout << " ÁÂÇ¥ x : " << localPos.x << "ÁÂÇ¥ z : " << localPos.z << endl;
+
 		system_clock::time_point start = system_clock::now();
 
 		g_net.Send_Move_Packet( localPos, WorldDir, vRot.y, start, DT);
@@ -50,6 +51,8 @@ void CPlayerScript::update()
 		localPos += WorldDir * 200.f * DT;
 		system_clock::time_point start = system_clock::now();
 
+		cout << " ÁÂÇ¥ x : " <<localPos.x << "ÁÂÇ¥ z : " << localPos.z << endl;
+
 		g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 
 	}
@@ -59,6 +62,7 @@ void CPlayerScript::update()
 		WorldDir = playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
 		localPos += WorldDir * 200.f * DT;
 		system_clock::time_point start = system_clock::now();
+		cout << " ÁÂÇ¥ x : " << localPos.x << "ÁÂÇ¥ z : " << localPos.z << endl;
 
 		g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 
@@ -69,6 +73,7 @@ void CPlayerScript::update()
 		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
 		localPos += WorldDir * 200.f * DT;
 		system_clock::time_point start = system_clock::now();
+		cout << " ÁÂÇ¥ x : " << localPos.x << "ÁÂÇ¥ y : " << localPos.z << endl;
 
 		g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 

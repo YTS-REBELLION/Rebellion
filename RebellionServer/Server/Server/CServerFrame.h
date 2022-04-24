@@ -38,6 +38,7 @@ class CServerFrame {
 
 	int _dummpyIndex;
 	
+	OBSTACLE _obstacles[NUM_OBSTACLES];
 
 	
 
@@ -61,7 +62,15 @@ public:
 
 	void Disconnect(int);
 
+	void ActivateNPC(int id);
+	void MoveUpdate();
+	
+	void DoRandomMove(int id);
+	void DoTargetMove(int id);
+	void UpdatePlayerPos(int id);
 
-
+	bool IsPlayer(int id);
+	bool IsNearNPC(int player, int npc);
+	bool IsNear(int a, int b);
 };
 

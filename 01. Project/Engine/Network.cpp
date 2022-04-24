@@ -256,7 +256,11 @@ void CNetwork::Send_Move_Packet(const Vec3& localPos, const Vec3& dirVec, const 
 	packet.type = CS_PACKET_MOVE;
 	packet.size = sizeof(packet);
 
+	packet.localPos = localPos;
+	packet.dirVec = dirVec;
+	
 	packet.rotate = rotate;
+
 
 	packet.start = startTime;
 	packet.deltaTime = delta;

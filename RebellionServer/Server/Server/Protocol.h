@@ -45,6 +45,10 @@ constexpr int MAX_ID_LEN = 50;
 constexpr int MAX_STR_LEN = 50;
 
 constexpr unsigned char PLAYER = 0;
+constexpr unsigned char WALK = 0;
+constexpr unsigned char RUN = 1;
+
+constexpr unsigned char NUM_OBSTACLES = 50;
 
 #pragma pack(push,1)
 

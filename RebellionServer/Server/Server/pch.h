@@ -20,6 +20,7 @@
 #include <unordered_set>
 #include <atomic>
 
+#include <cstring>
 
 
 using namespace std;

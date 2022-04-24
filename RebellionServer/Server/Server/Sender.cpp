@@ -186,16 +186,18 @@ void CSender::SendDummyPacket(SOCKET s, int id, unsigned time)
 	SendPacket(s, &packet);
 }
 
+
+
 //private function
 void CSender::SendPacket(SOCKET s, void* buff)
 {
 	char* packet = reinterpret_cast<char*>(buff);
 
 	int packet_size = packet[0];
-	OVER_EX* send_over = new OVER_EX;
-	ZeroMemory(&send_over->over, sizeof(OVER_EX));
+	EXP_OVER* send_over = new EXP_OVER;
+	ZeroMemory(&send_over->over, sizeof(EXP_OVER));
 
-	send_over->event_type = EV_SEND;
+	send_over->event_type = OP_SEND;
 	memcpy(send_over->net_buf, packet, packet_size);
 	send_over->wsabuf.buf = send_over->net_buf;
 	send_over->wsabuf.len = packet_size;
