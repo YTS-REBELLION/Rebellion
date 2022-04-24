@@ -124,8 +124,10 @@ void CPlayerScript::update()
 		vPos += 2.5 * vRight;
 
 	}
+	cout << "PlatervPos:" << vPos.x<<","<< vPos.y<<","<<vPos.z << endl;
 
 	Transform()->SetLocalPos(vPos);
 	Transform()->SetLocalRot(vRot);
+
 
 }
