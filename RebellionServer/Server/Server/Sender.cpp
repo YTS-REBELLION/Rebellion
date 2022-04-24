@@ -93,7 +93,7 @@ void CSender::SendMovePacket(SOCKET s, int mover, float x, float y, float z, flo
 void CSender::SendPutObjectPacket(SOCKET s, int id, float x, float y, float z, int objType)
 {
 	//printf("Enter º¸³Â´Ù\n");
-	sc_packet_enter packet;
+	sc_packet_put_object packet;
 	packet.id = id;
 	packet.x = x;
 	packet.y = y;

@@ -241,10 +241,7 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		std::cout << "ID : " << id << "이동" << std::endl;
 		cs_packet_move* packet = reinterpret_cast<cs_packet_move*>(buf);
 
-
-
-		cout << " 좌표 x : " << packet->localPos.x << "좌표 z : " << packet->localPos.z << endl;
-
+		
 
 
 	}
@@ -417,6 +414,34 @@ void CServerFrame::DoWorker()
 
 void CServerFrame::DoTimer()
 {
+	printf("Start timer thread\n");
+
+	while (true) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		while (true) {
+			_timerLock.lock();
+			if (true == _timerQueue.empty()) {
+				_timerLock.unlock();
+				break;
+			}
+
+			if (_timerQueue.top().wakeup_time > std::chrono::high_resolution_clock::now()) {
+				_timerLock.unlock();
+				break;
+			}
+
+			EVENT ev = _timerQueue.top();
+			_timerQueue.pop();
+			_timerLock.unlock();
+
+			EXP_OVER* exp_over = new EXP_OVER;
+			exp_over->event_type = ev.event_type;
+			*(reinterpret_cast<int*>(exp_over->net_buf)) = ev.target_obj;
+			PostQueuedCompletionStatus(_iocp, 1, ev.obj_id, &exp_over->over);
+		}
+	}
+
+
 }
 
 void CServerFrame::AddTimer(EVENT ev)
@@ -426,14 +451,6 @@ void CServerFrame::AddTimer(EVENT ev)
 	_timerLock.unlock();
 }
 
-
-//void CServerFrame::Activate_Player_Move_Event(int target, int player_id)
-//{
-//	EXP_OVER* exp_over = new EXP_OVER;
-//	exp_over->comp_op = OP_PLAYER_MOVE;
-//	exp_over -
-//
-//}
 
 
 void CServerFrame::ActivateNPC(int id)
@@ -509,6 +526,7 @@ void CServerFrame::DoRandomMove(int id)
 	dir.x = nextPos.x - Pos.x;
 	dir.y = nextPos.y - Pos.y;
 	dir.z = nextPos.z - Pos.z;
+
 	Vec3 nor = dir.Normalize();
 
 	Pos.x += _elapsedTime.count() * speed * nor.x;
@@ -542,6 +560,7 @@ void CServerFrame::DoRandomMove(int id)
 			else {
 				_objects[i].InsertViewList(id);
 				_objects[i].ClientUnLock();
+
 				_sender->SendPutObjectPacket(_objects[i].GetSocket(), id, _objects[id].GetPos().x,
 					_objects[id].GetPos().y, _objects[id].GetPos().z,
 					_objects[id].GetMyType());
@@ -727,7 +746,7 @@ void CServerFrame::DoTargetMove(int npc_id)
 
 	_objects[npc_id].SetLook(nor);
 
-	char status;
+	char status{}; // 애니메이션 상태
 	//if (O_BARGHEST == m_objects[npc_id].GetMyType()) status = RUN;
 	//else status = WALK;
 

@@ -7,9 +7,10 @@
 
 const short SERVER_PORT = 9000;
 
-#define MAX_BUFFER 1024
-#define MAX_PACKET_SIZE 255
-#define NPC_ID_START 10
+constexpr char MAX_BUFFER = 1024;
+constexpr char MAX_PACKET_SIZE = 255;
+constexpr char NPC_ID_START = 101;
+constexpr char MAX_USER = 100;
 //#define NPC_ID_START 10000
 
 
@@ -90,7 +91,7 @@ struct sc_packet_player_attack {
 };
 
 
-struct sc_packet_enter {
+struct sc_packet_put_object {
 	char size;
 	char type;
 	int id;

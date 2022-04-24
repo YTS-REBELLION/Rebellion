@@ -1,5 +1,26 @@
 #include "stdafx.h"
 #include "Network.h"
+#include "GameObject.h"
+#include "Scene.h"
+
+#include "Layer.h"
+#include "Camera.h"
+
+#include "Transform.h"
+#include "MeshRender.h"
+#include "Collider.h"     
+
+#include "PlayerScript.h"
+#include "ToolCamScript.h"
+#include "MonsterScript.h"
+
+
+
+OBJECT_TYPE CheckType(const short& id)
+{
+	if (id >= 0 && id < MAX_USER) return OBJECT_TYPE::CLIENT;
+	else if (id >= NPC_ID_START && NPC_ID_START + 100) return OBJECT_TYPE::MONSTER;
+}
 
 
 CNetwork g_net;
@@ -137,8 +158,31 @@ void CNetwork::ProcessPacket(char* ptr)
 		std::cout << "로그인 페일" << std::endl;
 
 		exit(0);
+		break;
 	}
+	case SC_PACKET_PUT_OBJECT: {
+		sc_packet_put_object* packet = reinterpret_cast<sc_packet_put_object*>(ptr);
+		int id = packet->id;
+
+		if (id == g_myid) {
+			//내꺼 만들기
+		}
+		else {
+			if (CheckType(id) == OBJECT_TYPE::CLIENT) {
+				// 다른 사람꺼
+			}
+			else if (CheckType(id) == OBJECT_TYPE::MONSTER) {
+				// 몬스터
+
+			}
+		}
+
+	}
+							 break;
 	//case 입장 패킷:
+	case SC_PACKET_LEAVE_OBJECT: {
+
+	}
 	}
 
 }
@@ -209,8 +253,14 @@ void CNetwork::Send_LogIn_Packet()
 	packet.size = sizeof(packet);
 	packet.type = CS_PACKET_LOGIN;
 	
-	char name[MAX_ID_LEN];
+	char name[MAX_ID_LEN] = "Tester";
 	string namestring;
+	
+	//cout << name << endl;
+	//strcpy_s(name, packet.name);
+
+
+
 	std::cout << "name : ";
 	std::cin >> name;
 
