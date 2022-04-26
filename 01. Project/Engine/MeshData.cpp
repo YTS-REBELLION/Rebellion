@@ -10,6 +10,7 @@
 #include "Animator3D.h"
 #include "GameObject.h"
 
+
 CMeshData::CMeshData()
 	: CResource(RES_TYPE::MESHDATA)
 {
@@ -30,6 +31,8 @@ CMeshData * CMeshData::LoadFromFBX(const wstring& _strPath)
 
 	// 메쉬 가져오기
 	CMesh* pMesh = CMesh::CreateFromContainer(loader);
+
+	pMesh->SetMinMaxVertex(loader.GetMinMaxVertex());
 
 	//// Animation 이 있는 Mesh 경우 BoneTexture 만들어두기
 	//if (pMesh->IsAnimMesh())
@@ -183,3 +186,17 @@ CGameObject * CMeshData::Instantiate()
 	return pNewObj;
 }
 
+CGameObject* CMeshData::DmyInstantiate()
+{
+	// Mesh
+	// Material
+
+	CGameObject* pNewObj = new CGameObject;
+	pNewObj->AddComponent(new CTransform);
+	pNewObj->AddComponent(new CMeshRender);
+
+	pNewObj->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pNewObj->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+
+	return pNewObj;
+}

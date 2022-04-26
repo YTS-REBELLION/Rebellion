@@ -24,6 +24,7 @@ public:
 	virtual void Save(const wstring& _strFilePath);
 
 	CGameObject* Instantiate();	
+	CGameObject* DmyInstantiate();
 
 public:
 	CMeshData();

@@ -11,10 +11,10 @@
 #include "Texture.h"
 #include "Transform.h"
 #include "MeshRender.h"
-#include "Animator2D.h"
-#include "Animation2D.h"
-#include "Collider2D.h"
-#include "Light2D.h"
+//#include "Animator2D.h"
+//#include "Animation2D.h"
+//#include "Collider2D.h"
+//#include "Light2D.h"
 #include "Light3D.h"
 
 #include "TimeMgr.h"
@@ -182,11 +182,43 @@ void CSceneMgr::init()
 	pObject->SetName(L"Player");
 	pObject->FrustumCheck(false);
 	pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-	pObject->Transform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
 
 	pObject->AddComponent(new CPlayerScript);
 	CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
 	m_pCurScene->AddGameObject(L"Player", pObject, false);
+
+	Ptr<CMeshData> DmypMeshData;
+
+	CGameObject* DmypObject = new CGameObject;
+	DmypObject = DmypMeshData->DmyInstantiate();
+	DmypObject->SetName(L"Dummy_Player");
+	DmypObject->FrustumCheck(false);
+	DmypObject->Transform()->SetLocalPos(Vec3(0.f,0.f,0.f));
+
+	DmypObject->AddComponent(new CPlayerScript);
+	CPlayerScript* Dmy_PlayerScript = DmypObject->GetScript<CPlayerScript>();
+	m_pCurScene->AddGameObject(L"Player", DmypObject, false);
+
+	//// 검
+	//CGameObject* pSwordObject = nullptr;
+	//pSwordObject = new CGameObject;
+	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Staff.fbx");
+	////pMeshData->Save(pMeshData->GetPath());
+	//// MeshData 로드
+	////Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\House.mdat", L"MeshData\\monster.mdat");
+
+	//pSwordObject = pMeshData->Instantiate();
+	//pSwordObject->SetName(L"Player_Sword");
+	//pSwordObject->FrustumCheck(false);
+	////pSwordObject->Transform()->SetLocalPos(Vec3(20.f, 100.f, 20.f));
+	//pSwordObject->Transform()->SetLocalScale(Vec3(0.01f, 0.01f, 0.01f));
+
+	////pObject->AddComponent(new CPlayerScript);
+	////CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
+	//m_pCurScene->AddGameObject(L"Player", pSwordObject, false);
+	////pObject->AddChild(pSwordObject);
 
 	// ==================
 	// Camera Object 생성
@@ -204,7 +236,7 @@ void CSceneMgr::init()
 	pMainCam->Camera()->SetLayerCheck(30, false);
 
 	CToolCamScript* PlayerCamScript = pMainCam->GetScript<CToolCamScript>();
-	PlayerCamScript->SetCameraToPlayer(pObject);
+	PlayerCamScript->SetCameraToPlayer(DmypObject);
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pMainCam);
 
 	// ==================
@@ -317,7 +349,7 @@ void CSceneMgr::init()
 	// MeshRender 설정
 	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh"));
 	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"SkyboxMtrl"));
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pSky02.GetPointer());
+	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pSky01.GetPointer());
 
 	// AddGameObject
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);

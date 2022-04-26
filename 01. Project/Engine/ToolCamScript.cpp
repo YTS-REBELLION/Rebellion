@@ -77,7 +77,7 @@ void CToolCamScript::update()
 	Vec3 vPos = Transform()->GetLocalPos();
 	CTransform* vPlayerPos = m_pPlayer->Transform();//g_Object.find(g_myid)->second->Transform();
 
-	float fDistance = 300.f; //200.f;
+	float fDistance = 500.f; //200.f;
 
 	vPos = vPlayerPos->GetLocalPos() + (vPlayerPos->GetWorldDir(DIR_TYPE::FRONT) * fDistance);
 	vPos.y = vPlayerPos->GetLocalPos().y + 200.f;

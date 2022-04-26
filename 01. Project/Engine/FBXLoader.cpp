@@ -51,6 +51,8 @@ void CFBXLoader::init()
 
 void CFBXLoader::LoadFbx(const wstring & _strPath)
 {
+	m_fileName = CPathMgr::GetFileName(_strPath.c_str());
+
 	m_vecContainer.clear();
 
 	m_pImporter = FbxImporter::Create(m_pManager, "");
@@ -89,7 +91,7 @@ void CFBXLoader::LoadFbx(const wstring & _strPath)
 	m_pImporter->Destroy();
 	
 	// 필요한 텍스쳐 로드
-	//LoadTexture();
+	LoadTexture();
 
 	// 필요한 메테리얼 생성
 	CreateMaterial();
@@ -122,7 +124,7 @@ void CFBXLoader::LoadMeshDataFromNode(FbxNode * _pNode)
 	int iChildCnt = _pNode->GetChildCount();
 	for (int i = 0; i < iChildCnt; ++i)
 	{
-		LoadMeshDataFromNode(_pNode->GetChild(i));
+		this->LoadMeshDataFromNode(_pNode->GetChild(i));
 	}
 }
 
@@ -139,18 +141,75 @@ void CFBXLoader::LoadMesh(FbxMesh * _pFbxMesh)
 
 	FbxVector4* pFbxPos = _pFbxMesh->GetControlPoints();
 
+	float fx = (float)pFbxPos[0].mData[0];
+	float fy = (float)pFbxPos[0].mData[2];
+	float fz = (float)pFbxPos[0].mData[1];
+
+	Vec4 vecMin{ Vec3(fx,fy,fz),0.f };
+	Vec4 vecMax{ };
+
 	for (int i = 0; i < iVtxCnt; ++i)
 	{
 		Container.vecPos[i].x = (float)pFbxPos[i].mData[0];
 		Container.vecPos[i].y = (float)pFbxPos[i].mData[2];
 		Container.vecPos[i].z = (float)pFbxPos[i].mData[1];
+
+		//	메쉬 별 최소, 최대 vertex 좌표값 찾기
+		if (Container.vecPos[i].x < vecMin.x)
+			vecMin.x = Container.vecPos[i].x;
+		if (Container.vecPos[i].y < vecMin.y)
+			vecMin.y = Container.vecPos[i].y;
+		if (Container.vecPos[i].z < vecMin.z)
+			vecMin.z = Container.vecPos[i].z;
+
+		if (Container.vecPos[i].x > vecMax.x)
+			vecMax.x = Container.vecPos[i].x;
+		if (Container.vecPos[i].y > vecMax.y)
+			vecMax.y = Container.vecPos[i].y;
+		if (Container.vecPos[i].z > vecMax.z)
+			vecMax.z = Container.vecPos[i].z;
 	}
+
+	//if (CResMgr::GetInst()->FindRes<CMesh>(m_fileName) == nullptr)
+	//{
+	//	// Mesh Extents Collision Mesh
+	//	// 바운딩 박스 콜리젼 매쉬 등록
+
+	//	//	플레이어 X값 스키닝 매쉬라 줫나커서 나누기 2
+	//	//vecMin.x /= 2;
+	//	//vecMax.x /= 2;
+
+	//	m_vecMMax[0] = vecMin;
+	//	m_vecMMax[1] = vecMax;
+
+	//	//CreateBoundingCubeCollisionMesh(m_vecMMax, m_fileName);
+
+	//	//구형
+	//	m_vecMMax[0].x = fabs(m_vecMMax[0].x);
+	//	m_vecMMax[0].y = fabs(m_vecMMax[0].y);
+	//	m_vecMMax[0].z = fabs(m_vecMMax[0].z);
+
+	//	//	x,y,z축 평균 벡터들
+	//	Vec3 vecAver = (m_vecMMax[1] + m_vecMMax[0]) / 2.f;
+
+	//	//	각 평균벡터들로 평균내서 충돌 반지름 길이 평균값 대충 계산
+	//	//float fRadiusAver = (vecAver.x + vecAver.y + vecAver.z) / 3;
+	//	//CreateBoundingSphereCollisionMesh(fRadiusAver, m_fileName);
+
+	//	//	CreateBoundingSphereCollisonMesh 주석처리하고 하면 리소스매니저 등록안하고 메쉬 데이터 크기만 가져가서 바운딩스피어 정의 가능하지 않을까?
+
+	//}
 
 	// 폴리곤 개수
 	int iPolyCnt = _pFbxMesh->GetPolygonCount();
 
 	// 재질의 개수 ( ==> SubSet 개수 ==> Index Buffer Count)
 	int iMtrlCnt = _pFbxMesh->GetNode()->GetMaterialCount();
+	
+	//if (iMtrlCnt == 3) {
+	//	iMtrlCnt = 2;
+	//}
+
 	Container.vecIdx.resize(iMtrlCnt);	
 
 	// 정점 정보가 속한 subset 을 알기위해서...

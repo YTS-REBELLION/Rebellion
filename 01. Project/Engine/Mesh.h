@@ -32,6 +32,9 @@ private:
 	vector<tMTBone>				m_vecBones;
 	Ptr<CTexture>				m_pBoneTex;
 
+private:
+	//	모델 객체 mesh 좌표 최소 최대값 전달을 위한 멤버변수.
+	Vec4						m_vecMMax[2];
 
 public:
 	void Create(UINT _iVtxSize, UINT _iVtxCount, BYTE* _pVtxSysMem
@@ -52,6 +55,10 @@ public:
 public:	
 	virtual void Load(const wstring& _strFullPath);
 	virtual void Save(const wstring& _strPath/*상대 경로*/);
+
+public:
+	Vec4* GetMinMaxVertex() { return m_vecMMax; }
+	void SetMinMaxVertex(Vec4* _v) { m_vecMMax[0] = _v[0]; m_vecMMax[1] = _v[1]; }
 
 public:
 	CMesh();
