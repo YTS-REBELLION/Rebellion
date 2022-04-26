@@ -53,3 +53,12 @@ namespace Vector3
 	}
 
 }
+
+
+typedef struct tagTrailVertex
+{
+	Vec3 vPosition;
+	DWORD dwColor;
+	Vec2 vTexUV;
+}TRIALVTX;
+//const unsigned long		FVF_TRAIL = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1;

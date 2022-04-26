@@ -457,6 +457,26 @@ void CSceneMgr::init()
 	// AddGameObject
 	m_pCurScene->AddGameObject(L"Default", GateHouseObject2, false);
 
+	// ===========================================================================================
+	CGameObject* GateHouseObject3 = nullptr;
+	GateHouseObject3 = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Gatehouses.fbx");
+	GateHouseObject3 = pMeshData->Instantiate();
+	GateHouseObject3->SetName(L"Gate_houses3");
+	GateHouseObject3->FrustumCheck(false);
+	//SwordObject->AddComponent(new CTransform);
+	//SwordObject->AddComponent(new CMeshRender);
+
+	// Transform 설정
+	GateHouseObject3->Transform()->SetLocalPos(Vec3(-1400.f, 100.f, 800.f));
+	GateHouseObject3->Transform()->SetLocalScale(Vec3(0.3f, 0.3f, 0.3f));
+
+	//Script 설정
+	GateHouseObject3->AddComponent(new CGateHouse);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", GateHouseObject3, false);
+
+
 	//===========================================================================================
 	for (int i = 0; i < 5;  ++i)
 	{

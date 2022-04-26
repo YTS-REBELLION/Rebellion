@@ -190,6 +190,7 @@ void CResMgr::CreateDefaultShader()
 	pShader = new CShader;
 	pShader->CreateVertexShader(L"Shader\\trail.fx", "VS_TRAIL", "vs_5_0");
 	pShader->CreatePixelShader(L"Shader\\trail.fx", "PS_TRAIL", "ps_5_0");
+
 	AddRes(L"TrailShader", pShader);
 
 
