@@ -26,6 +26,8 @@ public:
 	CGameObject* Instantiate();	
 	CGameObject* DmyInstantiate();
 
+	Ptr<CMesh> GetMesh() { return m_pMesh; }
+
 public:
 	CMeshData();
 	virtual ~CMeshData();

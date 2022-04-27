@@ -5,6 +5,8 @@
 #include "Ptr.h"
 #include "Texture.h"
 
+class CStructuredBuffer;
+
 struct tIndexInfo
 {
 	ComPtr<ID3D12Resource>		pIB;
@@ -30,7 +32,8 @@ private:
 	// Animation3D 정보
 	vector<tMTAnimClip>			m_vecAnimClip;
 	vector<tMTBone>				m_vecBones;
-	Ptr<CTexture>				m_pBoneTex;
+	CStructuredBuffer* m_pBoneFrameData; // 전체 본 프레임 정보
+	CStructuredBuffer* m_pBoneOffset;	   // 각 뼈의 offset 행렬
 
 private:
 	//	모델 객체 mesh 좌표 최소 최대값 전달을 위한 멤버변수.
@@ -43,13 +46,15 @@ public:
 	static CMesh * CreateFromContainer(CFBXLoader & _loader);
 
 	void render(UINT _iSubset = 0);
+	void render_instancing(UINT _iInstancCount, UINT _iSubset = 0);
 
 public:
 	UINT GetSubsetCount() { return (UINT)m_vecIdxInfo.size(); }
 	const vector<tMTBone>* GetBones() { return &m_vecBones; }
-	void SetBoneTex(Ptr<CTexture> _pTex) { m_pBoneTex = _pTex; }
 	const vector<tMTAnimClip>* GetAnimClip() { return &m_vecAnimClip; }
-	Ptr<CTexture> GetBoneTex() { return m_pBoneTex; }
+	CStructuredBuffer* GetBoneFrameDataBuffer() { return m_pBoneFrameData; } // 전체 본 프레임 정보
+	CStructuredBuffer* GetBoneOffsetBuffer() { return  m_pBoneOffset; }	   // 각 뼈의 offset 행렬	
+	UINT GetBoneCount() { return (UINT)m_vecBones.size(); }
 	bool IsAnimMesh() { return !m_vecAnimClip.empty(); }
 
 public:	

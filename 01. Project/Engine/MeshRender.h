@@ -20,6 +20,7 @@ public:
 
 	Ptr<CMaterial> GetCloneMaterial(UINT _iSubset = 0);
 	Ptr<CMaterial> GetSharedMaterial(UINT _iSubSet = 0) { return m_vecMtrl[_iSubSet]; }
+	UINT GetMaterialCount() { return (UINT)m_vecMtrl.size(); }
 	void SetMaterial(Ptr<CMaterial> _pMtrl, UINT _iSubset = 0);
 	
 
