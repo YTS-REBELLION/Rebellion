@@ -16,64 +16,6 @@ CToolCamScript::~CToolCamScript()
 
 void CToolCamScript::update()
 {
-	/*Vec3 vPos = Transform()->GetLocalPos();
-	float fScale = Camera()->GetScale();
-	float fSpeed = m_fSpeed;
-
-	if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
-	{
-		fSpeed *= 5.f;
-	}
-
-	if (KEY_HOLD(KEY_TYPE::KEY_W))
-	{
-		Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-		vPos += vFront * fSpeed * DT;
-	}
-
-	if (KEY_HOLD(KEY_TYPE::KEY_S))
-	{
-		Vec3 vBack = -Transform()->GetWorldDir(DIR_TYPE::FRONT);
-		vPos += vBack * fSpeed * DT;
-	}
-
-	if (KEY_HOLD(KEY_TYPE::KEY_A))
-	{
-		Vec3 vLeft = -Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-		vPos += vLeft * fSpeed * DT;
-	}
-
-	if (KEY_HOLD(KEY_TYPE::KEY_D))
-	{
-		Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-		vPos += vRight * fSpeed * DT;
-	}
-
-	if (KEY_HOLD(KEY_TYPE::KEY_1))
-	{
-		fScale -= m_fScaleSpeed * DT;
-		Camera()->SetScale(fScale);
-	}
-
-	if (KEY_HOLD(KEY_TYPE::KEY_2))
-	{
-		fScale += m_fScaleSpeed * DT;
-		Camera()->SetScale(fScale);
-	}
-
-	if (KEY_HOLD(KEY_TYPE::KEY_RBTN))
-	{
-		Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
-		Vec3 vRot = Transform()->GetLocalRot();
-
-		vRot.x -= vDrag.y * DT * 3.f;
-		vRot.y += vDrag.x * DT * 1.5f;
-
-		Transform()->SetLocalRot(vRot);
-	}
-
-	Transform()->SetLocalPos(vPos);*/
-
 	Vec3 vPos = Transform()->GetLocalPos();
 	CTransform* vPlayerPos = m_pPlayer->Transform();//g_Object.find(g_myid)->second->Transform();
 
@@ -83,5 +25,5 @@ void CToolCamScript::update()
 	vPos.y = vPlayerPos->GetLocalPos().y + 200.f;
 
 	Transform()->SetLocalPos(vPos);
-	Transform()->SetLocalRot(vPlayerPos->GetLocalRot() + Vec3(XM_PI / 8.5, XM_PI, 0.f));
+	Transform()->SetLocalRot(vPlayerPos->GetLocalRot() + Vec3(XM_PI / 11, XM_PI, 0.f));
 }
