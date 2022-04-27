@@ -173,7 +173,7 @@ void CSceneMgr::init()
 	// =============
 	// FBX 파일 로드
 	// =============
-	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player_Idle.fbx");
+	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nIdle1.fbx");
 	//pMeshData->Save(pMeshData->GetPath());
 	// MeshData 로드
 	//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\House.mdat", L"MeshData\\monster.mdat");
@@ -182,25 +182,25 @@ void CSceneMgr::init()
 	pObject->SetName(L"Player");
 	pObject->FrustumCheck(false);
 	pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-	pObject->Transform()->SetLocalScale(Vec3(0.1f, 0.1f, 0.1f));
-	pObject->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	//pObject->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
 
 	// 플레이어 스크립트 붙여주기.
 	pObject->AddComponent(new CPlayerScript);
 	CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
 	m_pCurScene->AddGameObject(L"Player", pObject, false);
 
-	//// 플레이어 애니메이션
-	//PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 0
+	// 플레이어 애니메이션
+	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 0
 
-	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nWalk_F.fbx");
-	//PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nWalk_F.fbx");
+	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
 
-	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nRun_F.fbx");
-	//PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 2
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nRun_F.fbx");
+	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 2
 
-	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@Attack1.fbx");
-	//PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@Attack1.fbx");
+	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
 
 	// 더미 플레이어 -> 초기 캐릭터가 누워있는거를 회전 시키면 카메라도 같이 회전해서 생성.
 	Ptr<CMeshData> DmypMeshData;

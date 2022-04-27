@@ -91,7 +91,7 @@ void CFBXLoader::LoadFbx(const wstring & _strPath)
 	m_pImporter->Destroy();
 	
 	// 필요한 텍스쳐 로드
-	//LoadTexture();
+	LoadTexture();
 
 	// 필요한 메테리얼 생성
 	CreateMaterial();
