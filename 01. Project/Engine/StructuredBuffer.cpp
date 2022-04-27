@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Entity.h"
 #include "StructuredBuffer.h"
 
 #include "Device.h"
@@ -147,17 +148,17 @@ void CStructuredBuffer::Create(UINT _iElementSize, UINT _iElementCount, void* _p
 	DEVICE->CreateShaderResourceView(m_pBuffer.Get(), &srvDesc, handle);
 }
 
-//void CStructuredBuffer::UpdateData(TEXTURE_REGISTER _iRegister)
-//{
-//	CDevice::GetInst()->SetBufferToRegister(this, _iRegister);
-//}
-//
-//void CStructuredBuffer::UpdateData_CS(TEXTURE_REGISTER _iRegister)
-//{
-//	CDevice::GetInst()->SetBufferToSRVRegister_CS(this, _iRegister);
-//}
-//
-//void CStructuredBuffer::UpdateRWData(UAV_REGISTER _iRegister)
-//{
-//	CDevice::GetInst()->SetBufferToUAVRegister_CS(this, _iRegister);
-//}
+void CStructuredBuffer::UpdateData(TEXTURE_REGISTER _iRegister)
+{
+	CDevice::GetInst()->SetBufferToRegister(this, _iRegister);
+}
+
+void CStructuredBuffer::UpdateData_CS(TEXTURE_REGISTER _iRegister)
+{
+	CDevice::GetInst()->SetBufferToSRVRegister_CS(this, _iRegister);
+}
+
+void CStructuredBuffer::UpdateRWData(UAV_REGISTER _iRegister)
+{
+	CDevice::GetInst()->SetBufferToUAVRegister_CS(this, _iRegister);
+}
