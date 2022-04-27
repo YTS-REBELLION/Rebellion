@@ -3,6 +3,8 @@
 
 #include "Ptr.h"
 #include "Texture.h"
+#include "Material.h"
+#include "Mesh.h"
 
 class CAnimator3D 
 	: public CComponent
@@ -16,18 +18,23 @@ private:
 	int							m_iFrameCount; // 30
 	double						m_dCurTime;
 	int							m_iCurClip; // 클립 인덱스
-	Ptr<CTexture>				m_pBoneTex; // mesh
+
+	int							m_iFrameIdx; // 클립의 현제 프레임
+	Ptr<CMaterial>				m_pBoneMtrl; // BoneData Update Compute Shader
+	CStructuredBuffer*			m_pBoneFinalMat;  // 특정 프레임의 최종 행렬
+	bool						m_bFinalMatUpdate; // 최종행렬 연산 수행여부
 
 public:
 	void SetBones(const vector<tMTBone>* _vecBones) { m_pVecBones = _vecBones; m_vecFinalBoneMat.resize(m_pVecBones->size()); }
 	void SetAnimClip(const vector<tMTAnimClip>* _vecAnimClip);
-	void SetBoneTex(Ptr<CTexture> _pBoneTex) { m_pBoneTex = _pBoneTex; }
-	Ptr<CTexture> GetBornTex() { return m_pBoneTex; }
 	void UpdateData();
 
 	void SetClipTime(int _iClipIdx, float _fTime) { m_vecClipUpdateTime[_iClipIdx] = _fTime; }
 
 	vector<Matrix>& GetFinalBoneMat() { return m_vecFinalBoneMat; }
+
+private:
+	void check_mesh(Ptr<CMesh> _pMesh);
 
 public:
 	virtual void awake() {};
