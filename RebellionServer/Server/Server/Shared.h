@@ -36,7 +36,8 @@ struct EVENT {
 
 struct EXP_OVER {
 	WSAOVERLAPPED over;
-	char	net_buf[MAX_BUFFER];
+	
+	char net_buf[MAX_BUFFER];
 	//COMP_OP		comp_op;
 	EV_TYPE		event_type;
 	union {

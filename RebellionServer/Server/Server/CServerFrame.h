@@ -57,6 +57,8 @@ public:
 	void RecvPacketProcess(int, int);
 	void AddTimer(EVENT ev);
 	void ProcessPacket(int , char*);
+	void EnterGame(int id, const char* name);
+
 
 	void Disconnect(int);
 
@@ -66,6 +68,8 @@ public:
 	void DoRandomMove(int id);
 	void DoTargetMove(int id);
 	void UpdatePlayerPos(int id);
+	void SetMoveDirection(int id, char direction, bool b);
+
 
 	bool IsPlayer(int id);
 	bool IsNearNPC(int player, int npc);

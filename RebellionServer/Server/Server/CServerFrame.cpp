@@ -112,6 +112,8 @@ std::thread CServerFrame::CreateWorkerThread()
 
 std::thread CServerFrame::CreateTimerThread()
 {
+	std::cout << "CreateTimerThread()" << std::endl;
+
 	return std::thread([this] {this->DoTimer(); });
 }
 
@@ -218,12 +220,7 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 
 		cout << "플레이어 이름 " << name << endl;
 		
-		_sender->SendLoginOkPacket(_objects[id].GetSocket(), _objects[id].GetID(),
-			0.f, 0.f, 0.f, _objects[id].GetDamage(),_objects[id].GetCurrentHp(),
-			_objects[id].GetMaxHp(), _objects[id].GetLevel(),
-			_objects[id].GetCurrentExp(), _objects[id].GetMaxExp());
-
-
+		
 
 
 
@@ -232,26 +229,33 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		// DB 구현 예정
 
 		// DB에 정보가 있을 때
-		
+		EnterGame(id, packet->name);
+
+		// 없을 때
 		//_sender->SendLoginFailPacket(_objects[id].GetSocket());
+		break;
 
 	}
-							break;
 	case CS_PACKET_MOVE: {
 		std::cout << "ID : " << id << "이동" << std::endl;
 		cs_packet_move* packet = reinterpret_cast<cs_packet_move*>(buf);
 
+		cout << "ID : " << id << endl;
+		cout << "x : " << packet->localPos.x << endl;
+		cout << "z : " << packet->localPos.x << endl;
+
+		SetMoveDirection(id, packet->direction, true);
 		
 
+		break;
 
 	}
-							break;
 
 	case CS_PACKET_TELEPORT: {
 
+		break;
 
 	}
-						   break;
 	}
 
 
@@ -649,7 +653,7 @@ void CServerFrame::DoTargetMove(int npc_id)
 
 	bool closed = false;
 	/*switch (m_objects[npc_id].GetMyType()) {
-	case O_DRAGON:
+	case 몬스터 이름:
 		if (O_DRAKKEN == m_objects[player_id].GetMyType()) {
 			if (distance < 490.f) closed = true;
 		}
@@ -657,9 +661,9 @@ void CServerFrame::DoTargetMove(int npc_id)
 			if (distance < 310.f) closed = true;
 		}
 		break;
-	case O_BARGHEST:
-	case O_GRIFFON:
-		if (O_DRAKKEN == m_objects[player_id].GetMyType()) {
+	case 몬스터 이름:
+	case 몬스터 이름:
+		if (몬스터 이름 == m_objects[player_id].GetMyType()) {
 			if (distance < 310.f) closed = true;
 		}
 		else if (O_PLAYER == m_objects[player_id].GetMyType()) {
@@ -722,10 +726,12 @@ void CServerFrame::DoTargetMove(int npc_id)
 	for (int i = 0; i < NUM_OBSTACLES; ++i) {
 		if (-999 == _obstacles[i].xScale) break;
 
+		// 플레이어
 		Vec3 pPos;
 		pPos.x = Pos.x;
 		pPos.y = Pos.y;
 		pPos.z = Pos.z;
+		// obstacles
 		Vec3 oPos;
 		oPos.x = _obstacles[i].xPos;
 		oPos.y = _obstacles[i].yPos;
@@ -836,20 +842,25 @@ void CServerFrame::UpdatePlayerPos(int id)
 			_objects[id].ClientLock();
 			_objects[id].InsertViewList(np);
 			_objects[id].ClientUnLock();
+			
 			_sender->SendPutObjectPacket(_objects[id].GetSocket(), np, _objects[np].GetPos().x, 
 				_objects[np].GetPos().y, _objects[np].GetPos().z,
 				_objects[np].GetMyType());
+
 			if (false == IsPlayer(np)) continue;
 			_objects[np].ClientLock();
 			if (0 == _objects[np].GetViewListCount(id)) {
 				_objects[np].InsertViewList(id);
 				_objects[np].ClientUnLock();
+			
 				_sender->SendPutObjectPacket(_objects[np].GetSocket(), id, _objects[id].GetPos().x, 
 					_objects[id].GetPos().y, _objects[id].GetPos().z,
 					_objects[id].GetMyType());
+
 			}
 			else {
 				_objects[np].ClientUnLock();
+				
 				_sender->SendMovePacket(_objects[np].GetSocket(), id, _objects[id].GetPos().x, _objects[id].GetPos().y, 
 					_objects[id].GetPos().z, _objects[id].GetLook().x, _objects[id].GetLook().y, 
 					_objects[id].GetLook().z, _objects[id].GetWalkStatus(), 
@@ -862,9 +873,7 @@ void CServerFrame::UpdatePlayerPos(int id)
 			if (0 != _objects[np].GetViewListCount(id)) {
 				_objects[np].ClientUnLock();
 				_sender->SendMovePacket(_objects[np].GetSocket(), id, _objects[id].GetPos().x, _objects[id].GetPos().y,
-					_objects[id].GetPos().z, 
-					
-					_objects[id].GetLook().x, _objects[id].GetLook().y, 
+					_objects[id].GetPos().z, _objects[id].GetLook().x, _objects[id].GetLook().y, 
 					_objects[id].GetLook().z, _objects[id].GetWalkStatus(),
 					std::chrono::system_clock::now());
 			}
@@ -895,4 +904,80 @@ void CServerFrame::UpdatePlayerPos(int id)
 			}
 		}
 	}
+}
+
+void CServerFrame::SetMoveDirection(int id, char direction, bool b)
+{
+
+	_objects[id].SetMoveDirection(direction, b);
+
+	//for (int i = 0; i < 4; ++i)
+		//std::cout << m_objects[id].GetMoveDirection(i) << std::endl;
+
+	for (int i = 0; i < 4; ++i) {
+		if (true == _objects[id].GetMoveDirection(i)) {
+			if (false == _objects[id].GetIsMove()) {
+				_objects[id].SetIsMove(true);
+				return;
+			}
+			return;
+		}
+	}
+
+	_objects[id].SetIsMove(false);
+
+	// 안 움직이면 클라이언트에서 IDLE 애니메이션을 보여주기 위해 멈췄음을 알려준다.
+	// 내 시야 안에 있는 PC에게만 보내주면 된다.
+	std::unordered_set<int> viewList = _objects[id].GetViewList();
+
+	for (const auto& vl : viewList) {
+		if (ST_ACTIVE != _objects[vl]._status) continue;
+		if (false == IsPlayer(vl)) continue;
+		_sender->SendStopPacket(_objects[vl].GetSocket(), id);
+
+	}
+}
+
+void CServerFrame::EnterGame(int id, const char* name)
+{
+	_objects[id].ClientLock();
+	_objects[id].SetMyName(name);
+	
+
+	_sender->SendLoginOkPacket(_objects[id].GetSocket(), _objects[id].GetID(),
+		0.f, 0.f, 0.f, _objects[id].GetDamage(), _objects[id].GetCurrentHp(),
+		_objects[id].GetMaxHp(), _objects[id].GetLevel(),
+		_objects[id].GetCurrentExp(), _objects[id].GetMaxExp());
+
+	_objects[id]._status = ST_ACTIVE;
+	_objects[id].ClientUnLock();
+
+	for (auto& cl : _objects) {
+		int i = cl.GetID();
+		if(id == 1)continue;
+		if (true == IsNear(id, i)) {
+			if (ST_SLEEP == _objects[i]._status) {
+				ActivateNPC(i);
+			}
+
+			if (ST_ACTIVE == _objects[i]._status) {
+				_objects[id].ClientLock();
+				_objects[id].InsertViewList(i);
+				_objects[id].ClientUnLock();
+
+				_sender->SendPutObjectPacket(_objects[id].GetSocket(), i, _objects[i].GetPos().x,
+					_objects[i].GetPos().y, _objects[i].GetPos().z, _objects[i].GetMyType());
+				if (true == IsPlayer(i)) {
+					_objects[i].ClientLock();
+					_objects[i].InsertViewList(id);
+					_objects[i].ClientUnLock();
+					_sender->SendPutObjectPacket(_objects[i].GetSocket(), id, _objects[id].GetPos().x,
+						_objects[id].GetPos().y, _objects[id].GetPos().z, _objects[i].GetMyType());
+				}
+			}
+		}
+
+
+	}
+
 }

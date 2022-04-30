@@ -7,10 +7,10 @@
 
 const short SERVER_PORT = 9000;
 
-constexpr char MAX_BUFFER = 1024;
-constexpr char MAX_PACKET_SIZE = 255;
-constexpr char NPC_ID_START = 101;
-constexpr char MAX_USER = 100;
+constexpr int MAX_BUFFER = 1024;
+constexpr int MAX_PACKET_SIZE = 255;
+constexpr int NPC_ID_START = 101;
+constexpr int MAX_USER = 100;
 //#define NPC_ID_START 10000
 
 

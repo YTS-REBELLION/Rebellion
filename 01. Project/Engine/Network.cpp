@@ -168,8 +168,11 @@ void CNetwork::ProcessPacket(char* ptr)
 			//내꺼 만들기
 		}
 		else {
-			if (CheckType(id) == OBJECT_TYPE::CLIENT) {
+			if (CheckType(id) == OBJECT_TYPE::PLAYER) {
 				// 다른 사람꺼
+				
+					
+
 			}
 			else if (CheckType(id) == OBJECT_TYPE::MONSTER) {
 				// 몬스터
@@ -192,7 +195,7 @@ void CNetwork::Process_Data(char* net_buf, size_t& io_byte)
 	char* ptr = net_buf;
 	static size_t in_packet_size = 0;
 	static size_t saved_packet_size = 0;
-	static char packet_buffer[MAX_BUFFER];
+	static char packet_buffer[1024];
 
 
 	while (0 != io_byte) {
@@ -310,7 +313,6 @@ void CNetwork::Send_Move_Packet(const Vec3& localPos, const Vec3& dirVec, const 
 	packet.dirVec = dirVec;
 	
 	packet.rotate = rotate;
-
 
 	packet.start = startTime;
 	packet.deltaTime = delta;
