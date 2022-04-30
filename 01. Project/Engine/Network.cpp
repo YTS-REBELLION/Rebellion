@@ -8,7 +8,7 @@
 
 #include "Transform.h"
 #include "MeshRender.h"
-#include "Collider.h"     
+//#include "Collider.h"     
 
 #include "PlayerScript.h"
 #include "ToolCamScript.h"
@@ -18,7 +18,7 @@
 
 OBJECT_TYPE CheckType(const short& id)
 {
-	if (id >= 0 && id < MAX_USER) return OBJECT_TYPE::CLIENT;
+	if (id >= 0 && id < MAX_USER) return OBJECT_TYPE::PLAYER;
 	else if (id >= NPC_ID_START && NPC_ID_START + 100) return OBJECT_TYPE::MONSTER;
 }
 
@@ -170,8 +170,45 @@ void CNetwork::ProcessPacket(char* ptr)
 		else {
 			if (CheckType(id) == OBJECT_TYPE::PLAYER) {
 				// 다른 사람꺼
-				
-					
+				CGameObject* pObject = nullptr;
+
+				//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Basic_Bandit.fbx");
+				////pMeshData->Save(pMeshData->GetPath());
+				//// MeshData 로드
+				////Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\House.mdat", L"MeshData\\monster.mdat");
+
+				//pObject = pMeshData->Instantiate();
+				//pObject->SetName(L"Player_Man");
+				//pObject->FrustumCheck(false);
+				//pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+				//pObject->Transform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+
+				//pObject->AddComponent(new CPlayerScript);
+				//CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
+				//m_pCurScene->AddGameObject(L"Player", pObject, false);
+
+				pObject = new CGameObject;
+				pObject->SetName(L"Player_Man");
+				pObject->AddComponent(new CTransform);
+				pObject->AddComponent(new CMeshRender);	
+
+
+				// Transform 설정
+				pObject->Transform()->SetLocalPos(Vec3(packet->x, packet->y, packet->z));
+				pObject->Transform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+
+				// MeshRender 설정
+				pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh"));
+				pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));	
+				//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pNormalTargetTex.GetPointer());
+				//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
+
+				pObject->AddComponent(new CPlayerScript);
+				CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
+				 
+				// AddGameObject
+				//CSm_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
+				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pObject, false);
 
 			}
 			else if (CheckType(id) == OBJECT_TYPE::MONSTER) {

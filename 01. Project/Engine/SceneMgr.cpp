@@ -179,7 +179,7 @@ void CSceneMgr::init()
 	//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\House.mdat", L"MeshData\\monster.mdat");
 	
 	pObject = pMeshData->Instantiate();
-	pObject->SetName(L"Player");
+	pObject->SetName(L"Player_Man");
 	pObject->FrustumCheck(false);
 	pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 	pObject->Transform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
