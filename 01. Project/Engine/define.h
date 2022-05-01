@@ -152,6 +152,11 @@ enum class COLLIDER2D_TYPE
 {
 	RECT,
 	CIRCLE,
+	BOX,
+	SPHERE,
+	MESH,
+	SPHEREMESH,
+	RANGE,
 };
 
 enum class SHADER_PARAM
