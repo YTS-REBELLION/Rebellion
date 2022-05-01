@@ -136,7 +136,7 @@ void CNetwork::Receive()
 void CNetwork::ProcessPacket(char* ptr)
 {
 
-	std::cout << "Process Packet" << std::endl;
+	//std::cout << "Process Packet" << std::endl;
 	switch (ptr[1]) {
 	//case 로그인 패킷:
 	
@@ -150,26 +150,29 @@ void CNetwork::ProcessPacket(char* ptr)
 		std::cout << "플레이어 레벨 : "<<p->level << std::endl;
 		std::cout << "플레이어 경험치 : " << p->c_exp << " / " << p->m_exp << std::endl;
 		
+		break;
 
 	}
-	break;
 
 	case SC_PACKET_LOGIN_FAIL: {
 		std::cout << "로그인 페일" << std::endl;
 
 		exit(0);
 		break;
+
 	}
 	case SC_PACKET_PUT_OBJECT: {
+		cout << "enter 받았다\n";
 		sc_packet_put_object* packet = reinterpret_cast<sc_packet_put_object*>(ptr);
 		int id = packet->id;
-
+		
 		if (id == g_myid) {
 			//내꺼 만들기
 		}
 		else {
 			if (CheckType(id) == OBJECT_TYPE::PLAYER) {
 				// 다른 사람꺼
+				cout << "다른 사람 입장 " << endl;
 				CGameObject* pObject = nullptr;
 
 				//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Basic_Bandit.fbx");
@@ -187,29 +190,53 @@ void CNetwork::ProcessPacket(char* ptr)
 				//CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
 				//m_pCurScene->AddGameObject(L"Player", pObject, false);
 
+				//pObject = new CGameObject;
+				//pObject->SetName(L"Player_Man");
+				//pObject->AddComponent(new CTransform);
+				//pObject->AddComponent(new CMeshRender);	
+
+
+				//cout << "ID : " << id << endl;
+				//cout << "x : " << packet->x << ", z : " << packet->z << endl;
+
+				//// Transform 설정
+				//pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+				//pObject->Transform()->SetLocalScale(Vec3(30.f, 30.f, 30.f));
+
+				//// MeshRender 설정
+				//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+				//pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));	
+				////pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pNormalTargetTex.GetPointer());
+				////pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
+
+				//pObject->AddComponent(new CPlayerScript);
+				//CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
+				// 
+				//// AddGameObject
+				////CSm_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
+				//CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pObject, false);
+
 				pObject = new CGameObject;
 				pObject->SetName(L"Player_Man");
 				pObject->AddComponent(new CTransform);
 				pObject->AddComponent(new CMeshRender);	
 
-
 				// Transform 설정
 				pObject->Transform()->SetLocalPos(Vec3(packet->x, packet->y, packet->z));
-				pObject->Transform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+				pObject->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
 
 				// MeshRender 설정
 				pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh"));
-				pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));	
+				pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));	
 				//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pNormalTargetTex.GetPointer());
 				//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
 
-				pObject->AddComponent(new CPlayerScript);
-				CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
-				 
-				// AddGameObject
-				//CSm_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
-				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pObject, false);
+				 //Script 설정
+				 pObject->AddComponent(new CMonsterScript);
 
+				// AddGameObject
+				 CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pObject, false);
+				//m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
 			}
 			else if (CheckType(id) == OBJECT_TYPE::MONSTER) {
 				// 몬스터
@@ -304,7 +331,7 @@ void CNetwork::Send_LogIn_Packet()
 	std::cout << "name : ";
 	std::cin >> name;
 
-
+	
 
 	sprintf_s(packet.name, name);
 	strcpy_s(name, packet.name);

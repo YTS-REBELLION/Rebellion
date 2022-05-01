@@ -9,7 +9,7 @@ const short SERVER_PORT = 9000;
 
 constexpr int MAX_BUFFER = 1024;
 constexpr int MAX_PACKET_SIZE = 255;
-constexpr int NPC_ID_START = 101;
+constexpr short NPC_ID_START = 101;
 constexpr int MAX_USER = 100;
 //#define NPC_ID_START 10000
 
@@ -98,6 +98,18 @@ struct sc_packet_put_object {
 	char name[MAX_ID_LEN];
 	unsigned char objectType;
 	float x, y, z;
+
+	/*char size;
+	char type;
+	short  id;
+
+	Vec3 localVec;
+
+	float RotateY;
+
+	short hp;
+	char name[MAX_ID_LEN];
+	char o_type;*/
 };
 
 struct sc_packet_leave {

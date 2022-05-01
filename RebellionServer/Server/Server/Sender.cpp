@@ -4,6 +4,8 @@
 #include "Sender.h"
 #include "Error.h"
 #include "Shared.h"
+#include "CServerFrame.h"
+
 
 CSender::CSender()
 {
@@ -92,7 +94,7 @@ void CSender::SendMovePacket(SOCKET s, int mover, float x, float y, float z, flo
 
 void CSender::SendPutObjectPacket(SOCKET s, int id, float x, float y, float z, int objType)
 {
-	//printf("Enter 보냈다\n");
+	printf("Enter 보냈다\n");
 	sc_packet_put_object packet;
 	packet.id = id;
 	packet.x = x;
@@ -104,6 +106,38 @@ void CSender::SendPutObjectPacket(SOCKET s, int id, float x, float y, float z, i
 
 	SendPacket(s, &packet);
 }
+//
+//void CSender::Send_Enter_Packet(SOCKET s, Vec3 target_pos, const short& id, const short& other_id)
+//{
+//	sc_packet_put_object p;
+//	p.id = other_id;
+//	p.size = sizeof(p);
+//	p.type = SC_PACKET_PUT_OBJECT;
+//	p.localVec = target_pos;
+//	//p.localVec = Netmgr.GetMediatorMgr()->Find(other_id)->GetLocalPosVector();
+//	//p.RotateY = Netmgr.GetMediatorMgr()->Find(other_id)->GetRoatateVector().y;
+//	//strcpy_s(p.name, Netmgr.GetMediatorMgr()->Find(other_id)->GetName());    // data race???
+//	p.o_type = 0;
+//	//if (p.id >= START_MONSTER && p.id < END_MONSTER)
+//	//{
+//	//	p.hp = dynamic_cast<CMonster*>(Netmgr.GetMediatorMgr()->Find(other_id))->GetHP();
+//
+//	//	/*   cout << "********************" << endl;
+//	//	   cout << other_id << "가 " << user_id << "에게  Enter Packet 전송" << endl;
+//	//	   cout << "Monster POS ->   <" << Netmgr.GetMediatorMgr()->Find(other_id)->GetLocalPosVector().x << ", "
+//	//		   << Netmgr.GetMediatorMgr()->Find(other_id)->GetLocalPosVector().z << ">" << endl;
+//	//	   cout << "********************" << endl << endl;*/
+//	//}
+//	p.hp = 100;
+//	{
+//		cout << "********************" << endl;
+//		cout << "********************" << endl;
+//		cout << other_id << "가 " << id << "에게 Enter Packet 전송" << endl;
+//		cout << "********************" << endl;
+//		cout << "********************" << endl;
+//	}
+//	SendPacket(s, &p);
+//}
 
 void CSender::SendStopPacket(SOCKET s, int id)
 {

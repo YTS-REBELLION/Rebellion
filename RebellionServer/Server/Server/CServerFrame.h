@@ -22,7 +22,7 @@ class CServerFrame {
 	//class
 	CError*		_error;
 	CSender*	_sender;
-	CObject		_objects[10000];
+	CObject		_objects[101];
 
 
 
@@ -69,7 +69,7 @@ public:
 	void DoTargetMove(int id);
 	void UpdatePlayerPos(int id);
 	void SetMoveDirection(int id, char direction, bool b);
-
+	void Do_move(const short& id, const char& dir, Vec3& localPos, const float& rotate);
 
 	bool IsPlayer(int id);
 	bool IsNearNPC(int player, int npc);

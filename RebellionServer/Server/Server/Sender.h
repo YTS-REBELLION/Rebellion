@@ -24,7 +24,7 @@ public:
 	void SendHpPacket(SOCKET s, short currentHp);
 	void SendDefencePacket(SOCKET s, int id, bool kind);
 	void SendDummyPacket(SOCKET s, int id, unsigned time);
-
+	void Send_Enter_Packet(SOCKET s, Vec3 target_pos, const short& id, const short& other_id);
 	void Activate_Player_Move_Event(int target, int player_id);
 private:
 	void SendPacket(SOCKET s, void* buff);
