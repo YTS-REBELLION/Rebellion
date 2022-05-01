@@ -165,6 +165,34 @@ bool CCollisionMgr::IsCollision(CCollider2D * _pCollider1, CCollider2D * _pColli
 	{
 		return CollisionCircle(_pCollider1, _pCollider2);
 	}
+	else if (COLLIDER2D_TYPE::BOX == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::BOX == _pCollider2->GetColliderType())
+	{
+
+	}
+	else if (COLLIDER2D_TYPE::SPHERE == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::SPHERE == _pCollider2->GetColliderType())
+	{
+
+	}
+	else if (COLLIDER2D_TYPE::BOX == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::SPHERE == _pCollider2->GetColliderType())
+	{
+
+	}
+	else if (COLLIDER2D_TYPE::SPHERE == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::BOX == _pCollider2->GetColliderType())
+	{
+
+	}
+	else if (COLLIDER2D_TYPE::MESH == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::MESH == _pCollider2->GetColliderType())
+	{
+
+	}
+	else if (COLLIDER2D_TYPE::MESH == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::BOX == _pCollider2->GetColliderType())
+	{
+
+	}
+	else if (COLLIDER2D_TYPE::BOX == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::MESH == _pCollider2->GetColliderType())
+	{
+
+	}
 	else
 	{
 		return CollisionRectCircle(_pCollider1, _pCollider2);

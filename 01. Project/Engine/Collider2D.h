@@ -42,7 +42,9 @@ public:
 	const Vec3& GetOffsetScale() { return m_vOffsetScale; }
 	COLLIDER2D_TYPE GetColliderType() { return m_eType;}
 
-	void SetCollider2DType(COLLIDER2D_TYPE _eType);
+	void SetColliderType(COLLIDER2D_TYPE _eType);
+	void SetFBXColliderType(wstring _str);
+
 	UINT GetColID() { return m_iColID; }
 	const Matrix& GetColliderWorldMat() { return m_matColWorld; }
 

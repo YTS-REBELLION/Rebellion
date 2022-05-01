@@ -20,10 +20,10 @@ CCollider2D::CCollider2D()
 	, m_pColMtrl(nullptr)
 	, m_iColID(g_iColID++)
 	, m_iCollisionCount(0)
-	, m_eType(COLLIDER2D_TYPE::RECT)
+	, m_eType(COLLIDER2D_TYPE::BOX)
 {
-	m_pColMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Collider2DMtrl_0");
-	SetCollider2DType(m_eType);
+	m_pColMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"ColliderMtrl");
+	SetColliderType(m_eType);
 }
 
 CCollider2D::CCollider2D(const CCollider2D & _other)
@@ -85,7 +85,7 @@ void CCollider2D::render()
 	memset(&m_matColWorld, 0, sizeof(Matrix));
 }
 
-void CCollider2D::SetCollider2DType(COLLIDER2D_TYPE _eType)
+void CCollider2D::SetColliderType(COLLIDER2D_TYPE _eType)
 {
 	m_eType = _eType;
 
@@ -97,6 +97,19 @@ void CCollider2D::SetCollider2DType(COLLIDER2D_TYPE _eType)
 	{
 		m_pColMesh = CResMgr::GetInst()->FindRes<CMesh>(L"ColCircleMesh");
 	}
+	else if (COLLIDER2D_TYPE::BOX == m_eType)
+	{
+		m_pColMesh = CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh");
+	}
+	else
+	{
+		m_pColMesh = CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh");
+	}
+}
+
+void CCollider2D::SetFBXColliderType(wstring _str)
+{
+	m_pColMesh = CResMgr::GetInst()->FindRes<CMesh>(_str);
 }
 
 void CCollider2D::OnCollisionEnter(CCollider2D * _pOther)
@@ -112,10 +125,10 @@ void CCollider2D::OnCollisionEnter(CCollider2D * _pOther)
 
 void CCollider2D::OnCollision(CCollider2D * _pOther)
 {
-	if (0 < m_iCollisionCount)
-	{
-		m_pColMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Collider2DMtrl_1");
-	}
+	//if (0 < m_iCollisionCount)
+	//{
+	//	m_pColMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Collider2DMtrl_1");
+	//}
 
 	const vector<CScript*>& vecScripts = GetObj()->GetScripts();
 	for (size_t i = 0; i < vecScripts.size(); ++i)
@@ -127,8 +140,8 @@ void CCollider2D::OnCollision(CCollider2D * _pOther)
 void CCollider2D::OnCollisionExit(CCollider2D * _pOther)
 {	
 	m_iCollisionCount -= 1;
-	if(m_iCollisionCount == 0)
-		m_pColMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Collider2DMtrl_0");
+	//if(m_iCollisionCount == 0)
+	//	m_pColMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Collider2DMtrl_0");
 
 	const vector<CScript*>& vecScripts = GetObj()->GetScripts();
 	for (size_t i = 0; i < vecScripts.size(); ++i)
@@ -153,5 +166,5 @@ void CCollider2D::LoadFromScene(FILE * _pFile)
 	fread(&m_vOffsetPos, sizeof(Vec3), 1, _pFile);
 	fread(&m_vOffsetScale, sizeof(Vec3), 1, _pFile);
 	fread(&m_eType, sizeof(UINT), 1, _pFile);
-	SetCollider2DType(m_eType);
+	SetColliderType(m_eType);
 }
