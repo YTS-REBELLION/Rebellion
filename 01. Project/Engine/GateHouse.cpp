@@ -29,8 +29,7 @@ void CGateHouse::update()
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
 	Vec3 vRot = Transform()->GetLocalRot();
 	vRot.x = 17.26f;
-	//vRot.x += 1.f*DT;
-	//cout << "Rot:" << vRot.x << endl;
+	
 	Transform()->SetLocalPos(localPos);
 	Transform()->SetLocalRot(vRot);
 

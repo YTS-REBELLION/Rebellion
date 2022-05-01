@@ -53,6 +53,9 @@ void CCollisionMgr::CheckCollisionLayer(const wstring & _strLayerName1, const ws
 	int iMaxIdx = max(iIdx1, iIdx2);
 
 	m_LayerCheck[iMinIdx] |= (1 << iMaxIdx);
+
+
+	cout << "Ãæµ¹Áß" << endl;
 }
 
 void CCollisionMgr::CheckCollisionLayer(int _iLayerIdx1, int _iLyaerIdx2)

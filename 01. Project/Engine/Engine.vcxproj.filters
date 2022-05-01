@@ -239,6 +239,9 @@
     <ClInclude Include="Somethings.h">
       <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
     </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -402,6 +405,9 @@
       <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
     </ClCompile>
     <ClCompile Include="Somethings.cpp">
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="Portal.cpp">
       <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
     </ClCompile>
   </ItemGroup>

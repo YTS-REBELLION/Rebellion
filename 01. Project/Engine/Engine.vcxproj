@@ -207,6 +207,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="Network.h" />
     <ClInclude Include="PathMgr.h" />
     <ClInclude Include="PlayerScript.h" />
+    <ClInclude Include="Portal.h" />
     <ClInclude Include="Ptr.h" />
     <ClInclude Include="RenderMgr.h" />
     <ClInclude Include="ResMgr.h" />
@@ -268,6 +269,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="Network.cpp" />
     <ClCompile Include="PathMgr.cpp" />
     <ClCompile Include="PlayerScript.cpp" />
+    <ClCompile Include="Portal.cpp" />
     <ClCompile Include="RenderMgr.cpp" />
     <ClCompile Include="RenderMgrInit.cpp" />
     <ClCompile Include="ResMgr.cpp" />
