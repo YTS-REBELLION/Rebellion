@@ -531,468 +531,468 @@ void CSceneMgr::init()
 
 	//===========================================================================================
 	
-		 pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Something.fbx");
+	 pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Something.fbx");
 
-		CGameObject* SomethingObject = nullptr;
-		SomethingObject = new CGameObject;
-		SomethingObject = pMeshData->Instantiate();
-		SomethingObject->SetName(L"Something");
-		SomethingObject->FrustumCheck(false);
-		//SwordObject->AddComponent(new CTransform);
-		//SwordObject->AddComponent(new CMeshRender);
+	CGameObject* SomethingObject = nullptr;
+	SomethingObject = new CGameObject;
+	SomethingObject = pMeshData->Instantiate();
+	SomethingObject->SetName(L"Something");
+	SomethingObject->FrustumCheck(false);
+	//SwordObject->AddComponent(new CTransform);
+	//SwordObject->AddComponent(new CMeshRender);
 
-		// Transform 설정
-		SomethingObject->Transform()->SetLocalPos(Vec3(500.f, 10.f, 500.f));
-		SomethingObject->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
+	// Transform 설정
+	SomethingObject->Transform()->SetLocalPos(Vec3(500.f, 10.f, 500.f));
+	SomethingObject->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
 
-		//Script 설정
-		SomethingObject->AddComponent(new CSomethings);
-		// AddGameObject
-		m_pCurScene->AddGameObject(L"Default", SomethingObject, false);
+	//Script 설정
+	SomethingObject->AddComponent(new CSomethings);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", SomethingObject, false);
 
 	
-		
-		pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\DragonJawPortal.fbx");
-
-		CGameObject* PortalObject = nullptr;
-		PortalObject = new CGameObject;
-		
-		PortalObject = pMeshData->Instantiate();
-		PortalObject->SetName(L"DragonJawPortal");
-		PortalObject->FrustumCheck(false);
-		
-
-		// Transform 설정
-		PortalObject->Transform()->SetLocalPos(Vec3(12.5f,70.f,1300.f));
-		PortalObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-
-		//Script 설정
-		PortalObject->AddComponent(new CPortal);
-		// AddGameObject
-		
-		m_pCurScene->AddGameObject(L"Default", PortalObject, false);
-		//m_pCurScene->FindLayer(L"Portal")->AddGameObject(pObject);
 	
-//=============================================================================================================================
-		// Map 오브젝트 생성
-		for (int j = 0; j < 10; ++j)
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\DragonJawPortal.fbx");
+
+	CGameObject* PortalObject = nullptr;
+	PortalObject = new CGameObject;
+	
+	PortalObject = pMeshData->Instantiate();
+	PortalObject->SetName(L"DragonJawPortal");
+	PortalObject->FrustumCheck(false);
+	
+
+	// Transform 설정
+	PortalObject->Transform()->SetLocalPos(Vec3(12.5f,70.f,1300.f));
+	PortalObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+
+	//Script 설정
+	PortalObject->AddComponent(new CPortal);
+	// AddGameObject
+	
+	m_pCurScene->AddGameObject(L"Default", PortalObject, false);
+	//m_pCurScene->FindLayer(L"Portal")->AddGameObject(pObject);
+	
+	//===================
+	// Map 오브젝트 생성
+	//===================
+	for (int j = 0; j < 10; ++j)
+	{
+		for (int i = -2; i < 10; ++i)
 		{
-			for (int i = -2; i < 10; ++i)
-			{
-				pObject = new CGameObject;
-				pObject->SetName(L"Map Object");
-				pObject->AddComponent(new CTransform);
-				pObject->AddComponent(new CMeshRender);
+			pObject = new CGameObject;
+			pObject->SetName(L"Map Object");
+			pObject->AddComponent(new CTransform);
+			pObject->AddComponent(new CMeshRender);
 
-				// Transform 설정
-				pObject->Transform()->SetLocalPos(Vec3(i * 1000.f - 1000.f, 1000.f, j * 1000.f - 1000.f));
-				pObject->Transform()->SetLocalScale(Vec3(1000.f, 1000.f, 1.f));
-				pObject->Transform()->SetLocalRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
+			// Transform 설정
+			pObject->Transform()->SetLocalPos(Vec3(i * 1000.f - 1000.f, 1000.f, j * 1000.f - 1000.f));
+			pObject->Transform()->SetLocalScale(Vec3(1000.f, 1000.f, 1.f));
+			pObject->Transform()->SetLocalRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
 
-				// MeshRender 설정
-				pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-				pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-				pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
-				pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
+			// MeshRender 설정
+			pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+			pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
+			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
 
-				// AddGameObject
-				m_pCurScene->FindLayer(L"Map")->AddGameObject(pObject);
-			}
+			// AddGameObject
+			m_pCurScene->FindLayer(L"Map")->AddGameObject(pObject);
 		}
+	}
 
 
 
-		//미로-------------------------------------------------------------------------------------------------------------------
+	//미로----
 
-			CGameObject* MiroObject = nullptr;
-		
-			
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(250.f, 1100.f, 1000.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(250.f, 400.f, 1500.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+	CGameObject* MiroObject = nullptr;
+	
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(250.f, 1100.f, 1000.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(250.f, 400.f, 1500.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
 
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(-250.f, 1100.f, 750.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(250.f, 400.f, 1000.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(-250.f, 1100.f, 750.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(250.f, 400.f, 1000.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
-			
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+	
 
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(0.f, 1100.f, 1750.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(750.f, 400.f, 250.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(0.f, 1100.f, 1750.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(750.f, 400.f, 250.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
 
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(-500.f, 1100.f, 1150.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(500.f, 400.f, 250.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(-500.f, 1100.f, 1150.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(500.f, 400.f, 250.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
-
-
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(-800.f, 1100.f, 2000.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(250.f, 400.f, 1500.f)); 
-				// MeshRender 설정
-				MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
-
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
-
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(-350.f, 1100.f, 2250.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(250.f, 400.f, 1500.f)); 
-				// MeshRender 설정
-				MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
-
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
-		
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(-1400.f, 1100.f, 2625.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(1000.f, 400.f, 250.f)); 
-				// MeshRender 설정
-				MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
-
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
-
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(-1400.f, 1100.f, 4625.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(1000.f, 400.f, 250.f)); 
-				// MeshRender 설정
-				MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
-
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
-		
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(25.f, 1100.f, 3050.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(1000.f, 400.f, 250.f));
-				// MeshRender 설정
-				MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
-
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
-
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(-2000.f, 1100.f, 3550.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(250.f, 400.f, 2000.f)); 
-				// MeshRender 설정
-				MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
-
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
-
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(-850.f, 1100.f, 3750.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(250.f, 400.f, 1500.f)); 
-				// MeshRender 설정
-				MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
-
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
-
-			
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(25.f, 1100.f, 3550.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(1000.f, 400.f, 250.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
-
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
 
 
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(400.f, 1100.f, 2750.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(250.f, 400.f, 500.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(-800.f, 1100.f, 2000.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(250.f, 400.f, 1500.f)); 
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
 
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(1200.f, 1100.f, 2550.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(1500.f, 400.f, 250.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(-350.f, 1100.f, 2250.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(250.f, 400.f, 1500.f)); 
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
-			
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(1200.f, 1100.f, 4550.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(1500.f, 400.f, 250.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+	
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(-1400.f, 1100.f, 2625.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(1000.f, 400.f, 250.f)); 
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
 
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(-1400.f, 1100.f, 4625.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(1000.f, 400.f, 250.f)); 
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(1850.f, 1100.f, 3500.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(100.f, 400.f, 3000.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+	
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(25.f, 1100.f, 3050.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(1000.f, 400.f, 250.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
 
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(475.f, 1100.f, 4200.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(100.f, 400.f, 1100.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(-2000.f, 1100.f, 3550.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(250.f, 400.f, 2000.f)); 
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
 
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(-350.f, 1100.f, 4200.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(250.f, 400.f, 1500.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(-850.f, 1100.f, 3750.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(250.f, 400.f, 1500.f)); 
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
 
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(-700.f, 1100.f, 5000.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(1500.f, 400.f, 200.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(25.f, 1100.f, 3550.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(1000.f, 400.f, 250.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
-
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(-1900.f, 1100.f, 5500.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(100.f, 400.f, 1500.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
-
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
-
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(-1400.f, 1100.f, 5500.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(100.f, 400.f, 1000.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
-
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
 
 
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(-600.f, 1100.f, 5900.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(1000.f, 400.f, 100.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(400.f, 1100.f, 2750.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(250.f, 400.f, 500.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
 
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(1200.f, 1100.f, 2550.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(1500.f, 400.f, 250.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(-2600.f, 1100.f, 6200.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(1500.f, 400.f, 200.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+	
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(1200.f, 1100.f, 4550.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(1500.f, 400.f, 250.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
-
-
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(-950.f, 1100.f, 6000.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(1000.f, 400.f, 200.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
-
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
 
 
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(-3100.f, 1100.f, 7500.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(100.f, 400.f, 3000.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(1850.f, 1100.f, 3500.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(100.f, 400.f, 3000.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
 
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(-400.f, 1100.f, 7500.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(100.f, 400.f, 3000.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(475.f, 1100.f, 4200.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(100.f, 400.f, 1100.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(-350.f, 1100.f, 4200.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(250.f, 400.f, 1500.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(-700.f, 1100.f, 5000.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(1500.f, 400.f, 200.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(-1900.f, 1100.f, 5500.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(100.f, 400.f, 1500.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(-1400.f, 1100.f, 5500.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(100.f, 400.f, 1000.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
 
 
-			MiroObject = new CGameObject;
-			MiroObject->SetName(L"MIRO");
-			MiroObject->AddComponent(new CTransform);
-			MiroObject->AddComponent(new CMeshRender);
-			// Transform 설정
-			MiroObject->Transform()->SetLocalPos(Vec3(-1600.f, 1100.f, 8800.f));
-			MiroObject->Transform()->SetLocalScale(Vec3(3000.f, 400.f, 100.f));
-			// MeshRender 설정
-			MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-			MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(-600.f, 1100.f, 5900.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(1000.f, 400.f, 100.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-			// AddGameObject
-			m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+
+
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(-2600.f, 1100.f, 6200.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(1500.f, 400.f, 200.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+
+
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(-950.f, 1100.f, 6000.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(1000.f, 400.f, 200.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+
+
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(-3100.f, 1100.f, 7500.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(100.f, 400.f, 3000.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(-400.f, 1100.f, 7500.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(100.f, 400.f, 3000.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+
+
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(-1600.f, 1100.f, 8800.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(3000.f, 400.f, 100.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
 
 	
 	m_pCurScene->awake();
