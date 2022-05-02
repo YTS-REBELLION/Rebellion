@@ -170,35 +170,35 @@ void CFBXLoader::LoadMesh(FbxMesh * _pFbxMesh)
 			vecMax.z = Container.vecPos[i].z;
 	}
 
-	//if (CResMgr::GetInst()->FindRes<CMesh>(m_fileName) == nullptr)
-	//{
-	//	// Mesh Extents Collision Mesh
-	//	// 바운딩 박스 콜리젼 매쉬 등록
+	if (CResMgr::GetInst()->FindRes<CMesh>(m_fileName) == nullptr)
+	{
+		// Mesh Extents Collision Mesh
+		// 바운딩 박스 콜리젼 매쉬 등록
 
-	//	//	플레이어 X값 스키닝 매쉬라 줫나커서 나누기 2
-	//	//vecMin.x /= 2;
-	//	//vecMax.x /= 2;
+		//	플레이어 X값 스키닝 매쉬라 줫나커서 나누기 2
+		//vecMin.x /= 2;
+		//vecMax.x /= 2;
 
-	//	m_vecMMax[0] = vecMin;
-	//	m_vecMMax[1] = vecMax;
+		m_vecMMax[0] = vecMin;
+		m_vecMMax[1] = vecMax;
 
-	//	//CreateBoundingCubeCollisionMesh(m_vecMMax, m_fileName);
+		//CreateBoundingCubeCollisionMesh(m_vecMMax, m_fileName);
 
-	//	//구형
-	//	m_vecMMax[0].x = fabs(m_vecMMax[0].x);
-	//	m_vecMMax[0].y = fabs(m_vecMMax[0].y);
-	//	m_vecMMax[0].z = fabs(m_vecMMax[0].z);
+		//구형
+		m_vecMMax[0].x = fabs(m_vecMMax[0].x);
+		m_vecMMax[0].y = fabs(m_vecMMax[0].y);
+		m_vecMMax[0].z = fabs(m_vecMMax[0].z);
 
-	//	//	x,y,z축 평균 벡터들
-	//	Vec3 vecAver = (m_vecMMax[1] + m_vecMMax[0]) / 2.f;
+		//	x,y,z축 평균 벡터들
+		Vec3 vecAver = (m_vecMMax[1] + m_vecMMax[0]) / 2.f;
 
-	//	//	각 평균벡터들로 평균내서 충돌 반지름 길이 평균값 대충 계산
-	//	//float fRadiusAver = (vecAver.x + vecAver.y + vecAver.z) / 3;
-	//	//CreateBoundingSphereCollisionMesh(fRadiusAver, m_fileName);
+		//	각 평균벡터들로 평균내서 충돌 반지름 길이 평균값 대충 계산
+		float fRadiusAver = (vecAver.x + vecAver.y + vecAver.z) / 3;
+		CreateBoundingSphereCollisionMesh(fRadiusAver, m_fileName);
 
-	//	//	CreateBoundingSphereCollisonMesh 주석처리하고 하면 리소스매니저 등록안하고 메쉬 데이터 크기만 가져가서 바운딩스피어 정의 가능하지 않을까?
+		//	CreateBoundingSphereCollisonMesh 주석처리하고 하면 리소스매니저 등록안하고 메쉬 데이터 크기만 가져가서 바운딩스피어 정의 가능하지 않을까?
 
-	//}
+	}
 
 	// 폴리곤 개수
 	int iPolyCnt = _pFbxMesh->GetPolygonCount();

@@ -56,6 +56,17 @@ void CResMgr::CreateDefaultShader()
 	pShader->Create(SHADER_POV::FORWARD, D3D_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_LINESTRIP);
 	AddRes(L"Collider2DShader", pShader);
 
+	//// =================
+	//// Collider Shdaer
+	//// =================
+	pShader = new CShader;
+	pShader->CreateVertexShader(L"Shader\\std3d.fx", "VS_Col3D", "vs_5_0");
+	pShader->CreatePixelShader(L"Shader\\std3d.fx", "PS_Col3D", "ps_5_0");
+
+	pShader->SetRasterizerType(RS_TYPE::WIRE_FRAME);
+	pShader->Create(SHADER_POV::FORWARD);
+	AddRes(L"ColliderShader", pShader);
+
 	// =================
 	// STD2D Shader
 	// =================
@@ -228,6 +239,11 @@ void CResMgr::CreateDefaultMaterial()
 	a = 1;
 	pMtrl->SetData(SHADER_PARAM::INT_0, &a);
 	AddRes(L"Collider2DMtrl_1", pMtrl);
+
+	pMtrl = new CMaterial;
+	pMtrl->DisableFileSave();
+	pMtrl->SetShader(FindRes<CShader>(L"ColliderShader"));
+	AddRes(L"ColliderMtrl", pMtrl);
 
 	pMtrl = new CMaterial;
 	pMtrl->DisableFileSave();

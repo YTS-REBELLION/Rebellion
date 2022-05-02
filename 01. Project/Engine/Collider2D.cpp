@@ -9,6 +9,7 @@
 #include "ConstantBuffer.h"
 
 #include "Script.h"
+#include "PlayerScript.h"
 
 UINT CCollider2D::g_iColID = 0;
 
@@ -24,6 +25,9 @@ CCollider2D::CCollider2D()
 {
 	m_pColMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"ColliderMtrl");
 	SetColliderType(m_eType);
+
+	m_bBB = BoundingBox(XMFLOAT3(0.f, 0.f, 0.f), XMFLOAT3(1.f, 1.f, 1.f));
+	m_bBS = BoundingSphere(XMFLOAT3(0.f, 0.f, 0.f), 1.f);
 }
 
 CCollider2D::CCollider2D(const CCollider2D & _other)
@@ -67,6 +71,19 @@ void CCollider2D::finalupdate()
 
 	m_matColWorld = matScale * matTranslation;
 	m_matColWorld *= Transform()->GetWorldMat();
+
+	m_bBB.Center = Transform()->GetWorldPos();
+
+	m_bBS.Center = Transform()->GetWorldPos();
+	m_bBS.Center.y = Transform()->GetWorldPos().y + m_bBS.Radius;
+
+	if (GetObj()->GetScript<CPlayerScript>() != nullptr && GetObj()->GetScript<CPlayerScript>()->GetIsHide())
+		m_bBS.Center.y += 2000.f;
+
+	if (m_eType == COLLIDER2D_TYPE::RANGE) {
+		m_bBS.Center = Transform()->GetWorldPos();
+		m_bBS.Center.y = Transform()->GetWorldPos().y;// +m_bSp.Radius;
+	}
 }
 
 void CCollider2D::render()
@@ -76,6 +93,7 @@ void CCollider2D::render()
 
 	static CConstantBuffer* pCB = CDevice::GetInst()->GetCB(CONST_REGISTER::b0);
 
+	m_matColWorld._42 += m_bBS.Radius;
 	g_transform.matWorld = m_matColWorld;	
 	CDevice::GetInst()->SetConstBufferToRegister(pCB, pCB->AddData(&g_transform));	
 	
@@ -100,6 +118,32 @@ void CCollider2D::SetColliderType(COLLIDER2D_TYPE _eType)
 	else if (COLLIDER2D_TYPE::BOX == m_eType)
 	{
 		m_pColMesh = CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh");
+	}
+	else
+	{
+		m_pColMesh = CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh");
+	}
+}
+
+void CCollider2D::SetColliderType(COLLIDER2D_TYPE _eType, wstring _str)
+{
+	m_eType = _eType;
+
+	if (COLLIDER2D_TYPE::RECT == m_eType)
+	{
+		m_pColMesh = CResMgr::GetInst()->FindRes<CMesh>(L"ColRectMesh");
+	}
+	else if (COLLIDER2D_TYPE::CIRCLE == m_eType)
+	{
+		m_pColMesh = CResMgr::GetInst()->FindRes<CMesh>(L"ColCircleMesh");
+	}
+	else if (COLLIDER2D_TYPE::BOX == m_eType)
+	{
+		m_pColMesh = CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh");
+	}
+	else if (COLLIDER2D_TYPE::MESH == m_eType)
+	{
+		m_pColMesh = CResMgr::GetInst()->FindRes<CMesh>(_str);
 	}
 	else
 	{

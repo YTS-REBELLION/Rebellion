@@ -1,21 +1,20 @@
 #pragma once
-
 #include "Component.h"
 
 #include "Ptr.h"
 #include "Mesh.h"
 #include "Material.h"
 
-class CCollider :
+class CCollider2D :
 	public CComponent
 {
 private:
 	static			UINT  g_iColID;
 
 private:
-	Vector3			m_vOffsetPos;
-	Vector3			m_vOffsetScale;
-	COLLIDER_TYPE	m_eType;
+	Vec3			m_vOffsetPos;
+	Vec3			m_vOffsetScale;
+	COLLIDER2D_TYPE m_eType;
 	int				m_iCollisionCount;	// 충돌 횟수
 
 	Ptr<CMesh>      m_pColMesh;			// 충돌체를 그리기 위한 Mesh
@@ -25,62 +24,39 @@ private:
 
 	UINT			m_iColID;			// 충돌체 고유 ID 값
 
-	BoundingBox		m_bbx;
-	BoundingSphere	m_bSp;
 
 public:
 	virtual void update();
 	virtual void finalupdate();
 	void render();
 
-	void OnCollisionEnter(CCollider* _pOther); // 충돌체가 처음 충돌
-	void OnCollision(CCollider* _pOther);      // 충돌 중
-	void OnCollisionExit(CCollider* _pOther);  // 충돌체가 서로 떨어질 때
+	void OnCollisionEnter(CCollider2D* _pOther); // 충돌체가 처음 충돌
+	void OnCollision(CCollider2D* _pOther);      // 충돌 중
+	void OnCollisionExit(CCollider2D* _pOther);  // 충돌체가 서로 떨어질 때
 
 public:
-	void SetOffsetPos(const Vector3& _vPos) { m_vOffsetPos = _vPos; }
-	void SetOffsetScale(const Vector3& _vScale) { m_vOffsetScale = _vScale; }
+	void SetOffsetPos(const Vec3& _vPos) { m_vOffsetPos = _vPos; }
+	void SetOffsetScale(const Vec3& _vScale) { m_vOffsetScale = _vScale; }
 
-	const Vector3& GetOffsetPos() { return m_vOffsetPos; }
-	const Vector3& GetOffsetScale() { return m_vOffsetScale; }
-	COLLIDER_TYPE GetColliderType() { return m_eType; }
+	const Vec3& GetOffsetPos() { return m_vOffsetPos; }
+	const Vec3& GetOffsetScale() { return m_vOffsetScale; }
+	COLLIDER2D_TYPE GetColliderType() { return m_eType; }
 
-	void SetColliderType(COLLIDER_TYPE _eType);
-	void SetColliderType(COLLIDER_TYPE _eType, wstring);
-
+	void SetCollider2DType(COLLIDER2D_TYPE _eType);
 	UINT GetColID() { return m_iColID; }
 	const Matrix& GetColliderWorldMat() { return m_matColWorld; }
 
 public:
-	BoundingBox GetBoundingBox() { return m_bbx; }
-	BoundingSphere GetBoundingSphere() { return m_bSp; }
-	void SetBoundingBox(BoundingBox _b, float _fRadius = 1.f)
-	{
-		m_bbx = _b;
-
-		/*XMFLOAT3 fPoint = _b.Center;
-		m_bSp.Center = fPoint;
-		m_bSp.Radius = _fRadius;
-		m_bSp.Center.y += m_bSp.Radius;*/
-
-	}
-	void SetBoundingSphere(BoundingSphere _b)
-	{
-		m_bSp = _b;
-		m_bSp.Center.y += m_bSp.Radius;
-	}
-	void SetBoundCenter(Vector3 _center) { m_bSp.Center = _center; }
-
-public:
-	CLONE(CCollider);
+	CLONE(CCollider2D);
 	virtual void SaveToScene(FILE* _pFile);
 	virtual void LoadFromScene(FILE* _pFile);
 
 public:
-	void operator = (const CCollider& _other);
+	void operator = (const CCollider2D& _other);
 
 public:
-	CCollider();
-	CCollider(const CCollider& _other);
-	virtual ~CCollider();
+	CCollider2D();
+	CCollider2D(const CCollider2D& _other);
+	virtual ~CCollider2D();
 };
+
