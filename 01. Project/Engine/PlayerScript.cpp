@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "PlayerScript.h"
 #include "TestScript.h"
+#include "RenderMgr.h"
+#include "Animator3D.h"
 
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
@@ -12,6 +14,7 @@ CPlayerScript::CPlayerScript()
 CPlayerScript::~CPlayerScript()
 {
 }
+
 
 void CPlayerScript::awake()
 {
@@ -38,61 +41,63 @@ void CPlayerScript::update()
 
 	Vec3 vPos = Transform()->GetLocalPos();
 	Vec3 vRot = Transform()->GetLocalRot();
-	Vec3 vRight = Transform()->GetLocalDir(DIR_TYPE::RIGHT);
-	Vec3 vLook = Transform()->GetLocalDir(DIR_TYPE::FRONT);
-	Vec3 vRightLook = vLook + vRight;
-	Vec3 vLeftLook = vLook - vRight;
-	vRight = Vector3::Normalize(vRight);
-	vRightLook = Vector3::Normalize(vRightLook);
-	vLeftLook = Vector3::Normalize(vLeftLook);
-	vLook = Vector3::Normalize(vLook);
-
-
-	if (KEY_HOLD(KEY_TYPE::KEY_S))
-	{
-
-		vPos += 2.5 * vLook;
-
-		if (KEY_HOLD(KEY_TYPE::KEY_D))
-		{
-			vRot.y -= 2.5*DT * XM_PI;
-
-		}
-		else if (KEY_HOLD(KEY_TYPE::KEY_A))
-		{
-			vRot.y += 2.5 * DT * XM_PI;
-		}
-
-
-	}
+	
+	//Vec3 vPos = Transform()->GetLocalPos();
+	//Vec3 vRot = Transform()->GetLocalRot();
 	if (KEY_HOLD(KEY_TYPE::KEY_W))
 	{
+		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::FRONT);
+		localPos += WorldDir * m_fSpeed * DT;
 
-		vPos -= 2.5 * vLook;
-
-		if (KEY_HOLD(KEY_TYPE::KEY_D))
+		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 		{
-			vRot.y += 2.5 * DT * XM_PI;
-
+			localPos += WorldDir * m_fSpeed * DT;
+			SetPlayerAnimation(2);
 		}
-		else if (KEY_HOLD(KEY_TYPE::KEY_A))
+		else SetPlayerAnimation(1);
+	}
+
+	else if (KEY_HOLD(KEY_TYPE::KEY_S))
+	{
+		WorldDir = playerTrans->GetWorldDir(DIR_TYPE::FRONT);
+		localPos += WorldDir * m_fSpeed * DT;
+
+		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 		{
-			vRot.y -= 2.5 * DT * XM_PI;
+			localPos += WorldDir * m_fSpeed * DT;
+			SetPlayerAnimation(2);
 		}
+		else SetPlayerAnimation(1);
+	}
 
+	else if (KEY_HOLD(KEY_TYPE::KEY_A))
+	{	
+		WorldDir = playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
+		localPos += WorldDir * m_fSpeed * DT;
 
+		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+		{
+			localPos += WorldDir * m_fSpeed * DT;
+			SetPlayerAnimation(2);
+		}
+		else SetPlayerAnimation(1);
 	}
 
 	else if (KEY_HOLD(KEY_TYPE::KEY_D))
 	{
-		vPos -= 2.5 * vRight;
+		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
+		localPos += WorldDir * m_fSpeed * DT;
 
+		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+		{
+			localPos += WorldDir * m_fSpeed * DT;
+			SetPlayerAnimation(2);
+		}
+		else SetPlayerAnimation(1);
 	}
-
-	else if (KEY_HOLD(KEY_TYPE::KEY_A))
+	else
 	{
-		vPos += 2.5 * vRight;
-
+		SetPlayerAnimation(0);
 	}
 
 
@@ -108,5 +113,57 @@ void CPlayerScript::update()
 	Transform()->SetLocalPos(vPos);
 	Transform()->SetLocalRot(vRot);
 
+	if (KEY_HOLD(KEY_TYPE::KEY_SPACE))
+	{
+		SetPlayerAnimation(3);
+	}
 
+	Transform()->SetLocalPos(localPos);
+
+
+
+	//Transform()->SetLocalRot(vRot);
+}
+
+void CPlayerScript::SetPlayerAnimation(const int i)
+{
+	if (m_pAniData.size() == 0)	return;
+	Animator3D()->SetBones(m_pAniData[i]->GetBones());
+	Animator3D()->SetAnimClip(m_pAniData[i]->GetAnimClip());
+	MeshRender()->SetMesh(m_pAniData[i]);
+}
+
+void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
+{
+}
+
+void CPlayerScript::OnCollision(CCollider2D* _pOther)
+{
+	BoundingSphere myBS = Collider2D()->GetBS();
+	BoundingSphere otherBS = _pOther->Collider2D()->GetBS();
+
+	Vec3 WorldDir;
+	Vec3 localPos = Transform()->GetLocalPos();
+	CTransform* playerTrans = Transform();
+
+	WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::FRONT);
+	localPos -= WorldDir * m_fSpeed * DT * 2.0f;
+
+	if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+	{
+		localPos -= WorldDir * m_fSpeed * DT;
+	}
+
+	Transform()->SetLocalPos(localPos);
+
+	//cout << GetPlayerDir().x << ", " << GetPlayerDir().y << ", " << GetPlayerDir().z << endl;
+	//cout << endl;
+	//cout << localPos.x << ", " << localPos.y << ", " << localPos.z << endl;
+	//cout << "뭘 할 수 있을까?" << endl;
+}
+
+void CPlayerScript::OnCollisionExit(CCollider2D* _pOther)
+{
+
+	cout << "충돌 해제" << endl;
 }

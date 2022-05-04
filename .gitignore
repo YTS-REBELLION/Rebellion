@@ -15,3 +15,9 @@
 *.ipch
 *.res
 *.user
+GP/Rebellion/01. Project/Engine/x64/Debug/Engine_debug.lib.recipe
+
+*.pdb
+GP/Rebellion/01. Project/Client/x64/Debug/*.pdb
+GP/Rebellion/01. Project/Client/x64/Debug/Client.vcxproj.FileListAbsolute.txt
+GP/Rebellion/01. Project/Engine/x64/Debug/Engine.vcxproj.FileListAbsolute.txt

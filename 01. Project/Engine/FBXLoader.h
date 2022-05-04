@@ -44,6 +44,9 @@ private:
 	FbxArray<FbxString*>			m_arrAnimName;
 	vector<tAnimClip*>				m_vecAnimClip;
 	
+private:
+	wstring							m_fileName;
+	Vec4							m_vecMMax[2];
 
 public:
 	void init();
@@ -87,6 +90,10 @@ private:
 	FbxAMatrix GetTransform(FbxNode* _pNode);
 
 	void CheckWeightAndIndices(FbxMesh* _pMesh, tContainer * _pContainer);
+
+public:
+	Vec4* GetMinMaxVertex() { return m_vecMMax; }
+
 public:
 	CFBXLoader();
 	~CFBXLoader();

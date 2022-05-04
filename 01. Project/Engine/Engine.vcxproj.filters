@@ -410,6 +410,9 @@
     <ClCompile Include="Portal.cpp">
       <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
     </ClCompile>
+    <ClCompile Include="StructuredBuffer.cpp">
+      <Filter>03. Device</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="std.fx">
@@ -428,6 +431,12 @@
       <Filter>ShaderCode</Filter>
     </FxCompile>
     <FxCompile Include="light.fx">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="animation.fx">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="compute.fx">
       <Filter>ShaderCode</Filter>
     </FxCompile>
     <FxCompile Include="trail.fx">

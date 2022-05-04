@@ -24,6 +24,9 @@ public:
 	virtual void Save(const wstring& _strFilePath);
 
 	CGameObject* Instantiate();	
+	CGameObject* DmyInstantiate();
+
+	Ptr<CMesh> GetMesh() { return m_pMesh; }
 
 public:
 	CMeshData();
