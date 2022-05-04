@@ -187,7 +187,7 @@ void CSceneMgr::init()
 	// =============
 	// FBX 파일 로드
 	// =============
-	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Basic_Bandit.fbx");
+	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nIdle1.fbx");
 	//pMeshData->Save(pMeshData->GetPath());
 	
 	pObject = pMeshData->Instantiate();
@@ -324,7 +324,7 @@ void CSceneMgr::init()
 	pPObject = pPMeshData->Instantiate();
 	pPObject->SetName(L"Portal");
 	pPObject->FrustumCheck(false);
-	pPObject->Transform()->SetLocalPos(Vec3(300.f, 0.f, 0.f));
+	pPObject->Transform()->SetLocalPos(Vec3(100.f, 0.f, 0.f));
 	pPObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pPObject->AddComponent(new CCollider2D);
 
@@ -386,10 +386,6 @@ void CSceneMgr::init()
 	// Player Layer 와 Monster Layer 는 충돌 검사 진행
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Monster");
 
-
-		
-	
-	
 
 	//// SWORD 오브젝트 생성
 	//// ====================
@@ -542,7 +538,7 @@ void CSceneMgr::init()
 
 	//===========================================================================================
 	
-	 pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Something.fbx");
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Something.fbx");
 
 	CGameObject* SomethingObject = nullptr;
 	SomethingObject = new CGameObject;
@@ -562,26 +558,28 @@ void CSceneMgr::init()
 	m_pCurScene->AddGameObject(L"Default", SomethingObject, false);
 
 	
-	
-	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\DragonJawPortal.fbx");
+	//==============
+	// 포탈
+	//==============
+	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\DragonJawPortal.fbx");
 
-	CGameObject* PortalObject = nullptr;
-	PortalObject = new CGameObject;
-	
-	PortalObject = pMeshData->Instantiate();
-	PortalObject->SetName(L"DragonJawPortal");
-	PortalObject->FrustumCheck(false);
-	
+	//CGameObject* PortalObject = nullptr;
+	//PortalObject = new CGameObject;
+	//
+	//PortalObject = pMeshData->Instantiate();
+	//PortalObject->SetName(L"DragonJawPortal");
+	//PortalObject->FrustumCheck(false);
+	//
 
-	// Transform 설정
-	PortalObject->Transform()->SetLocalPos(Vec3(12.5f,70.f,1300.f));
-	PortalObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	//// Transform 설정
+	//PortalObject->Transform()->SetLocalPos(Vec3(12.5f,70.f,1300.f));
+	//PortalObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 
-	//Script 설정
-	PortalObject->AddComponent(new CPortal);
-	// AddGameObject
-	
-	m_pCurScene->AddGameObject(L"Default", PortalObject, false);
+	////Script 설정
+	//PortalObject->AddComponent(new CPortal);
+	//// AddGameObject
+	//
+	//m_pCurScene->AddGameObject(L"Default", PortalObject, false);
 	//m_pCurScene->FindLayer(L"Portal")->AddGameObject(pObject);
 	
 	//===================

@@ -14,18 +14,26 @@ CMonsterScript::~CMonsterScript()
 
 void CMonsterScript::update()
 {
-	// Transform 월드 좌표정보 얻기
-	Vec3 vPos = Transform()->GetLocalPos();
+	//// Transform 월드 좌표정보 얻기
+	//Vec3 vPos = Transform()->GetLocalPos();
 
-	if (vPos.x > 600.f)
-		m_iDir = -1;
-	else if(vPos.x < -600.f)
-		m_iDir = 1;
+	//if (vPos.x > 600.f)
+	//	m_iDir = -1;
+	//else if(vPos.x < -600.f)
+	//	m_iDir = 1;
 
-	vPos.x += DT * 100.f * m_iDir;
+	//vPos.x += DT * 100.f * m_iDir;
+
+	Vec3 WorldDir;
+	Vec3 localPos = Transform()->GetLocalPos();
+
+	Vec3 vRot = Transform()->GetLocalRot();
+	vRot.x = 17.13f;
+	vRot.y = 21.95f;
 
 	// 수정된 좌표를 다시 세팅하기.
-	Transform()->SetLocalPos(vPos);
+	Transform()->SetLocalPos(localPos);
+	Transform()->SetLocalRot(vRot);
 }
 
 void CMonsterScript::OnCollisionEnter(CCollider2D * _pOther)

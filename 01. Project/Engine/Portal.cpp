@@ -31,7 +31,6 @@ void CPortal::update()
 	vRot.x = 17.13f;
 	vRot.y = 21.95f;
 
-	
 
 	cout << "Rot:" << vRot.y << endl;
 

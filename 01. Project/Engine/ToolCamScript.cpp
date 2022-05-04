@@ -24,49 +24,7 @@ CToolCamScript::~CToolCamScript()
 void CToolCamScript::update()
 {
 	Vec3 vPos = Transform()->GetLocalPos();
-	float fScale = Camera()->GetScale();
-	float fSpeed = m_fSpeed;
-
-	//집결지 시네
-	if (m_bCine1 == true && m_bCheckFin1 == false)
-	{
-		checktime += DT;
-
-		//cout << checktime << endl;
-		Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-		Vec3 vUp = Transform()->GetWorldDir(DIR_TYPE::UP);
-		vPos += vFront * fSpeed * DT;
-		vPos += vUp * fSpeed * 2.f * DT;
-
-		if (//집결지끝도착하면 180도회전으로
-			checktime >= 1.f)
-		{
-			m_bCheckFin1 = true;
-			checktime = 0.f;
-
-		}
-
-
-	}
-	if (m_bCheckFin1)
-	{
-
-
-		Vec3 vRot = Transform()->GetLocalRot();
-
-		vRot.y += DT * XM_PI * 1 / 5;
-
-		Transform()->SetLocalRot(vRot);
-
-
-		cout << "RotY:" << vRot.y << endl;
-
-
-		////한바뀌돌면 원래 위치로
-		if (vRot.y >= 6.1f)
-		{
-			vRot.y = 0;
-			m_CameraMode = PLAYER_IDLE;
+	CTransform* vPlayerPos = m_pPlayer->Transform();
 
 	float fDistance = 500.f; //200.f;
 
