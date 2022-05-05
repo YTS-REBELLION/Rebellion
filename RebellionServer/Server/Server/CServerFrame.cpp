@@ -162,9 +162,9 @@ void CServerFrame::InitClients()
 		//pos.y = 0.f;
 		//pos.z = z;
 		Vec3 pos;
-		pos.x = 0;
-		pos.y = 0;
-		pos.z = 0;
+		pos.x = 0.f;
+		pos.y = 0.f;
+		pos.z = 0.f;
 		_objects[i].SetCurrentExp(0);
 		_objects[i].SetMaxExp(100);
 		_objects[i].SetCurrentHp(200);
@@ -1082,16 +1082,15 @@ void CServerFrame::EnterGame(int id, const char* name)
 		int i = cl.GetID();
 		if(id == i)continue;
 		if (true == IsNear(id, i)) {
-			/*if (ST_SLEEP == _objects[i]._status) {
+			if (ST_SLEEP == _objects[i]._status) {
 				ActivateNPC(i);
-			}*/
+			}
 
 			if (ST_ACTIVE == _objects[i]._status) {
 				cout << "STATUS : ST_ACTIVE" << endl;
 				_objects[id].ClientLock();
 				_objects[id].InsertViewList(i);
 				_objects[id].ClientUnLock();
-				//cout << "sendputobject6" << endl;
 
 				_sender->SendPutObjectPacket(_objects[id].GetSocket(), i, _objects[i].GetPos().x,
 					_objects[i].GetPos().y, _objects[i].GetPos().z, _objects[i].GetMyType());
@@ -1099,7 +1098,6 @@ void CServerFrame::EnterGame(int id, const char* name)
 					_objects[i].ClientLock();
 					_objects[i].InsertViewList(id);
 					_objects[i].ClientUnLock();
-					//cout << "sendputobject7" << endl;
 
 					_sender->SendPutObjectPacket(_objects[i].GetSocket(), id, _objects[id].GetPos().x,
 						_objects[id].GetPos().y, _objects[id].GetPos().z, _objects[id].GetMyType());
@@ -1109,5 +1107,6 @@ void CServerFrame::EnterGame(int id, const char* name)
 
 
 	}
+
 
 }

@@ -18,6 +18,8 @@
 
 OBJECT_TYPE CheckType(const short& id)
 {
+
+
 	if (id >= 0 && id < MAX_USER) return OBJECT_TYPE::PLAYER;
 	else if (id >= NPC_ID_START && NPC_ID_START + 100) return OBJECT_TYPE::MONSTER;
 }
@@ -166,10 +168,12 @@ void CNetwork::ProcessPacket(char* ptr)
 		sc_packet_put_object* packet = reinterpret_cast<sc_packet_put_object*>(ptr);
 		int id = packet->id;
 		
-		if (id == g_myid) {
-			//내꺼 만들기
-		}
-		else {
+		//if (id == g_myid) {
+		//	//내꺼 만들기
+
+
+		//}
+		//else {
 			if (CheckType(id) == OBJECT_TYPE::PLAYER) {
 				// 다른 사람꺼
 				cout << "다른 사람 입장 " << endl;
@@ -242,7 +246,7 @@ void CNetwork::ProcessPacket(char* ptr)
 				// 몬스터
 
 			}
-		}
+		//}
 
 	}
 							 break;
