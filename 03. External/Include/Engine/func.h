@@ -45,14 +45,7 @@ void SaveWString(FILE* _pFile, const wstring& _str);
 wchar_t* LoadWString(FILE* _pFile);
 
 Matrix GetMatrix(FbxAMatrix& _mat);
-//{
-//	Matrix mat;
-//	for (int i = 0; i < 4; ++i)
-//	{
-//		for (int j = 0; j < 4; ++j)
-//		{
-//			mat.m[i][j] = (float)_mat.Get(i, j);
-//		}
-//	}
-//	return mat;
-//}
+
+void CreateBoundingSphereCollisionMesh(float _fRadius, wstring _fName);
+
+void CreateBoundingCubeCollisionMesh(Vec4* vecMMax, wstring _fName);

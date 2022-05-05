@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "PlayerScript.h"
 #include "TestScript.h"
-#include "Network.h"
+#include "RenderMgr.h"
+#include "Animator3D.h"
 
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
@@ -14,78 +15,155 @@ CPlayerScript::~CPlayerScript()
 {
 }
 
+
 void CPlayerScript::awake()
 {
 	m_pOriginMtrl = MeshRender()->GetSharedMaterial();
 	m_pCloneMtrl = m_pOriginMtrl->Clone();
 
+
+	Vec3 vRot = Transform()->GetLocalRot();
+	vRot.y = -78.57f;
+	Transform()->SetLocalRot(vRot);
+
+
+
+
+
+
 	}
 
 void CPlayerScript::update()
 {
-	Vec3 WorldDir;
-	Vec3 localPos = Transform()->GetLocalPos();
-	CTransform* playerTrans = Transform();
+	
+	
+	
 
-	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
+	Vec3 vPos = Transform()->GetLocalPos();
 	Vec3 vRot = Transform()->GetLocalRot();
-
+	
 	//Vec3 vPos = Transform()->GetLocalPos();
 	//Vec3 vRot = Transform()->GetLocalRot();
-
 	if (KEY_HOLD(KEY_TYPE::KEY_W))
 	{
 		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::FRONT);
-		localPos += WorldDir * 200.f * DT;
-		cout << " ÁÂÇ¥ x : " << localPos.x << "ÁÂÇ¥ z : " << localPos.z << endl;
+		localPos += WorldDir * m_fSpeed * DT;
 
-		system_clock::time_point start = system_clock::now();
-
-		g_net.Send_Move_Packet( localPos, WorldDir, vRot.y, start, DT);
-
+		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+		{
+			localPos += WorldDir * m_fSpeed * DT;
+			SetPlayerAnimation(2);
+		}
+		else SetPlayerAnimation(1);
 	}
 
-	if (KEY_HOLD(KEY_TYPE::KEY_S))
+	else if (KEY_HOLD(KEY_TYPE::KEY_S))
 	{
 		WorldDir = playerTrans->GetWorldDir(DIR_TYPE::FRONT);
-		localPos += WorldDir * 200.f * DT;
-		system_clock::time_point start = system_clock::now();
+		localPos += WorldDir * m_fSpeed * DT;
 
-		cout << " ÁÂÇ¥ x : " <<localPos.x << "ÁÂÇ¥ z : " << localPos.z << endl;
-
-		g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
-
+		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+		{
+			localPos += WorldDir * m_fSpeed * DT;
+			SetPlayerAnimation(2);
+		}
+		else SetPlayerAnimation(1);
 	}
 
-	if (KEY_HOLD(KEY_TYPE::KEY_A))
+	else if (KEY_HOLD(KEY_TYPE::KEY_A))
 	{	
 		WorldDir = playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
-		localPos += WorldDir * 200.f * DT;
-		system_clock::time_point start = system_clock::now();
-		cout << " ÁÂÇ¥ x : " << localPos.x << "ÁÂÇ¥ z : " << localPos.z << endl;
+		localPos += WorldDir * m_fSpeed * DT;
 
-		g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
-
+		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+		{
+			localPos += WorldDir * m_fSpeed * DT;
+			SetPlayerAnimation(2);
+		}
+		else SetPlayerAnimation(1);
 	}
 
-	if (KEY_HOLD(KEY_TYPE::KEY_D))
+	else if (KEY_HOLD(KEY_TYPE::KEY_D))
 	{
 		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
-		localPos += WorldDir * 200.f * DT;
-		system_clock::time_point start = system_clock::now();
-		cout << " ÁÂÇ¥ x : " << localPos.x << "ÁÂÇ¥ y : " << localPos.z << endl;
+		localPos += WorldDir * m_fSpeed * DT;
 
-		g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
-
+		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+		{
+			localPos += WorldDir * m_fSpeed * DT;
+			SetPlayerAnimation(2);
+		}
+		else SetPlayerAnimation(1);
+	}
+	else
+	{
+		SetPlayerAnimation(0);
 	}
 
-	if (KEY_HOLD(KEY_TYPE::KEY_LBTN))
+
+	else if (KEY_TAB(KEY_TYPE::KEY_ENTER))
 	{
-		vRot.y += vDrag.x * DT * 0.5f;
-		Transform()->SetLocalRot(vRot);
+		vPos = { 0.f,0.f,0.f };
+		vPos.y += 1000.f;
+		
+	}
+
+	cout << "PlatervPos:" << vPos.x<<","<< vPos.y<<","<<vPos.z << endl;
+
+	Transform()->SetLocalPos(vPos);
+	Transform()->SetLocalRot(vRot);
+
+	if (KEY_HOLD(KEY_TYPE::KEY_SPACE))
+	{
+		SetPlayerAnimation(3);
 	}
 
 	Transform()->SetLocalPos(localPos);
 
+
+
 	//Transform()->SetLocalRot(vRot);
+}
+
+void CPlayerScript::SetPlayerAnimation(const int i)
+{
+	if (m_pAniData.size() == 0)	return;
+	Animator3D()->SetBones(m_pAniData[i]->GetBones());
+	Animator3D()->SetAnimClip(m_pAniData[i]->GetAnimClip());
+	MeshRender()->SetMesh(m_pAniData[i]);
+}
+
+void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
+{
+}
+
+void CPlayerScript::OnCollision(CCollider2D* _pOther)
+{
+	BoundingSphere myBS = Collider2D()->GetBS();
+	BoundingSphere otherBS = _pOther->Collider2D()->GetBS();
+
+	Vec3 WorldDir;
+	Vec3 localPos = Transform()->GetLocalPos();
+	CTransform* playerTrans = Transform();
+
+	WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::FRONT);
+	localPos -= WorldDir * m_fSpeed * DT * 2.0f;
+
+	if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+	{
+		localPos -= WorldDir * m_fSpeed * DT;
+	}
+
+	Transform()->SetLocalPos(localPos);
+
+	//cout << GetPlayerDir().x << ", " << GetPlayerDir().y << ", " << GetPlayerDir().z << endl;
+	//cout << endl;
+	//cout << localPos.x << ", " << localPos.y << ", " << localPos.z << endl;
+	//cout << "¹» ÇÒ ¼ö ÀÖÀ»±î?" << endl;
+}
+
+void CPlayerScript::OnCollisionExit(CCollider2D* _pOther)
+{
+
+	cout << "Ãæµ¹ ÇØÁ¦" << endl;
 }

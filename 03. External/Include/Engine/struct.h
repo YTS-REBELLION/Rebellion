@@ -123,7 +123,12 @@ struct tLight3DInfo
 	Vec3     vPadding;
 };
 
-
+struct tGlobalValue
+{
+	tResolution vResolution;
+	float fDT;
+	float fAccTime;
+};
 
 //================
 // Struct of FBX 
@@ -192,6 +197,13 @@ typedef struct _tagContainer
 }tContainer;
 
 // Animation
+struct tFrameTrans
+{
+	Vec4	vTranslate;
+	Vec4	vScale;
+	Vec4	qRot;
+};
+
 struct tMTKeyFrame
 {
 	double	dTime;

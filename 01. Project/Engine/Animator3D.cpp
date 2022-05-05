@@ -3,14 +3,19 @@
 
 #include "TimeMgr.h"
 #include "MeshRender.h"
-#include "Material.h"
+#include "StructuredBuffer.h"
+#include "ResMgr.h"
 
 CAnimator3D::CAnimator3D()
 	: m_iCurClip(0)
 	, m_dCurTime(0.)
 	, m_iFrameCount(30)
+	, m_pBoneFinalMat(nullptr)
+	, m_bFinalMatUpdate(false)
 	, CComponent(COMPONENT_TYPE::ANIMATOR3D)
 {	
+	m_pBoneMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Animation3DUpdateMtrl");
+	m_pBoneFinalMat = new CStructuredBuffer;
 }
 
 CAnimator3D::~CAnimator3D()
@@ -37,6 +42,12 @@ void CAnimator3D::finalupdate()
 	}
 
 	m_dCurTime = m_pVecClip->at(m_iCurClip).dStartTime + m_vecClipUpdateTime[m_iCurClip];
+
+	m_iFrameIdx = (int)(m_dCurTime * (float)m_iFrameCount);
+
+	m_bFinalMatUpdate = false;
+
+	return;
 
 	// 본 개수만큼 반복하며 현재 시간에 맞게 모든 본 행렬을 모두 보간해준다.
 	for (size_t i = 0; i < m_pVecBones->size(); ++i)
@@ -114,17 +125,35 @@ void CAnimator3D::SetAnimClip(const vector<tMTAnimClip>* _vecAnimClip)
 
 void CAnimator3D::UpdateData()
 {		
-	// Bone Texture Update
-	//m_pBoneTex->SetData(&m_vecFinalBoneMat[0], sizeof(Matrix) * m_vecFinalBoneMat.size());
-
-	/*UINT iMtrlCount = MeshRender()->GetMaterialCount();
-	Ptr<CMaterial> pMtrl = nullptr;
-	for (UINT i = 0; i < iMtrlCount; ++i)
+	if (!m_bFinalMatUpdate)
 	{
-		pMtrl = MeshRender()->GetSharedMaterial(i);
-		if (nullptr == pMtrl)
-			continue;
+		// Bone Data Update	
+		Ptr<CMesh> pMesh = MeshRender()->GetMesh();
+		pMesh->GetBoneFrameDataBuffer()->UpdateData_CS(TEXTURE_REGISTER::t10);
+		pMesh->GetBoneOffsetBuffer()->UpdateData_CS(TEXTURE_REGISTER::t11);
 
-		pMtrl->SetData(SHADER_PARAM::TEX_3, &m_pBoneTex);
-	}*/
+		check_mesh(pMesh);
+		m_pBoneFinalMat->UpdateRWData(UAV_REGISTER::u0);
+
+		UINT iBoneCount = (UINT)m_pVecBones->size();
+		m_pBoneMtrl->SetData(SHADER_PARAM::INT_0, &iBoneCount);
+		m_pBoneMtrl->SetData(SHADER_PARAM::INT_1, &m_iFrameIdx);
+
+		UINT iGrounX = (iBoneCount / 256) + 1;
+		m_pBoneMtrl->Dispatch(iGrounX, 1, 1);
+
+		m_bFinalMatUpdate = true;
+	}
+
+	// t7 레지스터에 최종행렬 데이터(구조버퍼) 바인딩
+	m_pBoneFinalMat->UpdateData(TEXTURE_REGISTER::t7);
+}
+
+void CAnimator3D::check_mesh(Ptr<CMesh> _pMesh)
+{
+	UINT iBoneCount = _pMesh->GetBoneCount();
+	if (m_pBoneFinalMat->GetElementCount() < iBoneCount)
+	{
+		m_pBoneFinalMat->Create(sizeof(Matrix), iBoneCount, nullptr);
+	}
 }

@@ -10,6 +10,7 @@
 #include "Animator3D.h"
 #include "GameObject.h"
 
+
 CMeshData::CMeshData()
 	: CResource(RES_TYPE::MESHDATA)
 {
@@ -31,22 +32,7 @@ CMeshData * CMeshData::LoadFromFBX(const wstring& _strPath)
 	// 메쉬 가져오기
 	CMesh* pMesh = CMesh::CreateFromContainer(loader);
 
-	//// Animation 이 있는 Mesh 경우 BoneTexture 만들어두기
-	//if (pMesh->IsAnimMesh())
-	//{
-	//	wstring strBoneTex = _strPath;
-	//	strBoneTex += L"BoneTex";
-	//
-	//	Ptr<CTexture> pBoneTex =
-	//		CResMgr::GetInst()->CreateTexture(strBoneTex
-	//			, (pMesh->GetBones()->size() * 4), 1
-	//			, DXGI_FORMAT_R32G32B32A32_FLOAT
-	//			, CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT)
-	//			, D3D12_HEAP_FLAG_NONE
-	//			, D3D12_RESOURCE_FLAG_NONE);
-	//
-	//	pMesh->SetBoneTex(pBoneTex);
-	//}	
+	pMesh->SetMinMaxVertex(loader.GetMinMaxVertex());
 
 	// ResMgr 에 메쉬 등록
 
@@ -178,8 +164,21 @@ CGameObject * CMeshData::Instantiate()
 	
 	pAnimator->SetBones(m_pMesh->GetBones());
 	pAnimator->SetAnimClip(m_pMesh->GetAnimClip());
-	pAnimator->SetBoneTex(m_pMesh->GetBoneTex());
 
 	return pNewObj;
 }
 
+CGameObject* CMeshData::DmyInstantiate()
+{
+	// Mesh
+	// Material
+
+	CGameObject* pNewObj = new CGameObject;
+	pNewObj->AddComponent(new CTransform);
+	pNewObj->AddComponent(new CMeshRender);
+
+	pNewObj->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pNewObj->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+
+	return pNewObj;
+}

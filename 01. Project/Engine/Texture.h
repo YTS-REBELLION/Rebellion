@@ -21,7 +21,9 @@ private:
 	ComPtr<ID3D12DescriptorHeap> m_pSRV;
 	ComPtr<ID3D12DescriptorHeap> m_pRTV;
 	ComPtr<ID3D12DescriptorHeap> m_pDSV;
+	ComPtr<ID3D12DescriptorHeap> m_pUAV;
 
+	D3D12_RESOURCE_STATES		 m_eState;
 
 public:
 	void Create(UINT _iWidth, UINT _iHeight, DXGI_FORMAT _eFormat
@@ -34,6 +36,10 @@ public:
 	ComPtr<ID3D12DescriptorHeap> GetSRV() { return m_pSRV; }
 	ComPtr<ID3D12DescriptorHeap> GetRTV() { return m_pRTV; }
 	ComPtr<ID3D12DescriptorHeap> GetDSV() { return m_pDSV; }
+	ComPtr<ID3D12DescriptorHeap> GetUAV() { return m_pUAV; }
+
+	D3D12_RESOURCE_STATES GetResState() { return m_eState; }
+	void SetResState(D3D12_RESOURCE_STATES _eState) { m_eState = _eState; }
 
 	float Width() { return (float)m_Image.GetMetadata().width; }
 	float Height() { return (float)m_Image.GetMetadata().height;}

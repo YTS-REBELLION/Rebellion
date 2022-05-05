@@ -14,6 +14,7 @@ static type* GetInst()\
 #define DEVICE CDevice::GetInst()->GetDevice()
 #define CMDLIST CDevice::GetInst()->GetCmdList()
 #define CMDLIST_RES CDevice::GetInst()->GetCmdListRes()
+#define CMDLIST_CS CDevice::GetInst()->GetCmdListCompute()
 
 #define KEY(Key, State) (CKeyMgr::GetInst()->GetKeyState(Key) == State)
 #define KEY_HOLD(Key) KEY(Key, KEY_STATE::STATE_HOLD)
@@ -33,6 +34,7 @@ static type* GetInst()\
 #define DBG_MSG(pStr) CDebugMgr::GetInst()->AddDbgMsg(DBG_TYPE::DBG_MSG, pStr);
 
 #define MAX_LAYER 32
+#define PLAYER_SPEED 200.f
 
 typedef DirectX::SimpleMath::Vector2 Vec2;
 typedef DirectX::SimpleMath::Vector3 Vec3;
@@ -91,8 +93,8 @@ enum class RES_TYPE
 
 enum class ROOT_SIG_TYPE
 {
-	INPUT_ASSEM,
-	CONST_BUFFER,
+	RENDER,
+	COMPUTE,
 	END,
 };
 
@@ -151,6 +153,11 @@ enum class COLLIDER2D_TYPE
 {
 	RECT,
 	CIRCLE,
+	BOX,
+	SPHERE,
+	MESH,
+	SPHEREMESH,
+	RANGE,
 };
 
 enum class SHADER_PARAM

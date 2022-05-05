@@ -53,6 +53,9 @@ void CCollisionMgr::CheckCollisionLayer(const wstring & _strLayerName1, const ws
 	int iMaxIdx = max(iIdx1, iIdx2);
 
 	m_LayerCheck[iMinIdx] |= (1 << iMaxIdx);
+
+
+	cout << "충돌중" << endl;
 }
 
 void CCollisionMgr::CheckCollisionLayer(int _iLayerIdx1, int _iLyaerIdx2)
@@ -165,11 +168,58 @@ bool CCollisionMgr::IsCollision(CCollider2D * _pCollider1, CCollider2D * _pColli
 	{
 		return CollisionCircle(_pCollider1, _pCollider2);
 	}
+	else if (COLLIDER2D_TYPE::BOX == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::BOX == _pCollider2->GetColliderType())
+	{
+
+	}
+	else if (COLLIDER2D_TYPE::SPHERE == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::SPHERE == _pCollider2->GetColliderType())
+	{
+
+	}
+	else if (COLLIDER2D_TYPE::BOX == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::SPHERE == _pCollider2->GetColliderType())
+	{
+
+	}
+	else if (COLLIDER2D_TYPE::SPHERE == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::BOX == _pCollider2->GetColliderType())
+	{
+
+	}
+	else if (COLLIDER2D_TYPE::MESH == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::MESH == _pCollider2->GetColliderType())
+	{
+		return CollisionSphere(_pCollider1, _pCollider2);
+	}
+	else if (COLLIDER2D_TYPE::MESH == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::BOX == _pCollider2->GetColliderType())
+	{
+		cout << "충돌2" << endl;
+		//return CollisionSphere(_pCollider1, _pCollider2);
+	}
+	else if (COLLIDER2D_TYPE::BOX == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::MESH == _pCollider2->GetColliderType())
+	{
+		cout << "충돌3" << endl;
+		//return CollisionSphere(_pCollider1, _pCollider2);
+	}
 	else
 	{
 		return CollisionRectCircle(_pCollider1, _pCollider2);
-	}	
+	}
 
+	return false;
+}
+
+bool CCollisionMgr::CollisionSphere(CCollider2D* _pCollider1, CCollider2D* _pCollider2)
+{
+	//cout << "여기들어오냐?" << endl;
+	BoundingSphere bBX1 = _pCollider1->GetBS();
+	BoundingSphere bBX2 = _pCollider2->GetBS();
+
+	if (bBX1.Contains(bBX2) == 1)
+	{
+		//cout << "물체와 충돌?" << endl;
+		//	바운딩 구 중점, 크기 check용 cout.
+		wstring a = _pCollider1->GetObj()->GetName();
+		wstring b = _pCollider2->GetObj()->GetName();
+		return true;
+	}
 	return false;
 }
 
