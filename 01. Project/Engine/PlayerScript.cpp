@@ -21,27 +21,19 @@ void CPlayerScript::awake()
 	m_pOriginMtrl = MeshRender()->GetSharedMaterial();
 	m_pCloneMtrl = m_pOriginMtrl->Clone();
 
-
-	Vec3 vRot = Transform()->GetLocalRot();
-	vRot.y = -78.57f;
-	Transform()->SetLocalRot(vRot);
-
-
-
-
-
-
-	}
+	int a = 1;
+	m_pCloneMtrl->SetData(SHADER_PARAM::INT_0, &a);
+}
 
 void CPlayerScript::update()
 {
-	
-	
-	
+	Vec3 WorldDir;
+	Vec3 localPos = Transform()->GetLocalPos();
+	CTransform* playerTrans = Transform();
 
-	Vec3 vPos = Transform()->GetLocalPos();
+	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
 	Vec3 vRot = Transform()->GetLocalRot();
-	
+
 	//Vec3 vPos = Transform()->GetLocalPos();
 	//Vec3 vRot = Transform()->GetLocalRot();
 	if (KEY_HOLD(KEY_TYPE::KEY_W))
@@ -100,18 +92,11 @@ void CPlayerScript::update()
 		SetPlayerAnimation(0);
 	}
 
-
-	else if (KEY_TAB(KEY_TYPE::KEY_ENTER))
+	if (KEY_HOLD(KEY_TYPE::KEY_LBTN))
 	{
-		vPos = { 0.f,0.f,0.f };
-		vPos.y += 1000.f;
-		
+		vRot.y += vDrag.x * DT * 0.5f;
+		Transform()->SetLocalRot(vRot);
 	}
-
-	cout << "PlatervPos:" << vPos.x<<","<< vPos.y<<","<<vPos.z << endl;
-
-	Transform()->SetLocalPos(vPos);
-	Transform()->SetLocalRot(vRot);
 
 	if (KEY_HOLD(KEY_TYPE::KEY_SPACE))
 	{
@@ -119,7 +104,6 @@ void CPlayerScript::update()
 	}
 
 	Transform()->SetLocalPos(localPos);
-
 
 
 	//Transform()->SetLocalRot(vRot);
@@ -154,12 +138,13 @@ void CPlayerScript::OnCollision(CCollider2D* _pOther)
 		localPos -= WorldDir * m_fSpeed * DT;
 	}
 
+	if (L"Portal" == _pOther->GetObj()->GetName())
+	{
+		localPos.y += 1000.f;
+	}
+
 	Transform()->SetLocalPos(localPos);
 
-	//cout << GetPlayerDir().x << ", " << GetPlayerDir().y << ", " << GetPlayerDir().z << endl;
-	//cout << endl;
-	//cout << localPos.x << ", " << localPos.y << ", " << localPos.z << endl;
-	//cout << "뭘 할 수 있을까?" << endl;
 }
 
 void CPlayerScript::OnCollisionExit(CCollider2D* _pOther)
