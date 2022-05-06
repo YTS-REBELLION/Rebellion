@@ -189,6 +189,7 @@ enum class SHADER_PARAM
 	TEX_1,
 	TEX_2,
 	TEX_3,
+	TEX_4,
 	TEX_END,
 };
 
@@ -303,4 +304,5 @@ enum class SHADER_POV
 	POST_EFFECT,
 	LIGHTING,
 	COMPUTE, // GPGPU
+	TRAIL,
 };

@@ -38,8 +38,8 @@
 #include"Tree.h"
 #include"Somethings.h"
 #include"Portal.h"
-
-
+#include"Miro.h"
+#include"Castle.h"
 #include "meshdata.h"
 
 CScene* CSceneMgr::GetCurScene()
@@ -118,6 +118,8 @@ void CSceneMgr::init()
 	Ptr<CTexture> pBlackTex = CResMgr::GetInst()->Load<CTexture>(L"Black", L"Texture\\asd.png");
 	Ptr<CTexture> pSky01 = CResMgr::GetInst()->Load<CTexture>(L"Sky01", L"Texture\\Skybox\\Sky01.png");
 	Ptr<CTexture> pSky02 = CResMgr::GetInst()->Load<CTexture>(L"Sky02", L"Texture\\Skybox\\Sky02.jpg");
+	Ptr<CTexture> pBlock = CResMgr::GetInst()->Load<CTexture>(L"Block", L"Texture\\Bricks.png");
+
 
 	Ptr<CTexture> pColor = CResMgr::GetInst()->Load<CTexture>(L"Tile", L"Texture\\Tile\\TILE_01.tga");
 	Ptr<CTexture> pNormal = CResMgr::GetInst()->Load<CTexture>(L"Tile_n", L"Texture\\Tile\\TILE_01_N.tga");
@@ -225,9 +227,9 @@ void CSceneMgr::init()
 	// Map 오브젝트 생성
 	// ==================
 
-	for (int j = 0; j < 3; ++j)
+	for (int j = 0; j < 5; ++j)
 	{
-		for (int i = 0; i < 3; ++i)
+		for (int i = 0; i < 5; ++i)
 		{
 			pObject = new CGameObject;
 			pObject->SetName(L"Map Object");
@@ -235,7 +237,7 @@ void CSceneMgr::init()
 			pObject->AddComponent(new CMeshRender);
 
 			// Transform 설정
-			pObject->Transform()->SetLocalPos(Vec3(i * 1000.f - 1000.f, 0.f, j*1000.f-1000.f));
+			pObject->Transform()->SetLocalPos(Vec3(i * 1000.f - 2000.f, 0.f, j*1000.f-1000.f));
 			pObject->Transform()->SetLocalScale(Vec3(1000.f, 1000.f, 1.f));
 			pObject->Transform()->SetLocalRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
 
@@ -401,27 +403,26 @@ void CSceneMgr::init()
 	//m_pCurScene->AddGameObject(L"Default", SwordObject, false);
 
 
-	//// obstacle 오브젝트 생성
-	//// ==========================================================================================
-	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Guardhouses.fbx");
-	//CGameObject* GuardHouseObject = nullptr;
-	//
-	//GuardHouseObject = new CGameObject;	
-	//GuardHouseObject = pMeshData->Instantiate();
-	//GuardHouseObject->SetName(L"Guard_houses");
-	//GuardHouseObject->FrustumCheck(false);
-	////SwordObject->AddComponent(new CTransform);
-	////SwordObject->AddComponent(new CMeshRender);
+	// obstacle 오브젝트 생성
+	// ==========================================================================================
+	CGameObject* GuardHouseObject = nullptr;
 
-	//// Transform 설정
-	//
-	//GuardHouseObject->Transform()->SetLocalPos(Vec3(1000.f, 160.f, 800.f));
-	//GuardHouseObject->Transform()->SetLocalScale(Vec3(0.3f, 0.3f, 0.3f));
+	GuardHouseObject = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Guardhouses.fbx");
+	GuardHouseObject = pMeshData->Instantiate();
+	GuardHouseObject->SetName(L"Guard_houses");
+	GuardHouseObject->FrustumCheck(false);
+	
 
-	////Script 설정
-	//GuardHouseObject->AddComponent(new CGuardHouse);
-	//// AddGameObject
-	//m_pCurScene->AddGameObject(L"Default", GuardHouseObject, false);
+	// Transform 설정
+	
+	GuardHouseObject->Transform()->SetLocalPos(Vec3(1000.f, 370.f, 1500.f));
+	GuardHouseObject->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
+
+	//Script 설정
+	GuardHouseObject->AddComponent(new CGuardHouse);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", GuardHouseObject, false);
 
 	// ===========================================================================================
 	CGameObject* GateHouseObject = nullptr;
@@ -430,12 +431,10 @@ void CSceneMgr::init()
 	GateHouseObject = pMeshData->Instantiate();
 	GateHouseObject->SetName(L"Gate_houses");
 	GateHouseObject->FrustumCheck(false);
-	//SwordObject->AddComponent(new CTransform);
-	//SwordObject->AddComponent(new CMeshRender);
-
+	
 	// Transform 설정
-	GateHouseObject->Transform()->SetLocalPos(Vec3(-1400.f, 100.f, -500.f));
-	GateHouseObject->Transform()->SetLocalScale(Vec3(0.3f, 0.3f, 0.3f));
+	GateHouseObject->Transform()->SetLocalPos(Vec3(-1400.f, 200.f,0.f));
+	GateHouseObject->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
 
 	//Script 설정
 	GateHouseObject->AddComponent(new CGateHouse);
@@ -453,8 +452,8 @@ void CSceneMgr::init()
 	//SwordObject->AddComponent(new CMeshRender);
 
 	// Transform 설정
-	GateHouseObject2->Transform()->SetLocalPos(Vec3(1000.f, 100.f, -500.f));
-	GateHouseObject2->Transform()->SetLocalScale(Vec3(0.3f, 0.3f, 0.3f));
+	GateHouseObject2->Transform()->SetLocalPos(Vec3(1000.f, 200.f, 0.f));
+	GateHouseObject2->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
 
 	//Script 설정
 	GateHouseObject2->AddComponent(new CGateHouse);
@@ -472,8 +471,8 @@ void CSceneMgr::init()
 	//SwordObject->AddComponent(new CMeshRender);
 
 	// Transform 설정
-	GateHouseObject3->Transform()->SetLocalPos(Vec3(-1400.f, 100.f, 800.f));
-	GateHouseObject3->Transform()->SetLocalScale(Vec3(0.3f, 0.3f, 0.3f));
+	GateHouseObject3->Transform()->SetLocalPos(Vec3(-1400.f, 200.f, 1000.f));
+	GateHouseObject3->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
 
 	//Script 설정
 	GateHouseObject3->AddComponent(new CGateHouse);
@@ -481,12 +480,12 @@ void CSceneMgr::init()
 	m_pCurScene->AddGameObject(L"Default", GateHouseObject3, false);
 
 
-	////===========================================================================================
+	//===========================================================================================
 	//for (int i = 0; i < 5;  ++i)
 	//{
 	//	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Tree.fbx");
 	//	CGameObject* Treebject = nullptr;
-	//	Treebject = pMeshData->Instantiate();
+	//	Treebject = pMeshData->Instantiate();  
 	//	Treebject = new CGameObject;
 	//	
 	//	Treebject->SetName(L"Tree");
@@ -551,7 +550,7 @@ void CSceneMgr::init()
 	m_pCurScene->AddGameObject(L"Default", SomethingObject, false);
 
 	
-	
+	//==========================================================================================
 	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\DragonJawPortal.fbx");
 
 	CGameObject* PortalObject = nullptr;
@@ -563,7 +562,7 @@ void CSceneMgr::init()
 	
 
 	// Transform 설정
-	PortalObject->Transform()->SetLocalPos(Vec3(12.5f,70.f,1300.f));
+	PortalObject->Transform()->SetLocalPos(Vec3(12.5f,70.f,3100.f));
 	PortalObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 
 	//Script 설정
@@ -571,8 +570,49 @@ void CSceneMgr::init()
 	// AddGameObject
 	
 	m_pCurScene->AddGameObject(L"Default", PortalObject, false);
-	//m_pCurScene->FindLayer(L"Portal")->AddGameObject(pObject);
 	
+	
+
+	// ===========================================================================================
+	CGameObject* Castle = nullptr;
+	Castle = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Full Castle_New.fbx");
+	Castle = pMeshData->Instantiate();
+	Castle->SetName(L"Castle");
+	Castle->FrustumCheck(false);
+
+	// Transform 설정
+	Castle->Transform()->SetLocalPos(Vec3(0.f, 200.f, 1200.f));
+	Castle->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+
+	//Script 설정
+	Castle->AddComponent(new CCastle);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", Castle, false);
+
+
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
+
+	CGameObject* WallObject2 = nullptr;
+	WallObject2 = new CGameObject;
+	WallObject2 = pMeshData->Instantiate();
+	WallObject2->SetName(L"Miro");
+	WallObject2->FrustumCheck(false);
+
+	// Transform 설정
+	WallObject2->Transform()->SetLocalPos(Vec3(0.f, 200.f, 3500.f));
+	WallObject2->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
+
+	//Script 설정
+	WallObject2->AddComponent(new CMiro);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", WallObject2, false);
+
+
+
+
+
+
 	//===================
 	// Map 오브젝트 생성
 	//===================
@@ -604,6 +644,30 @@ void CSceneMgr::init()
 
 
 	//미로----
+	//===========================================================================================
+
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
+
+	CGameObject* WallObject = nullptr;
+	WallObject = new CGameObject;
+	WallObject = pMeshData->Instantiate();
+	WallObject->SetName(L"Miro");
+	WallObject->FrustumCheck(false);
+
+	// Transform 설정
+	WallObject->Transform()->SetLocalPos(Vec3(250.f, 1100.f, 1000.f));
+	WallObject->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+
+	//Script 설정
+	WallObject->AddComponent(new CMiro);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", WallObject, false);
+
+
+	
+
+
+
 
 	CGameObject* MiroObject = nullptr;
 	
@@ -617,6 +681,9 @@ void CSceneMgr::init()
 	// MeshRender 설정
 	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
 	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	
+	
+	
 	// AddGameObject
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
 

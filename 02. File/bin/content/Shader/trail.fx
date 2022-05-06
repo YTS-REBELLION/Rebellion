@@ -2,7 +2,7 @@
 #define _TRIAL
 
 #include "value.fx"
-
+#include "func.fx"
 
 vector	g_vLightDir = (vector)0.f;
 
@@ -17,22 +17,22 @@ vector	g_vMtrlAmbient;
 vector	g_vCamPos;
 float	g_fPower;
 
-struct	VS_IN
+struct	VS_INPUT
 {
-	vector			vPosition : POSITION;
-	float2			vTexUV : TEXCOORD;
+	vector			vPos : POSITION;
+	float2			vUV	 : TEXCOORD;
 };
 
-struct	VS_OUT
+struct	VS_OUTPUT
 {
-	vector			vPosition : POSITION;
-	float2			vTexUV : TEXCOORD;
+	vector			vOutPos : SV_Position;
+	float2			vOutUV : TEXCOORD;
 };
 
 
-VS_OUT	VS_TRAIL(VS_IN In)
+VS_OUTPUT	VS_TRAIL(VS_INPUT _input)
 {
-	VS_OUT		Out = (VS_OUT)0;
+	VS_OUTPUT		output = (VS_OUTPUT)0.f;
 
 	/*matrix		matWV, matWVP;
 
@@ -43,7 +43,7 @@ VS_OUT	VS_TRAIL(VS_IN In)
 
 	Out.vTexUV = In.vTexUV;*/
 
-	return Out;
+	return output;
 }
 
 struct PS_IN
