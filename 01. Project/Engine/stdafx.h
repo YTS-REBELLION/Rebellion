@@ -27,32 +27,32 @@ using namespace std;
 
 
 
-namespace Vector3
-{
-	inline XMFLOAT3 Normalize(XMFLOAT3& xmf3Vector)
-	{
-		XMFLOAT3 m_xmf3Normal;
-		XMStoreFloat3(&m_xmf3Normal, XMVector3Normalize(XMLoadFloat3(&xmf3Vector)));
-		return(m_xmf3Normal);
-	}
-	inline float DotProduct(XMFLOAT3& xmf3Vector1, XMFLOAT3& xmf3Vector2)
-	{
-		XMFLOAT3 xmf3Result;
-		XMStoreFloat3(&xmf3Result, XMVector3Dot(XMLoadFloat3(&xmf3Vector1), XMLoadFloat3(&xmf3Vector2)));
-		return(xmf3Result.x);
-	}
-
-	inline XMFLOAT3 CrossProduct(XMFLOAT3& xmf3Vector1, XMFLOAT3& xmf3Vector2, bool bNormalize = true)
-	{
-		XMFLOAT3 xmf3Result;
-		if (bNormalize)
-			XMStoreFloat3(&xmf3Result, XMVector3Normalize(XMVector3Cross(XMLoadFloat3(&xmf3Vector1), XMLoadFloat3(&xmf3Vector2))));
-		else
-			XMStoreFloat3(&xmf3Result, XMVector3Cross(XMLoadFloat3(&xmf3Vector1), XMLoadFloat3(&xmf3Vector2)));
-		return(xmf3Result);
-	}
-
-}
+//namespace Vector3
+//{
+//	inline XMFLOAT3 Normalize(XMFLOAT3& xmf3Vector)
+//	{
+//		XMFLOAT3 m_xmf3Normal;
+//		XMStoreFloat3(&m_xmf3Normal, XMVector3Normalize(XMLoadFloat3(&xmf3Vector)));
+//		return(m_xmf3Normal);
+//	}
+//	inline float DotProduct(XMFLOAT3& xmf3Vector1, XMFLOAT3& xmf3Vector2)
+//	{
+//		XMFLOAT3 xmf3Result;
+//		XMStoreFloat3(&xmf3Result, XMVector3Dot(XMLoadFloat3(&xmf3Vector1), XMLoadFloat3(&xmf3Vector2)));
+//		return(xmf3Result.x);
+//	}
+//
+//	inline XMFLOAT3 CrossProduct(XMFLOAT3& xmf3Vector1, XMFLOAT3& xmf3Vector2, bool bNormalize = true)
+//	{
+//		XMFLOAT3 xmf3Result;
+//		if (bNormalize)
+//			XMStoreFloat3(&xmf3Result, XMVector3Normalize(XMVector3Cross(XMLoadFloat3(&xmf3Vector1), XMLoadFloat3(&xmf3Vector2))));
+//		else
+//			XMStoreFloat3(&xmf3Result, XMVector3Cross(XMLoadFloat3(&xmf3Vector1), XMLoadFloat3(&xmf3Vector2)));
+//		return(xmf3Result);
+//	}
+//
+//}
 
 
 typedef struct tagTrailVertex
