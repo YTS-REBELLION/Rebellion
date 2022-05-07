@@ -26,7 +26,7 @@ using namespace std;
 
 
 
-//
+
 //namespace Vector3
 //{
 //	inline XMFLOAT3 Normalize(XMFLOAT3& xmf3Vector)
