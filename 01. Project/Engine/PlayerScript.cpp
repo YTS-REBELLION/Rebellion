@@ -98,8 +98,9 @@ void CPlayerScript::update()
 
 	else if (KEY_TAB(KEY_TYPE::KEY_ENTER))
 	{
+		//포탈과충돌로 바꾸기
 		vPos = { 0.f,0.f,0.f };
-		vPos.y += 1000.f;
+		vPos.y += 1500.f;
 		
 	}
 

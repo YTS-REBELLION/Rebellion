@@ -251,6 +251,9 @@
     <ClInclude Include="Castle.h">
       <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
     </ClInclude>
+    <ClInclude Include="NpcMon.h">
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -423,6 +426,9 @@
       <Filter>04. GameObject\Script\02.Miro</Filter>
     </ClCompile>
     <ClCompile Include="Castle.cpp">
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="NpcMon.cpp">
       <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
     </ClCompile>
   </ItemGroup>

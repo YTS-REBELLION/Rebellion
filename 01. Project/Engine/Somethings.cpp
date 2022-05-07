@@ -30,10 +30,9 @@ void CSomethings::update()
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
 	Vec3 vRot = Transform()->GetLocalRot();
 	vRot.x = 29.85f;
-	vRot.y = 30.01f;
-	//vRot.y += 1.f*DT;
+	vRot.y = 18.93f;
 
-	//cout << "Rot:" << vRot.y << endl;
+	
 	Transform()->SetLocalPos(localPos);
 	Transform()->SetLocalRot(vRot);
 
