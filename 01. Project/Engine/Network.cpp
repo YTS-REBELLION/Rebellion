@@ -177,68 +177,26 @@ void CNetwork::ProcessPacket(char* ptr)
 				
 				CGameObject* pObject = nullptr;
 
-				//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Basic_Bandit.fbx");
-				////pMeshData->Save(pMeshData->GetPath());
-				//// MeshData 로드
-				////Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\House.mdat", L"MeshData\\monster.mdat");
+				Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nIdle1.fbx");
+				//pMeshData->Save(pMeshData->GetPath());
 
-				//pObject = pMeshData->Instantiate();
-				//pObject->SetName(L"Player_Man");
-				//pObject->FrustumCheck(false);
-				//pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-				//pObject->Transform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-
-				//pObject->AddComponent(new CPlayerScript);
-				//CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
-				//m_pCurScene->AddGameObject(L"Player", pObject, false);
-
-				//pObject = new CGameObject;
-				//pObject->SetName(L"Player_Man");
-				//pObject->AddComponent(new CTransform);
-				//pObject->AddComponent(new CMeshRender);	
-
-
-				//cout << "ID : " << id << endl;
-				//cout << "x : " << packet->x << ", z : " << packet->z << endl;
-
-				//// Transform 설정
-				//pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-				//pObject->Transform()->SetLocalScale(Vec3(30.f, 30.f, 30.f));
-
-				//// MeshRender 설정
-				//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-				//pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));	
-				////pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pNormalTargetTex.GetPointer());
-				////pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
-
-				//pObject->AddComponent(new CPlayerScript);
-				//CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
-				// 
-				//// AddGameObject
-				////CSm_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
-				//CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pObject, false);
-
-				pObject = new CGameObject;
-				pObject->SetName(L"Player_Man");
-				pObject->AddComponent(new CTransform);
-				pObject->AddComponent(new CMeshRender);	
-
-				// Transform 설정
+				pObject = pMeshData->Instantiate();
+				pObject->SetName(L"Player1");
+				pObject->FrustumCheck(false);
 				pObject->Transform()->SetLocalPos(Vec3(packet->x, packet->y, packet->z));
-				pObject->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+				pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+				pObject->AddComponent(new CCollider2D);
 
-				// MeshRender 설정
-				pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh"));
-				pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));	
-				//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pNormalTargetTex.GetPointer());
-				//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
+				//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH);
 
-				 //Script 설정
-				 pObject->AddComponent(new CMonsterScript);
-				 CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
-				// AddGameObject
-				 CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pObject, false);
-				//m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
+				pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH, L"Player1");
+				pObject->Collider2D()->SetBB(BoundingBox(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingBoxExtents()));
+				pObject->Collider2D()->SetBS(BoundingSphere(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingSphereRadius() / 2.f));
+
+				// 플레이어 스크립트 붙여주기.
+				//pObject->AddComponent(new CPlayerScript);
+				//CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
+				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pObject, false);
 			}
 			else if (CheckType(id) == OBJECT_TYPE::MONSTER) {
 				// 몬스터

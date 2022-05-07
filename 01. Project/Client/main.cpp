@@ -43,9 +43,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MyRegisterClass(hInstance);
     
 
-    //g_net.Connect();
-    //g_net.Send_LogIn_Packet();
-    //g_net.Receive();
+    g_net.Connect();
+    g_net.Send_LogIn_Packet();
+    g_net.Receive();
 
 
     // 응용 프로그램 초기화를 수행합니다:
@@ -75,7 +75,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				DispatchMessage(&msg);
 			}
 		}
-       // g_net.Receive();
+        g_net.Receive();
 		// Game Running
 		CCore::GetInst()->progress();
     }
