@@ -14,12 +14,16 @@ private:
 
 	Vec3				m_vecPlayerDir;
 	float				m_fSpeed = PLAYER_SPEED;
+	int					m_id;
+	bool				m_isMain;
 public:
 	virtual void awake();	
 	virtual void update();
 
 	void GetPlayerAnimation(Ptr<CMesh> AniDate) { m_pAniData.push_back(AniDate); };
 	void SetPlayerAnimation(const int i);
+
+	void SetMain() { m_isMain = true; }
 
 public:
 	CLONE(CPlayerScript);

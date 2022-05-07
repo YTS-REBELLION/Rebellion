@@ -75,7 +75,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				DispatchMessage(&msg);
 			}
 		}
-        //g_net.Receive();
+       // g_net.Receive();
 		// Game Running
 		CCore::GetInst()->progress();
     }

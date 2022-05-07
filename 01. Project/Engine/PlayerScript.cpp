@@ -36,6 +36,7 @@ void CPlayerScript::update()
 
 	//Vec3 vPos = Transform()->GetLocalPos();
 	//Vec3 vRot = Transform()->GetLocalRot();
+
 	if (KEY_HOLD(KEY_TYPE::KEY_W))
 	{
 		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::FRONT);

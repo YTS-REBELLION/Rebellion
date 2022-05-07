@@ -2,6 +2,7 @@
 #include "Network.h"
 #include "GameObject.h"
 #include "Scene.h"
+#include "SceneMgr.h"
 
 #include "Layer.h"
 #include "Camera.h"
@@ -166,13 +167,14 @@ void CNetwork::ProcessPacket(char* ptr)
 		sc_packet_put_object* packet = reinterpret_cast<sc_packet_put_object*>(ptr);
 		int id = packet->id;
 		
-		if (id == g_myid) {
-			//내꺼 만들기
-		}
-		else {
+		//if (id == g_myid) {
+		//	//내꺼 만들기
+		//}
+		//else {
 			if (CheckType(id) == OBJECT_TYPE::PLAYER) {
 				// 다른 사람꺼
 				cout << "다른 사람 입장 " << endl;
+				
 				CGameObject* pObject = nullptr;
 
 				//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Basic_Bandit.fbx");
@@ -233,7 +235,7 @@ void CNetwork::ProcessPacket(char* ptr)
 
 				 //Script 설정
 				 pObject->AddComponent(new CMonsterScript);
-
+				 CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
 				// AddGameObject
 				 CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pObject, false);
 				//m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
@@ -242,7 +244,7 @@ void CNetwork::ProcessPacket(char* ptr)
 				// 몬스터
 
 			}
-		}
+		//}
 
 	}
 							 break;
