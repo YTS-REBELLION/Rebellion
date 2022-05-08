@@ -24,11 +24,15 @@ public:
 	float			checktime = 0.f;
 	bool			m_bMouseFix = false;
 
+	CAMERASTATE		m_eCamState = CAMERASTATE::PLAYER;
 public:
 	virtual void update();
 	void SetCameraToPlayer(CGameObject* Player) {
 		m_pPlayer = Player;
 	}
+
+	void SetFreeCamera();
+	void SetPlayerFixedCamera();
 
 	//void CameraMode();
 	//void Player_Mode();

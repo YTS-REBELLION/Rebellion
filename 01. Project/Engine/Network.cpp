@@ -188,8 +188,8 @@ void CNetwork::ProcessPacket(char* ptr)
 				//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH);
 
 				pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH, L"Player1");
-				pObject->Collider2D()->SetBB(BoundingBox(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingBoxExtents()));
-				pObject->Collider2D()->SetBS(BoundingSphere(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingSphereRadius() / 2.f));
+				//pObject->Collider2D()->SetBB(BoundingBox(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingBoxExtents()));
+				//pObject->Collider2D()->SetBS(BoundingSphere(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingSphereRadius() / 2.f));
 
 				// 플레이어 스크립트 붙여주기.
 				//pObject->AddComponent(new CPlayerScript);

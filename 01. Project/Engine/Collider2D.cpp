@@ -23,11 +23,11 @@ CCollider2D::CCollider2D()
 	, m_iCollisionCount(0)
 	, m_eType(COLLIDER2D_TYPE::BOX)
 {
-	m_pColMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"ColliderMtrl");
+	m_pColMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Collider2DMtrl_0");
 	SetColliderType(m_eType);
 
-	m_bBB = BoundingBox(XMFLOAT3(0.f, 0.f, 0.f), XMFLOAT3(1.f, 1.f, 1.f));
-	m_bBS = BoundingSphere(XMFLOAT3(0.f, 0.f, 0.f), 1.f);
+	//m_bBB = BoundingBox(XMFLOAT3(0.f, 0.f, 0.f), XMFLOAT3(1.f, 1.f, 1.f));
+	//m_bBS = BoundingSphere(XMFLOAT3(0.f, 0.f, 0.f), 1.f);
 }
 
 CCollider2D::CCollider2D(const CCollider2D & _other)
@@ -72,18 +72,18 @@ void CCollider2D::finalupdate()
 	m_matColWorld = matScale * matTranslation;
 	m_matColWorld *= Transform()->GetWorldMat();
 
-	m_bBB.Center = Transform()->GetWorldPos();
+	//m_bBB.Center = Transform()->GetWorldPos();
 
-	m_bBS.Center = Transform()->GetWorldPos();
-	m_bBS.Center.y = Transform()->GetWorldPos().y + m_bBS.Radius;
+	//m_bBS.Center = Transform()->GetWorldPos();
+	//m_bBS.Center.y = Transform()->GetWorldPos().y + m_bBS.Radius;
 
-	if (GetObj()->GetScript<CPlayerScript>() != nullptr && GetObj()->GetScript<CPlayerScript>()->GetIsHide())
-		m_bBS.Center.y += 2000.f;
+	//if (GetObj()->GetScript<CPlayerScript>() != nullptr && GetObj()->GetScript<CPlayerScript>()->GetIsHide())
+	//	m_bBS.Center.y += 2000.f;
 
-	if (m_eType == COLLIDER2D_TYPE::RANGE) {
-		m_bBS.Center = Transform()->GetWorldPos();
-		m_bBS.Center.y = Transform()->GetWorldPos().y;// +m_bSp.Radius;
-	}
+	//if (m_eType == COLLIDER2D_TYPE::RANGE) {
+	//	m_bBS.Center = Transform()->GetWorldPos();
+	//	m_bBS.Center.y = Transform()->GetWorldPos().y;// +m_bSp.Radius;
+	//}
 }
 
 void CCollider2D::render()
@@ -93,7 +93,7 @@ void CCollider2D::render()
 
 	static CConstantBuffer* pCB = CDevice::GetInst()->GetCB(CONST_REGISTER::b0);
 
-	m_matColWorld._42 += m_bBS.Radius;
+	//m_matColWorld._42 += m_bBS.Radius;
 	g_transform.matWorld = m_matColWorld;	
 	CDevice::GetInst()->SetConstBufferToRegister(pCB, pCB->AddData(&g_transform));	
 	
@@ -139,7 +139,7 @@ void CCollider2D::SetColliderType(COLLIDER2D_TYPE _eType, wstring _str)
 	}
 	else if (COLLIDER2D_TYPE::BOX == m_eType)
 	{
-		m_pColMesh = CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh");
+		m_pColMesh = CResMgr::GetInst()->FindRes<CMesh>(L"ColCubeMesh");
 	}
 	else if (COLLIDER2D_TYPE::MESH == m_eType)
 	{
@@ -169,10 +169,10 @@ void CCollider2D::OnCollisionEnter(CCollider2D * _pOther)
 
 void CCollider2D::OnCollision(CCollider2D * _pOther)
 {
-	//if (0 < m_iCollisionCount)
-	//{
-	//	m_pColMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Collider2DMtrl_1");
-	//}
+	if (0 < m_iCollisionCount)
+	{
+		m_pColMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Collider2DMtrl_1");
+	}
 
 	const vector<CScript*>& vecScripts = GetObj()->GetScripts();
 	for (size_t i = 0; i < vecScripts.size(); ++i)
@@ -184,8 +184,8 @@ void CCollider2D::OnCollision(CCollider2D * _pOther)
 void CCollider2D::OnCollisionExit(CCollider2D * _pOther)
 {	
 	m_iCollisionCount -= 1;
-	//if(m_iCollisionCount == 0)
-	//	m_pColMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Collider2DMtrl_0");
+	if(m_iCollisionCount == 0)
+		m_pColMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Collider2DMtrl_0");
 
 	const vector<CScript*>& vecScripts = GetObj()->GetScripts();
 	for (size_t i = 0; i < vecScripts.size(); ++i)

@@ -8,6 +8,8 @@ CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
 	, m_pOriginMtrl(nullptr)
 	, m_pCloneMtrl(nullptr)
+	, m_bAttack(false)
+	, m_iCulidx(0)
 {	
 }
 
@@ -29,6 +31,7 @@ void CPlayerScript::update()
 {
 	Vec3 WorldDir;
 	Vec3 localPos = Transform()->GetLocalPos();
+	
 	CTransform* playerTrans = Transform();
 
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
@@ -38,7 +41,7 @@ void CPlayerScript::update()
 	//Vec3 vRot = Transform()->GetLocalRot();
 	if (KEY_HOLD(KEY_TYPE::KEY_W))
 	{
-		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::FRONT);
+		WorldDir = playerTrans->GetWorldDir(DIR_TYPE::UP);
 		localPos += WorldDir * m_fSpeed * DT;
 
 		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
@@ -51,7 +54,7 @@ void CPlayerScript::update()
 
 	else if (KEY_HOLD(KEY_TYPE::KEY_S))
 	{
-		WorldDir = playerTrans->GetWorldDir(DIR_TYPE::FRONT);
+		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::UP);
 		localPos += WorldDir * m_fSpeed * DT;
 
 		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
@@ -98,11 +101,40 @@ void CPlayerScript::update()
 		Transform()->SetLocalRot(vRot);
 	}
 
-	if (KEY_HOLD(KEY_TYPE::KEY_SPACE))
+	if (KEY_TAB(KEY_TYPE::KEY_SPACE))
 	{
+		GetObj()->Animator3D()->SetClipTime(0, 0.f);
+		SetAttack();
+	}
+	//m_vecAniClipTime[m_iCulidx] += DT;
+	if (GetAttack() && 0 < Animator3D()->GetAnimClip(0).dTimeLength) {
+		//m_vecAniClipTime[m_iCulidx] += DT;
+
+		GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 20.f, 70.f));
+		GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 1150.f, 1700.f));
+		
+		cout << Animator3D()->GetCurTime() << endl;
+
 		SetPlayerAnimation(3);
 	}
+	//else if (m_vecAniClipTime[m_iCulidx] > Animator3D()->GetAnimClip(0).dTimeLength)
+	//{
+	//	cout << "애니메이션 끝" << endl;
+	//}
 
+	//else {
+	//	SetAttack();
+	//}
+
+	//else {
+	//	GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
+	//	GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 850.f, 1700.f));
+	//}
+
+	if (KEY_HOLD(KEY_TYPE::KEY_ENTER))
+	{
+		localPos.y = 0.f;
+	}
 	Transform()->SetLocalPos(localPos);
 
 
@@ -123,8 +155,8 @@ void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
 
 void CPlayerScript::OnCollision(CCollider2D* _pOther)
 {
-	BoundingSphere myBS = Collider2D()->GetBS();
-	BoundingSphere otherBS = _pOther->Collider2D()->GetBS();
+	//BoundingSphere myBS = Collider2D()->GetBS();
+	//BoundingSphere otherBS = _pOther->Collider2D()->GetBS();
 
 	Vec3 WorldDir;
 	Vec3 localPos = Transform()->GetLocalPos();

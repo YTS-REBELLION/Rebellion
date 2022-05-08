@@ -124,7 +124,7 @@ void CFBXLoader::LoadMeshDataFromNode(FbxNode * _pNode)
 	int iChildCnt = _pNode->GetChildCount();
 	for (int i = 0; i < iChildCnt; ++i)
 	{
-		this->LoadMeshDataFromNode(_pNode->GetChild(i));
+		LoadMeshDataFromNode(_pNode->GetChild(i));
 	}
 }
 
@@ -145,59 +145,14 @@ void CFBXLoader::LoadMesh(FbxMesh * _pFbxMesh)
 	float fy = (float)pFbxPos[0].mData[2];
 	float fz = (float)pFbxPos[0].mData[1];
 
-	Vec4 vecMin{ Vec3(fx,fy,fz),0.f };
-	Vec4 vecMax{ };
+	//Vec4 vecMin{ Vec3(fx,fy,fz),0.f };
+	//Vec4 vecMax{ };
 
 	for (int i = 0; i < iVtxCnt; ++i)
 	{
 		Container.vecPos[i].x = (float)pFbxPos[i].mData[0];
 		Container.vecPos[i].y = (float)pFbxPos[i].mData[2];
 		Container.vecPos[i].z = (float)pFbxPos[i].mData[1];
-
-		//	메쉬 별 최소, 최대 vertex 좌표값 찾기
-		if (Container.vecPos[i].x < vecMin.x)
-			vecMin.x = Container.vecPos[i].x;
-		if (Container.vecPos[i].y < vecMin.y)
-			vecMin.y = Container.vecPos[i].y;
-		if (Container.vecPos[i].z < vecMin.z)
-			vecMin.z = Container.vecPos[i].z;
-
-		if (Container.vecPos[i].x > vecMax.x)
-			vecMax.x = Container.vecPos[i].x;
-		if (Container.vecPos[i].y > vecMax.y)
-			vecMax.y = Container.vecPos[i].y;
-		if (Container.vecPos[i].z > vecMax.z)
-			vecMax.z = Container.vecPos[i].z;
-	}
-
-	if (CResMgr::GetInst()->FindRes<CMesh>(m_fileName) == nullptr)
-	{
-		// Mesh Extents Collision Mesh
-		// 바운딩 박스 콜리젼 매쉬 등록
-
-		//	플레이어 X값 스키닝 매쉬라 줫나커서 나누기 2
-		//vecMin.x /= 2;
-		//vecMax.x /= 2;
-
-		m_vecMMax[0] = vecMin;
-		m_vecMMax[1] = vecMax;
-
-		//CreateBoundingCubeCollisionMesh(m_vecMMax, m_fileName);
-
-		//구형
-		m_vecMMax[0].x = fabs(m_vecMMax[0].x);
-		m_vecMMax[0].y = fabs(m_vecMMax[0].y);
-		m_vecMMax[0].z = fabs(m_vecMMax[0].z);
-
-		//	x,y,z축 평균 벡터들
-		Vec3 vecAver = (m_vecMMax[1] + m_vecMMax[0]) / 2.f;
-
-		//	각 평균벡터들로 평균내서 충돌 반지름 길이 평균값 대충 계산
-		float fRadiusAver = (vecAver.x + vecAver.y + vecAver.z) / 3;
-		CreateBoundingSphereCollisionMesh(fRadiusAver, m_fileName);
-
-		//	CreateBoundingSphereCollisonMesh 주석처리하고 하면 리소스매니저 등록안하고 메쉬 데이터 크기만 가져가서 바운딩스피어 정의 가능하지 않을까?
-
 	}
 
 	// 폴리곤 개수
@@ -205,10 +160,6 @@ void CFBXLoader::LoadMesh(FbxMesh * _pFbxMesh)
 
 	// 재질의 개수 ( ==> SubSet 개수 ==> Index Buffer Count)
 	int iMtrlCnt = _pFbxMesh->GetNode()->GetMaterialCount();
-	
-	//if (iMtrlCnt == 3) {
-	//	iMtrlCnt = 2;
-	//}
 
 	Container.vecIdx.resize(iMtrlCnt);	
 
@@ -287,66 +238,66 @@ void CFBXLoader::GetTangent(FbxMesh * _pMesh
 	, int _iIdx		 /*해당 정점의 인덱스*/
 	, int _iVtxOrder /*폴리곤 단위로 접근하는 순서*/)
 {
-	//int iTangentCnt = _pMesh->GetElementTangentCount();
-	//if (1 != iTangentCnt)
-	//	assert(NULL); // 정점 1개가 포함하는 탄젠트 정보가 2개 이상이다.
+	int iTangentCnt = _pMesh->GetElementTangentCount();
+	if (1 > iTangentCnt)
+		assert(NULL); // 정점 1개가 포함하는 탄젠트 정보가 2개 이상이다.
 
-	//// 탄젠트 data 의 시작 주소
-	//FbxGeometryElementTangent* pTangent = _pMesh->GetElementTangent();
-	//UINT iTangentIdx = 0;
-	//
-	//if (pTangent->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
-	//{
-	//	if (pTangent->GetReferenceMode() == FbxGeometryElement::eDirect)
-	//		iTangentIdx = _iVtxOrder;
-	//	else
-	//		iTangentIdx = pTangent->GetIndexArray().GetAt(_iVtxOrder);
-	//}
-	//else if (pTangent->GetMappingMode() == FbxGeometryElement::eByControlPoint)
-	//{
-	//	if (pTangent->GetReferenceMode() == FbxGeometryElement::eDirect)
-	//		iTangentIdx = _iIdx;
-	//	else
-	//		iTangentIdx = pTangent->GetIndexArray().GetAt(_iIdx);
-	//}
-
-	//FbxVector4 vTangent = pTangent->GetDirectArray().GetAt(iTangentIdx);
+	// 탄젠트 data 의 시작 주소
+	FbxGeometryElementTangent* pTangent = _pMesh->GetElementTangent();
+	UINT iTangentIdx = 0;
 	
-	_pContainer->vecTangent[_iIdx].x = 0.f;//(float)vTangent.mData[0];
-	_pContainer->vecTangent[_iIdx].y = 0.f;//(float)vTangent.mData[2];
-	_pContainer->vecTangent[_iIdx].z = 0.f;//(float)vTangent.mData[1];
+	if (pTangent->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
+	{
+		if (pTangent->GetReferenceMode() == FbxGeometryElement::eDirect)
+			iTangentIdx = _iVtxOrder;
+		else
+			iTangentIdx = pTangent->GetIndexArray().GetAt(_iVtxOrder);
+	}
+	else if (pTangent->GetMappingMode() == FbxGeometryElement::eByControlPoint)
+	{
+		if (pTangent->GetReferenceMode() == FbxGeometryElement::eDirect)
+			iTangentIdx = _iIdx;
+		else
+			iTangentIdx = pTangent->GetIndexArray().GetAt(_iIdx);
+	}
+
+	FbxVector4 vTangent = pTangent->GetDirectArray().GetAt(iTangentIdx);
+	
+	_pContainer->vecTangent[_iIdx].x = (float)vTangent.mData[0];
+	_pContainer->vecTangent[_iIdx].y = (float)vTangent.mData[2];
+	_pContainer->vecTangent[_iIdx].z = (float)vTangent.mData[1];
 }
 
 void CFBXLoader::GetBinormal(FbxMesh * _pMesh, tContainer * _pContainer, int _iIdx, int _iVtxOrder)
 {
-	//int iBinormalCnt = _pMesh->GetElementBinormalCount();
-	//if (1 != iBinormalCnt)
-	//	assert(NULL); // 정점 1개가 포함하는 종법선 정보가 2개 이상이다.
+	int iBinormalCnt = _pMesh->GetElementBinormalCount();
+	if (1 > iBinormalCnt)
+		assert(NULL); // 정점 1개가 포함하는 종법선 정보가 2개 이상이다.
 
-	//// 종법선 data 의 시작 주소
-	//FbxGeometryElementBinormal* pBinormal = _pMesh->GetElementBinormal();
-	//UINT iBinormalIdx = 0;
+	// 종법선 data 의 시작 주소
+	FbxGeometryElementBinormal* pBinormal = _pMesh->GetElementBinormal();
+	UINT iBinormalIdx = 0;
 
-	//if (pBinormal->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
-	//{
-	//	if (pBinormal->GetReferenceMode() == FbxGeometryElement::eDirect)
-	//		iBinormalIdx = _iVtxOrder;
-	//	else
-	//		iBinormalIdx = pBinormal->GetIndexArray().GetAt(_iVtxOrder);
-	//}
-	//else if (pBinormal->GetMappingMode() == FbxGeometryElement::eByControlPoint)
-	//{
-	//	if (pBinormal->GetReferenceMode() == FbxGeometryElement::eDirect)
-	//		iBinormalIdx = _iIdx;
-	//	else
-	//		iBinormalIdx = pBinormal->GetIndexArray().GetAt(_iIdx);
-	//}
+	if (pBinormal->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
+	{
+		if (pBinormal->GetReferenceMode() == FbxGeometryElement::eDirect)
+			iBinormalIdx = _iVtxOrder;
+		else
+			iBinormalIdx = pBinormal->GetIndexArray().GetAt(_iVtxOrder);
+	}
+	else if (pBinormal->GetMappingMode() == FbxGeometryElement::eByControlPoint)
+	{
+		if (pBinormal->GetReferenceMode() == FbxGeometryElement::eDirect)
+			iBinormalIdx = _iIdx;
+		else
+			iBinormalIdx = pBinormal->GetIndexArray().GetAt(_iIdx);
+	}
 
-	//FbxVector4 vBinormal = pBinormal->GetDirectArray().GetAt(iBinormalIdx);
+	FbxVector4 vBinormal = pBinormal->GetDirectArray().GetAt(iBinormalIdx);
 
-	_pContainer->vecBinormal[_iIdx].x = 0.f;//(float)vBinormal.mData[0];
-	_pContainer->vecBinormal[_iIdx].y = 0.f;//(float)vBinormal.mData[2];
-	_pContainer->vecBinormal[_iIdx].z = 0.f;//(float)vBinormal.mData[1];
+	_pContainer->vecBinormal[_iIdx].x = (float)vBinormal.mData[0];
+	_pContainer->vecBinormal[_iIdx].y = (float)vBinormal.mData[2];
+	_pContainer->vecBinormal[_iIdx].z = (float)vBinormal.mData[1];
 }
 
 void CFBXLoader::GetNormal(FbxMesh * _pMesh, tContainer * _pContainer, int _iIdx, int _iVtxOrder)
@@ -447,18 +398,37 @@ void CFBXLoader::LoadTexture()
 		{
 			wstring strPath;
 			wstring strFileName;
-			
-			strPath += CPathMgr::GetRelativePath(m_vecContainer[i].vecMtrl[j].strDiff.c_str());
-			strFileName = CPathMgr::GetFileName(m_vecContainer[i].vecMtrl[j].strDiff.c_str());
-			CResMgr::GetInst()->Load<CTexture>(strFileName, strPath);
+			if (m_vecContainer[i].vecMtrl[j].strDiff == L"") {
 
-			/*strPath = CPathMgr::GetRelativePath(m_vecContainer[i].vecMtrl[j].strNormal.c_str());
-			strFileName = CPathMgr::GetFileName(m_vecContainer[i].vecMtrl[j].strNormal.c_str());
-			CResMgr::GetInst()->Load<CTexture>(strFileName, strPath);
+			}
+			else {
+				strPath = CPathMgr::GetRelativePath(m_vecContainer[i].vecMtrl[j].strDiff.c_str());
+				strFileName = CPathMgr::GetFileName(m_vecContainer[i].vecMtrl[j].strDiff.c_str());
+				CResMgr::GetInst()->Load<CTexture>(strFileName, strPath);
 
-			strPath = CPathMgr::GetRelativePath(m_vecContainer[i].vecMtrl[j].strSpec.c_str());
-			strFileName = CPathMgr::GetFileName(m_vecContainer[i].vecMtrl[j].strSpec.c_str());
-			CResMgr::GetInst()->Load<CTexture>(strFileName, strPath);*/
+			}
+
+
+			if (m_vecContainer[i].vecMtrl[j].strNormal == L"") {
+
+			}
+			else {
+				strPath = CPathMgr::GetRelativePath(m_vecContainer[i].vecMtrl[j].strNormal.c_str());
+				strFileName = CPathMgr::GetFileName(m_vecContainer[i].vecMtrl[j].strNormal.c_str());
+				CResMgr::GetInst()->Load<CTexture>(strFileName, strPath);
+
+			}
+
+
+			if (m_vecContainer[i].vecMtrl[j].strSpec == L"") {
+
+			}
+			else {
+				strPath = CPathMgr::GetRelativePath(m_vecContainer[i].vecMtrl[j].strSpec.c_str());
+				strFileName = CPathMgr::GetFileName(m_vecContainer[i].vecMtrl[j].strSpec.c_str());
+				CResMgr::GetInst()->Load<CTexture>(strFileName, strPath);
+
+			}
 		}
 	}
 }

@@ -209,17 +209,17 @@ bool CCollisionMgr::IsCollision(CCollider2D * _pCollider1, CCollider2D * _pColli
 bool CCollisionMgr::CollisionSphere(CCollider2D* _pCollider1, CCollider2D* _pCollider2)
 {
 	//cout << "여기들어오냐?" << endl;
-	BoundingSphere bBX1 = _pCollider1->GetBS();
-	BoundingSphere bBX2 = _pCollider2->GetBS();
+	//BoundingSphere bBX1 = _pCollider1->GetBS();
+	//BoundingSphere bBX2 = _pCollider2->GetBS();
 
-	if (bBX1.Contains(bBX2) == 1)
-	{
-		//cout << "물체와 충돌?" << endl;
-		//	바운딩 구 중점, 크기 check용 cout.
-		wstring a = _pCollider1->GetObj()->GetName();
-		wstring b = _pCollider2->GetObj()->GetName();
-		return true;
-	}
+	//if (bBX1.Contains(bBX2) == 1)
+	//{
+	//	//cout << "물체와 충돌?" << endl;
+	//	//	바운딩 구 중점, 크기 check용 cout.
+	//	wstring a = _pCollider1->GetObj()->GetName();
+	//	wstring b = _pCollider2->GetObj()->GetName();
+	//	return true;
+	//}
 	return false;
 }
 

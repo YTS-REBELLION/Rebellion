@@ -14,12 +14,25 @@ private:
 
 	Vec3				m_vecPlayerDir;
 	float				m_fSpeed = PLAYER_SPEED;
+	bool				m_bAttack;
+
+	vector<float>		m_vecAniClipTime;
+	int					m_iCulidx;
+
 public:
 	virtual void awake();	
 	virtual void update();
 
 	void GetPlayerAnimation(Ptr<CMesh> AniDate) { m_pAniData.push_back(AniDate); };
 	void SetPlayerAnimation(const int i);
+
+	void SetAttack() { 
+		if (m_bAttack) {
+			m_bAttack = false;
+		}
+		else m_bAttack = true;
+	}
+	bool GetAttack() { return m_bAttack; }
 
 public:
 	CLONE(CPlayerScript);

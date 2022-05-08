@@ -311,3 +311,10 @@ enum class SHADER_POV
 	LIGHTING,
 	COMPUTE, // GPGPU
 };
+
+
+enum class CAMERASTATE
+{
+	FREE,
+	PLAYER,
+};

@@ -24,8 +24,8 @@ private:
 
 	UINT			m_iColID;			// 충돌체 고유 ID 값
 	
-	BoundingBox		m_bBB;
-	BoundingSphere	m_bBS;
+	//BoundingBox		m_bBB;
+	//BoundingSphere	m_bBS;
 
 public:
 	virtual void update();
@@ -52,12 +52,12 @@ public:
 	const Matrix& GetColliderWorldMat() { return m_matColWorld; }
 
 public:
-	BoundingBox GetBB() { return m_bBB; }
-	BoundingSphere GetBS() { return m_bBS; }
+	//BoundingBox GetBB() { return m_bBB; }
+	//BoundingSphere GetBS() { return m_bBS; }
 
-	void SetBB(BoundingBox box, float Radius = 1.f) { m_bBB = box; }
-	void SetBS(BoundingSphere sphere) { m_bBS = sphere; m_bBS.Center.y += m_bBS.Radius;}
-	void SetCenter(Vec3 Center_pos) { m_bBS.Center = Center_pos; }
+	//void SetBB(BoundingBox box, float Radius = 1.f) { m_bBB = box; }
+	//void SetBS(BoundingSphere sphere) { m_bBS = sphere; m_bBS.Center.y += m_bBS.Radius;}
+	//void SetCenter(Vec3 Center_pos) { m_bBS.Center = Center_pos; }
 
 public:
 	CLONE(CCollider2D);

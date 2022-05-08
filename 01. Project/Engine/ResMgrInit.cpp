@@ -51,7 +51,7 @@ void CResMgr::CreateDefaultShader()
 	pShader->CreatePixelShader(L"Shader\\std.fx", "PS_Collider2D", "ps_5_0");
 
 	// DepthStencilState ¼³Á¤
-	pShader->SetDepthStencilType(DEPTH_STENCIL_TYPE::NO_DEPTHTEST);
+	//pShader->SetDepthStencilType(DEPTH_STENCIL_TYPE::NO_DEPTHTEST);
 
 	pShader->Create(SHADER_POV::FORWARD, D3D_PRIMITIVE_TOPOLOGY::D3D_PRIMITIVE_TOPOLOGY_LINESTRIP);
 	AddRes(L"Collider2DShader", pShader);
@@ -678,6 +678,20 @@ void CResMgr::CreateDefaultMesh()
 		, DXGI_FORMAT_R32_UINT, (UINT)vecIdx.size(), (BYTE*)vecIdx.data());
 
 	pMesh->SetName(L"CubeMesh");
+	AddRes<CMesh>(pMesh->GetName(), pMesh);
+
+	vecIdx.clear();
+	// ÀÎµ¦½º
+	vecIdx.push_back(0); vecIdx.push_back(1); vecIdx.push_back(2); vecIdx.push_back(3); vecIdx.push_back(0);
+	vecIdx.push_back(4); vecIdx.push_back(5); vecIdx.push_back(6); vecIdx.push_back(7); vecIdx.push_back(4);
+	vecIdx.push_back(0); vecIdx.push_back(1); vecIdx.push_back(6); vecIdx.push_back(7); vecIdx.push_back(0);
+	vecIdx.push_back(3); vecIdx.push_back(2); vecIdx.push_back(5); vecIdx.push_back(4); vecIdx.push_back(3);
+	pMesh = new CMesh;
+
+	pMesh->Create(sizeof(VTX), 8, (BYTE*)arrCube
+		, DXGI_FORMAT_R32_UINT, (UINT)vecIdx.size(), (BYTE*)vecIdx.data());
+
+	pMesh->SetName(L"ColCubeMesh");
 	AddRes<CMesh>(pMesh->GetName(), pMesh);
 
 	vecVTX.clear();

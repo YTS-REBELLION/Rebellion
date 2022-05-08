@@ -28,9 +28,10 @@ public:
 	void SetBones(const vector<tMTBone>* _vecBones) { m_pVecBones = _vecBones; m_vecFinalBoneMat.resize(m_pVecBones->size()); }
 	void SetAnimClip(const vector<tMTAnimClip>* _vecAnimClip);
 	void UpdateData();
-
 	void SetClipTime(int _iClipIdx, float _fTime) { m_vecClipUpdateTime[_iClipIdx] = _fTime; }
-
+	//vector<float> Getab() { return m_vecClipUpdateTime }
+	tMTAnimClip GetAnimClip(int _idx) { return m_pVecClip->at(_idx); }
+	double GetCurTime() { return m_dCurTime; }
 	vector<Matrix>& GetFinalBoneMat() { return m_vecFinalBoneMat; }
 
 private:

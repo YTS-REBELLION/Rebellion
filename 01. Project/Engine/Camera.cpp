@@ -139,11 +139,11 @@ void CCamera::render_forward()
 			m_vecForward[i]->Collider2D()->render();
 	}
 
-	//for (size_t i = 0; i < m_vecDeferred.size(); ++i)
-	//{
-	//	if (m_vecDeferred[i]->Collider2D())
-	//		m_vecDeferred[i]->Collider2D()->render();
-	//}
+	for (size_t i = 0; i < m_vecDeferred.size(); ++i)
+	{
+		if (m_vecDeferred[i]->Collider2D())
+			m_vecDeferred[i]->Collider2D()->render();
+	}
 }
 
 
