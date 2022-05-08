@@ -11,6 +11,7 @@ CPlayerScript::CPlayerScript()
 	, m_bAttack(false)
 	, m_iCulidx(0)
 {	
+	m_vecAniClipTime = vector<float>(3);
 }
 
 CPlayerScript::~CPlayerScript()
@@ -106,7 +107,7 @@ void CPlayerScript::update()
 		GetObj()->Animator3D()->SetClipTime(0, 0.f);
 		SetAttack();
 	}
-	//m_vecAniClipTime[m_iCulidx] += DT;
+	m_vecAniClipTime[m_iCulidx] += DT;
 	if (GetAttack() && 0 < Animator3D()->GetAnimClip(0).dTimeLength) {
 		//m_vecAniClipTime[m_iCulidx] += DT;
 
