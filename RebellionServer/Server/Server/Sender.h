@@ -13,7 +13,9 @@ public:
 	void SendLoginFailPacket(SOCKET s);
 	void SendLeaveObjectPacket(SOCKET s, int id, int objType);
 	void SendNPCAttackPacket(SOCKET s, int id, float x, float z);
-	void SendMovePacket(SOCKET s, int mover, float x, float y, float z, float dx, float dy, float dz, char status, std::chrono::time_point<std::chrono::system_clock> time);
+	void SendMovePacket(SOCKET s, int mover, Vec3 localPos, float dx, float dy, float dz, bool status, std::chrono::time_point<std::chrono::system_clock> time);
+	void SendMovePacket(SOCKET s, int mover, Vec3 localPos);
+
 	void SendPutObjectPacket(SOCKET s, int id, float x, float y, float z, int objType);
 	void SendStopPacket(SOCKET s, int id);
 	void SendPlayerDiePacket(SOCKET s, int id);

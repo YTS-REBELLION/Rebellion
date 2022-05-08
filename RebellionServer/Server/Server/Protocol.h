@@ -33,6 +33,7 @@ const char  SC_PACKET_PUT_OBJECT = 4;
 const char  SC_PACKET_LEAVE_OBJECT = 5;
 const char  SC_PACKET_STAT_CHANGE = 6;
 const char  SC_PACKET_CHAT = 7;
+const char	SC_PACKET_MOVE = 8;
 
 const char SC_PACKET_NPC_ATTACK = 8;
 const char SC_PACKET_PLAYER_ATTACK = 9;
@@ -146,10 +147,14 @@ struct sc_packet_move {
 	char size;
 	char type;
 	int id;
-	float x, y, z;
+	//float x, y, z;
+	Vec3 localPos;
+	
 	float D_x, D_y, D_z;
-	char status;
+	bool status;
 	std::chrono::time_point<std::chrono::system_clock> time;
+	
+	bool isMoving;
 };
 
 struct sc_packet_stop {

@@ -6,12 +6,12 @@ class CPlayerScript :
 	public CScript
 {
 public:
-	vector<Ptr<CMesh>>	m_pAniData;
+	
 
 private:
 	Ptr<CMaterial>		m_pOriginMtrl;
 	Ptr<CMaterial>		m_pCloneMtrl;
-
+	vector<Ptr<CMesh>>	m_pAniData;
 	Vec3				m_vecPlayerDir;
 	float				m_fSpeed = PLAYER_SPEED;
 	bool				m_bAttack;
@@ -19,12 +19,18 @@ private:
 	vector<float>		m_vecAniClipTime;
 	int					m_iCulidx;
 
+	int					m_id;
+	bool				m_isMain;
 public:
 	virtual void awake();	
 	virtual void update();
 
 	void GetPlayerAnimation(Ptr<CMesh> AniDate) { m_pAniData.push_back(AniDate); };
-	void SetPlayerAnimation(const int i);
+	void SetPlayerAnimation(const int& i);
+	Ptr<CMesh> GetAniData(const int& type) { return m_pAniData[(int)type]; }
+
+	void SetPlayerAnimation(int other_id, int i);
+	void SetMain() { m_isMain = true; }
 
 	void SetAttack() { 
 		if (m_bAttack) {

@@ -192,7 +192,7 @@ void CSceneMgr::init()
 	//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Idle.fbx");
 	pMeshData->Save(pMeshData->GetPath());
 	
-	pObject = pMeshData->Instantiate();
+	pObject = pMeshData->Instantiate(); 
 	pObject->SetName(L"Player1");
 	pObject->FrustumCheck(false);
 	pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
@@ -207,26 +207,45 @@ void CSceneMgr::init()
 
 	// 플레이어 스크립트 붙여주기.
 	pObject->AddComponent(new CPlayerScript);
-	CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
-	m_pCurScene->AddGameObject(L"Player", pObject, false);
 
+	CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
 	// 플레이어 애니메이션
 	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 0
+	g_net.SetAniData(pMeshData->GetMesh());
 
 	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Walk.fbx");
 	//pMeshData->Save(pMeshData->GetPath());
 	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Walk.mdat", L"MeshData\\Player_Walk.mdat");
 	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
+	g_net.SetAniData(pMeshData->GetMesh());
 
 	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Run.fbx");
 	//pMeshData->Save(pMeshData->GetPath());
 	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Run.mdat", L"MeshData\\Player_Run.mdat");
 	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 2
+	g_net.SetAniData(pMeshData->GetMesh());
 
 	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Attack.fbx");
 	//pMeshData->Save(pMeshData->GetPath());
 	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Attack.mdat", L"MeshData\\Player_Attack.mdat");
 	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
+	g_net.SetAniData(pMeshData->GetMesh());
+
+
+	m_pCurScene->AddGameObject(L"Player", pObject, false);
+
+	//// 더미 플레이어 -> 초기 캐릭터가 누워있는거를 회전 시키면 카메라도 같이 회전해서 생성.
+	//Ptr<CMeshData> DmypMeshData;
+
+	//CGameObject* DmypObject = new CGameObject;
+	//DmypObject = DmypMeshData->DmyInstantiate();
+	//DmypObject->SetName(L"Dummy_Player");
+	//DmypObject->FrustumCheck(false);
+	//DmypObject->Transform()->SetLocalPos(Vec3(0.f,0.f,0.f));
+
+	//DmypObject->AddComponent(new CPlayerScript);
+	//CPlayerScript* Dmy_PlayerScript = DmypObject->GetScript<CPlayerScript>();
+	//m_pCurScene->AddGameObject(L"Player", DmypObject, false);
 
 	// ==================
 	// Camera Object 생성
@@ -366,6 +385,7 @@ void CSceneMgr::init()
 
 	// AddGameObject
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);
+	g_net.SetObj(pObject);
 
 
 	CGameObject* MiroObject = nullptr;
@@ -955,6 +975,8 @@ void CSceneMgr::init()
 	//// AddGameObject
 	//m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
 
+	//// AddGameObject
+	//m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
 
 	//MiroObject = new CGameObject;
 	//MiroObject->SetName(L"MIRO");
@@ -985,8 +1007,8 @@ void CSceneMgr::update()
 
 	// rendermgr 카메라 초기화
 	CRenderMgr::GetInst()->ClearCamera();
-
 	m_pCurScene->finalupdate();
+
 	   
 	// 충돌 처리
 	CCollisionMgr::GetInst()->update();
@@ -997,15 +1019,42 @@ void CSceneMgr::update_tool()
 	// rendermgr 카메라 초기화
 	CRenderMgr::GetInst()->ClearCamera();
 	m_pCurScene->finalupdate();
+}
 
+void CSceneMgr::InitOtherClinet(int m_id)
+{
+	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nIdle1.fbx");
+	//pMeshData->Save(pMeshData->GetPath());
+	CGameObject* pObject = new CGameObject;
+	pObject = pMeshData->Instantiate();
+	pObject->SetName(L"Player1");
+	pObject->FrustumCheck(false);
+	pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->Transform()->SetLocalRot(Vec3(0.f, 90.f, 0.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH, L"Player1");
+	pObject->Collider2D()->SetBB(BoundingBox(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingBoxExtents()));
+	pObject->Collider2D()->SetBS(BoundingSphere(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingSphereRadius() / 2.f));
 
+	// 플레이어 스크립트 붙여주기.
+	pObject->AddComponent(new CPlayerScript);
+	CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
+	m_pCurScene->AddGameObject(L"Player", pObject, false);
+	// 플레이어 애니메이션
+	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 0
 
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nWalk_F.fbx");
+	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
 
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nRun_F.fbx");
+	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 2
 
-	
-
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@Attack1.fbx");
+	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
 
 }
+
 
 void CSceneMgr::FindGameObjectByTag(const wstring& _strTag, vector<CGameObject*>& _vecFindObj)
 {

@@ -130,22 +130,24 @@ void CServerFrame::InitClients()
 
 		int idx = 0;
 		float x, z;
+		idx = (idx + 1) % 3;
+
 		switch (idx) {
 		case 0:
-			x = -1700.f;
-			z = 3800.f;
+			x = 100.f;
+			z = 100.f;
 			break;
 		case 1:
-			x = -1900.f;
-			z = 4600.f;
+			x = -100.f;
+			z = 100.f;
 			break;
 		case 2:
-			x = -2100.f;
-			z = 5300.f;
+			x = 200.f;
+			z = -200.f;
 			break;
 		case 3:
-			x = -2300.f;
-			z = 4300.f;
+			x = -140.f;
+			z = 400.f;
 			break;
 		case 4:
 			x = -2500.f;
@@ -156,15 +158,11 @@ void CServerFrame::InitClients()
 			z = 4000.f;
 			break;
 		}
-		idx = (idx + 1) % 6;
-		//Vec3 pos;
-		//pos.x = x;
-		//pos.y = 0.f;
-		//pos.z = z;
 		Vec3 pos;
-		pos.x = 0;
-		pos.y = 0;
-		pos.z = 0;
+		pos.x = x;
+		pos.y = 0.f;
+		pos.z = z;
+		
 		_objects[i].SetCurrentExp(0);
 		_objects[i].SetMaxExp(100);
 		_objects[i].SetCurrentHp(200);
@@ -173,6 +171,7 @@ void CServerFrame::InitClients()
 		_objects[i].SetDamage(50);
 		_objects[i].SetLevel(1);
 		_objects[i].SetIsAttack(false);
+		
 	}
 }
 void CServerFrame::RecvPacketProcess(int id, int iobytes)
@@ -223,12 +222,6 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		strcpy_s(name, packet->name);
 
 		cout << "플레이어 이름 " << name << endl;
-		
-		
-
-
-
-
 
 		// DB 구현 예정
 
@@ -246,7 +239,7 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		
 		cout << "ID : " << id << endl;
 		cout << "x : " << packet->localPos.x << endl;
-		cout << "z : " << packet->localPos.x << endl;
+		cout << "z : " << packet->localPos.z << endl;
 
 		Vec3 pos;
 		pos.x = packet->localPos.x;
@@ -254,8 +247,7 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		pos.z = packet->localPos.z;
 		_objects[id].SetPos(pos);
 
-		
-		
+		Do_move(id, 0 , pos, 0.f);
 
 		break;
 
@@ -571,10 +563,10 @@ void CServerFrame::DoRandomMove(int id)
 			_objects[i].ClientLock();
 			if (0 != _objects[i].GetViewListCount(id)) {
 				_objects[i].ClientUnLock();
-				_sender->SendMovePacket(_objects[i].GetSocket(), id, _objects[id].GetPos().x, _objects[id].GetPos().y,
+				/*_sender->SendMovePacket(_objects[i].GetSocket(), id, _objects[id].GetPos().x, _objects[id].GetPos().y,
 					_objects[id].GetPos().z, _objects[id].GetLook().x, 
 					_objects[id].GetLook().y, _objects[id].GetLook().z, WALK,
-					std::chrono::system_clock::now());
+					std::chrono::system_clock::now());*/
 			}
 			else {
 				_objects[i].InsertViewList(id);
@@ -777,10 +769,10 @@ void CServerFrame::DoTargetMove(int npc_id)
 			_objects[i].ClientLock();
 			if (0 != _objects[i].GetViewListCount(npc_id)) {
 				_objects[i].ClientUnLock();
-				_sender->SendMovePacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos().x,
+				/*_sender->SendMovePacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos().x,
 					_objects[npc_id].GetPos().y,  _objects[npc_id].GetPos().z, 
 					_objects[npc_id].GetLook().x, _objects[npc_id].GetLook().y,
-					_objects[npc_id].GetLook().z, status, std::chrono::system_clock::now());
+					_objects[npc_id].GetLook().z, status, std::chrono::system_clock::now());*/
 			}
 			else {
 				_objects[i].InsertViewList(npc_id);
@@ -880,10 +872,10 @@ void CServerFrame::UpdatePlayerPos(int id)
 			else {
 				_objects[np].ClientUnLock();
 				
-				_sender->SendMovePacket(_objects[np].GetSocket(), id, _objects[id].GetPos().x, _objects[id].GetPos().y, 
+				/*_sender->SendMovePacket(_objects[np].GetSocket(), id, _objects[id].GetPos().x, _objects[id].GetPos().y, 
 					_objects[id].GetPos().z, _objects[id].GetLook().x, _objects[id].GetLook().y, 
 					_objects[id].GetLook().z, _objects[id].GetWalkStatus(), 
-					std::chrono::system_clock::now());
+					std::chrono::system_clock::now());*/
 			}
 		}
 		else {							// Object가 계속 시야에 존재하고 있을 떄.
@@ -891,10 +883,10 @@ void CServerFrame::UpdatePlayerPos(int id)
 			_objects[np].ClientLock();
 			if (0 != _objects[np].GetViewListCount(id)) {
 				_objects[np].ClientUnLock();
-				_sender->SendMovePacket(_objects[np].GetSocket(), id, _objects[id].GetPos().x, _objects[id].GetPos().y,
+				/*_sender->SendMovePacket(_objects[np].GetSocket(), id, _objects[id].GetPos().x, _objects[id].GetPos().y,
 					_objects[id].GetPos().z, _objects[id].GetLook().x, _objects[id].GetLook().y, 
 					_objects[id].GetLook().z, _objects[id].GetWalkStatus(),
-					std::chrono::system_clock::now());
+					std::chrono::system_clock::now());*/
 			}
 			else {
 				_objects[np].ClientUnLock();
@@ -959,108 +951,99 @@ void CServerFrame::SetMoveDirection(int id, char direction, bool b)
 	}
 }
 
-//void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, const float& rotate)
-//{
-//	/*CClient* pClient = CAST_CLIENT(m_pMediator->Find(user_id));
-//	if (pClient == nullptr)return;*/
-//
-//	unordered_set<int> old_viewList = _objects[id].GetViewList();
-//	//pClient->SetPosV(localVec);
-//	_objects[id].SetPos(localPos);
-//	
-//	//pClient->SetRotateY(rotateY);
-//
-//	unordered_set<int> new_viewList;
-//
-//	//unordered_set<uShort>vSectors = g_QuadTree.search(CBoundary(m_pMediator->Find(user_id)));
-//	//if (vSectors.size() != 0)
-//	//{
-//	//	for (auto& user : vSectors)
-//	//	{
-//	//		if (!m_pMediator->IsType(user, OBJECT_TYPE::CLIENT))
-//	//		{
-//	//			if (m_pMediator->Find(user)->GetStatus() == OBJSTATUS::ST_SLEEP)
-//	//			{
-//	//				if (m_pMediator->IsType(user, OBJECT_TYPE::MONSTER))
-//	//					WakeUp_Monster(user);
-//	//				else
-//	//				{
-//	//					// WakeUp_NPC(user);
-//	//				}
-//	//			}
-//	//		}
-//	//		new_viewList.insert(user);
-//	//	}
-//	//}
-//
-//
-//	for (auto& ob : new_viewList) //시야에 새로 들어온 객체 구분
-//	{
-//		if (ob == id)continue;
-//		if (0 == old_viewList.count(ob)) // 새로 들어온 아이디
-//		{
-//			_objects[id].ClientLock();
-//			_objects[id].GetViewList().insert(ob);
-//			_sender->Send_Enter_Packet(_objects[ob].GetSocket(), _objects[ob].GetPos(), id, ob);
-//			if (m_pMediator->IsType(ob, OBJECT_TYPE::CLIENT))
-//			{
-//				if (CAST_CLIENT(m_pMediator->Find(ob))->GetViewList().count(user_id) == 0)
-//				{
-//					if (m_pMediator->IsType(ob, OBJECT_TYPE::CLIENT))
-//						CAST_CLIENT(m_pMediator->Find(ob))->GetViewList().insert(user_id);
-//					m_pSendMgr->Send_Enter_Packet(ob, user_id);
-//				}
-//				else
-//					m_pSendMgr->Send_Move_Packet(ob, user_id, dir);  // 여기서 또 들어옴
-//			}
-//			tempLock.unlock();
-//
-//		}
-//		else // 이전에도 있던 아이디 
-//		{
-//			if (m_pMediator->IsType(ob, OBJECT_TYPE::CLIENT))
-//			{
-//				if (CAST_CLIENT(m_pMediator->Find(ob))->GetViewList().count(user_id) == 0)
-//				{
-//					tempLock.lock();
-//					CAST_CLIENT(m_pMediator->Find(ob))->GetViewList().insert(user_id);
-//					tempLock.unlock();
-//					m_pSendMgr->Send_Enter_Packet(ob, user_id);
-//				}
-//				else
-//				{
-//					m_pSendMgr->Send_Move_Packet(ob, user_id, dir);
-//				}
-//			}
-//		}
-//	}
-//	for (auto& ob : old_viewList)
-//	{
-//		if (ob == user_id)continue;
-//		if (new_viewList.count(ob) == 0)
-//		{
-//			tempLock.lock();
-//			pClient->GetViewList().erase(ob);
-//			cout << "\t\t\tDo_Move---------------------" << endl;
-//			Netmgr.GetMediatorMgr()->Find(ob)->SetIsMoving(false);
-//			m_pSendMgr->Send_Leave_Packet(user_id, ob);
-//			if (m_pMediator->IsType(ob, OBJECT_TYPE::CLIENT))
-//			{
-//				if (CAST_CLIENT(m_pMediator->Find(ob))->GetViewList().count(user_id) != 0)
-//				{
-//					CAST_CLIENT(m_pMediator->Find(ob))->GetViewList().erase(user_id);
-//					cout << "\t\t\tDo_Move---------------------안쪽" << endl;
-//					Netmgr.GetMediatorMgr()->Find(user_id)->SetIsMoving(false);
-//					m_pSendMgr->Send_Leave_Packet(ob, user_id);
-//				}
-//			}
-//
-//
-//			tempLock.unlock();
-//		}
-//
-//	}
-//}
+void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, const float& rotate)
+{
+	cout << "do_move" << endl;
+	Vec3 pos = _objects[id].GetPos();
+	Vec3 look = _objects[id].GetLook();
+
+	_objects[id].ClientLock();
+
+	std::unordered_set<int> oldViewList = _objects[id].GetViewList();
+	_objects[id].ClientUnLock();
+	std::unordered_set<int> newViewList;
+
+	for (auto& cl : _objects) {
+		if (false == IsNear(cl.GetID(), id)) continue;
+		if (ST_SLEEP == cl._status) ActivateNPC(cl.GetID());
+		if (ST_ACTIVE != cl._status) continue;
+		if (cl.GetID() == id) continue;
+		newViewList.insert(cl.GetID());
+	}
+
+	for (auto& np : newViewList) {
+		if (0 == oldViewList.count(np)) {	// Object가 시야에 새로 들어왔을 때.
+			_objects[id].ClientLock();
+			_objects[id].InsertViewList(np);
+			_objects[id].ClientUnLock();
+
+			_sender->SendPutObjectPacket(_objects[id].GetSocket(), np,
+				_objects[np].GetPos().x, _objects[np].GetPos().y, _objects[np].GetPos().z, 
+				_objects[np].GetMyType());
+
+			if (false == IsPlayer(np)) continue;
+
+			_objects[np].ClientLock();
+			if (0 == _objects[np].GetViewListCount(id)) {
+				_objects[np].InsertViewList(id);
+				_objects[np].ClientUnLock();
+				_sender->SendPutObjectPacket(_objects[np].GetSocket(), id, 
+					_objects[id].GetPos().x, _objects[id].GetPos().y, _objects[id].GetPos().z, 
+					_objects[id].GetMyType());
+			}
+			else {
+				_objects[np].ClientUnLock();
+				/*_sender->SendMovePacket(_objects[np].GetSocket(), id, _objects[id].GetPos(),
+					_objects[id].GetLook().x, _objects[id].GetLook().y, _objects[id].GetLook().z, _objects[id].GetWalkStatus(),
+					std::chrono::system_clock::now());*/
+				_sender->SendMovePacket(_objects[np].GetSocket(), id, _objects[id].GetPos(),
+					_objects[id].GetLook().x, _objects[id].GetLook().y, _objects[id].GetLook().z, true,
+					std::chrono::system_clock::now());
+			}
+		}
+		else {							// Object가 계속 시야에 존재하고 있을 떄.
+			if (false == IsPlayer(np)) continue;
+			_objects[np].ClientLock();
+			if (0 != _objects[np].GetViewListCount(id)) {
+				_objects[np].ClientUnLock();
+				/*_sender->SendMovePacket(_objects[np].GetSocket(), id, _objects[id].GetPos(),
+					_objects[id].GetLook().x, _objects[id].GetLook().y, _objects[id].GetLook().z, _objects[id].GetWalkStatus(), 
+					std::chrono::system_clock::now());*/
+				_sender->SendMovePacket(_objects[np].GetSocket(), id, _objects[id].GetPos(),
+					_objects[id].GetLook().x, _objects[id].GetLook().y, _objects[id].GetLook().z, true,
+					std::chrono::system_clock::now());
+			}
+			else {
+				_objects[np].ClientUnLock();
+				_objects[np].InsertViewList(id);
+				_sender->SendPutObjectPacket(_objects[np].GetSocket(), id, 
+					_objects[id].GetPos().x, _objects[id].GetPos().y, _objects[id].GetPos().z, 
+					_objects[id].GetMyType());
+			}
+		}
+	}
+
+	//for (auto& op : oldViewList) {		// Object가 시야에서 벗어났을 때.
+	//	if (0 == newViewList.count(op)) {
+	//		_objects[id].ClientLock();
+	//		_objects[id].EraseViewList(op);
+	//		_objects[id].ClientUnLock();
+	//		_sender->SendLeavePacket(_objects[id].GetSocket(), op, _objects[op].GetMyType());
+	//		if (false == IsPlayer(op)) continue;
+	//		_objects[op].ClientLock();
+	//		if (0 != m_objects[op].GetViewListCount(id)) {
+	//			m_objects[op].EraseViewList(id);
+	//			m_objects[op].ClientUnLock();
+	// 
+	// 
+	//			_sender->SendLeavePacket(m_objects[op].GetSocket(), id, m_objects[id].GetMyType());
+	//		}
+	//		else {
+	//			m_objects[op].ClientUnLock();
+	//		}
+	//	}
+	//}
+}
 
 void CServerFrame::EnterGame(int id, const char* name)
 {
@@ -1070,7 +1053,8 @@ void CServerFrame::EnterGame(int id, const char* name)
 	
 
 	_sender->SendLoginOkPacket(_objects[id].GetSocket(), _objects[id].GetID(),
-		0.f, 0.f, 0.f, _objects[id].GetDamage(), _objects[id].GetCurrentHp(),
+		0.f, 0.f, 0.f,
+		_objects[id].GetDamage(), _objects[id].GetCurrentHp(),
 		_objects[id].GetMaxHp(), _objects[id].GetLevel(),
 		_objects[id].GetCurrentExp(), _objects[id].GetMaxExp());
 
