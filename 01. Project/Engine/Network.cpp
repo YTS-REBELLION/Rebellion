@@ -219,7 +219,7 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.find(id)->second->Collider2D()->SetBB(BoundingBox(GameObject.find(id)->second->Transform()->GetLocalPos()
 			, GameObject.find(id)->second->MeshRender()->GetMesh()->GetBoundingBoxExtents()
 			));
-			GameObject.find(id)->second->Collider2D()->SetBS(BoundingSphere(GameObject.find(id)->second->Transform()->GetLocalPos(), 
+			GameObject.find(id)->second->Collider2D()->SetBS(BoundingSphere(GameObject.find(id)->second->Transform()->GetLocalPos(),
 				GameObject.find(id)->second->MeshRender()->GetMesh()->GetBoundingSphereRadius() / 2.f));
 
 			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", GameObject.find(id)->second, false);
@@ -249,30 +249,31 @@ void CNetwork::ProcessPacket(char* ptr)
 	case SC_PACKET_MOVE: {
 		sc_packet_move* packet = reinterpret_cast<sc_packet_move*>(ptr);
 		int other_id = packet->id;
-		Vec3 localVec;
-		localVec.x = packet->x;
-		localVec.y = packet->y;
-		localVec.z = packet->z;
+		
+		cout << "other_id : " << other_id << ", g_myid : " << g_myid << endl;
+
 		if (other_id == g_myid)
 		{
 			cout << "SC_PACKET_MOVE 나의 좌표 : " << endl;
-			GameObject.find(other_id)->second->Transform()->SetLocalPos(localVec);
+			GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 		}
 		else 
 		{
 			//추가
-			if (0 != GameObject.count(other_id))
-			{
+			/*if (0 != GameObject.count(other_id))
+			{*/
 				if (CheckType(other_id) == OBJECT_TYPE::PLAYER)
 				{
-					
+					cout << "다른플레이어" << endl;
+					GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
+
 
 
 				}
 				else if (CheckType(other_id) == OBJECT_TYPE::MONSTER)
 				{
 				}
-			}
+			//}
 		}
 		//break;
 		break;
@@ -323,7 +324,7 @@ void CNetwork::Send_Packet(void* _packet)
 
 	packetTest = dataBuf.wsabuf.len;
 
-	std::cout << "Packet Send : " << packetTest << std::endl;
+	//std::cout << "Packet Send : " << packetTest << std::endl;
 
 
 	//if (WSASend(g_Socket, &dataBuf.wsabuf, 1, (LPDWORD)&sent, 0, &dataBuf.over, NULL) == SOCKET_ERROR)

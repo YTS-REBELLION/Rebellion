@@ -147,7 +147,9 @@ struct sc_packet_move {
 	char size;
 	char type;
 	int id;
-	float x, y, z;
+	//float x, y, z;
+	Vec3 localPos;
+	
 	float D_x, D_y, D_z;
 	char status;
 	std::chrono::time_point<std::chrono::system_clock> time;

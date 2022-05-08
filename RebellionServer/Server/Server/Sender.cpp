@@ -74,22 +74,33 @@ void CSender::SendNPCAttackPacket(SOCKET s, int id, float x, float z)
 	SendPacket(s, &packet);
 }
 
-void CSender::SendMovePacket(SOCKET s, int mover, float x, float y, float z, float dx, float dy, float dz, char status, std::chrono::time_point<std::chrono::system_clock> time)
+void CSender::SendMovePacket(SOCKET s, int mover,Vec3 localPos, float dx, float dy, float dz, char status, std::chrono::time_point<std::chrono::system_clock> time)
 {
 	sc_packet_move packet;
 	packet.id = mover;
-	packet.x = x;
-	packet.y = y;
-	packet.z = z;
+	packet.localPos = localPos;
+
 	packet.D_x = dx;
 	packet.D_y = dy;
 	packet.D_z = dz;
 	packet.time = time;
 	packet.size = sizeof(packet);
 	packet.status = status;
-	packet.type = SC_MOVE;
+	packet.type = SC_PACKET_MOVE;
 
 	SendPacket(s, &packet);
+}
+
+void CSender::SendMovePacket(SOCKET s,int mover, Vec3 localPos)
+{
+	sc_packet_move packet;
+	packet.id = mover;
+	packet.localPos = localPos;
+	packet.size = sizeof(packet);
+	packet.type = SC_PACKET_MOVE;
+	SendPacket(s, &packet);
+
+
 }
 
 void CSender::SendPutObjectPacket(SOCKET s, int id, float x, float y, float z, int objType)
