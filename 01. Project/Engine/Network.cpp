@@ -215,17 +215,33 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.find(id)->second->Transform()->SetLocalPos(Vec3(packet->x, packet->y, packet->z));
 			GameObject.find(id)->second->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 			GameObject.find(id)->second->AddComponent(new CCollider2D);
+			
+
 			GameObject.find(id)->second->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH, L"Player1");
+			
 			GameObject.find(id)->second->Collider2D()->SetBB(BoundingBox(GameObject.find(id)->second->Transform()->GetLocalPos()
 			, GameObject.find(id)->second->MeshRender()->GetMesh()->GetBoundingBoxExtents()
 			));
+			
 			GameObject.find(id)->second->Collider2D()->SetBS(BoundingSphere(GameObject.find(id)->second->Transform()->GetLocalPos(),
 				GameObject.find(id)->second->MeshRender()->GetMesh()->GetBoundingSphereRadius() / 2.f));
 
 			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", GameObject.find(id)->second, false);
+			
+			
+			for (auto& data : m_aniData)
+			{
+				GameObject.find(id)->second->GetScript<CPlayerScript>()->GetPlayerAnimation(data);
+			}
+			// 
 			// 플레이어 스크립트 붙여주기.
 			//pObject->AddComponent(new CPlayerScript);
 			//CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
+			/*GameObject.find(id)->second->AddComponent(new CPlayerScript);
+			GameObject.find(id)->second->GetScript<CPlayerScript>();*/
+
+
+
 
 
 			
@@ -244,7 +260,7 @@ void CNetwork::ProcessPacket(char* ptr)
 	case SC_PACKET_LEAVE_OBJECT: {
 		break;
 
-	
+		
 	}
 	case SC_PACKET_MOVE: {
 		sc_packet_move* packet = reinterpret_cast<sc_packet_move*>(ptr);
@@ -267,8 +283,10 @@ void CNetwork::ProcessPacket(char* ptr)
 					cout << "다른플레이어" << endl;
 					GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 
-
-
+					if (packet->status)
+						GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 1);	//SetPlayerAnimation(other_id, 1);
+					else
+						GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 0);
 				}
 				else if (CheckType(other_id) == OBJECT_TYPE::MONSTER)
 				{

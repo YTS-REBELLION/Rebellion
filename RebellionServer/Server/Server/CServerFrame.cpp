@@ -993,8 +993,11 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 			}
 			else {
 				_objects[np].ClientUnLock();
-				_sender->SendMovePacket(_objects[np].GetSocket(), id, _objects[id].GetPos(),
+				/*_sender->SendMovePacket(_objects[np].GetSocket(), id, _objects[id].GetPos(),
 					_objects[id].GetLook().x, _objects[id].GetLook().y, _objects[id].GetLook().z, _objects[id].GetWalkStatus(),
+					std::chrono::system_clock::now());*/
+				_sender->SendMovePacket(_objects[np].GetSocket(), id, _objects[id].GetPos(),
+					_objects[id].GetLook().x, _objects[id].GetLook().y, _objects[id].GetLook().z, true,
 					std::chrono::system_clock::now());
 			}
 		}
@@ -1003,8 +1006,11 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 			_objects[np].ClientLock();
 			if (0 != _objects[np].GetViewListCount(id)) {
 				_objects[np].ClientUnLock();
-				_sender->SendMovePacket(_objects[np].GetSocket(), id, _objects[id].GetPos(),
+				/*_sender->SendMovePacket(_objects[np].GetSocket(), id, _objects[id].GetPos(),
 					_objects[id].GetLook().x, _objects[id].GetLook().y, _objects[id].GetLook().z, _objects[id].GetWalkStatus(), 
+					std::chrono::system_clock::now());*/
+				_sender->SendMovePacket(_objects[np].GetSocket(), id, _objects[id].GetPos(),
+					_objects[id].GetLook().x, _objects[id].GetLook().y, _objects[id].GetLook().z, true,
 					std::chrono::system_clock::now());
 			}
 			else {

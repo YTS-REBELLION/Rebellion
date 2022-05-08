@@ -208,21 +208,25 @@ void CSceneMgr::init()
 	pObject->AddComponent(new CPlayerScript);
 
 	CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
-	m_pCurScene->AddGameObject(L"Player", pObject, false);
-
-
-
 	// 플레이어 애니메이션
 	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 0
+	g_net.SetAniData(pMeshData->GetMesh());
+
 
 	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nWalk_F.fbx");
 	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
+	g_net.SetAniData(pMeshData->GetMesh());
 
 	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nRun_F.fbx");
 	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 2
+	g_net.SetAniData(pMeshData->GetMesh());
 
 	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@Attack1.fbx");
 	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
+	g_net.SetAniData(pMeshData->GetMesh());
+
+
+	m_pCurScene->AddGameObject(L"Player", pObject, false);
 
 	//// 더미 플레이어 -> 초기 캐릭터가 누워있는거를 회전 시키면 카메라도 같이 회전해서 생성.
 	//Ptr<CMeshData> DmypMeshData;

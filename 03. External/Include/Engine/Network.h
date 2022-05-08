@@ -31,7 +31,7 @@ public:
 public:
 	void SetObj(CGameObject* obj) { m_pObj = new CGameObject; m_pObj = obj; }
 	//void SetCamObj(CGameObject* obj) { m_pCamObj = new CGameObject; m_pCamObj = obj; }
-	//void SetAniData(Ptr<CMesh> _aniData) { m_aniData.push_back(_aniData); }
+	void SetAniData(Ptr<CMesh> _aniData) { m_aniData.push_back(_aniData); }
 public:
 	void Connect();
 
@@ -58,6 +58,8 @@ public:
 private:
 	OVERLAPPED		_overlapped;
 	CGameObject* m_pObj;
+
+	vector<Ptr<CMesh>>	m_aniData;
 
 };
 

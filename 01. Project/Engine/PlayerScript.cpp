@@ -3,7 +3,6 @@
 #include "TestScript.h"
 #include "RenderMgr.h"
 #include "Animator3D.h"
-#include "Network.h"
 
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
@@ -29,11 +28,13 @@ void CPlayerScript::awake()
 void CPlayerScript::update()
 {
 	Vec3 WorldDir;
-	Vec3 localPos = Transform()->GetLocalPos();
+	Vec3 localPos = GetObj()->Transform()->GetLocalPos();
 	CTransform* playerTrans = Transform();
 
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
 	Vec3 vRot = Transform()->GetLocalRot();
+
+	CPlayerScript* player = GetObj()->GetScript<CPlayerScript>();
 
 	//Vec3 vPos = Transform()->GetLocalPos();
 	//Vec3 vRot = Transform()->GetLocalRot();
@@ -50,10 +51,10 @@ void CPlayerScript::update()
 		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 		{
 			localPos += WorldDir * m_fSpeed * DT;
-			SetPlayerAnimation(2);
+			player->SetPlayerAnimation(2);
 
 		}
-		else SetPlayerAnimation(1);
+		else player->SetPlayerAnimation(1);
 	}
 
 	else if (KEY_HOLD(KEY_TYPE::KEY_S))
@@ -68,9 +69,9 @@ void CPlayerScript::update()
 		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 		{
 			localPos += WorldDir * m_fSpeed * DT;
-			SetPlayerAnimation(2);
+			player->SetPlayerAnimation(2);
 		}
-		else SetPlayerAnimation(1);
+		else player->SetPlayerAnimation(1);
 	}
 
 	else if (KEY_HOLD(KEY_TYPE::KEY_A))
@@ -85,9 +86,9 @@ void CPlayerScript::update()
 		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 		{
 			localPos += WorldDir * m_fSpeed * DT;
-			SetPlayerAnimation(2);
+			player->SetPlayerAnimation(2);
 		}
-		else SetPlayerAnimation(1);
+		else player->SetPlayerAnimation(1);
 	}
 
 	else if (KEY_HOLD(KEY_TYPE::KEY_D))
@@ -103,39 +104,47 @@ void CPlayerScript::update()
 		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 		{
 			localPos += WorldDir * m_fSpeed * DT;
-			SetPlayerAnimation(2);
+			player->SetPlayerAnimation(2);
 		}
-		else SetPlayerAnimation(1);
+		else player->SetPlayerAnimation(1);
 	}
 	else
 	{
-		SetPlayerAnimation(0);
+		player->SetPlayerAnimation(0);
 	}
 
 	if (KEY_HOLD(KEY_TYPE::KEY_LBTN))
 	{
 		vRot.y += vDrag.x * DT * 0.5f;
-		Transform()->SetLocalRot(vRot);
+		player->Transform()->SetLocalRot(vRot);
 	}
 
 	if (KEY_HOLD(KEY_TYPE::KEY_SPACE))
 	{
-		SetPlayerAnimation(3);
+		player->SetPlayerAnimation(3);
 	}
 
-	Transform()->SetLocalPos(localPos);
+	player->Transform()->SetLocalPos(localPos);
 
 
 	//Transform()->SetLocalRot(vRot);
 }
 
-void CPlayerScript::SetPlayerAnimation(const int i)
+void CPlayerScript::SetPlayerAnimation(const int& i)
 {
-	if (m_pAniData.size() == 0)	return;
-	Animator3D()->SetBones(m_pAniData[i]->GetBones());
-	Animator3D()->SetAnimClip(m_pAniData[i]->GetAnimClip());
-	MeshRender()->SetMesh(m_pAniData[i]);
+	//if (m_pAniData.size() == 0)	return;
+	GetObj()->Animator3D()->SetBones(m_pAniData[i]->GetBones());
+	GetObj()->Animator3D()->SetAnimClip(m_pAniData[i]->GetAnimClip());
+	GetObj()->MeshRender()->SetMesh(m_pAniData[i]);
 }
+void CPlayerScript::SetPlayerAnimation(int other_id, int i)
+{
+	//if (m_pAniData.size() == 0)	return;
+	GameObject.find(other_id)->second->Animator3D()->SetBones(m_pAniData[i]->GetBones());
+	GameObject.find(other_id)->second->Animator3D()->SetAnimClip(m_pAniData[i]->GetAnimClip());
+	GameObject.find(other_id)->second->MeshRender()->SetMesh(m_pAniData[i]);
+}
+
 
 void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
 {
