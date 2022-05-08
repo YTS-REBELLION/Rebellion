@@ -644,7 +644,7 @@ void CSceneMgr::init()
 			pObject->AddComponent(new CMeshRender);
 
 			// Transform 설정
-			pObject->Transform()->SetLocalPos(Vec3(i * 1000.f - 1000.f, 1500.f, j * 1000.f - 1000.f));
+			pObject->Transform()->SetLocalPos(Vec3(i * 1000.f - 1000.f, 2000.f, j * 1000.f - 1000.f));
 			pObject->Transform()->SetLocalScale(Vec3(1000.f, 1000.f, 1.f));
 			pObject->Transform()->SetLocalRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
 
@@ -673,7 +673,7 @@ void CSceneMgr::init()
 	WallObject->FrustumCheck(false);
 
 	// Transform 설정
-	WallObject->Transform()->SetLocalPos(Vec3(400.f, 1700.f, 1000.f));
+	WallObject->Transform()->SetLocalPos(Vec3(400.f, 2200.f, 1000.f));
 	WallObject->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
 	WallObject->Transform()->SetLocalRot(Vec3(0.f, 1.5f, 0.f));
 
@@ -692,7 +692,7 @@ void CSceneMgr::init()
 	WallObject3->FrustumCheck(false);
 
 	// Transform 설정
-	WallObject3->Transform()->SetLocalPos(Vec3(-400.f, 1700.f, 1000.f));
+	WallObject3->Transform()->SetLocalPos(Vec3(-400.f, 2200.f, 1000.f));
 	WallObject3->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
 	WallObject3->Transform()->SetLocalRot(Vec3(0.f,1.5f, 0.f));
 	//Script 설정
@@ -709,7 +709,7 @@ void CSceneMgr::init()
 	WallObject4->FrustumCheck(false);
 
 	// Transform 설정
-	WallObject4->Transform()->SetLocalPos(Vec3(300.f, 1700.f, 2600.f));
+	WallObject4->Transform()->SetLocalPos(Vec3(300.f, 2200.f, 2600.f));
 	WallObject4->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
 	WallObject4->Transform()->SetLocalRot(Vec3(0.f, 1.5f, 0.f));
 	//Script 설정
@@ -726,9 +726,9 @@ void CSceneMgr::init()
 	WallObject5->FrustumCheck(false);
 
 	// Transform 설정
-	WallObject5->Transform()->SetLocalPos(Vec3(-1400.f, 1700.f, 1550.f));
+	WallObject5->Transform()->SetLocalPos(Vec3(-1400.f, 2200.f, 1700.f));
 	WallObject5->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
-	WallObject5->Transform()->SetLocalRot(Vec3(0.f, 3.f, 0.f));
+	WallObject5->Transform()->SetLocalRot(Vec3(0.f, 40.8351f, 0.f));
 	//Script 설정
 	WallObject5->AddComponent(new CMiro);
 	// AddGameObject
@@ -742,7 +742,7 @@ void CSceneMgr::init()
 	WallObject6->FrustumCheck(false);
 
 	// Transform 설정
-	WallObject6->Transform()->SetLocalPos(Vec3(-1600.f, 1700.f, 2450.f));
+	WallObject6->Transform()->SetLocalPos(Vec3(-1600.f, 2200.f, 2450.f));
 	WallObject6->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
 	WallObject6->Transform()->SetLocalRot(Vec3(0.f, 1.5f, 0.f));
 	//Script 설정
@@ -760,9 +760,9 @@ void CSceneMgr::init()
 	WallObject7->FrustumCheck(false);
 
 	// Transform 설정
-	WallObject7->Transform()->SetLocalPos(Vec3(-400.f, 1700.f, 2750.f));
+	WallObject7->Transform()->SetLocalPos(Vec3(-400.f, 2200.f, 2750.f));
 	WallObject7->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
-	WallObject7->Transform()->SetLocalRot(Vec3(0.f, 3.f, 0.f));
+	WallObject7->Transform()->SetLocalRot(Vec3(0.f, 40.8351f, 0.f));
 	//Script 설정
 	WallObject7->AddComponent(new CMiro);
 	// AddGameObject
@@ -777,7 +777,7 @@ void CSceneMgr::init()
 	WallObject8->FrustumCheck(false);
 
 	// Transform 설정
-	WallObject8->Transform()->SetLocalPos(Vec3(-1100.f, 1700.f, 3550.f));
+	WallObject8->Transform()->SetLocalPos(Vec3(-1100.f, 2200.f, 3550.f));
 	WallObject8->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
 	WallObject8->Transform()->SetLocalRot(Vec3(0.f, 1.5f, 0.f));
 	//Script 설정
@@ -796,9 +796,9 @@ void CSceneMgr::init()
 	WallObject9->FrustumCheck(false);
 
 	// Transform 설정
-	WallObject9->Transform()->SetLocalPos(Vec3(-2600.f, 1700.f, 3300.f));
+	WallObject9->Transform()->SetLocalPos(Vec3(-2600.f, 2200.f, 3300.f));
 	WallObject9->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
-	WallObject9->Transform()->SetLocalRot(Vec3(0.f, 3.f, 0.f));
+	WallObject9->Transform()->SetLocalRot(Vec3(0.f, 40.8351f, 0.f));
 	//Script 설정
 	WallObject9->AddComponent(new CMiro);
 	// AddGameObject
@@ -815,7 +815,7 @@ void CSceneMgr::init()
 	WallObject10->FrustumCheck(false);
 
 	// Transform 설정
-	WallObject10->Transform()->SetLocalPos(Vec3(-3200.f, 1700.f, 4000.f));
+	WallObject10->Transform()->SetLocalPos(Vec3(-3200.f, 2200.f, 4000.f));
 	WallObject10->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
 	WallObject10->Transform()->SetLocalRot(Vec3(0.f, 1.5f, 0.f));
 	//Script 설정
@@ -833,7 +833,7 @@ void CSceneMgr::init()
 	WallObject11->FrustumCheck(false);
 
 	// Transform 설정
-	WallObject11->Transform()->SetLocalPos(Vec3(-1800.f, 1700.f, 4800.f));
+	WallObject11->Transform()->SetLocalPos(Vec3(-1800.f, 2200.f, 4800.f));
 	WallObject11->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
 	WallObject11->Transform()->SetLocalRot(Vec3(0.f, 1.5f, 0.f));
 	//Script 설정
@@ -850,9 +850,9 @@ void CSceneMgr::init()
 	WallObject12->FrustumCheck(false);
 
 	// Transform 설정
-	WallObject12->Transform()->SetLocalPos(Vec3(-2600.f, 1700.f, 5600.f));
+	WallObject12->Transform()->SetLocalPos(Vec3(-2600.f, 2200.f, 5600.f));
 	WallObject12->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
-	WallObject12->Transform()->SetLocalRot(Vec3(0.f, 3.f, 0.f));
+	WallObject12->Transform()->SetLocalRot(Vec3(0.f, 40.8351f, 0.f));
 	//Script 설정
 	WallObject12->AddComponent(new CMiro);
 	// AddGameObject
@@ -868,7 +868,7 @@ void CSceneMgr::init()
 	WallObject13->FrustumCheck(false);
 
 	// Transform 설정
-	WallObject13->Transform()->SetLocalPos(Vec3(-3300.f, 1700.f, 5200.f));
+	WallObject13->Transform()->SetLocalPos(Vec3(-3300.f, 2200.f, 5200.f));
 	WallObject13->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
 	WallObject13->Transform()->SetLocalRot(Vec3(0.f, 1.5f, 0.f));
 	//Script 설정
@@ -885,7 +885,7 @@ void CSceneMgr::init()
 	WallObject14->FrustumCheck(false);
 
 	// Transform 설정
-	WallObject14->Transform()->SetLocalPos(Vec3(-3500.f, 1700.f, 6700.f));
+	WallObject14->Transform()->SetLocalPos(Vec3(-3500.f, 2200.f, 6700.f));
 	WallObject14->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
 	WallObject14->Transform()->SetLocalRot(Vec3(0.f, 1.5f, 0.f));
 	//Script 설정
@@ -902,16 +902,308 @@ void CSceneMgr::init()
 	WallObject15->FrustumCheck(false);
 
 	// Transform 설정
-	WallObject15->Transform()->SetLocalPos(Vec3(-650.f, 1700.f, 5000.f));
+	WallObject15->Transform()->SetLocalPos(Vec3(-650.f, 2200.f, 5000.f));
 	WallObject15->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
-	WallObject15->Transform()->SetLocalRot(Vec3(0.f, 3.f, 0.f));
+	WallObject15->Transform()->SetLocalRot(Vec3(0.f, 40.8351f, 0.f));
 	//Script 설정
 	WallObject15->AddComponent(new CMiro);
 	// AddGameObject
 	m_pCurScene->AddGameObject(L"Default", WallObject15, false);
 
 
+
+	CGameObject* WallObject16 = nullptr;
+	WallObject16 = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
+	WallObject16 = pMeshData->Instantiate();
+	WallObject16->SetName(L"Miro");
+	WallObject16->FrustumCheck(false);
+
+	// Transform 설정
+	WallObject16->Transform()->SetLocalPos(Vec3(-250.f, 2200.f, 4250.f));
+	WallObject16->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	WallObject16->Transform()->SetLocalRot(Vec3(0.f, 40.8351f, 0.f));
+	//Script 설정
+	WallObject16->AddComponent(new CMiro);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", WallObject16, false);
+
+
+	CGameObject* WallObject17 = nullptr;
+	WallObject17 = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
+	WallObject17 = pMeshData->Instantiate();
+	WallObject17->SetName(L"Miro");
+	WallObject17->FrustumCheck(false);
+
+	// Transform 설정
+	WallObject17->Transform()->SetLocalPos(Vec3(800.f, 2200.f, 4250.f));
+	WallObject17->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	WallObject17->Transform()->SetLocalRot(Vec3(0.f, 40.8351f, 0.f));
+	//Script 설정
+	WallObject17->AddComponent(new CMiro);
+	// AddGameObjectd
+	m_pCurScene->AddGameObject(L"Default", WallObject17, false);
+
+	CGameObject* WallObject18 = nullptr;
+	WallObject18 = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
+	WallObject18 = pMeshData->Instantiate();
+	WallObject18->SetName(L"Miro");
+	WallObject18->FrustumCheck(false);
+
+	// Transform 설정
+	WallObject18->Transform()->SetLocalPos(Vec3(1600.f, 2200.f, 5200.f));
+	WallObject18->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	WallObject18->Transform()->SetLocalRot(Vec3(0.f, 1.5f, 0.f));
+	//Script 설정
+	WallObject18->AddComponent(new CMiro);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", WallObject18, false);
+
+	CGameObject* WallObject19 = nullptr;
+	WallObject19 = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
+	WallObject19 = pMeshData->Instantiate();
+	WallObject19->SetName(L"Miro");
+	WallObject19->FrustumCheck(false);
+
+	// Transform 설정
+	WallObject19->Transform()->SetLocalPos(Vec3(-50.f, 2200.f, 5800.f));
+	WallObject19->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	WallObject19->Transform()->SetLocalRot(Vec3(0.f, 1.5f, 0.f));
+	//Script 설정
+	WallObject19->AddComponent(new CMiro);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", WallObject19, false);
+
+
+	CGameObject* WallObject20 = nullptr;
+	WallObject20 = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
+	WallObject20 = pMeshData->Instantiate();
+	WallObject20->SetName(L"Miro");
+	WallObject20->FrustumCheck(false);
+
+	// Transform 설정
+	WallObject20->Transform()->SetLocalPos(Vec3(700.f, 2200.f, 6700.f));
+	WallObject20->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	WallObject20->Transform()->SetLocalRot(Vec3(0.f, 40.8351f, 0.f));
+	//Script 설정
+	WallObject20->AddComponent(new CMiro);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", WallObject20, false);
+
 	
+
+	CGameObject* WallObject21 = nullptr;
+	WallObject21 = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
+	WallObject21 = pMeshData->Instantiate();
+	WallObject21->SetName(L"Miro");
+	WallObject21->FrustumCheck(false);
+
+	// Transform 설정
+	WallObject21->Transform()->SetLocalPos(Vec3(1450.f, 2200.f, 6700.f));
+	WallObject21->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	WallObject21->Transform()->SetLocalRot(Vec3(0.f, 1.5f, 0.f));
+	//Script 설정
+	WallObject21->AddComponent(new CMiro);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", WallObject21, false);
+
+	//두번쨰 던전방까지
+
+	CGameObject* WallObject22 = nullptr;
+	WallObject22 = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
+	WallObject22 = pMeshData->Instantiate();
+	WallObject22->SetName(L"Miro");
+	WallObject22->FrustumCheck(false);
+
+	// Transform 설정
+	WallObject22->Transform()->SetLocalPos(Vec3(-3600.f, 2200.f, 8300.f));
+	WallObject22->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	WallObject22->Transform()->SetLocalRot(Vec3(0.f, 1.5f, 0.f));
+	//Script 설정
+	WallObject22->AddComponent(new CMiro);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", WallObject22, false);
+
+
+	CGameObject* WallObject23 = nullptr;
+	WallObject23 = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
+	WallObject23 = pMeshData->Instantiate();
+	WallObject23->SetName(L"Miro");
+	WallObject23->FrustumCheck(false);
+
+	// Transform 설정
+	WallObject23->Transform()->SetLocalPos(Vec3(-2700.f, 2200.f, 8500.f));
+	WallObject23->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	WallObject23->Transform()->SetLocalRot(Vec3(0.f, 40.8351f, 0.f));
+	//Script 설정
+	WallObject23->AddComponent(new CMiro);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", WallObject23, false);
+
+
+	CGameObject* WallObject24 = nullptr;
+	WallObject24 = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
+	WallObject24 = pMeshData->Instantiate();
+	WallObject24->SetName(L"Miro");
+	WallObject24->FrustumCheck(false);
+
+	// Transform 설정
+	WallObject24->Transform()->SetLocalPos(Vec3(-1200.f, 2200.f, 8500.f));
+	WallObject24->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	WallObject24->Transform()->SetLocalRot(Vec3(0.f, 40.8351f, 0.f));
+	//Script 설정
+	WallObject24->AddComponent(new CMiro);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", WallObject24, false);
+
+	CGameObject* WallObject25 = nullptr;
+	WallObject25 = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
+	WallObject25 = pMeshData->Instantiate();
+	WallObject25->SetName(L"Miro");
+	WallObject25->FrustumCheck(false);
+
+	// Transform 설정
+	WallObject25->Transform()->SetLocalPos(Vec3(300.f, 2200.f, 8500.f));
+	WallObject25->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	WallObject25->Transform()->SetLocalRot(Vec3(0.f, 40.8351f, 0.f));
+	//Script 설정
+	WallObject25->AddComponent(new CMiro);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", WallObject25, false);
+
+
+
+	CGameObject* WallObject26 = nullptr;
+	WallObject26 = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
+	WallObject26 = pMeshData->Instantiate();
+	WallObject26->SetName(L"Miro");
+	WallObject26->FrustumCheck(false);
+	
+	// Transform 설정
+	WallObject26->Transform()->SetLocalPos(Vec3(1300.f, 2200.f, 8200.f));
+	WallObject26->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	WallObject26->Transform()->SetLocalRot(Vec3(0.f, 1.5f, 0.f));
+	//Script 설정
+	WallObject26->AddComponent(new CMiro);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", WallObject26, false);
+
+
+	//3번째 방끝
+
+	
+	CGameObject* WallObject27 = nullptr;
+	WallObject27 = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
+	WallObject27 = pMeshData->Instantiate();
+	WallObject27->SetName(L"Miro");
+	WallObject27->FrustumCheck(false);
+
+	// Transform 설정
+	WallObject27->Transform()->SetLocalPos(Vec3(-1300.f, 2200.f, -1400.f));
+	WallObject27->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	WallObject27->Transform()->SetLocalRot(Vec3(0.f, 40.8351f, 0.f));
+	//Script 설정
+	WallObject27->AddComponent(new CMiro);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", WallObject27, false);
+
+	CGameObject* WallObject28 = nullptr;
+	WallObject28 = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
+	WallObject28 = pMeshData->Instantiate();
+	WallObject28->SetName(L"Miro");
+	WallObject28->FrustumCheck(false);
+
+	// Transform 설정
+	WallObject28->Transform()->SetLocalPos(Vec3(1300.f, 2200.f, -1400.f));
+	WallObject28->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	WallObject28->Transform()->SetLocalRot(Vec3(0.f, 40.8351f, 0.f));
+	//Script 설정
+	WallObject28->AddComponent(new CMiro);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", WallObject28, false);
+
+
+	CGameObject* WallObject29 = nullptr;
+	WallObject29 = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
+	WallObject29 = pMeshData->Instantiate();
+	WallObject29->SetName(L"Miro");
+	WallObject29->FrustumCheck(false);
+
+	// Transform 설정
+	WallObject29->Transform()->SetLocalPos(Vec3(-2000.f, 2200.f, -500.f));
+	WallObject29->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	WallObject29->Transform()->SetLocalRot(Vec3(0.f, 1.5f, 0.f));
+	//Script 설정
+	WallObject29->AddComponent(new CMiro);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", WallObject29, false);
+
+
+
+	CGameObject* WallObject30 = nullptr;
+	WallObject30 = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
+	WallObject30 = pMeshData->Instantiate();
+	WallObject30->SetName(L"Miro");
+	WallObject30->FrustumCheck(false);
+
+	// Transform 설정
+	WallObject30->Transform()->SetLocalPos(Vec3(-2100.f, 2200.f, 1000.f));
+	WallObject30->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	WallObject30->Transform()->SetLocalRot(Vec3(0.f, 1.5f, 0.f));
+	//Script 설정
+	WallObject30->AddComponent(new CMiro);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", WallObject30, false);
+
+
+	CGameObject* WallObject31 = nullptr;
+	WallObject31 = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
+	WallObject31 = pMeshData->Instantiate();
+	WallObject31->SetName(L"Miro");
+	WallObject31->FrustumCheck(false);
+
+	// Transform 설정
+	WallObject31->Transform()->SetLocalPos(Vec3(2000.f, 2200.f, -600.f));
+	WallObject31->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	WallObject31->Transform()->SetLocalRot(Vec3(0.f, 1.5f, 0.f));
+	//Script 설정
+	WallObject31->AddComponent(new CMiro);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", WallObject31, false);
+
+
+	CGameObject* WallObject32 = nullptr;
+	WallObject32 = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
+	WallObject32 = pMeshData->Instantiate();
+	WallObject32->SetName(L"Miro");
+	WallObject32->FrustumCheck(false);
+
+	// Transform 설정
+	WallObject32->Transform()->SetLocalPos(Vec3(1300.f, 2200.f, 400.f));
+	WallObject32->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	WallObject32->Transform()->SetLocalRot(Vec3(0.f, 40.8351f, 0.f));
+	//Script 설정
+	WallObject32->AddComponent(new CMiro);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", WallObject32, false);
+
+
 	m_pCurScene->awake();
 	m_pCurScene->start();
 }

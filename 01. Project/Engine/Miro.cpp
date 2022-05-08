@@ -26,8 +26,8 @@ void CMiro::update()
 
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
 	Vec3 vRot = Transform()->GetLocalRot();
-	//vRot.x = 17.13f;
-
+	//vRot.y +=1*DT;
+	//cout << "roty:"<<vRot.y << endl;
 	Transform()->SetLocalPos(localPos);
 	Transform()->SetLocalRot(vRot);
 

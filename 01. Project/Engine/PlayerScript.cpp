@@ -100,7 +100,7 @@ void CPlayerScript::update()
 	{
 		//포탈과충돌로 바꾸기
 		vPos = { 0.f,0.f,0.f };
-		vPos.y += 1500.f;
+		vPos.y += 2000.f;
 		
 	}
 

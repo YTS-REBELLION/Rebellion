@@ -22,6 +22,7 @@ public:
 	bool			m_bCine1 = false;
 	bool			m_bCheckFin1 = false;
 	float			checktime = 0.f;
+	float			checktime2 = 0.f;
 	bool			m_bMouseFix = false;
 
 public:
@@ -30,9 +31,9 @@ public:
 		m_pPlayer = Player;
 	}
 
-	//void CameraMode();
-	//void Player_Mode();
-	//void Cenematic0_Mode();
+	void CameraMode();
+	void Player_Mode();
+	void Cenematic0_Mode();
 	//void Fix_Mouse();
 	//void Mouse_Move();
 
