@@ -8,8 +8,10 @@
 #include <mutex>
 #include <iostream>
 #include <chrono>
-#include <stdio.h>  
-#include "../../RebellionServer/Server/Server/Protocol.h"
+#include <stdio.h>
+
+#include <unordered_map>
+
 
 #pragma comment(lib,"WS2_32.lib")
 #pragma comment(lib, "MSWSock.lib")
@@ -20,3 +22,5 @@ using namespace chrono;
 
 class Vector3;
 class Matrix;
+
+#include "../../RebellionServer/Server/Server/Protocol.h"

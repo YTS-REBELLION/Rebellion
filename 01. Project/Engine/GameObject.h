@@ -26,6 +26,9 @@ private:
 	bool					m_bDead;
 	bool					m_bActive;
 	bool					m_bFrustumCheck;
+
+	int						m_iID;
+
 public:
 	void awake();
 	void start();
@@ -69,8 +72,10 @@ public:
 	void SetDead();
 
 	void RegisterToLayer();
+	int& GetID() { return m_iID; }
+	void SetID(const int& id) { m_iID = id; }
 
-
+	//void SetID(int id) { m_iID = id; };
 public:
 	CLONE(CGameObject);
 

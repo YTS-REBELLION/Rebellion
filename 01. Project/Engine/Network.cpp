@@ -17,6 +17,7 @@
 
 
 
+
 OBJECT_TYPE CheckType(const short& id)
 {
 	if (id >= 0 && id < MAX_USER) return OBJECT_TYPE::PLAYER;
@@ -26,6 +27,7 @@ OBJECT_TYPE CheckType(const short& id)
 
 CNetwork g_net;
 const char* SERVER_IP = "127.0.0.1";
+OBJ GameObject;
 
 SOCKET g_socket;
 int packetTest;
@@ -50,12 +52,10 @@ void CNetwork::err_quit(const char* msg)
 CNetwork::CNetwork()
 {
 	ZeroMemory(&_overlapped, sizeof(_overlapped));
+	m_pObj = nullptr;
 
 }
 
-CNetwork::~CNetwork()
-{
-}
 
 void CNetwork::Connect()
 {
@@ -139,18 +139,26 @@ void CNetwork::ProcessPacket(char* ptr)
 
 	//std::cout << "Process Packet" << std::endl;
 	switch (ptr[1]) {
-	//case 로그인 패킷:
-	
+		//case 로그인 패킷:
+
 	case SC_PACKET_LOGIN_OK:
 	{
-		
+
 		sc_packet_login_ok* p = reinterpret_cast<sc_packet_login_ok*>(ptr);
-		std::cout << "플레이어 아이디 : "<<p->id << std::endl;
-		std::cout << "플레이어 데미지 : "<<p->damage << std::endl;
-		std::cout << "플레이어 체력 "<<p->c_hp<< " / " <<p->m_hp << std::endl;
-		std::cout << "플레이어 레벨 : "<<p->level << std::endl;
+		std::cout << "플레이어 아이디 : " << p->id << std::endl;
+		std::cout << "플레이어 데미지 : " << p->damage << std::endl;
+		std::cout << "플레이어 체력 " << p->c_hp << " / " << p->m_hp << std::endl;
+		std::cout << "플레이어 레벨 : " << p->level << std::endl;
 		std::cout << "플레이어 경험치 : " << p->c_exp << " / " << p->m_exp << std::endl;
+		std::cout << "플레이어의 위치 x : " << p->x << ", z : " << p->z << endl;
+
+
+		GameObject.emplace(g_myid, m_pObj);
+		GameObject.find(g_myid)->second->Transform()->SetLocalPos(Vec3(p->x, p->y, p->z));
 		
+		GameObject.find(g_myid)->second->SetID(g_myid);
+
+
 		break;
 
 	}
@@ -166,52 +174,111 @@ void CNetwork::ProcessPacket(char* ptr)
 		cout << "enter 받았다\n";
 		sc_packet_put_object* packet = reinterpret_cast<sc_packet_put_object*>(ptr);
 		int id = packet->id;
-		
+
 		//if (id == g_myid) {
 		//	//내꺼 만들기
 		//}
 		//else {
-			if (CheckType(id) == OBJECT_TYPE::PLAYER) {
-				// 다른 사람꺼
-				cout << "다른 사람 입장 " << endl;
-				
-				CGameObject* pObject = nullptr;
+		if (CheckType(id) == OBJECT_TYPE::PLAYER) {
+			// 다른 사람꺼
+			cout << "다른 사람 입장 " << endl;
+			cout << "다른 사람 ID : " << id << endl;
+			cout << "다른 사람 위치 x : " << packet->x << ", z : " << packet->z << endl;
 
-				Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nIdle1.fbx");
-				//pMeshData->Save(pMeshData->GetPath());
+			//CGameObject* pObject = nullptr;
+			//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nIdle1.fbx");
+			////pMeshData->Save(pMeshData->GetPath());
+			//
 
-				pObject = pMeshData->Instantiate();
-				pObject->SetName(L"Player1");
-				pObject->FrustumCheck(false);
-				pObject->Transform()->SetLocalPos(Vec3(packet->x, packet->y, packet->z));
-				pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-				pObject->AddComponent(new CCollider2D);
 
-				//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH);
+			//pObject = pMeshData->Instantiate();
+			//pObject->SetName(L"Player1");
+			//pObject->FrustumCheck(false);
+			//pObject->Transform()->SetLocalPos(Vec3(packet->x, packet->y, packet->z));
+			//pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+			//pObject->AddComponent(new CCollider2D);
+			////pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH);
 
-				pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH, L"Player1");
-				pObject->Collider2D()->SetBB(BoundingBox(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingBoxExtents()));
-				pObject->Collider2D()->SetBS(BoundingSphere(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingSphereRadius() / 2.f));
+			//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH, L"Player1");
+			//pObject->Collider2D()->SetBB(BoundingBox(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingBoxExtents()));
+			//pObject->Collider2D()->SetBS(BoundingSphere(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingSphereRadius() / 2.f));
 
-				// 플레이어 스크립트 붙여주기.
-				//pObject->AddComponent(new CPlayerScript);
-				//CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
-				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pObject, false);
-			}
-			else if (CheckType(id) == OBJECT_TYPE::MONSTER) {
-				// 몬스터
+			//CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pObject, false);
+			Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nIdle1.fbx");
+			CGameObject* pObject = new CGameObject;
+			GameObject.emplace(id, pObject);
+			GameObject.find(id)->second->SetID(id);
 
-			}
-		//}
+			GameObject.find(id)->second = pMeshData->Instantiate();
+			GameObject.find(id)->second->SetName(L"Player1");
+			GameObject.find(id)->second->FrustumCheck(false);
+			GameObject.find(id)->second->Transform()->SetLocalPos(Vec3(packet->x, packet->y, packet->z));
+			GameObject.find(id)->second->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+			GameObject.find(id)->second->AddComponent(new CCollider2D);
+			GameObject.find(id)->second->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH, L"Player1");
+			GameObject.find(id)->second->Collider2D()->SetBB(BoundingBox(GameObject.find(id)->second->Transform()->GetLocalPos()
+			, GameObject.find(id)->second->MeshRender()->GetMesh()->GetBoundingBoxExtents()
+			));
+			GameObject.find(id)->second->Collider2D()->SetBS(BoundingSphere(GameObject.find(id)->second->Transform()->GetLocalPos(), 
+				GameObject.find(id)->second->MeshRender()->GetMesh()->GetBoundingSphereRadius() / 2.f));
+
+			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", GameObject.find(id)->second, false);
+			// 플레이어 스크립트 붙여주기.
+			//pObject->AddComponent(new CPlayerScript);
+			//CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
+
+
+			
+		
+		}
+
+		else if (CheckType(id) == OBJECT_TYPE::MONSTER) {
+			// 몬스터
+
+		}
+	
+		break;
 
 	}
-							 break;
-	//case 입장 패킷:
+							 //case 입장 패킷:
 	case SC_PACKET_LEAVE_OBJECT: {
+		break;
+
+	
+	}
+	case SC_PACKET_MOVE: {
+		sc_packet_move* packet = reinterpret_cast<sc_packet_move*>(ptr);
+		int other_id = packet->id;
+		Vec3 localVec;
+		localVec.x = packet->x;
+		localVec.y = packet->y;
+		localVec.z = packet->z;
+		if (other_id == g_myid)
+		{
+			cout << "SC_PACKET_MOVE 나의 좌표 : " << endl;
+			GameObject.find(other_id)->second->Transform()->SetLocalPos(localVec);
+		}
+		else 
+		{
+			//추가
+			if (0 != GameObject.count(other_id))
+			{
+				if (CheckType(other_id) == OBJECT_TYPE::PLAYER)
+				{
+					
+
+
+				}
+				else if (CheckType(other_id) == OBJECT_TYPE::MONSTER)
+				{
+				}
+			}
+		}
+		//break;
+		break;
+	}
 
 	}
-	}
-
 }
 
 void CNetwork::Process_Data(char* net_buf, size_t& io_byte)

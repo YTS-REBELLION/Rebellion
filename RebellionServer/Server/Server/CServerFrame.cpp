@@ -130,22 +130,24 @@ void CServerFrame::InitClients()
 
 		int idx = 0;
 		float x, z;
+		idx = (idx + 1) % 3;
+
 		switch (idx) {
 		case 0:
-			x = -1700.f;
-			z = 3800.f;
+			x = 100.f;
+			z = 100.f;
 			break;
 		case 1:
-			x = -1900.f;
-			z = 4600.f;
+			x = -100.f;
+			z = 100.f;
 			break;
 		case 2:
-			x = -2100.f;
-			z = 5300.f;
+			x = 200.f;
+			z = -200.f;
 			break;
 		case 3:
-			x = -2300.f;
-			z = 4300.f;
+			x = -140.f;
+			z = 400.f;
 			break;
 		case 4:
 			x = -2500.f;
@@ -156,15 +158,11 @@ void CServerFrame::InitClients()
 			z = 4000.f;
 			break;
 		}
-		idx = (idx + 1) % 6;
-		//Vec3 pos;
-		//pos.x = x;
-		//pos.y = 0.f;
-		//pos.z = z;
 		Vec3 pos;
-		pos.x = 0;
-		pos.y = 0;
-		pos.z = 0;
+		pos.x = x;
+		pos.y = 0.f;
+		pos.z = z;
+		
 		_objects[i].SetCurrentExp(0);
 		_objects[i].SetMaxExp(100);
 		_objects[i].SetCurrentHp(200);
@@ -173,6 +171,7 @@ void CServerFrame::InitClients()
 		_objects[i].SetDamage(50);
 		_objects[i].SetLevel(1);
 		_objects[i].SetIsAttack(false);
+		
 	}
 }
 void CServerFrame::RecvPacketProcess(int id, int iobytes)
@@ -223,12 +222,6 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		strcpy_s(name, packet->name);
 
 		cout << "플레이어 이름 " << name << endl;
-		
-		
-
-
-
-
 
 		// DB 구현 예정
 
@@ -246,7 +239,7 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		
 		cout << "ID : " << id << endl;
 		cout << "x : " << packet->localPos.x << endl;
-		cout << "z : " << packet->localPos.x << endl;
+		cout << "z : " << packet->localPos.z << endl;
 
 		Vec3 pos;
 		pos.x = packet->localPos.x;
@@ -1070,7 +1063,8 @@ void CServerFrame::EnterGame(int id, const char* name)
 	
 
 	_sender->SendLoginOkPacket(_objects[id].GetSocket(), _objects[id].GetID(),
-		0.f, 0.f, 0.f, _objects[id].GetDamage(), _objects[id].GetCurrentHp(),
+		0.f, 0.f, 0.f,
+		_objects[id].GetDamage(), _objects[id].GetCurrentHp(),
 		_objects[id].GetMaxHp(), _objects[id].GetLevel(),
 		_objects[id].GetCurrentExp(), _objects[id].GetMaxExp());
 

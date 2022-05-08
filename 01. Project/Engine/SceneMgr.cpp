@@ -195,6 +195,7 @@ void CSceneMgr::init()
 	pObject->FrustumCheck(false);
 	pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->Transform()->SetLocalRot(Vec3(0.f, XM_PI, 0.f));
 	pObject->AddComponent(new CCollider2D);
 
 	//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH);
@@ -205,6 +206,7 @@ void CSceneMgr::init()
 
 	// 플레이어 스크립트 붙여주기.
 	pObject->AddComponent(new CPlayerScript);
+
 	CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
 	m_pCurScene->AddGameObject(L"Player", pObject, false);
 
@@ -355,6 +357,7 @@ void CSceneMgr::init()
 
 	// AddGameObject
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);
+	g_net.SetObj(pObject);
 
 	//// ====================
 	//// Grid 오브젝트 생성

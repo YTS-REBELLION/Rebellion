@@ -1,8 +1,17 @@
 #pragma once
 
+#include <unordered_map>
 #include "Network.h"
+#include "GameObject.h"
+#include <iterator>
+
+typedef unordered_map<int, CGameObject*> OBJ;
+typedef OBJ::iterator OBJITER;
+
+extern OBJ GameObject;
 
 extern CNetwork g_net;
+extern int g_myid;
 
 // State Description
 extern D3D12_RASTERIZER_DESC g_arrRSDesc[(UINT)RS_TYPE::END];

@@ -1,7 +1,13 @@
 #pragma once
 #include "../Client/Server.h"
-#include <iostream>
+#include "Mesh.h"
+#include "Ptr.h"
+#include "GameObject.h"
 
+class CGameObject;
+class CScene;
+class CMesh;
+class CToolCamScript;
 
 struct EXOVER
 {
@@ -17,15 +23,15 @@ struct EXOVER
 enum class OBJECT_TYPE {PLAYER, MONSTER, NPC};
 
 
-class CNetwork 
+class CNetwork
 {
-	OVERLAPPED		_overlapped;
-
-
-
 public:
 	CNetwork();
-	~CNetwork();
+	~CNetwork(){};
+public:
+	void SetObj(CGameObject* obj) { m_pObj = new CGameObject; m_pObj = obj; }
+	//void SetCamObj(CGameObject* obj) { m_pCamObj = new CGameObject; m_pCamObj = obj; }
+	//void SetAniData(Ptr<CMesh> _aniData) { m_aniData.push_back(_aniData); }
 public:
 	void Connect();
 
@@ -33,7 +39,7 @@ public:
 	void Receive();
 	void ProcessPacket(char* ptr);
 	void Process_Data(char* net_buf, size_t& io_byte);
-	void Enter_Player(const int& id);
+	//void Enter_Player(const int& id);
 
 public:
 	void Send_Packet(void* packet);
@@ -45,9 +51,13 @@ public:
 		const float& rotate, const system_clock::time_point& startTime,
 		const float& delta);
 
-
 public:
 	void err_quit(const char* msg);
+
+
+private:
+	OVERLAPPED		_overlapped;
+	CGameObject* m_pObj;
 
 };
 

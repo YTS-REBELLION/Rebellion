@@ -33,6 +33,7 @@ const char  SC_PACKET_PUT_OBJECT = 4;
 const char  SC_PACKET_LEAVE_OBJECT = 5;
 const char  SC_PACKET_STAT_CHANGE = 6;
 const char  SC_PACKET_CHAT = 7;
+const char	SC_PACKET_MOVE = 8;
 
 const char SC_PACKET_NPC_ATTACK = 8;
 const char SC_PACKET_PLAYER_ATTACK = 9;

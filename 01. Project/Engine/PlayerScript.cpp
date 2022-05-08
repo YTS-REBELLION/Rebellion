@@ -3,6 +3,7 @@
 #include "TestScript.h"
 #include "RenderMgr.h"
 #include "Animator3D.h"
+#include "Network.h"
 
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
@@ -42,10 +43,15 @@ void CPlayerScript::update()
 		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::FRONT);
 		localPos += WorldDir * m_fSpeed * DT;
 
+		system_clock::time_point start = system_clock::now();
+
+		g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+
 		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 		{
 			localPos += WorldDir * m_fSpeed * DT;
 			SetPlayerAnimation(2);
+
 		}
 		else SetPlayerAnimation(1);
 	}
@@ -55,6 +61,10 @@ void CPlayerScript::update()
 		WorldDir = playerTrans->GetWorldDir(DIR_TYPE::FRONT);
 		localPos += WorldDir * m_fSpeed * DT;
 
+
+		system_clock::time_point start = system_clock::now();
+
+		g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 		{
 			localPos += WorldDir * m_fSpeed * DT;
@@ -67,6 +77,10 @@ void CPlayerScript::update()
 	{	
 		WorldDir = playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
 		localPos += WorldDir * m_fSpeed * DT;
+
+		system_clock::time_point start = system_clock::now();
+
+		g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 
 		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 		{
@@ -81,6 +95,11 @@ void CPlayerScript::update()
 		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
 		localPos += WorldDir * m_fSpeed * DT;
 
+		system_clock::time_point start = system_clock::now();
+
+		g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+		
+		
 		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 		{
 			localPos += WorldDir * m_fSpeed * DT;
