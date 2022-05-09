@@ -33,6 +33,7 @@ private:
 	bool CollisionRect(CCollider2D* _pCollider1, CCollider2D* _pCollider2);
 	bool CollisionCircle(CCollider2D* _pCollider1, CCollider2D* _pCollider2);
 	bool CollisionRectCircle(CCollider2D* _pCollider1, CCollider2D* _pCollider2);
+	bool CollisionCube(CCollider2D* _pCollider1, CCollider2D* _pCollider2);
 
 	bool CollisionSphere(CCollider2D* _pCollider1, CCollider2D* _pCollider2);
 };

@@ -30,6 +30,7 @@
 
 #include "PlayerScript.h"
 #include "MonsterScript.h"
+#include "SwordScript.h"
 #include "ToolCamScript.h"
 #include "GridScript.h"
 #include "Sword.h"
@@ -147,7 +148,7 @@ void CSceneMgr::init()
 	m_pCurScene->GetLayer(2)->SetName(L"Monster");
 	m_pCurScene->GetLayer(3)->SetName(L"Map");
 	m_pCurScene->GetLayer(4)->SetName(L"Portal");
-
+	//m_pCurScene->GetLayer(5)->SetName(L"Sword");
 	m_pCurScene->GetLayer(30)->SetName(L"UI");
 	m_pCurScene->GetLayer(31)->SetName(L"Tool");
 
@@ -188,9 +189,10 @@ void CSceneMgr::init()
 	// =============
 	// FBX 파일 로드
 	// =============
+	CGameObject* pPObject = new CGameObject;
 	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Idle.mdat", L"MeshData\\Player_Idle.mdat");
 	//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Idle.fbx");
-	pMeshData->Save(pMeshData->GetPath());
+	//pMeshData->Save(pMeshData->GetPath());
 	
 	CGameObject* pPlayer = nullptr;
 
@@ -203,9 +205,10 @@ void CSceneMgr::init()
 	pPlayer->AddComponent(new CCollider2D);
 	//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH);
 
-	pPlayer->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pPlayer->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
-	pPlayer->Collider2D()->SetOffsetScale(Vec3(800.f, 850.f, 1700.f));
+
+	pPObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pPObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
+	pPObject->Collider2D()->SetOffsetScale(Vec3(850.f, 850.f, 1700.f));
 
 	// 플레이어 스크립트 붙여주기.
 	pPlayer->AddComponent(new CPlayerScript);
@@ -232,6 +235,37 @@ void CSceneMgr::init()
 	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Attack.mdat", L"MeshData\\Player_Attack.mdat");
 	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
 	g_net.SetAniData(pMeshData->GetMesh());
+
+	m_pCurScene->FindLayer(L"Player")->AddGameObject(pPObject);
+
+
+	// Sword 객체
+	CGameObject* pSwordObject = new CGameObject;
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
+
+	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
+
+	pSwordObject = pMeshData->Instantiate();
+	pSwordObject->SetName(L"Player_Sword");
+	pSwordObject->FrustumCheck(false);
+	pSwordObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	pSwordObject->Transform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+	pSwordObject->Transform()->SetLocalRot(Vec3(0.f, XMConvertToRadians(-90.f), XMConvertToRadians(-90.f)));
+	pSwordObject->AddComponent(new CCollider2D);
+	pSwordObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pSwordObject->Collider2D()->SetOffsetPos(Vec3(0.f, 50.f, 0.f));
+	pSwordObject->Collider2D()->SetOffsetScale(Vec3(10.f, 140.f, 5.f));
+
+	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
+	pSwordObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, SwordObject.GetPointer());
+
+	pSwordObject->AddComponent(new CSwordScript);
+	CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
+	pSwordObject->GetScript<CSwordScript>()->SetTarget(pPObject);
+	pSwordObject->GetScript<CSwordScript>()->SetBoneIdx(36);
+
+	pPObject->AddChild(pSwordObject);
+	m_pCurScene->AddGameObject(L"Player", pSwordObject, false);
 
 
 	m_pCurScene->AddGameObject(L"Player", pPlayer, false);
@@ -267,26 +301,6 @@ void CSceneMgr::init()
 	CToolCamScript* PlayerCamScript = pMainCam->GetScript<CToolCamScript>();
 	PlayerCamScript->SetCameraToPlayer(pPlayer);
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pMainCam);
-
-
-	////Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\PlayerMale@nIdle1.mdat", L"MeshData\\PlayerMale@nIdle1.mdat");
-	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sword.fbx");
-	//pMeshData->Save(pMeshData->GetPath());
-
-	//pObject = pMeshData->Instantiate();
-	//pObject->SetName(L"Sword");
-	//pObject->FrustumCheck(false);
-	//pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-	//pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	//pObject->AddComponent(new CCollider2D);
-
-	////pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH);
-
-	//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	//pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 10.f, 0.f));
-	//pObject->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
-
-	//m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);
 
 	// ==================
 	// Map 오브젝트 생성
@@ -354,22 +368,22 @@ void CSceneMgr::init()
 	//// ====================
 	//// Potal 오브젝트 생성
 	//// ====================
-	//CGameObject* pPObject = nullptr;
-	//Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\DragonJawPortal.mdat", L"MeshData\\DragonJawPortal.mdat");
-	////Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\DragonJawPortal.fbx");
+	CGameObject* pPotalObject = nullptr;
+	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\DragonJawPortal.mdat", L"MeshData\\DragonJawPortal.mdat");
+	//Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\DragonJawPortal.fbx");
 
-	//pPObject = pPMeshData->Instantiate();
-	//pPObject->SetName(L"Portal");
-	//pPObject->FrustumCheck(false);
-	//pPObject->Transform()->SetLocalPos(Vec3(100.f, 0.f, 0.f));
-	//pPObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	//pPObject->AddComponent(new CCollider2D);
+	pPotalObject = pPMeshData->Instantiate();
+	pPotalObject->SetName(L"Portal");
+	pPotalObject->FrustumCheck(false);
+	pPotalObject->Transform()->SetLocalPos(Vec3(0.f, 50.f, 0.f));
+	pPotalObject->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
+	pPotalObject->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
+	pPotalObject->AddComponent(new CCollider2D);
 
-	//pPObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH, L"Portal");
-	//pPObject->Collider2D()->SetBB(BoundingBox(pPObject->Transform()->GetLocalPos(), pPObject->MeshRender()->GetMesh()->GetBoundingBoxExtents()));
-	//pPObject->Collider2D()->SetBS(BoundingSphere(pPObject->Transform()->GetLocalPos(), pPObject->MeshRender()->GetMesh()->GetBoundingSphereRadius() / 2.f));
-
-	//m_pCurScene->FindLayer(L"Monster")->AddGameObject(pPObject);
+	pPotalObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pPotalObject->Collider2D()->SetOffsetPos(Vec3(0.f, 600.f, 0.f));
+	pPotalObject->Collider2D()->SetOffsetScale(Vec3(100.f, 600.f, 200.f));
+	m_pCurScene->FindLayer(L"Monster")->AddGameObject(pPotalObject);
 
 	// ====================
 	// Skybox 오브젝트 생성
@@ -386,30 +400,28 @@ void CSceneMgr::init()
 	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pSky01.GetPointer());
 
 	// AddGameObject
-	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);
-	g_net.SetObj(pPlayer);
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject, false);
 
 
 	//CGameObject* MiroObject = nullptr;
 
-	//MiroObject = new CGameObject;
-	//MiroObject->SetName(L"MIRO");
-	//MiroObject->AddComponent(new CTransform);
-	//MiroObject->AddComponent(new CMeshRender);
-	//MiroObject->AddComponent(new CCollider2D);
-	//// Transform 설정
-	//MiroObject->Transform()->SetLocalPos(Vec3(100.f, 0.f, 0.f));
-	//MiroObject->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
-	//// MeshRender 설정
-	//MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-	//MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	MiroObject = new CGameObject;
+	MiroObject->SetName(L"MIRO");
+	MiroObject->AddComponent(new CTransform);
+	MiroObject->AddComponent(new CMeshRender);
+	MiroObject->AddComponent(new CCollider2D);
+	// Transform 설정
+	MiroObject->Transform()->SetLocalPos(Vec3(500.f, 0.f, 0.f));
+	MiroObject->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+	// MeshRender 설정
+	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-	//MiroObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	//MiroObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	//MiroObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+	MiroObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	MiroObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	MiroObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.0f, 1.f));
+	m_pCurScene->FindLayer(L"Monster")->AddGameObject(MiroObject);
 
-	//// AddGameObject
-	//m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
  
 	//// ====================
 	//// Grid 오브젝트 생성
@@ -442,27 +454,9 @@ void CSceneMgr::init()
 	// =================================
 	// Player Layer 와 Monster Layer 는 충돌 검사 진행
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Monster");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Monster");
+	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Sword", L"Monster");
 
-
-	//// SWORD 오브젝트 생성
-	//// ====================
-	//CGameObject* SwordObject = nullptr;
-	//SwordObject = new CGameObject;
-	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\sword_2.fbx");
-	//SwordObject = pMeshData->Instantiate();
-	//SwordObject->SetName(L"Player_Sword");
-	//SwordObject->FrustumCheck(false);
-	////SwordObject->AddComponent(new CTransform);
-	////SwordObject->AddComponent(new CMeshRender);
-
-	//// Transform 설정
-	//SwordObject->Transform()->SetLocalPos(Vec3(20.f, 20.f, 20.f));
-	//SwordObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-
-	// //Script 설정
-	//SwordObject->AddComponent(new CSword);
-	//// AddGameObject
-	//m_pCurScene->AddGameObject(L"Default", SwordObject, false);
 
 
 	//// obstacle 오브젝트 생성
@@ -552,25 +546,25 @@ void CSceneMgr::init()
 
 	//===========================================================================================
 	
-	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Something.fbx");
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Something.mdat", L"MeshData\\Something.mdat");
+	////pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Something.fbx");
+	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Something.mdat", L"MeshData\\Something.mdat");
 
-	CGameObject* SomethingObject = nullptr;
-	SomethingObject = new CGameObject;
-	SomethingObject = pMeshData->Instantiate();
-	SomethingObject->SetName(L"Something");
-	SomethingObject->FrustumCheck(false);
-	//SwordObject->AddComponent(new CTransform);
-	//SwordObject->AddComponent(new CMeshRender);
+	//CGameObject* SomethingObject = nullptr;
+	//SomethingObject = new CGameObject;
+	//SomethingObject = pMeshData->Instantiate();
+	//SomethingObject->SetName(L"Something");
+	//SomethingObject->FrustumCheck(false);
+	////SwordObject->AddComponent(new CTransform);
+	////SwordObject->AddComponent(new CMeshRender);
 
-	// Transform 설정
-	SomethingObject->Transform()->SetLocalPos(Vec3(500.f, 10.f, 500.f));
-	SomethingObject->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
+	//// Transform 설정
+	//SomethingObject->Transform()->SetLocalPos(Vec3(500.f, 10.f, 500.f));
+	//SomethingObject->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
 
-	//Script 설정
-	SomethingObject->AddComponent(new CSomethings);
-	// AddGameObject
-	m_pCurScene->AddGameObject(L"Default", SomethingObject, false);
+	////Script 설정
+	//SomethingObject->AddComponent(new CSomethings);
+	//// AddGameObject
+	//m_pCurScene->AddGameObject(L"Default", SomethingObject, false);
 
 	
 	//===================
@@ -1001,9 +995,6 @@ void CSceneMgr::init()
 
 void CSceneMgr::update()
 {		
-
-
-
 	m_pCurScene->update();
 	m_pCurScene->lateupdate();
 
@@ -1021,39 +1012,6 @@ void CSceneMgr::update_tool()
 	// rendermgr 카메라 초기화
 	CRenderMgr::GetInst()->ClearCamera();
 	m_pCurScene->finalupdate();
-}
-
-void CSceneMgr::InitOtherClinet(int m_id)
-{
-	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nIdle1.fbx");
-	//pMeshData->Save(pMeshData->GetPath());
-	CGameObject* pObject = new CGameObject;
-	pObject = pMeshData->Instantiate();
-	pObject->SetName(L"Player1");
-	pObject->FrustumCheck(false);
-	pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	pObject->Transform()->SetLocalRot(Vec3(0.f, 90.f, 0.f));
-	pObject->AddComponent(new CCollider2D);
-	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH, L"Player1");
-	//pObject->Collider2D()->SetBB(BoundingBox(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingBoxExtents()));
-	//pObject->Collider2D()->SetBS(BoundingSphere(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingSphereRadius() / 2.f));
-
-	// 플레이어 스크립트 붙여주기.
-	pObject->AddComponent(new CPlayerScript);
-	CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
-	m_pCurScene->AddGameObject(L"Player", pObject, false);
-	// 플레이어 애니메이션
-	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 0
-
-	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nWalk_F.fbx");
-	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
-
-	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nRun_F.fbx");
-	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 2
-
-	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@Attack1.fbx");
-	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
 
 }
 

@@ -19,7 +19,7 @@ private:
 	double						m_dCurTime;
 	int							m_iCurClip; // 클립 인덱스
 
-	int							m_iFrameIdx; // 클립의 현제 프레임
+	int							m_iFrameIdx; // 클립의 현재 프레임
 	Ptr<CMaterial>				m_pBoneMtrl; // BoneData Update Compute Shader
 	CStructuredBuffer*			m_pBoneFinalMat;  // 특정 프레임의 최종 행렬
 	bool						m_bFinalMatUpdate; // 최종행렬 연산 수행여부
@@ -34,6 +34,8 @@ public:
 	double GetCurTime() { return m_dCurTime; }
 	vector<Matrix>& GetFinalBoneMat() { return m_vecFinalBoneMat; }
 
+	int GetFrameIdx() { return m_iFrameIdx; }
+	
 private:
 	void check_mesh(Ptr<CMesh> _pMesh);
 

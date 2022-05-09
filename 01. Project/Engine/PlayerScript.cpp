@@ -132,30 +132,25 @@ void CPlayerScript::update()
 		GetObj()->Animator3D()->SetClipTime(0, 0.f);
 		SetAttack();
 	}
-	//m_vecAniClipTime[m_iCulidx] += DT;
-	if (GetAttack() && 0 < Animator3D()->GetAnimClip(0).dTimeLength) {
-		//m_vecAniClipTime[m_iCulidx] += DT;
+	if (GetAttack() && m_vecAniClipTime[0] < Animator3D()->GetAnimClip(0).dTimeLength) {
+		m_vecAniClipTime[0] += DT;
 
+		cout << m_vecAniClipTime[0] << endl;
 		GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 20.f, 70.f));
 		GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 1150.f, 1700.f));
-		
-		cout << Animator3D()->GetCurTime() << endl;
+
 
 		SetPlayerAnimation(3);
+
+		if (m_vecAniClipTime[0] > Animator3D()->GetAnimClip(0).dTimeLength)
+		{
+			m_vecAniClipTime[0] = 0.f;
+			GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
+			GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 850.f, 1700.f));
+
+			SetAttack();
+		}
 	}
-	//else if (m_vecAniClipTime[m_iCulidx] > Animator3D()->GetAnimClip(0).dTimeLength)
-	//{
-	//	cout << "局聪皋捞记 场" << endl;
-	//}
-
-	//else {
-	//	SetAttack();
-	//}
-
-	//else {
-	//	GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
-	//	GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 850.f, 1700.f));
-	//}
 
 	if (KEY_HOLD(KEY_TYPE::KEY_ENTER))
 	{
@@ -193,6 +188,7 @@ void CPlayerScript::SetOtherMovePacket(sc_packet_move* p, const float& rtt)
 
 void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
 {
+	cout << "?" << endl;
 }
 
 void CPlayerScript::OnCollision(CCollider2D* _pOther)
@@ -200,24 +196,26 @@ void CPlayerScript::OnCollision(CCollider2D* _pOther)
 	//BoundingSphere myBS = Collider2D()->GetBS();
 	//BoundingSphere otherBS = _pOther->Collider2D()->GetBS();
 
-	Vec3 WorldDir;
-	Vec3 localPos = Transform()->GetLocalPos();
-	CTransform* playerTrans = Transform();
+	cout << "面倒" << endl;
 
-	WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::FRONT);
-	localPos -= WorldDir * m_fSpeed * DT * 2.0f;
+	//Vec3 WorldDir;
+	//Vec3 localPos = Transform()->GetLocalPos();
+	//CTransform* playerTrans = Transform();
 
-	if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
-	{
-		localPos -= WorldDir * m_fSpeed * DT;
-	}
+	//WorldDir = playerTrans->GetWorldDir(DIR_TYPE::UP);
+	//localPos -= WorldDir * m_fSpeed * DT * 2.0f;
 
-	if (L"Portal" == _pOther->GetObj()->GetName())
-	{
-		localPos.y += 1000.f;
-	}
+	//if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+	//{
+	//	localPos -= WorldDir * m_fSpeed * DT;
+	//}
 
-	Transform()->SetLocalPos(localPos);
+	////if (L"MIRO" == _pOther->GetObj()->GetName())
+	////{
+	////	//localPos.y += 1000.f;
+	////}
+
+	//Transform()->SetLocalPos(localPos);
 
 }
 

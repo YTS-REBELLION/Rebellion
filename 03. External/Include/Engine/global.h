@@ -10,7 +10,7 @@
 #include <dxgi.h>
 #include <DirectXMath.h>
 #include <DirectXPackedVector.h>
-
+#include <math.h>
 #include <algorithm>
 #include "SimpleMath.h"
 

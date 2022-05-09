@@ -17,7 +17,7 @@ private:
 	bool				m_bAttack;
 	sc_packet_move* m_movePacketTemp = nullptr;
 
-	vector<float>		m_vecAniClipTime;
+	float				m_vecAniClipTime[5]{};
 	int					m_iCulidx;
 
 	bool				FirstPacket = false;
