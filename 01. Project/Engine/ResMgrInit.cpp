@@ -217,7 +217,8 @@ void CResMgr::CreateDefaultShader()
 	pShader = new CShader;
 	pShader->CreateVertexShader(L"Shader\\trail.fx", "VS_TRAIL", "vs_5_0");
 	pShader->CreatePixelShader(L"Shader\\trail.fx", "PS_TRAIL", "ps_5_0");
-
+	/*pShader->SetDepthStencilType(DEPTH_STENCIL_TYPE::LESS_NO_WRITE);
+	pShader->Create(SHADER_POV::TRAIL);*/
 	AddRes(L"TrailShader", pShader);
 
 

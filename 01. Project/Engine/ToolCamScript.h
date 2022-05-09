@@ -22,6 +22,7 @@ public:
 	bool			m_bCine1 = false;
 	bool			m_bCheckFin1 = false;
 	float			checktime = 0.f;
+	float			checktime2 = 0.f;
 	bool			m_bMouseFix = false;
 
 	CAMERASTATE		m_eCamState = CAMERASTATE::PLAYER;

@@ -30,7 +30,7 @@ void CGuardHouse::update()
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
 	Vec3 vRot = Transform()->GetLocalRot();
 	vRot.x = 29.85f;
-	vRot.y = 30.01f;
+	vRot.y = 18.96f;
 	
 	Transform()->SetLocalPos(localPos);
 	Transform()->SetLocalRot(vRot);
