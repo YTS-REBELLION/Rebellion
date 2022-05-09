@@ -189,12 +189,12 @@ void CSceneMgr::init()
 	// =============
 	// FBX 파일 로드
 	// =============
-	CGameObject* pPObject = new CGameObject;
+	//CGameObject* pPObject = new CGameObject;
 	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Idle.mdat", L"MeshData\\Player_Idle.mdat");
 	//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Idle.fbx");
 	//pMeshData->Save(pMeshData->GetPath());
 	
-	CGameObject* pPlayer = nullptr;
+	CGameObject* pPlayer = new CGameObject;
 
 	pPlayer = pMeshData->Instantiate(); 
 	pPlayer->SetName(L"Player1");
@@ -206,9 +206,9 @@ void CSceneMgr::init()
 	//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH);
 
 
-	pPObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pPObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
-	pPObject->Collider2D()->SetOffsetScale(Vec3(850.f, 850.f, 1700.f));
+	pPlayer->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pPlayer->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
+	pPlayer->Collider2D()->SetOffsetScale(Vec3(850.f, 850.f, 1700.f));
 
 	// 플레이어 스크립트 붙여주기.
 	pPlayer->AddComponent(new CPlayerScript);
@@ -236,7 +236,7 @@ void CSceneMgr::init()
 	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
 	g_net.SetAniData(pMeshData->GetMesh());
 
-	m_pCurScene->FindLayer(L"Player")->AddGameObject(pPObject);
+	m_pCurScene->AddGameObject(L"Player", pPlayer, false);
 
 
 	// Sword 객체
@@ -261,14 +261,13 @@ void CSceneMgr::init()
 
 	pSwordObject->AddComponent(new CSwordScript);
 	CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
-	pSwordObject->GetScript<CSwordScript>()->SetTarget(pPObject);
+	pSwordObject->GetScript<CSwordScript>()->SetTarget(pPlayer);
 	pSwordObject->GetScript<CSwordScript>()->SetBoneIdx(36);
 
-	pPObject->AddChild(pSwordObject);
 	m_pCurScene->AddGameObject(L"Player", pSwordObject, false);
+	pPlayer->AddChild(pSwordObject);
 
 
-	m_pCurScene->AddGameObject(L"Player", pPlayer, false);
 
 	//// 더미 플레이어 -> 초기 캐릭터가 누워있는거를 회전 시키면 카메라도 같이 회전해서 생성.
 	//Ptr<CMeshData> DmypMeshData;
@@ -402,25 +401,25 @@ void CSceneMgr::init()
 	// AddGameObject
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject, false);
 
-
+	g_net.SetObj(pPlayer);
 	//CGameObject* MiroObject = nullptr;
 
-	MiroObject = new CGameObject;
-	MiroObject->SetName(L"MIRO");
-	MiroObject->AddComponent(new CTransform);
-	MiroObject->AddComponent(new CMeshRender);
-	MiroObject->AddComponent(new CCollider2D);
-	// Transform 설정
-	MiroObject->Transform()->SetLocalPos(Vec3(500.f, 0.f, 0.f));
-	MiroObject->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
-	// MeshRender 설정
-	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	//MiroObject = new CGameObject;
+	//MiroObject->SetName(L"MIRO");
+	//MiroObject->AddComponent(new CTransform);
+	//MiroObject->AddComponent(new CMeshRender);
+	//MiroObject->AddComponent(new CCollider2D);
+	//// Transform 설정
+	//MiroObject->Transform()->SetLocalPos(Vec3(500.f, 0.f, 0.f));
+	//MiroObject->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+	//// MeshRender 설정
+	//MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	//MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-	MiroObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	MiroObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	MiroObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.0f, 1.f));
-	m_pCurScene->FindLayer(L"Monster")->AddGameObject(MiroObject);
+	//MiroObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	//MiroObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	//MiroObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.0f, 1.f));
+	//m_pCurScene->FindLayer(L"Monster")->AddGameObject(MiroObject);
 
  
 	//// ====================
