@@ -27,6 +27,7 @@ private:
 	bool					m_bActive;
 	bool					m_bFrustumCheck;
 
+
 	int						m_iID;
 
 public:
@@ -71,9 +72,11 @@ public:
 	bool IsDead() { return m_bDead; }
 	void SetDead();
 
+	
+
 	void RegisterToLayer();
 	int& GetID() { return m_iID; }
-	void SetID(const int id) { m_iID = id; }
+	void SetID(const int& id) { m_iID = id; }
 
 	//void SetID(int id) { m_iID = id; };
 public:

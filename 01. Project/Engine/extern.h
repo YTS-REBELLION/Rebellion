@@ -1,9 +1,8 @@
 #pragma once
 
 #include <unordered_map>
-#include "Network.h"
 #include "GameObject.h"
-#include <iterator>
+#include "Network.h"
 
 typedef unordered_map<int, CGameObject*> OBJ;
 typedef OBJ::iterator OBJITER;

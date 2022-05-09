@@ -17,7 +17,7 @@ public:
 	void SendMovePacket(SOCKET s, int mover, Vec3 localPos);
 
 	void SendPutObjectPacket(SOCKET s, int id, float x, float y, float z, int objType);
-	void SendStopPacket(SOCKET s, int id);
+	void Send_Stop_Packet(SOCKET s, int mover_id );
 	void SendPlayerDiePacket(SOCKET s, int id);
 	void SendNPCDiePacket(SOCKET s, int id, int type);
 	void SendPlayerAttackPacket(SOCKET s, int id);

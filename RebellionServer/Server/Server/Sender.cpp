@@ -116,6 +116,17 @@ void CSender::SendPutObjectPacket(SOCKET s, int id, float x, float y, float z, i
 
 	SendPacket(s, &packet);
 }
+void CSender::Send_Stop_Packet(SOCKET s, int mover_id)
+{
+	sc_packet_stop p;
+	
+	p.size = sizeof(p);
+	p.type = SC_PACKET_STOP;
+	p.id = mover_id;
+	
+	SendPacket(s, &p);
+
+}
 //
 //void CSender::Send_Enter_Packet(SOCKET s, Vec3 target_pos, const short& id, const short& other_id)
 //{
@@ -149,9 +160,6 @@ void CSender::SendPutObjectPacket(SOCKET s, int id, float x, float y, float z, i
 //	SendPacket(s, &p);
 //}
 
-void CSender::SendStopPacket(SOCKET s, int id)
-{
-}
 
 void CSender::SendPlayerDiePacket(SOCKET s, int id)
 {

@@ -15,6 +15,7 @@ constexpr int MAX_USER = 100;
 
 
 const char  CS_PACKET_LOGIN = 1;
+
 const char  CS_PACKET_LOGOUT = 2;
 const char  CS_PACKET_ATTACK = 3;
 const char  CS_PACKET_TELEPORT = 4;
@@ -24,7 +25,7 @@ const char  CS_PAKCET_POSITION = 7;
 const char  CS_PACKET_DEFENCE = 8;
 const char  CS_PACKET_QUEST_DONE = 9;
 const char	CS_PACKET_MOVE = 10;
-
+const char	CS_PACKET_STOP = 11;
 
 const char  SC_PACKET_LOGIN_OK = 1;
 const char  SC_PACKET_LOGIN_FAIL = 2;
@@ -34,6 +35,7 @@ const char  SC_PACKET_LEAVE_OBJECT = 5;
 const char  SC_PACKET_STAT_CHANGE = 6;
 const char  SC_PACKET_CHAT = 7;
 const char	SC_PACKET_MOVE = 8;
+const char	SC_PACKET_STOP = 9;
 
 const char SC_PACKET_NPC_ATTACK = 8;
 const char SC_PACKET_PLAYER_ATTACK = 9;
@@ -161,6 +163,7 @@ struct sc_packet_stop {
 	char size;
 	char type;
 	int id;
+	bool isMoving;
 };
 
 struct sc_packet_npc_attack {
@@ -254,10 +257,11 @@ struct cs_packet_quest_done {
 	char type;
 };
 
-struct cs_packet_move_stop {
-	char	size;
-	char	type;
-	char	direction;
+struct cs_packet_stop {
+	char size;
+	char type;
+	short id;
+	bool isMoving;
 };
 
 #pragma pack(pop)

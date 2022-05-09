@@ -50,7 +50,8 @@ public:
 	void Send_Move_Packet(const Vec3& localPos, const Vec3& dirVec,
 		const float& rotate, const system_clock::time_point& startTime,
 		const float& delta);
-
+	void Send_Stop_Packet(const bool& isMoving, const short& id);
+	void SetAnimation(int id, int i);
 public:
 	void err_quit(const char* msg);
 

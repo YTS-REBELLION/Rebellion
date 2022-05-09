@@ -27,6 +27,7 @@ private:
 	bool					m_bActive;
 	bool					m_bFrustumCheck;
 
+
 	int						m_iID;
 
 public:
@@ -70,6 +71,8 @@ public:
 	const vector<CGameObject*>& GetChild() { return m_vecChild; }
 	bool IsDead() { return m_bDead; }
 	void SetDead();
+
+	
 
 	void RegisterToLayer();
 	int& GetID() { return m_iID; }

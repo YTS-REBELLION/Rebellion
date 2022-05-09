@@ -261,6 +261,20 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		break;
 
 	}
+	case CS_PACKET_STOP: {
+		cout << "CS_PACKET_STOP" << endl;
+		cs_packet_stop* packet = reinterpret_cast<cs_packet_stop*>(buf);
+		short id = packet->id;
+		
+		_objects[id].ClientLock();
+		_objects[id].SetIsMove(false);
+		_objects[id].ClientUnLock();
+		Do_stop(id, false);
+
+
+
+		break;
+	}
 	}
 
 
@@ -919,37 +933,6 @@ void CServerFrame::UpdatePlayerPos(int id)
 	}
 }
 
-void CServerFrame::SetMoveDirection(int id, char direction, bool b)
-{
-
-	_objects[id].SetMoveDirection(direction, b);
-
-	//for (int i = 0; i < 4; ++i)
-		//std::cout << m_objects[id].GetMoveDirection(i) << std::endl;
-
-	for (int i = 0; i < 4; ++i) {
-		if (true == _objects[id].GetMoveDirection(i)) {
-			if (false == _objects[id].GetIsMove()) {
-				_objects[id].SetIsMove(true);
-				return;
-			}
-			return;
-		}
-	}
-
-	_objects[id].SetIsMove(false);
-
-	// 안 움직이면 클라이언트에서 IDLE 애니메이션을 보여주기 위해 멈췄음을 알려준다.
-	// 내 시야 안에 있는 PC에게만 보내주면 된다.
-	std::unordered_set<int> viewList = _objects[id].GetViewList();
-
-	for (const auto& vl : viewList) {
-		if (ST_ACTIVE != _objects[vl]._status) continue;
-		if (false == IsPlayer(vl)) continue;
-		_sender->SendStopPacket(_objects[vl].GetSocket(), id);
-
-	}
-}
 
 void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, const float& rotate)
 {
@@ -1043,6 +1026,24 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 	//		}
 	//	}
 	//}
+}
+
+void CServerFrame::Do_stop(const short& id, const bool& isMoving)
+{
+	
+
+    unordered_set<int> old_viewList =_objects[id].GetViewList();
+    
+    _objects[id].SetIsMove(false);
+
+    
+    for (auto& ob : old_viewList)
+    {
+        if (ob == id)continue;
+		cout << "서버 -> 클라 스탑 보낸다" << endl;
+        _sender->Send_Stop_Packet(_objects[id].GetSocket(),id);
+    }
+
 }
 
 void CServerFrame::EnterGame(int id, const char* name)

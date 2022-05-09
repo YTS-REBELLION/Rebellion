@@ -192,23 +192,25 @@ void CSceneMgr::init()
 	//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Idle.fbx");
 	pMeshData->Save(pMeshData->GetPath());
 	
-	pObject = pMeshData->Instantiate(); 
-	pObject->SetName(L"Player1");
-	pObject->FrustumCheck(false);
-	pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-	pObject->Transform()->SetLocalScale(Vec3(0.08f, 0.08f, 0.08f));
-	pObject->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
-	pObject->AddComponent(new CCollider2D);
+	CGameObject* pPlayer = nullptr;
+
+	pPlayer = pMeshData->Instantiate(); 
+	pPlayer->SetName(L"Player1");
+	pPlayer->FrustumCheck(false);
+	pPlayer->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	pPlayer->Transform()->SetLocalScale(Vec3(0.08f, 0.08f, 0.08f));
+	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
+	pPlayer->AddComponent(new CCollider2D);
 	//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH);
 
-	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
-	pObject->Collider2D()->SetOffsetScale(Vec3(800.f, 850.f, 1700.f));
+	pPlayer->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pPlayer->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
+	pPlayer->Collider2D()->SetOffsetScale(Vec3(800.f, 850.f, 1700.f));
 
 	// 플레이어 스크립트 붙여주기.
-	pObject->AddComponent(new CPlayerScript);
+	pPlayer->AddComponent(new CPlayerScript);
 
-	CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
+	CPlayerScript* PlayerScript = pPlayer->GetScript<CPlayerScript>();
 	// 플레이어 애니메이션
 	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 0
 	g_net.SetAniData(pMeshData->GetMesh());
@@ -232,7 +234,7 @@ void CSceneMgr::init()
 	g_net.SetAniData(pMeshData->GetMesh());
 
 
-	m_pCurScene->AddGameObject(L"Player", pObject, false);
+	m_pCurScene->AddGameObject(L"Player", pPlayer, false);
 
 	//// 더미 플레이어 -> 초기 캐릭터가 누워있는거를 회전 시키면 카메라도 같이 회전해서 생성.
 	//Ptr<CMeshData> DmypMeshData;
@@ -263,7 +265,7 @@ void CSceneMgr::init()
 	pMainCam->Camera()->SetLayerCheck(30, false);
 
 	CToolCamScript* PlayerCamScript = pMainCam->GetScript<CToolCamScript>();
-	PlayerCamScript->SetCameraToPlayer(pObject);
+	PlayerCamScript->SetCameraToPlayer(pPlayer);
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pMainCam);
 
 
@@ -385,29 +387,29 @@ void CSceneMgr::init()
 
 	// AddGameObject
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);
-	g_net.SetObj(pObject);
+	g_net.SetObj(pPlayer);
 
 
-	CGameObject* MiroObject = nullptr;
+	//CGameObject* MiroObject = nullptr;
 
-	MiroObject = new CGameObject;
-	MiroObject->SetName(L"MIRO");
-	MiroObject->AddComponent(new CTransform);
-	MiroObject->AddComponent(new CMeshRender);
-	MiroObject->AddComponent(new CCollider2D);
-	// Transform 설정
-	MiroObject->Transform()->SetLocalPos(Vec3(100.f, 0.f, 0.f));
-	MiroObject->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
-	// MeshRender 설정
-	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	//MiroObject = new CGameObject;
+	//MiroObject->SetName(L"MIRO");
+	//MiroObject->AddComponent(new CTransform);
+	//MiroObject->AddComponent(new CMeshRender);
+	//MiroObject->AddComponent(new CCollider2D);
+	//// Transform 설정
+	//MiroObject->Transform()->SetLocalPos(Vec3(100.f, 0.f, 0.f));
+	//MiroObject->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+	//// MeshRender 설정
+	//MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	//MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-	MiroObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	MiroObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	MiroObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+	//MiroObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	//MiroObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	//MiroObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 
-	// AddGameObject
-	m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
+	//// AddGameObject
+	//m_pCurScene->FindLayer(L"Default")->AddGameObject(MiroObject);
  
 	//// ====================
 	//// Grid 오브젝트 생성
@@ -1034,8 +1036,8 @@ void CSceneMgr::InitOtherClinet(int m_id)
 	pObject->Transform()->SetLocalRot(Vec3(0.f, 90.f, 0.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH, L"Player1");
-	pObject->Collider2D()->SetBB(BoundingBox(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingBoxExtents()));
-	pObject->Collider2D()->SetBS(BoundingSphere(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingSphereRadius() / 2.f));
+	//pObject->Collider2D()->SetBB(BoundingBox(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingBoxExtents()));
+	//pObject->Collider2D()->SetBS(BoundingSphere(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingSphereRadius() / 2.f));
 
 	// 플레이어 스크립트 붙여주기.
 	pObject->AddComponent(new CPlayerScript);

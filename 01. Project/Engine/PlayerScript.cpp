@@ -40,81 +40,87 @@ void CPlayerScript::update()
 
 	//Vec3 vPos = Transform()->GetLocalPos();
 	//Vec3 vRot = Transform()->GetLocalRot();
-
-	if (KEY_HOLD(KEY_TYPE::KEY_W))
-	{
-		WorldDir = playerTrans->GetWorldDir(DIR_TYPE::UP);
-		localPos += WorldDir * m_fSpeed * DT;
-
-		system_clock::time_point start = system_clock::now();
-
-		g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
-
-		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+	if (m_isMain) {
+		if (KEY_HOLD(KEY_TYPE::KEY_W))
 		{
+			WorldDir = playerTrans->GetWorldDir(DIR_TYPE::UP);
 			localPos += WorldDir * m_fSpeed * DT;
-			player->SetPlayerAnimation(2);
 
+			system_clock::time_point start = system_clock::now();
+
+			g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+
+			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+			{
+				localPos += WorldDir * m_fSpeed * DT;
+				player->SetPlayerAnimation(2);
+
+			}
+			else player->SetPlayerAnimation(1);
 		}
-		else player->SetPlayerAnimation(1);
-	}
 
-	else if (KEY_HOLD(KEY_TYPE::KEY_S))
-	{
-		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::UP);
-		localPos += WorldDir * m_fSpeed * DT;
-
-
-		system_clock::time_point start = system_clock::now();
-
-		g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
-		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+		else if (KEY_HOLD(KEY_TYPE::KEY_S))
 		{
+			WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::UP);
 			localPos += WorldDir * m_fSpeed * DT;
-			player->SetPlayerAnimation(2);
+
+
+			system_clock::time_point start = system_clock::now();
+
+			g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+			{
+				localPos += WorldDir * m_fSpeed * DT;
+				player->SetPlayerAnimation(2);
+			}
+			else player->SetPlayerAnimation(1);
 		}
-		else player->SetPlayerAnimation(1);
-	}
 
-	else if (KEY_HOLD(KEY_TYPE::KEY_A))
-	{	
-		WorldDir = playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
-		localPos += WorldDir * m_fSpeed * DT;
-
-		system_clock::time_point start = system_clock::now();
-
-		g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
-
-		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+		else if (KEY_HOLD(KEY_TYPE::KEY_A))
 		{
+			WorldDir = playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
 			localPos += WorldDir * m_fSpeed * DT;
-			player->SetPlayerAnimation(2);
+
+			system_clock::time_point start = system_clock::now();
+
+			g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+
+			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+			{
+				localPos += WorldDir * m_fSpeed * DT;
+				player->SetPlayerAnimation(2);
+			}
+			else player->SetPlayerAnimation(1);
 		}
-		else player->SetPlayerAnimation(1);
-	}
 
-	else if (KEY_HOLD(KEY_TYPE::KEY_D))
-	{
-		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
-		localPos += WorldDir * m_fSpeed * DT;
-
-		system_clock::time_point start = system_clock::now();
-
-		g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
-		
-		
-		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+		else if (KEY_HOLD(KEY_TYPE::KEY_D))
 		{
+			WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
 			localPos += WorldDir * m_fSpeed * DT;
-			player->SetPlayerAnimation(2);
-		}
-		else player->SetPlayerAnimation(1);
-	}
-	else
-	{
-		player->SetPlayerAnimation(0);
-	}
 
+			system_clock::time_point start = system_clock::now();
+
+			g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+
+
+			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+			{
+				localPos += WorldDir * m_fSpeed * DT;
+				player->SetPlayerAnimation(2);
+			}
+			else player->SetPlayerAnimation(1);
+		}
+		else
+		{
+			player->SetPlayerAnimation(0);
+		}
+
+		if ((KEY_AWAY(KEY_TYPE::KEY_W) || KEY_AWAY(KEY_TYPE::KEY_A) || KEY_AWAY(KEY_TYPE::KEY_S) || KEY_AWAY(KEY_TYPE::KEY_D)))
+		{
+			cout << "KET_AWAY" << endl;
+			g_net.Send_Stop_Packet(false, g_myid);
+		}
+	}
 	if (KEY_HOLD(KEY_TYPE::KEY_LBTN))
 	{
 		vRot.y += vDrag.x * DT * 0.5f;
@@ -174,6 +180,14 @@ void CPlayerScript::SetPlayerAnimation(int other_id, int i)
 	GameObject.find(other_id)->second->Animator3D()->SetBones(m_pAniData[i]->GetBones());
 	GameObject.find(other_id)->second->Animator3D()->SetAnimClip(m_pAniData[i]->GetAnimClip());
 	GameObject.find(other_id)->second->MeshRender()->SetMesh(m_pAniData[i]);
+}
+
+void CPlayerScript::SetOtherMovePacket(sc_packet_move* p, const float& rtt)
+{
+	m_movePacketTemp = new sc_packet_move;
+
+	m_movePacketTemp = p;
+	//m_fRTT = rtt;
 }
 
 
