@@ -26,7 +26,7 @@ CCollider2D::CCollider2D()
 	m_pColMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Collider2DMtrl_0");
 	SetColliderType(m_eType);
 
-	//m_bBB = BoundingBox(XMFLOAT3(0.f, 0.f, 0.f), XMFLOAT3(1.f, 1.f, 1.f));
+	m_bBB = BoundingBox(XMFLOAT3(0.f, 0.f, 0.f), XMFLOAT3(1.f, 1.f, 1.f));
 	//m_bBS = BoundingSphere(XMFLOAT3(0.f, 0.f, 0.f), 1.f);
 }
 
@@ -72,18 +72,7 @@ void CCollider2D::finalupdate()
 	m_matColWorld = matScale * matTranslation;
 	m_matColWorld *= Transform()->GetWorldMat();
 
-	//m_bBB.Center = Transform()->GetWorldPos();
-
-	//m_bBS.Center = Transform()->GetWorldPos();
-	//m_bBS.Center.y = Transform()->GetWorldPos().y + m_bBS.Radius;
-
-	//if (GetObj()->GetScript<CPlayerScript>() != nullptr && GetObj()->GetScript<CPlayerScript>()->GetIsHide())
-	//	m_bBS.Center.y += 2000.f;
-
-	//if (m_eType == COLLIDER2D_TYPE::RANGE) {
-	//	m_bBS.Center = Transform()->GetWorldPos();
-	//	m_bBS.Center.y = Transform()->GetWorldPos().y;// +m_bSp.Radius;
-	//}
+	m_bBB.Center = Transform()->GetWorldPos();
 }
 
 void CCollider2D::render()

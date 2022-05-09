@@ -16,7 +16,7 @@ private:
 	float				m_fSpeed = PLAYER_SPEED;
 	bool				m_bAttack;
 
-	vector<float>		m_vecAniClipTime;
+	float				m_vecAniClipTime[5]{};
 	int					m_iCulidx;
 
 public:

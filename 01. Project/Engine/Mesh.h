@@ -57,6 +57,8 @@ public:
 	UINT GetBoneCount() { return (UINT)m_vecBones.size(); }
 	bool IsAnimMesh() { return !m_vecAnimClip.empty(); }
 
+	const tMTBone* GetBone(int _idx) { return &m_vecBones[_idx]; }
+
 public:	
 	virtual void Load(const wstring& _strFullPath);
 	virtual void Save(const wstring& _strPath/*상대 경로*/);

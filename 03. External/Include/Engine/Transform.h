@@ -15,8 +15,13 @@ private:
 
 	Matrix		m_matWorld;
 	Matrix		m_matWorldInv;
+	Vec4		m_vQuaternion;
+
 
 public:
+	const Vec4 GetQuaternion()const { return m_vQuaternion; }
+	void SetQuaternion(const Vec4& _vQuaternion) { m_vQuaternion = _vQuaternion; }
+
 	const Vec3& GetLocalPos() { return m_vLocalPos; }
 	Vec3 GetWorldPos() { return m_matWorld.Translation(); }
 
