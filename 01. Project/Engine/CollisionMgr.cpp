@@ -446,7 +446,7 @@ bool CCollisionMgr::CollisionCube(CCollider2D* _pCollider1, CCollider2D* _pColli
 		XMMATRIX matCol3 = _pCollider1->GetColliderWorldMat();
 		XMMATRIX matCol4 = _pCollider2->GetColliderWorldMat();
 		XMMATRIX matCol5;
-		if (_pCollider1->GetObj()->GetName() == L"Player") {
+		if (_pCollider1->GetObj()->GetName() == L"Player1") {
 			XMMATRIX matColPR = {
 				{1,0,0,0},
 				{0,cos(XM_PI/2),-sin(XM_PI/2),0},
