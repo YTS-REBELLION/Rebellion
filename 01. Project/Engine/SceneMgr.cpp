@@ -380,8 +380,8 @@ void CSceneMgr::init()
 	pPotalObject->AddComponent(new CCollider2D);
 
 	pPotalObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pPotalObject->Collider2D()->SetOffsetPos(Vec3(0.f, 600.f, 0.f));
-	pPotalObject->Collider2D()->SetOffsetScale(Vec3(100.f, 600.f, 200.f));
+	pPotalObject->Collider2D()->SetOffsetPos(Vec3(0.f, 50.f, 30.f));
+	pPotalObject->Collider2D()->SetOffsetScale(Vec3(150.f, 100.f, 170.f));
 	m_pCurScene->FindLayer(L"Monster")->AddGameObject(pPotalObject);
 
 	// ====================
