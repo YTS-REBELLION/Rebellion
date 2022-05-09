@@ -26,7 +26,7 @@ OBJECT_TYPE CheckType(const short& id)
 
 
 CNetwork g_net;
-const char* SERVER_IP = "127.0.0.1";
+const char* SERVER_IP = "192.168.0.36";
 OBJ GameObject;
 
 SOCKET g_socket;
@@ -320,12 +320,8 @@ void CNetwork::ProcessPacket(char* ptr)
 		if (other_id == g_myid)
 		{
 			cout << "other_id == g_myid" << endl;
-			GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(g_myid, 0);
 			GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 0);
 
-			GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(g_myid, 0);
-
-			GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 0);
 
 			GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetOtherMovePacket__IsMoving(packet->isMoving);
 
@@ -336,13 +332,10 @@ void CNetwork::ProcessPacket(char* ptr)
 			cout << "other_id != g_myid" << endl;
 
 
-			GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(g_myid, 0);
-			GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 0);
 
 			GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(g_myid, 0);
 
-			GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 0);
-			GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetOtherMovePacket__IsMoving(packet->isMoving);
+			GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetOtherMovePacket__IsMoving(packet->isMoving);
 
 		}
 	}

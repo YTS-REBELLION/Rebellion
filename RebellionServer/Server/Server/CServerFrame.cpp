@@ -1039,7 +1039,8 @@ void CServerFrame::Do_stop(const short& id, const bool& isMoving)
     
     for (auto& ob : old_viewList)
     {
-        if (ob == id)continue;
+
+
 		cout << "서버 -> 클라 스탑 보낸다" << endl;
         _sender->Send_Stop_Packet(_objects[id].GetSocket(),id);
     }
