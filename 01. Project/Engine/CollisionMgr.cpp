@@ -448,15 +448,15 @@ bool CCollisionMgr::CollisionCube(CCollider2D* _pCollider1, CCollider2D* _pColli
 		XMMATRIX matCol5;
 		if (_pCollider1->GetObj()->GetName() == L"Player") {
 			XMMATRIX matColPR = {
-				//{1,0,0,0},
-				//{0,cos(XM_PI/2),-sin(XM_PI/2),0},
-				//{0,sin(XM_PI/2), cos(XM_PI/2),0},
-				//{0,0,0,1}
-
-				{cos(XM_PI / 2),-sin(XM_PI / 2),0,0},
-				{sin(XM_PI / 2),cos(XM_PI / 2),0,0},
-				{0,0,1,0},
+				{1,0,0,0},
+				{0,cos(XM_PI/2),-sin(XM_PI/2),0},
+				{0,sin(XM_PI/2), cos(XM_PI/2),0},
 				{0,0,0,1}
+
+				//{cos(XM_PI / 2),-sin(XM_PI / 2),0,0},
+				//{sin(XM_PI / 2),cos(XM_PI / 2),0,0},
+				//{0,0,1,0},
+				//{0,0,0,1}
 			};
 			matCol5 = matColPR * matCol3;
 		}

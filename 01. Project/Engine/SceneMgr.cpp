@@ -359,8 +359,8 @@ void CSceneMgr::init()
 	pPotalObject->AddComponent(new CCollider2D);
 
 	pPotalObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pPotalObject->Collider2D()->SetOffsetPos(Vec3(0.f, 600.f, 0.f));
-	pPotalObject->Collider2D()->SetOffsetScale(Vec3(100.f, 600.f, 200.f));
+	pPotalObject->Collider2D()->SetOffsetPos(Vec3(0.f, 50.f, 30.f));
+	pPotalObject->Collider2D()->SetOffsetScale(Vec3(150.f, 100.f, 170.f));
 	m_pCurScene->FindLayer(L"Monster")->AddGameObject(pPotalObject);
 
 	// ====================
@@ -381,24 +381,24 @@ void CSceneMgr::init()
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject, false);
 
 
-	CGameObject* MiroObject = nullptr;
+	//CGameObject* MiroObject = nullptr;
 
-	MiroObject = new CGameObject;
-	MiroObject->SetName(L"MIRO");
-	MiroObject->AddComponent(new CTransform);
-	MiroObject->AddComponent(new CMeshRender);
-	MiroObject->AddComponent(new CCollider2D);
-	// Transform 설정
-	MiroObject->Transform()->SetLocalPos(Vec3(500.f, 0.f, 0.f));
-	MiroObject->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
-	// MeshRender 설정
-	MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-	MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
+	//MiroObject = new CGameObject;
+	//MiroObject->SetName(L"MIRO");
+	//MiroObject->AddComponent(new CTransform);
+	//MiroObject->AddComponent(new CMeshRender);
+	//MiroObject->AddComponent(new CCollider2D);
+	//// Transform 설정
+	//MiroObject->Transform()->SetLocalPos(Vec3(500.f, 0.f, 0.f));
+	//MiroObject->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+	//// MeshRender 설정
+	//MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	//MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
 
-	MiroObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	MiroObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	MiroObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.0f, 1.f));
-	m_pCurScene->FindLayer(L"Monster")->AddGameObject(MiroObject);
+	//MiroObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	//MiroObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	//MiroObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.0f, 1.f));
+	//m_pCurScene->FindLayer(L"Monster")->AddGameObject(MiroObject);
 
  
 	//// ====================
