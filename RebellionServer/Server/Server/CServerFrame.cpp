@@ -266,9 +266,6 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		cs_packet_stop* packet = reinterpret_cast<cs_packet_stop*>(buf);
 		short id = packet->id;
 		
-		_objects[id].ClientLock();
-		_objects[id].SetIsMove(false);
-		_objects[id].ClientUnLock();
 		Do_stop(id, false);
 
 
@@ -1034,15 +1031,15 @@ void CServerFrame::Do_stop(const short& id, const bool& isMoving)
 
     unordered_set<int> old_viewList =_objects[id].GetViewList();
     
+
     _objects[id].SetIsMove(false);
 
     
     for (auto& ob : old_viewList)
     {
-
-
 		cout << "서버 -> 클라 스탑 보낸다" << endl;
-        _sender->Send_Stop_Packet(_objects[id].GetSocket(),id);
+		if (ob == id)continue;
+        _sender->Send_Stop_Packet(_objects[ob].GetSocket(),id);
     }
 
 }
@@ -1055,7 +1052,7 @@ void CServerFrame::EnterGame(int id, const char* name)
 	
 
 	_sender->SendLoginOkPacket(_objects[id].GetSocket(), _objects[id].GetID(),
-		0.f, 0.f, 0.f,
+		200.f, 0.f, 200.f,
 		_objects[id].GetDamage(), _objects[id].GetCurrentHp(),
 		_objects[id].GetMaxHp(), _objects[id].GetLevel(),
 		_objects[id].GetCurrentExp(), _objects[id].GetMaxExp());
@@ -1068,6 +1065,8 @@ void CServerFrame::EnterGame(int id, const char* name)
 		int i = cl.GetID();
 		if(id == i)continue;
 		if (true == IsNear(id, i)) {
+
+
 			/*if (ST_SLEEP == _objects[i]._status) {
 				ActivateNPC(i);
 			}*/

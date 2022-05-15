@@ -150,8 +150,12 @@ void CNetwork::ProcessPacket(char* ptr)
 		std::cout << "플레이어 경험치 : " << p->c_exp << " / " << p->m_exp << std::endl;
 		std::cout << "플레이어의 위치 x : " << p->x << ", z : " << p->z << endl;
 
+		g_myid = p->id;
+		m_pObj->Transform()->SetLocalPos(Vec3(p->x, p->y, p->z));
 
 		GameObject.emplace(g_myid, m_pObj);
+		GameObject.find(g_myid)->second->SetID(g_myid);
+
 		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetMain();
 
 		/*GameObject.emplace(g_myid, m_pObj);
@@ -187,8 +191,6 @@ void CNetwork::ProcessPacket(char* ptr)
 
 
 			Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Idle.mdat", L"MeshData\\Player_Idle.mdat");
-			//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Idle.fbx");
-			//pMeshData->Save(pMeshData->GetPath());
 
 			CGameObject* pObject = new CGameObject;
 			GameObject.emplace(id, pObject);
@@ -198,7 +200,7 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.find(id)->second = pMeshData->Instantiate();
 			GameObject.find(id)->second->SetName(L"Player1");
 			GameObject.find(id)->second->FrustumCheck(false);
-			GameObject.find(id)->second->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+			GameObject.find(id)->second->Transform()->SetLocalPos(Vec3(packet->x, packet->y, packet->z));
 			GameObject.find(id)->second->Transform()->SetLocalScale(Vec3(0.08f, 0.08f, 0.08f));
 			GameObject.find(id)->second->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 			GameObject.find(id)->second->AddComponent(new CCollider2D);
@@ -211,37 +213,37 @@ void CNetwork::ProcessPacket(char* ptr)
 			// 플레이어 스크립트 붙여주기.
 			GameObject.find(id)->second->AddComponent(new CPlayerScript);
 
-			CPlayerScript* PlayerScript = GameObject.find(id)->second->GetScript<CPlayerScript>();
-			// 플레이어 애니메이션
-			PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 0
-			SetAniData(pMeshData->GetMesh());
+			//CPlayerScript* PlayerScript = GameObject.find(id)->second->GetScript<CPlayerScript>();
+			//// 플레이어 애니메이션
+			//PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 0
+			//SetAniData(pMeshData->GetMesh());
 
-			//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Walk.fbx");
-			//pMeshData->Save(pMeshData->GetPath());
-			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Walk.mdat", L"MeshData\\Player_Walk.mdat");
-			PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
-			SetAniData(pMeshData->GetMesh());
+			////pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Walk.fbx");
+			////pMeshData->Save(pMeshData->GetPath());
+			//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Walk.mdat", L"MeshData\\Player_Walk.mdat");
+			//PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
+			//SetAniData(pMeshData->GetMesh());
 
-			//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Run.fbx");
-			//pMeshData->Save(pMeshData->GetPath());
-			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Run.mdat", L"MeshData\\Player_Run.mdat");
-			PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 2
-			SetAniData(pMeshData->GetMesh());
+			////pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Run.fbx");
+			////pMeshData->Save(pMeshData->GetPath());
+			//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Run.mdat", L"MeshData\\Player_Run.mdat");
+			//PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 2
+			//SetAniData(pMeshData->GetMesh());
 
-			//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Attack.fbx");
-			//pMeshData->Save(pMeshData->GetPath());
-			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Attack.mdat", L"MeshData\\Player_Attack.mdat");
-			PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
-			SetAniData(pMeshData->GetMesh());
+			////pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Attack.fbx");
+			////pMeshData->Save(pMeshData->GetPath());
+			//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Attack.mdat", L"MeshData\\Player_Attack.mdat");
+			//PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
+			//SetAniData(pMeshData->GetMesh());
 
 
 			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", GameObject.find(id)->second, false);
 
 
-			/*for (auto& data : m_aniData)
+			for (auto& data : m_aniData)
 			{
 				GameObject.find(id)->second->GetScript<CPlayerScript>()->GetPlayerAnimation(data);
-			}*/
+			}
 			// 
 			// 플레이어 스크립트 붙여주기.
 			//pObject->AddComponent(new CPlayerScript);
@@ -320,20 +322,20 @@ void CNetwork::ProcessPacket(char* ptr)
 		if (other_id == g_myid)
 		{
 			cout << "other_id == g_myid" << endl;
-			GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 0);
+			// 혹시나 해서 하는 SetPlayerAnimation g_myid가 맞음
+			GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(g_myid, 0);
 
 
-			GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetOtherMovePacket__IsMoving(packet->isMoving);
+			GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetOtherMovePacket__IsMoving(packet->isMoving);
 
 
 		}
 		else
 		{
 			cout << "other_id != g_myid" << endl;
+			GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 0);
 
 
-
-			GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(g_myid, 0);
 
 			GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetOtherMovePacket__IsMoving(packet->isMoving);
 
