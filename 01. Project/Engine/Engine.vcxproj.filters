@@ -62,6 +62,9 @@
     <Filter Include="04. GameObject\Script\01.AssemblyPoint">
       <UniqueIdentifier>{73003f8c-0d9d-4945-b5d2-6276ccbf79c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. GameObject\Script\02.Miro">
+      <UniqueIdentifier>{b426a62f-1808-4428-826c-ebe6c3f7e450}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -245,6 +248,15 @@
     <ClInclude Include="StructuredBuffer.h">
       <Filter>03. Device</Filter>
     </ClInclude>
+    <ClInclude Include="Castle.h">
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="NpcMon.h">
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="Miro.h">
+      <Filter>04. GameObject\Script\02.Miro</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -415,6 +427,15 @@
     </ClCompile>
     <ClCompile Include="StructuredBuffer.cpp">
       <Filter>03. Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Castle.cpp">
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="NpcMon.cpp">
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="Miro.cpp">
+      <Filter>04. GameObject\Script\02.Miro</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
