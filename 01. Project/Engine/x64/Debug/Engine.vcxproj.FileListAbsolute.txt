@@ -1,1 +1,3 @@
 D:\Git\d\03. External\Library\Engine\trail.cso
+D:\Git\d\03. External\Library\Engine\animation.cso
+D:\Git\d\03. External\Library\Engine\compute.cso
