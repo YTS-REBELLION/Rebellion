@@ -175,7 +175,6 @@ void CNetwork::ProcessPacket(char* ptr)
 
 	}
 	case SC_PACKET_PUT_OBJECT: {
-		cout << "enter 받았다\n";
 		sc_packet_put_object* packet = reinterpret_cast<sc_packet_put_object*>(ptr);
 		int id = packet->id;
 
@@ -185,9 +184,6 @@ void CNetwork::ProcessPacket(char* ptr)
 		//else {
 		if (CheckType(id) == OBJECT_TYPE::PLAYER) {
 			// 다른 사람꺼
-			cout << "다른 사람 입장 " << endl;
-			cout << "다른 사람 ID : " << id << endl;
-			cout << "다른 사람 위치 x : " << packet->x << ", z : " << packet->z << endl;
 
 
 			Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Idle.mdat", L"MeshData\\Player_Idle.mdat");
@@ -267,7 +263,6 @@ void CNetwork::ProcessPacket(char* ptr)
 		break;
 
 	}
-							 //case 입장 패킷:
 	case SC_PACKET_LEAVE_OBJECT: {
 		break;
 
@@ -277,23 +272,17 @@ void CNetwork::ProcessPacket(char* ptr)
 		sc_packet_move* packet = reinterpret_cast<sc_packet_move*>(ptr);
 		int other_id = packet->id;
 
-		cout << "other_id : " << other_id << ", g_myid : " << g_myid << endl;
 
 		if (other_id == g_myid)
 		{
-			cout << "SC_PACKET_MOVE 나의 좌표 : " << endl;
 			if (packet->status)
 				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 1);
 			GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 		}
 		else
 		{
-			//추가
-			/*if (0 != GameObject.count(other_id))
-			{*/
 			if (CheckType(other_id) == OBJECT_TYPE::PLAYER)
 			{
-				cout << "다른플레이어" << endl;
 				GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetBisFrist(true);
 				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetOtherMovePacket__IsMoving(true);
@@ -308,20 +297,17 @@ void CNetwork::ProcessPacket(char* ptr)
 			else if (CheckType(other_id) == OBJECT_TYPE::MONSTER)
 			{
 			}
-			//}
 		}
 		//break;
 		break;
 	}
 	case SC_PACKET_STOP: {
 
-		cout << "SC_PACKET_STOP" << endl;
 		sc_packet_stop* packet = reinterpret_cast<sc_packet_stop*>(ptr);
 		int other_id = packet->id;
 
 		if (other_id == g_myid)
 		{
-			cout << "other_id == g_myid" << endl;
 			// 혹시나 해서 하는 SetPlayerAnimation g_myid가 맞음
 			GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(g_myid, 0);
 
@@ -332,7 +318,6 @@ void CNetwork::ProcessPacket(char* ptr)
 		}
 		else
 		{
-			cout << "other_id != g_myid" << endl;
 			GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 0);
 
 

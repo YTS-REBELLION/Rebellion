@@ -120,38 +120,42 @@ void CPlayerScript::update()
 			cout << "KET_AWAY" << endl;
 			g_net.Send_Stop_Packet(false, g_myid);
 		}
-	}
-	if (KEY_HOLD(KEY_TYPE::KEY_LBTN))
-	{
-		vRot.y += vDrag.x * DT * 0.5f;
-		player->Transform()->SetLocalRot(vRot);
-	}
 
-	if (KEY_TAB(KEY_TYPE::KEY_SPACE))
-	{
-		GetObj()->Animator3D()->SetClipTime(0, 0.f);
-		SetAttack();
-	}
-	if (GetAttack() && m_vecAniClipTime[0] < Animator3D()->GetAnimClip(0).dTimeLength) {
-		m_vecAniClipTime[0] += DT;
-
-		cout << m_vecAniClipTime[0] << endl;
-		GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 20.f, 70.f));
-		GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 1150.f, 1700.f));
-
-
-		SetPlayerAnimation(3);
-
-		if (m_vecAniClipTime[0] > Animator3D()->GetAnimClip(0).dTimeLength)
+		if (KEY_HOLD(KEY_TYPE::KEY_LBTN))
 		{
-			m_vecAniClipTime[0] = 0.f;
-			GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
-			GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 850.f, 1700.f));
-
-			SetAttack();
+			vRot.y += vDrag.x * DT * 0.5f;
+			player->Transform()->SetLocalRot(vRot);
 		}
-	}
 
+		if (KEY_TAB(KEY_TYPE::KEY_SPACE))
+		{
+			//player->GetObj()->Animator3D()->SetClipTime(0, 0.f);
+			player->Animator3D()->SetClipTime(0, 0.f);
+
+			player->SetAttack();
+		}
+		if (player->GetAttack() && m_vecAniClipTime[0] < GetObj()->Animator3D()->GetAnimClip(0).dTimeLength) {
+			m_vecAniClipTime[0] += DT;
+
+			cout << m_vecAniClipTime[0] << endl;
+			GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 20.f, 70.f));
+			GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 1150.f, 1700.f));
+
+
+			player->SetPlayerAnimation(3);
+
+			if (m_vecAniClipTime[0] > player->Animator3D()->GetAnimClip(0).dTimeLength)
+			{
+				m_vecAniClipTime[0] = 0.f;
+				GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
+				GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 850.f, 1700.f));
+
+				player->SetAttack();
+			}
+		}
+
+	}
+	
 	if (KEY_HOLD(KEY_TYPE::KEY_ENTER))
 	{
 		localPos.y = 0.f;
