@@ -106,7 +106,10 @@ void CPlayerScript::update()
 	Transform()->SetLocalPos(localPos);
 
 
-	//Transform()->SetLocalRot(vRot);
+
+	
+
+
 }
 
 void CPlayerScript::SetPlayerAnimation(const int i)

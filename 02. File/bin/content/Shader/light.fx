@@ -160,4 +160,44 @@ float4 PS_MergeLight(VS_OUTPUT _in) : SV_Target
     return (vColor * vLightPow) + vSpec;
 }
 
+
+
+
+// =================
+// Shadow Map Shader
+// =================
+struct VS_ShadowIn
+{
+    float3 vPos : POSITION;
+    float4 vWeights : BLENDWEIGHT;
+    float4 vIndices : BLENDINDICES;
+};
+
+struct VS_ShadowOut
+{
+    float4 vPos : SV_Position;
+    float4 vProj : POSITION;
+};
+
+VS_ShadowOut VS_ShadowMap(VS_ShadowIn _in)
+{
+    VS_ShadowOut output = (VS_ShadowOut)0.f;
+
+    if (g_int_0)
+    {
+        Skinning(_in.vPos, _in.vWeights, _in.vIndices, 0);
+    }
+
+    output.vPos = mul(float4(_in.vPos, 1.f), g_matWVP * 2);
+    output.vProj = output.vPos;
+
+    return output;
+}
+
+float4 PS_ShadowMap(VS_ShadowOut _input) : SV_Target
+{
+    float depth = _input.vPos.z;
+
+    return float4(_input.vProj.z / _input.vProj.w, 0.f, 0.f, 0.f);
+}
 #endif

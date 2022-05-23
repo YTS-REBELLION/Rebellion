@@ -210,6 +210,9 @@ void CSceneMgr::init()
 	CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
 	m_pCurScene->AddGameObject(L"Player", pObject, false);
 
+	pObject->MeshRender()->SetDynamicShadow(true);
+
+
 	// 플레이어 애니메이션
 	PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 0
 
@@ -426,10 +429,13 @@ void CSceneMgr::init()
 	GuardHouseObject->Transform()->SetLocalPos(Vec3(1000.f, 360.f, 2000.f));
 	GuardHouseObject->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
 
+	GuardHouseObject->MeshRender()->SetDynamicShadow(true);
+
 	//Script 설정
 	GuardHouseObject->AddComponent(new CGuardHouse);
 	// AddGameObject
 	m_pCurScene->AddGameObject(L"Default", GuardHouseObject, false);
+
 
 	// ===========================================================================================
 	CGameObject* GateHouseObject = nullptr;

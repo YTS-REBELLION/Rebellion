@@ -220,7 +220,13 @@ void CResMgr::CreateDefaultShader()
 
 	AddRes(L"TrailShader", pShader);
 
-
+	// ShadowMap Shader
+	pShader = new CShader;
+	pShader->CreateVertexShader(L"Shader\\light.fx", "VS_ShadowMap", "vs_5_0");
+	pShader->CreatePixelShader(L"Shader\\light.fx", "PS_ShadowMap", "ps_5_0");
+	pShader->SetDepthStencilType(DEPTH_STENCIL_TYPE::LESS);
+	pShader->Create(SHADER_POV::SHADOW);
+	AddRes(L"ShadowMapShader", pShader);
 
 	
 
@@ -351,6 +357,15 @@ void CResMgr::CreateDefaultMaterial()
 	//pMtrl->SetShader(FindRes<CShader>(L"2DShadowShader"));
 	//pMtrl->SetPath(L"Material\\2DShadowMtrl.mtrl");
 	//AddRes(L"Material\\2DShadowMtrl.mtrl", pMtrl);
+
+
+
+	  // ShadowMap Material
+	pMtrl = new CMaterial;
+	pMtrl->DisableFileSave();
+	pMtrl->SetShader(FindRes<CShader>(L"ShadowMapShader"));
+	AddRes(L"ShadowMapMtrl", pMtrl);
+
 }
 
 
