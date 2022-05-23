@@ -327,6 +327,12 @@ void CNetwork::ProcessPacket(char* ptr)
 		}
 	}
 	break;
+	case SC_PACKET_ROTATE: {
+		sc_packet_rotate* packet = reinterpret_cast<sc_packet_rotate*>(ptr);
+
+		GameObject.find(packet->id)->second->Transform()->SetLocalRot(packet->rotate);
+		break;
+	}
 	default:
 		printf("Unknown PACKET type [%d]\n", ptr[1]);
 	}
@@ -474,5 +480,15 @@ void CNetwork::Send_Stop_Packet(const bool& isMoving, const short& id)
 	Send_Packet(&packet);
 
 
+}
+
+void CNetwork::Send_Rotate_Packet(const int& id, const Vec3& rotate)
+{
+	cs_packet_rotate packet;
+	packet.type = CS_PACKET_ROTATE;
+	packet.size = sizeof(packet);
+	packet.id = id;
+	packet.rotate = rotate;
+	Send_Packet(&packet);
 }
 

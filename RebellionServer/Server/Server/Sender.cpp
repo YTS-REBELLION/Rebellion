@@ -238,6 +238,18 @@ void CSender::SendDummyPacket(SOCKET s, int id, unsigned time)
 	SendPacket(s, &packet);
 }
 
+void CSender::SendRotatePacket(SOCKET s, int mover, Vec3 rotate)
+{
+	sc_packet_rotate packet;
+	packet.size = sizeof(packet);
+	packet.type = SC_PACKET_ROTATE;
+	packet.id = mover;
+	packet.rotate = rotate;
+
+	SendPacket(s, &packet);
+
+}
+
 
 
 //private function

@@ -51,6 +51,7 @@ public:
 		const float& rotate, const system_clock::time_point& startTime,
 		const float& delta);
 	void Send_Stop_Packet(const bool& isMoving, const short& id);
+	void Send_Rotate_Packet(const int& id, const Vec3& rotate);
 	void SetAnimation(int id, int i);
 public:
 	void err_quit(const char* msg);

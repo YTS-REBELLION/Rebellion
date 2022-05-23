@@ -124,6 +124,7 @@ void CPlayerScript::update()
 		if (KEY_HOLD(KEY_TYPE::KEY_LBTN))
 		{
 			vRot.y += vDrag.x * DT * 0.5f;
+			g_net.Send_Rotate_Packet(g_myid, vRot);
 			player->Transform()->SetLocalRot(vRot);
 		}
 

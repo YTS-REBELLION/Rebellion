@@ -26,6 +26,8 @@ const char  CS_PACKET_DEFENCE = 8;
 const char  CS_PACKET_QUEST_DONE = 9;
 const char	CS_PACKET_MOVE = 10;
 const char	CS_PACKET_STOP = 11;
+const char	CS_PACKET_ROTATE = 12;
+
 
 const char  SC_PACKET_LOGIN_OK = 1;
 const char  SC_PACKET_LOGIN_FAIL = 2;
@@ -37,12 +39,13 @@ const char  SC_PACKET_CHAT = 7;
 const char	SC_PACKET_MOVE = 8;
 const char	SC_PACKET_STOP = 9;
 
-const char SC_PACKET_NPC_ATTACK = 8;
-const char SC_PACKET_PLAYER_ATTACK = 9;
-const char SC_PACKET_HP_CHANGE = 10;
-const char SC_PACKET_PLAYER_DIE = 11;
-const char SC_PACKET_DEFENCE = 12;
-const char SC_PACKET_RETURN = 13;
+const char	SC_PACKET_NPC_ATTACK = 8;
+const char	SC_PACKET_PLAYER_ATTACK = 9;
+const char	SC_PACKET_HP_CHANGE = 10;
+const char	SC_PACKET_PLAYER_DIE = 11;
+const char	SC_PACKET_DEFENCE = 12;
+const char	SC_PACKET_RETURN = 13;
+const char	SC_PACKET_ROTATE = 14;
 
 constexpr int MAX_PW_LEN = 12;
 constexpr int MAX_ID_LEN = 50;
@@ -193,6 +196,12 @@ struct sc_packet_defence {
 	bool kind;
 	int id;
 };
+struct sc_packet_rotate {
+	char size;
+	char type;
+	int id;
+	Vec3 rotate;
+};
 //---------------------------------------
 
 
@@ -262,6 +271,12 @@ struct cs_packet_stop {
 	char type;
 	short id;
 	bool isMoving;
+};
+struct cs_packet_rotate {
+	char size;
+	char type;
+	int id;
+	Vec3 rotate;
 };
 
 #pragma pack(pop)
