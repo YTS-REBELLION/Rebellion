@@ -241,8 +241,9 @@ void CSceneMgr::init()
 
 	// Sword °´Ã¼
 	CGameObject* pSwordObject = new CGameObject;
-	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
-
+	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
+	//pMeshData->Save(pMeshData->GetPath());
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\asdq.mdat", L"MeshData\\asdq.mdat");
 	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
 
 	pSwordObject = pMeshData->Instantiate();
