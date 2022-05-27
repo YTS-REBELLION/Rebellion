@@ -12,6 +12,7 @@
 //#include "Collider.h"     
 
 #include "PlayerScript.h"
+#include "SwordScript.h"
 #include "ToolCamScript.h"
 #include "MonsterScript.h"
 
@@ -247,7 +248,31 @@ void CNetwork::ProcessPacket(char* ptr)
 			/*GameObject.find(id)->second->AddComponent(new CPlayerScript);
 			GameObject.find(id)->second->GetScript<CPlayerScript>();*/
 
+			CGameObject* pSwordObject = new CGameObject;
+			Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\asdq.mdat", L"MeshData\\asdq.mdat");
+			Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
 
+			pSwordObject = pSwordMeshData->Instantiate();
+			pSwordObject->SetName(L"Player_Sword");
+			pSwordObject->FrustumCheck(false);
+			pSwordObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+			pSwordObject->Transform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+			pSwordObject->Transform()->SetLocalRot(Vec3(0.f, XMConvertToRadians(-90.f), XMConvertToRadians(-90.f)));
+			pSwordObject->AddComponent(new CCollider2D);
+			pSwordObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+			pSwordObject->Collider2D()->SetOffsetPos(Vec3(0.f, 50.f, 0.f));
+			pSwordObject->Collider2D()->SetOffsetScale(Vec3(10.f, 140.f, 5.f));
+
+			Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
+			pSwordObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, SwordObject.GetPointer());
+
+			pSwordObject->AddComponent(new CSwordScript);
+			CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
+			pSwordObject->GetScript<CSwordScript>()->SetTarget(GameObject.find(id)->second);
+			pSwordObject->GetScript<CSwordScript>()->SetBoneIdx(36);
+
+			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pSwordObject, false);
+			GameObject.find(id)->second->AddChild(pSwordObject);
 
 
 
