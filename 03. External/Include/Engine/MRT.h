@@ -10,8 +10,8 @@ struct tRT
 	Vec4		  vClearColor;
 };
 
-class CMRT :
-	public CEntity
+class CMRT
+	: public CEntity
 {
 private:
 	tRT								m_arrRT[8];
@@ -21,6 +21,9 @@ private:
 
 	D3D12_RESOURCE_BARRIER			m_TargetToRes[8];
 	D3D12_RESOURCE_BARRIER			m_ResToTarget[8];
+
+	D3D12_VIEWPORT					m_tVP;
+	D3D12_RECT						m_tScissorRect;
 
 public:
 	void Create(UINT _iCount, tRT* _arrRT, Ptr<CTexture> _pDSTex);
@@ -33,6 +36,9 @@ public:
 
 	Ptr<CTexture> GetRTTex(UINT _iIdx) { return m_arrRT[_iIdx].pTarget; }
 	Ptr<CTexture> GetDSTex() { return m_pDSTex; }
+
+public:
+	D3D12_VIEWPORT GetView() { return m_tVP; }
 
 public:
 	CMRT();

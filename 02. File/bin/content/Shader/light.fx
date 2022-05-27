@@ -47,6 +47,9 @@ PS_OUTPUT PS_DirLight(VS_OUTPUT _in)
 {
     PS_OUTPUT output = (PS_OUTPUT) 0.f;       
     
+    float fFactor = 0.0f;
+    float fDepth = 0.0f;
+
     float3 vViewPos = g_tex_1.Sample(g_sam_0, _in.vUV).xyz;
     if (vViewPos.z <= 1.f)
     {       
@@ -57,8 +60,41 @@ PS_OUTPUT PS_DirLight(VS_OUTPUT _in)
     
     tLightColor tCurCol = CalLight(g_int_0, vViewNormal, vViewPos);
     
+    // 그림자 판정    
+  // 빛이 없으면 그림자 처리를 하지 않는다.
+    if (dot(tCurCol.vDiff, tCurCol.vDiff) != 0.f)
+    {
+        float4 vWorldPos = mul(float4(vViewPos.xyz, 1.f), g_matViewInv); // 메인카메라 view 역행렬을 곱해서 월드좌표를 알아낸다.
+        float4 vShadowProj = mul(vWorldPos, g_mat_0); // 광원 시점으로 투영시킨 좌표 구하기
+        fDepth = vShadowProj.z / vShadowProj.w; // w 로 나눠서 실제 투영좌표 z 값을 구한다.(올바르게 비교하기 위해서)
+
+        // 계산된 투영좌표를 UV 좌표로 변경해서 ShadowMap 에 기록된 깊이값을 꺼내온다.
+        float2 vShadowUV = float2((vShadowProj.x / vShadowProj.w) * 0.5f + 0.5f
+            , (vShadowProj.y / vShadowProj.w) * -0.5f + 0.5f);
+
+        if (0.01f < vShadowUV.x && vShadowUV.x < 0.99f
+            && 0.01f < vShadowUV.y && vShadowUV.y < 0.99f)
+        {
+            float fShadowDepth = g_tex_3.Sample(g_sam_0, vShadowUV).r;
+            fFactor = g_tex_3.SampleCmpLevelZero(g_sam_2, vShadowUV, fDepth).r;
+            // 그림자인 경우 빛을 약화시킨다.
+            if (fShadowDepth != 0.f && (fDepth > fShadowDepth + 0.00001f))
+            {
+                fFactor = saturate(fFactor + fDepth);
+                tCurCol.vDiff *= 0.1f;//fFactor;
+                tCurCol.vSpec = (float4) 0.f;
+            }
+        }
+    }
+
+    fFactor = saturate(fFactor + fDepth);
     output.vDiffuse = tCurCol.vDiff + tCurCol.vAmb;
     output.vSpecular = tCurCol.vSpec;
+
+    /*output.vDiffuse *= fFactor;
+    output.vSpecular *= fFactor;*/
+
+    return output;
     
     return output;
 }

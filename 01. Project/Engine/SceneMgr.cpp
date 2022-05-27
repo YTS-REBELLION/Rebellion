@@ -169,29 +169,13 @@ void CSceneMgr::init()
 
 	//CreateTargetUI();
 
-	// ====================
-	// 3D Light Object 추가
-	// ====================
-	pObject = new CGameObject;
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CLight3D);	   	
-	
-	pObject->Light3D()->SetLightPos(Vec3(0.f, 500.f, 0.f));
-	pObject->Light3D()->SetLightType(LIGHT_TYPE::DIR);
-	pObject->Light3D()->SetDiffuseColor(Vec3(1.f, 1.f, 1.f));
-	pObject->Light3D()->SetSpecular(Vec3(0.1f, 0.1f, 0.1f));
-	pObject->Light3D()->SetAmbient(Vec3(0.3f, 0.3f, 0.3f));
-	pObject->Light3D()->SetLightDir(Vec3(-1.f, -1.f, -1.f));
-	pObject->Light3D()->SetLightRange(1000.f);
-	   
-	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);
 
 	// =============
 	// FBX 파일 로드
 	// =============
 	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\PlayerMale@nIdle1.fbx");
 	//pMeshData->Save(pMeshData->GetPath());
-	
+
 	pObject = pMeshData->Instantiate();
 	pObject->SetName(L"Player1");
 	pObject->FrustumCheck(false);
@@ -238,6 +222,8 @@ void CSceneMgr::init()
 	//CPlayerScript* Dmy_PlayerScript = DmypObject->GetScript<CPlayerScript>();
 	//m_pCurScene->AddGameObject(L"Player", DmypObject, false);
 
+
+
 	// ==================
 	// Camera Object 생성
 	// ==================
@@ -256,6 +242,29 @@ void CSceneMgr::init()
 	CToolCamScript* PlayerCamScript = pMainCam->GetScript<CToolCamScript>();
 	PlayerCamScript->SetCameraToPlayer(pObject);
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pMainCam);
+
+
+
+	// ====================
+	// 3D Light Object 추가
+	// ====================
+	pObject = new CGameObject;
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CLight3D);	   	
+	
+	pObject->Light3D()->SetLightPos(Vec3(0.f, 1000.f, 1000.f));
+	pObject->Light3D()->SetLightType(LIGHT_TYPE::DIR);
+	pObject->Light3D()->SetDiffuseColor(Vec3(1.f, 1.f, 1.f));
+	pObject->Light3D()->SetSpecular(Vec3(0.1f, 0.1f, 0.1f));
+	pObject->Light3D()->SetAmbient(Vec3(0.3f, 0.3f, 0.3f));
+	pObject->Light3D()->SetLightDir(Vec3(-1.f, -1.f, -1.f));
+	pObject->Light3D()->SetLightRange(1000.f);
+	pObject->Transform()->SetLocalPos(Vec3(5000.f, 1000.f, 1000.f));
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);
+
+	
+
+	
 
 	// ==================
 	// Map 오브젝트 생성
@@ -331,6 +340,7 @@ void CSceneMgr::init()
 	PortalObject->FrustumCheck(false);
 	PortalObject->Transform()->SetLocalPos(Vec3(12.5f, 70.f, 3100.f));
 	PortalObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	PortalObject->MeshRender()->SetDynamicShadow(true);
 	PortalObject->AddComponent(new CCollider2D);
 
 	PortalObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH, L"Portal");
@@ -341,6 +351,8 @@ void CSceneMgr::init()
 	//pObject->AddComponent(new CPlayerScript);
 	//CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
 	m_pCurScene->FindLayer(L"Monster")->AddGameObject(PortalObject);
+
+
 
 	// ====================
 	// Skybox 오브젝트 생성
@@ -358,6 +370,24 @@ void CSceneMgr::init()
 
 	// AddGameObject
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);
+
+	// Distortion Object 만들기
+	CGameObject* DistortionObject = nullptr;
+	DistortionObject = new CGameObject;
+	DistortionObject->SetName(L"PostEffect");
+	DistortionObject->AddComponent(new CTransform);
+	DistortionObject->AddComponent(new CMeshRender);
+	DistortionObject->FrustumCheck(false);
+	// Material 값 셋팅
+	Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl");
+	DistortionObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CircleMesh"));
+	DistortionObject->MeshRender()->SetMaterial(pMtrl2,0);
+	DistortionObject->Transform()->SetLocalPos(Vec3(0.f, 100.f, 0.f));
+	DistortionObject->Transform()->SetLocalScale(Vec3(500.f, 500.f, 500.f));
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(DistortionObject);
+	
+
 
 	//// ====================
 	//// Grid 오브젝트 생성
@@ -448,7 +478,7 @@ void CSceneMgr::init()
 	// Transform 설정
 	GateHouseObject->Transform()->SetLocalPos(Vec3(-1400.f, 200.f, 0.f));
 	GateHouseObject->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
-
+	GateHouseObject->MeshRender()->SetDynamicShadow(true);
 	//Script 설정
 	GateHouseObject->AddComponent(new CGateHouse);
 	// AddGameObject
@@ -467,7 +497,7 @@ void CSceneMgr::init()
 	// Transform 설정
 	GateHouseObject2->Transform()->SetLocalPos(Vec3(1000.f, 200.f, 0.f));
 	GateHouseObject2->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
-
+	GateHouseObject2->MeshRender()->SetDynamicShadow(true);
 	//Script 설정
 	GateHouseObject2->AddComponent(new CGateHouse);
 	// AddGameObject
@@ -486,7 +516,7 @@ void CSceneMgr::init()
 	// Transform 설정
 	GateHouseObject3->Transform()->SetLocalPos(Vec3(-1400.f, 200.f, 2000.f));
 	GateHouseObject3->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
-
+	GateHouseObject3->MeshRender()->SetDynamicShadow(true);
 	//Script 설정
 	GateHouseObject3->AddComponent(new CGateHouse);
 	// AddGameObject
@@ -556,7 +586,7 @@ void CSceneMgr::init()
 	// Transform 설정
 	SomethingObject->Transform()->SetLocalPos(Vec3(800.f, 10.f, -480.f));
 	SomethingObject->Transform()->SetLocalScale(Vec3(0.4f, 0.4f, 0.4f));
-
+	SomethingObject->MeshRender()->SetDynamicShadow(true);
 	//Script 설정
 	SomethingObject->AddComponent(new CSomethings);
 	// AddGameObject
@@ -1215,14 +1245,7 @@ void CSceneMgr::update_tool()
 	// rendermgr 카메라 초기화
 	CRenderMgr::GetInst()->ClearCamera();
 	m_pCurScene->finalupdate();
-
-
-
-
-
 	
-
-
 }
 
 void CSceneMgr::FindGameObjectByTag(const wstring& _strTag, vector<CGameObject*>& _vecFindObj)

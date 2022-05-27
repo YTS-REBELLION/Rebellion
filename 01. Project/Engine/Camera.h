@@ -34,7 +34,7 @@ private:
 
 	vector<CGameObject*>	m_vecDeferred;
 	vector<CGameObject*>	m_vecForward;
-
+	vector<CGameObject*>    m_vecPostEffect;
 	vector<CGameObject*>	m_vecShadowObj;
 	bool		m_bModule;
 public:	
@@ -43,7 +43,7 @@ public:
 	void SortShadowObject();
 	void render_deferred();
 	void render_forward();
-
+	void render_posteffect();
 	void render_shadowmap();
 
 	void render();

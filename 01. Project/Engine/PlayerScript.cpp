@@ -105,8 +105,6 @@ void CPlayerScript::update()
 
 	Transform()->SetLocalPos(localPos);
 
-
-
 	
 
 

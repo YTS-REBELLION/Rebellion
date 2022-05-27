@@ -196,6 +196,7 @@ enum class SHADER_PARAM
 	TEX_1,
 	TEX_2,
 	TEX_3,
+	TEX_4,
 	TEX_END,
 };
 

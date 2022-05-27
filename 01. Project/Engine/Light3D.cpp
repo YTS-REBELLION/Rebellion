@@ -64,7 +64,7 @@ void CLight3D::SetLightDir(const Vec3& _vDir)
 {
 	m_tLightInfo.vLightDir = _vDir;
 	m_tLightInfo.vLightDir.Normalize();
-	// Transform()->LookAt(_vDir);
+	Transform()->LookAt(Vec3(m_tLightInfo.vLightDir.x, m_tLightInfo.vLightDir.y, m_tLightInfo.vLightDir.z));
 }
 
 void CLight3D::finalupdate()
@@ -87,13 +87,14 @@ void CLight3D::finalupdate()
 		auto a = *Transform();
 		a.SetLocalPos(a.GetLocalPos() + vectemp[0]->Transform()->GetLocalPos());
 		*m_pCamObj->Transform() = a;
+	
 
 
 	}
 
 	// 렌더매니저에 등록 안됌.
 	//m_pCamObj->finalupdate();
-
+	
 }
 
 void CLight3D::render()
@@ -105,7 +106,7 @@ void CLight3D::render()
 	{
 		// 광원 시점 ShadowMap 깊이정보 텍스쳐
 		Ptr<CTexture> pShadowMapTex = CResMgr::GetInst()->FindRes<CTexture>(L"ShadowMapTargetTex");
-		m_pLightMtrl->SetData(SHADER_PARAM::TEX_3, pShadowMapTex.GetPointer());
+		m_pLightMtrl->SetData(SHADER_PARAM::TEX_2, pShadowMapTex.GetPointer());
 
 	
 
@@ -122,8 +123,8 @@ void CLight3D::render()
 
 void CLight3D::render_shadowmap()
 {
-	/*m_pCamObj->Camera()->SortShadowObject();
-	m_pCamObj->Camera()->render_shadowmap();*/
+	m_pCamObj->Camera()->SortShadowObject();
+	m_pCamObj->Camera()->render_shadowmap();
 }
 
 void CLight3D::SaveToScene(FILE * _pFile)

@@ -34,11 +34,15 @@ private:
 	HWND					m_hWnd;
 	bool					m_bWindowed;
 
+	// npcCam 때문에 vecCam의 순서가 바뀌어서 쓰는 거
+	int						m_MainCamNum;
+
 public:
 	void init(HWND _hWnd, const tResolution & _res, bool _bWindow);
 	void render();
 	void render_tool();			
 
+	void render_shadowmap();
 
 	void render_lights();
 	void merge_light();
@@ -68,7 +72,8 @@ public:
 		return (int)m_vecLight3D.size() - 1;
 	}
 
-	CCamera* GetCamera(int _iIdx) { return m_vecCam[_iIdx]; }
+	CCamera* GetCamera(int _iIdx) { return m_vecCam[_iIdx]; }\
+	CCamera* GetMainCam(); 
 	void RegisterCamera(CCamera* _pCam) { m_vecCam.push_back(_pCam); }
 	void ClearCamera() { m_vecCam.clear(); }
 
@@ -77,7 +82,7 @@ public:
 	UINT GetRTVHeapSize() { return m_iRTVHeapSize; }
 
 	CMRT* GetMRT(MRT_TYPE _eType) { return m_arrMRT[(UINT)_eType]; }
-
+	void CopySwapToPosteffect();
 	friend class CSceneMgr;
 };
 

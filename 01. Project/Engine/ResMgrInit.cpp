@@ -228,6 +228,17 @@ void CResMgr::CreateDefaultShader()
 	pShader->Create(SHADER_POV::SHADOW);
 	AddRes(L"ShadowMapShader", pShader);
 
+	// =================
+	// Distortion Shader
+	// =================
+	pShader = new CShader;
+	pShader->CreateVertexShader(L"Shader\\posteffect.fx", "VS_Distortion", "vs_5_0");
+	pShader->CreatePixelShader(L"Shader\\posteffect.fx", "PS_Distortion", "ps_5_0");
+	pShader->SetBlendState(BLEND_TYPE::ONEBLEND); // 알파 블랜드 사용
+	pShader->SetDepthStencilType(DEPTH_STENCIL_TYPE::LESS_NO_WRITE);
+	pShader->Create(SHADER_POV::POST_EFFECT);
+	AddRes(L"DistortionShader", pShader);
+
 	
 
 }
@@ -339,6 +350,16 @@ void CResMgr::CreateDefaultMaterial()
 		pMtrl->SetData(SHADER_PARAM::TEX_2, pTargetTex.GetPointer());
 
 		AddRes(L"MergeLightMtrl", pMtrl);
+	}
+
+	{
+		// Material 값 셋팅
+		pMtrl = new CMaterial;
+		pMtrl->DisableFileSave();
+		pMtrl->SetShader(CResMgr::GetInst()->FindRes<CShader>(L"DistortionShader"));
+		Ptr<CTexture> pTex = CResMgr::GetInst()->FindRes<CTexture>(L"PosteffectTargetTex");
+		pMtrl->SetData(SHADER_PARAM::TEX_0, pTex.GetPointer());
+		AddRes(L"DistortionMtrl", pMtrl);
 	}
 
 	pMtrl = new CMaterial;

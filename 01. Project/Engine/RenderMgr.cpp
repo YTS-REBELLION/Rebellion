@@ -27,8 +27,13 @@ CRenderMgr::~CRenderMgr()
 
 void CRenderMgr::render()
 {
+	for (int i = 0; i < m_vecCam.size(); ++i) {
+		if (m_vecCam[i]->GetObj()->GetName() == L"MainCam")
+			m_MainCamNum = i;
+	}
+
 	// 초기화
-	float arrColor[4] = { 0.f,0.f, 0.f, 1.f };
+	float arrColor[4] = { 0.6f, 0.6f, 0.6f, 1.f };
 	CDevice::GetInst()->render_start(arrColor);
 
 	// 광원 정보 업데이트
@@ -49,12 +54,15 @@ void CRenderMgr::render()
 	// ==================================
 	// Main Camera 로 Deferred 렌더링 진행
 	// ==================================
-	m_vecCam[0]->SortGameObject();
+	m_vecCam[m_MainCamNum]->SortGameObject();
 		
 	// Deferred MRT 셋팅
 	m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->OMSet();
-	m_vecCam[0]->render_deferred();
+	m_vecCam[m_MainCamNum]->render_deferred();
 	m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->TargetToResBarrier();
+
+	//// shadowmap 만들기
+	render_shadowmap();
 
 	// Render Light
 	render_lights();
@@ -63,15 +71,20 @@ void CRenderMgr::render()
 	merge_light();
 
 	// Forward Render
-	m_vecCam[0]->render_forward(); // skybox, grid, ui
+	m_vecCam[m_MainCamNum]->render_forward(); // skybox, grid, ui
+
+	// PostEffectRender
+	m_vecCam[m_MainCamNum]->render_posteffect();
 
 	//=================================
 	// 추가 카메라는 forward render 만
 	//=================================
-	for (int i = 1; i < m_vecCam.size(); ++i)
+	for (int i = 0; i < m_vecCam.size(); ++i)
 	{
-		m_vecCam[i]->SortGameObject();
-		m_vecCam[i]->render_forward();
+		if (m_vecCam[i]->GetObj()->GetName() != L"MainCam") {
+			m_vecCam[i]->SortGameObject();
+			m_vecCam[i]->render_forward();
+		}
 	}	
 
 	// 출력
@@ -81,12 +94,29 @@ void CRenderMgr::render()
 void CRenderMgr::render_tool()
 {
 	// 초기화
-	float arrColor[4] = { 0.f, 0.f, 0.f, 1.f };
+	float arrColor[4] = { 0.6f, 0.6f, 0.6f, 1.f };
 	//Clear(arrColor);
 
 	// 광원 정보 업데이트
 	UpdateLight2D();
 	UpdateLight3D();
+}
+
+void CRenderMgr::render_shadowmap()
+{
+	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SHADOWMAP)->Clear();
+	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SHADOWMAP)->OMSet();
+
+	// 광원 시점으로 깊이를 그림
+	for (UINT i = 0; i < m_vecLight3D.size(); ++i)
+	{
+		if (m_vecLight3D[i]->GetLight3DInfo().iLightType != (UINT)LIGHT_TYPE::DIR)
+			continue;
+
+		m_vecLight3D[i]->render_shadowmap();
+	}
+
+	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SHADOWMAP)->TargetToResBarrier();
 }
 
 void CRenderMgr::UpdateLight2D()
@@ -122,6 +152,15 @@ void CRenderMgr::render_lights()
 	m_arrMRT[(UINT)MRT_TYPE::LIGHT]->OMSet();
 
 	// 광원을 그린다.
+	CCamera* pMainCam = CRenderMgr::GetInst()->GetMainCam();
+	if (nullptr == pMainCam)
+		return;
+
+	// 메인 카메라 시점 기준 View, Proj 행렬로 되돌린다.
+	g_transform.matView = pMainCam->GetViewMat();
+	g_transform.matProj = pMainCam->GetProjMat();
+	g_transform.matViewInv = pMainCam->GetViewMatInv();
+
 	for (size_t i = 0; i < m_vecLight3D.size(); ++i)
 	{
 		m_vecLight3D[i]->Light3D()->render();
@@ -145,4 +184,32 @@ void CRenderMgr::merge_light()
 
 	pMtrl->UpdateData();
 	pRectMesh->render();
+}
+CCamera* CRenderMgr::GetMainCam()
+{
+	for (int i = 0; i < m_vecCam.size(); ++i) {
+		if (m_vecCam[i]->GetObj()->GetName() == L"MainCam")
+			return m_vecCam[i];
+	}
+}
+
+void CRenderMgr::CopySwapToPosteffect()
+{
+	static CTexture* pPostEffectTex = CResMgr::GetInst()->FindRes<CTexture>(L"PosteffectTargetTex").GetPointer();
+
+	UINT iIdx = CDevice::GetInst()->GetSwapchainIdx();
+
+	// SwapChain Target Texture 를 RenderTarget -> CopySource 상태로 변경
+	CMDLIST->ResourceBarrier(1
+		, &CD3DX12_RESOURCE_BARRIER::Transition(m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->GetRTTex(iIdx)->GetTex2D().Get()
+			, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_COPY_SOURCE));
+
+	// SwapChainTex -> PostEfectTex 로 복사
+	CMDLIST->CopyResource(pPostEffectTex->GetTex2D().Get()
+		, m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->GetRTTex(iIdx)->GetTex2D().Get());
+
+	// SwapChain Target Texture 를 CopySource -> RenderTarget 상태로 변경
+	CMDLIST->ResourceBarrier(1
+		, &CD3DX12_RESOURCE_BARRIER::Transition(m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->GetRTTex(iIdx)->GetTex2D().Get()
+			, D3D12_RESOURCE_STATE_COPY_SOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET));
 }

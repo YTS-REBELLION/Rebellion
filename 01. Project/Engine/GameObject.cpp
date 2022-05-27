@@ -250,6 +250,7 @@ void CGameObject::finalupdate()
 			m_arrCom[i]->finalupdate();
 	}
 
+	//æ∆∑°æ»≈Ω
 	for (size_t i = 0; i < m_vecChild.size(); ++i)
 	{
 		if (m_vecChild[i]->IsActive())

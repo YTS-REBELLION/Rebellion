@@ -86,6 +86,8 @@ int CDevice::init(HWND _hWnd, const tResolution& _res, bool _bWindow)
 
 	m_pCmdListGraphic->Close();
 
+
+
 	// SwapChain ¸¸µé±â
 	CreateSwapChain();
 
