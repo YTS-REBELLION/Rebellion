@@ -29,6 +29,12 @@ void CPlayerScript::awake()
 
 void CPlayerScript::update()
 {
+	// Z-up To Y-up
+	Vec3 vDirUp = Transform()->GetLocalDir(DIR_TYPE::UP);
+	Vec3 vDirFront = Transform()->GetLocalDir(DIR_TYPE::FRONT);
+	Transform()->SetWorldDir(DIR_TYPE::UP, vDirFront);
+	Transform()->SetWorldDir(DIR_TYPE::FRONT, vDirUp);
+
 	Vec3 WorldDir;
 	Vec3 localPos = Transform()->GetLocalPos();
 	
@@ -41,7 +47,7 @@ void CPlayerScript::update()
 	//Vec3 vRot = Transform()->GetLocalRot();
 	if (KEY_HOLD(KEY_TYPE::KEY_W))
 	{
-		WorldDir = playerTrans->GetWorldDir(DIR_TYPE::UP);
+		WorldDir = playerTrans->GetWorldDir(DIR_TYPE::FRONT);
 		localPos += WorldDir * m_fSpeed * DT;
 
 		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
@@ -54,7 +60,7 @@ void CPlayerScript::update()
 
 	else if (KEY_HOLD(KEY_TYPE::KEY_S))
 	{
-		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::UP);
+		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::FRONT);
 		localPos += WorldDir * m_fSpeed * DT;
 
 		if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
