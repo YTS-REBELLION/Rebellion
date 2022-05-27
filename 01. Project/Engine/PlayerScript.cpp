@@ -142,6 +142,7 @@ void CPlayerScript::update()
 			GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 20.f, 70.f));
 			GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 1150.f, 1700.f));
 
+			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), player->GetAttack());
 
 			player->SetPlayerAnimation(3);
 
@@ -152,6 +153,8 @@ void CPlayerScript::update()
 				GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 850.f, 1700.f));
 
 				player->SetAttack();
+				g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), player->GetAttack());
+
 			}
 		}
 
@@ -161,6 +164,8 @@ void CPlayerScript::update()
 	{
 		localPos.y = 0.f;
 	}
+
+	//cout << localPos.x << localPos.y << localPos.z << endl;
 	Transform()->SetLocalPos(localPos);
 
 

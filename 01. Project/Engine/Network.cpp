@@ -158,7 +158,7 @@ void CNetwork::ProcessPacket(char* ptr)
 		GameObject.find(g_myid)->second->SetID(g_myid);
 
 		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetMain();
-
+		//GameObject.find(g_myid)->second->//GetScript<CPlayerScript>()->SetMain();
 		/*GameObject.emplace(g_myid, m_pObj);
 
 		GameObject.find(g_myid)->second->SetID(g_myid);*/
@@ -235,7 +235,7 @@ void CNetwork::ProcessPacket(char* ptr)
 
 
 			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", GameObject.find(id)->second, false);
-
+			
 
 			for (auto& data : m_aniData)
 			{
@@ -248,7 +248,7 @@ void CNetwork::ProcessPacket(char* ptr)
 			/*GameObject.find(id)->second->AddComponent(new CPlayerScript);
 			GameObject.find(id)->second->GetScript<CPlayerScript>();*/
 
-			CGameObject* pSwordObject = new CGameObject;
+			/*CGameObject* pSwordObject = nullptr;
 			Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\asdq.mdat", L"MeshData\\asdq.mdat");
 			Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
 
@@ -270,14 +270,10 @@ void CNetwork::ProcessPacket(char* ptr)
 			CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
 			pSwordObject->GetScript<CSwordScript>()->SetTarget(GameObject.find(id)->second);
 			pSwordObject->GetScript<CSwordScript>()->SetBoneIdx(36);
+			pSwordObject->GetScript<CSwordScript>()->SetBoneIdx2(48);
 
 			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pSwordObject, false);
-			GameObject.find(id)->second->AddChild(pSwordObject);
-
-
-
-
-
+			GameObject.find(id)->second->AddChild(pSwordObject);*/
 		}
 
 		else if (CheckType(id) == OBJECT_TYPE::MONSTER) {
@@ -356,6 +352,25 @@ void CNetwork::ProcessPacket(char* ptr)
 		sc_packet_rotate* packet = reinterpret_cast<sc_packet_rotate*>(ptr);
 
 		GameObject.find(packet->id)->second->Transform()->SetLocalRot(packet->rotate);
+		break;
+	}
+	case SC_PACKET_PLAYER_ATTACK: {
+		cout << "SC_PACKET_PLAYER_ATTACK" << endl;
+		sc_packet_player_attack* packet = reinterpret_cast<sc_packet_player_attack*>(ptr);
+		int id = packet->id;
+		if (id == g_myid) {
+
+		}
+		else {
+			if (packet->isAttack) {
+				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(id, 3);
+			}
+			else {
+				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(id, 0);
+
+			}
+		}
+
 		break;
 	}
 	default:
@@ -515,5 +530,17 @@ void CNetwork::Send_Rotate_Packet(const int& id, const Vec3& rotate)
 	packet.id = id;
 	packet.rotate = rotate;
 	Send_Packet(&packet);
+}
+
+void CNetwork::Send_Attack_Animation_Packet(const int& id, const bool& isAttack)
+{
+	cs_packet_attack packet;
+	packet.type = CS_PACKET_ATTACK;
+	packet.size = sizeof(packet);
+	packet.id = id;
+	packet.isAttack = isAttack;
+
+	Send_Packet(&packet);
+
 }
 

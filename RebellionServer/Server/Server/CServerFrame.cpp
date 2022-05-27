@@ -274,15 +274,26 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 	}
 	case CS_PACKET_ROTATE: {
 		cs_packet_rotate* packet = reinterpret_cast<cs_packet_rotate*>(buf);
-
+		
 		unordered_set<int> old_viewList = _objects[id].GetViewList();
 
 
 		for (auto& ob : old_viewList)
 		{
-			cout << "서버 -> 클라 스탑 보낸다" << endl;
 			if (ob == id)continue;
 			_sender->SendRotatePacket(_objects[ob].GetSocket(), id, packet->rotate);
+		}
+
+		break;
+	}
+	case CS_PACKET_ATTACK: {
+		cout << "CS_PACKET_ATTACK" << endl;
+		cs_packet_attack* packet = reinterpret_cast<cs_packet_attack*>(buf);
+
+		unordered_set<int> new_viewlist = _objects[id].GetViewList();
+
+		for (auto& user : new_viewlist) {
+			_sender->SendPlayerAttackPacket(_objects[user].GetSocket(), id, packet->isAttack);
 		}
 
 		break;

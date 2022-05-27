@@ -52,6 +52,7 @@ public:
 		const float& delta);
 	void Send_Stop_Packet(const bool& isMoving, const short& id);
 	void Send_Rotate_Packet(const int& id, const Vec3& rotate);
+	void Send_Attack_Animation_Packet(const int& id, const bool& isAttack);
 	void SetAnimation(int id, int i);
 public:
 	void err_quit(const char* msg);
@@ -63,6 +64,7 @@ private:
 
 	vector<Ptr<CMesh>>	m_aniData;
 
+	friend class CLayer;
 };
 
 

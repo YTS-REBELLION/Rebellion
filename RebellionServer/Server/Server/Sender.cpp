@@ -176,12 +176,13 @@ void CSender::SendNPCDiePacket(SOCKET s, int id, int type)
 }
 
 
-void CSender::SendPlayerAttackPacket(SOCKET s, int id)
+void CSender::SendPlayerAttackPacket(SOCKET s, int attacker, bool isAttack)
 {
 	sc_packet_player_attack packet;
-	packet.id = id;
-	packet.type = SC_PACKET_PLAYER_ATTACK;
+	packet.id = attacker;
 	packet.size = sizeof(packet);
+	packet.type = SC_PACKET_PLAYER_ATTACK;
+	packet.isAttack = isAttack;
 
 	SendPacket(s, &packet);
 }

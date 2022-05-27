@@ -38,9 +38,9 @@ const char  SC_PACKET_STAT_CHANGE = 6;
 const char  SC_PACKET_CHAT = 7;
 const char	SC_PACKET_MOVE = 8;
 const char	SC_PACKET_STOP = 9;
+const char	SC_PACKET_PLAYER_ATTACK = 10;
 
 const char	SC_PACKET_NPC_ATTACK = 8;
-const char	SC_PACKET_PLAYER_ATTACK = 9;
 const char	SC_PACKET_HP_CHANGE = 10;
 const char	SC_PACKET_PLAYER_DIE = 11;
 const char	SC_PACKET_DEFENCE = 12;
@@ -94,6 +94,7 @@ struct sc_packet_player_attack {
 	char size;
 	char type;
 	int id;
+	bool isAttack;
 };
 
 
@@ -278,5 +279,10 @@ struct cs_packet_rotate {
 	int id;
 	Vec3 rotate;
 };
-
+struct cs_packet_attack {
+	char size;
+	char type;
+	int id;
+	bool isAttack;
+};
 #pragma pack(pop)
