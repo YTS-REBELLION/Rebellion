@@ -310,8 +310,8 @@ void CNetwork::ProcessPacket(char* ptr)
 
 				if (packet->status)
 					GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 1);	//SetPlayerAnimation(other_id, 1);
-				else
-					GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 0);
+				/*else
+					GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 0);*/
 
 				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetOtherMovePacket(packet, 1 * 0.00000001);
 			}
@@ -371,6 +371,23 @@ void CNetwork::ProcessPacket(char* ptr)
 			}
 		}
 
+		break;
+	}
+	case SC_PACKET_RUN: {
+		cout << "SC_PACKET_RUN" << endl;
+		sc_packet_run* packet = reinterpret_cast<sc_packet_run*>(ptr);
+		int id = packet->id;
+		if (id == g_myid) {
+
+		}
+		else {
+			if (packet->isRun) {
+				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(id, 2);
+			}
+			else {
+				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(id, 0);
+			}
+		}
 		break;
 	}
 	default:
@@ -541,6 +558,19 @@ void CNetwork::Send_Attack_Animation_Packet(const int& id, const bool& isAttack)
 	packet.isAttack = isAttack;
 
 	Send_Packet(&packet);
+
+}
+
+void CNetwork::Send_Run_Packet(const int& id, const bool& isRun)
+{
+	cs_packet_run packet;
+	packet.type = CS_PACKET_RUN;
+	packet.size = sizeof(packet);
+	packet.id = id;
+	packet.isRun = isRun;
+
+	Send_Packet(&packet);
+
 
 }
 

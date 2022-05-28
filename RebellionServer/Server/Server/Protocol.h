@@ -5,7 +5,7 @@
 
 //const char* SERVERIP = "127.0.0.1";
 
-const short SERVER_PORT = 9000;
+const short SERVER_PORT = 21301;
 
 constexpr int MAX_BUFFER = 1024;
 constexpr int MAX_PACKET_SIZE = 255;
@@ -27,7 +27,7 @@ const char  CS_PACKET_QUEST_DONE = 9;
 const char	CS_PACKET_MOVE = 10;
 const char	CS_PACKET_STOP = 11;
 const char	CS_PACKET_ROTATE = 12;
-
+const char	CS_PACKET_RUN = 13;
 
 const char  SC_PACKET_LOGIN_OK = 1;
 const char  SC_PACKET_LOGIN_FAIL = 2;
@@ -39,6 +39,7 @@ const char  SC_PACKET_CHAT = 7;
 const char	SC_PACKET_MOVE = 8;
 const char	SC_PACKET_STOP = 9;
 const char	SC_PACKET_PLAYER_ATTACK = 10;
+const char	SC_PACKET_RUN = 11;
 
 const char	SC_PACKET_NPC_ATTACK = 8;
 const char	SC_PACKET_HP_CHANGE = 10;
@@ -203,6 +204,12 @@ struct sc_packet_rotate {
 	int id;
 	Vec3 rotate;
 };
+struct sc_packet_run {
+	char size;
+	char type;
+	int id;
+	bool isRun;
+};
 //---------------------------------------
 
 
@@ -256,11 +263,6 @@ struct cs_packet_move {
 	
 };
 
-struct cs_packet_run {
-	char	size;
-	char	type;
-	bool	running;
-};
 
 struct cs_packet_quest_done {
 	char size;
@@ -284,5 +286,12 @@ struct cs_packet_attack {
 	char type;
 	int id;
 	bool isAttack;
+};
+
+struct cs_packet_run {
+	char size;
+	char type;
+	int id;
+	bool isRun;
 };
 #pragma pack(pop)

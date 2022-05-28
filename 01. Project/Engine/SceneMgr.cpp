@@ -199,7 +199,7 @@ void CSceneMgr::init()
 	pPlayer = pMeshData->Instantiate(); 
 	pPlayer->SetName(L"Player1");
 	pPlayer->FrustumCheck(false);
-	pPlayer->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	//pPlayer->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 	pPlayer->Transform()->SetLocalScale(Vec3(0.08f, 0.08f, 0.08f));
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 	pPlayer->AddComponent(new CCollider2D);

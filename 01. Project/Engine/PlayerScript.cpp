@@ -54,6 +54,8 @@ void CPlayerScript::update()
 			{
 				localPos += WorldDir * m_fSpeed * DT;
 				player->SetPlayerAnimation(2);
+				g_net.Send_Run_Packet(GetObj()->GetID(), true);
+				
 
 			}
 			else player->SetPlayerAnimation(1);
@@ -72,6 +74,8 @@ void CPlayerScript::update()
 			{
 				localPos += WorldDir * m_fSpeed * DT;
 				player->SetPlayerAnimation(2);
+				g_net.Send_Run_Packet(GetObj()->GetID(), true);
+
 			}
 			else player->SetPlayerAnimation(1);
 		}
@@ -89,6 +93,8 @@ void CPlayerScript::update()
 			{
 				localPos += WorldDir * m_fSpeed * DT;
 				player->SetPlayerAnimation(2);
+				g_net.Send_Run_Packet(GetObj()->GetID(), true);
+
 			}
 			else player->SetPlayerAnimation(1);
 		}
@@ -107,6 +113,8 @@ void CPlayerScript::update()
 			{
 				localPos += WorldDir * m_fSpeed * DT;
 				player->SetPlayerAnimation(2);
+				g_net.Send_Run_Packet(GetObj()->GetID(), true);
+
 			}
 			else player->SetPlayerAnimation(1);
 		}
