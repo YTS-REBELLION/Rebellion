@@ -262,6 +262,11 @@ void CNetwork::ProcessPacket(char* ptr)
 		else if (CheckType(id) == OBJECT_TYPE::MONSTER) {
 			// ∏ÛΩ∫≈Õ
 
+
+
+
+
+
 		}
 
 		break;

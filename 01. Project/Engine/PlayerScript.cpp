@@ -3,6 +3,7 @@
 #include "TestScript.h"
 #include "RenderMgr.h"
 #include "Animator3D.h"
+#include"CollisionMgr.h"
 
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
@@ -131,6 +132,8 @@ void CPlayerScript::update()
 	{
 		GetObj()->Animator3D()->SetClipTime(0, 0.f);
 		SetAttack();
+
+		
 	}
 	if (GetAttack() && m_vecAniClipTime[0] < Animator3D()->GetAnimClip(0).dTimeLength) {
 		m_vecAniClipTime[0] += DT;
@@ -149,6 +152,7 @@ void CPlayerScript::update()
 			GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 850.f, 1700.f));
 
 			SetAttack();
+			CCollisionMgr::GetInst()->CheckCollisionLayer(L"Sword", L"Monster");
 		}
 	}
 

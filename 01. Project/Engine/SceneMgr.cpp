@@ -471,7 +471,7 @@ void CSceneMgr::init()
 	// Player Layer 와 Monster Layer 는 충돌 검사 진행
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Monster");
 	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Monster");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Sword", L"Monster");
+	
 
 
 

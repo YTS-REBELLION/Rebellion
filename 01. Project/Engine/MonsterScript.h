@@ -22,6 +22,9 @@ private:
 
 	int					m_id;
 	bool				m_isMain;
+
+	float				m_fMaxHp=1200.f;
+	float				m_fHp=0.f;
 public:
 	virtual void awake();
 	virtual void update();

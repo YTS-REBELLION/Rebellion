@@ -12,6 +12,7 @@ CMonsterScript::CMonsterScript()
 	, m_bAttack(false)
 	, m_iCulidx(0)
 {
+	m_fHp = m_fMaxHp;
 }
 
 CMonsterScript::~CMonsterScript()
@@ -45,7 +46,7 @@ void CMonsterScript::update()
 		m_fSpeed = 200.f;
 		//이동
 		//플레이어위치로이동
-		localPos.z -=  m_fSpeed/10 * DT;
+		//localPos.z -=  m_fSpeed/10 * DT;
 
 
 		if (fDistanceP_M >= 0.f && fDistanceP_M <= 200.f)
@@ -129,29 +130,15 @@ void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 
 void CMonsterScript::OnCollision(CCollider2D* _pOther)
 {
-	//BoundingSphere myBS = Collider2D()->GetBS();
-	//BoundingSphere otherBS = _pOther->Collider2D()->GetBS();
-
 	cout << "칼과몬스터충돌" << endl;
+	m_fHp -= 4.f;
 
-	//Vec3 WorldDir;
-	//Vec3 localPos = Transform()->GetLocalPos();
-	//CTransform* playerTrans = Transform();
+	if (m_fHp <= 0.f)
+	{
+		GetObj()->SetDead();
 
-	//WorldDir = playerTrans->GetWorldDir(DIR_TYPE::UP);
-	//localPos -= WorldDir * m_fSpeed * DT * 2.0f;
+	}
 
-	//if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
-	//{
-	//	localPos -= WorldDir * m_fSpeed * DT;
-	//}
-
-	////if (L"MIRO" == _pOther->GetObj()->GetName())
-	////{
-	////	//localPos.y += 1000.f;
-	////}
-
-	//Transform()->SetLocalPos(localPos);
 
 }
 
