@@ -150,7 +150,7 @@ void CSceneMgr::init()
 	m_pCurScene->GetLayer(2)->SetName(L"Monster");
 	m_pCurScene->GetLayer(3)->SetName(L"Map");
 	m_pCurScene->GetLayer(4)->SetName(L"Portal");
-	//m_pCurScene->GetLayer(5)->SetName(L"Sword");
+	m_pCurScene->GetLayer(5)->SetName(L"Sword");
 	m_pCurScene->GetLayer(30)->SetName(L"UI");
 	m_pCurScene->GetLayer(31)->SetName(L"Tool");
 
@@ -335,36 +335,51 @@ void CSceneMgr::init()
 	// AddGameObject
 	m_pCurScene->FindLayer(L"Map")->AddGameObject(pObject);
 
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Idle.mdat", L"MeshData\\Player_Idle.mdat");
+	
+	CGameObject* pMonster = new CGameObject;
 
-	//// ====================
-	//// Monster 오브젝트 생성
-	//// ====================
-	//CGameObject* pMonsterObject = nullptr;
-	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Standing W_Briefcase Idle.mdat", L"MeshData\\Standing W_Briefcase Idle.mdat");
-	////pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Standing W_Briefcase Idle.fbx");
-	////pMeshData->Save(pMeshData->GetPath());
+	pMonster = pMeshData->Instantiate();
+	pMonster->SetName(L"Monster1");
+	pMonster->FrustumCheck(false);
+	pMonster->Transform()->SetLocalPos(Vec3(0.f, 0.f, 500.f));
+	pMonster->Transform()->SetLocalScale(Vec3(0.08f, 0.08f, 0.08f));
+	pMonster->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
+	pMonster->AddComponent(new CCollider2D);
+	//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH);
 
-	//pMonsterObject = pMeshData->Instantiate();
-	//pMonsterObject->SetName(L"Monster1");
-	//pMonsterObject->FrustumCheck(false);
-	//pMonsterObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-	//pMonsterObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	//pMonsterObject->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
-	//pMonsterObject->AddComponent(new CCollider2D);
 
-	////pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH);
+	pMonster->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pMonster->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
+	pMonster->Collider2D()->SetOffsetScale(Vec3(850.f, 850.f, 1700.f));
 
-	//pMonsterObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH, L"Monster1");
-	//pMonsterObject->Collider2D()->SetBB(BoundingBox(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingBoxExtents()));
-	//pMonsterObject->Collider2D()->SetBS(BoundingSphere(pObject->Transform()->GetLocalPos(), pObject->MeshRender()->GetMesh()->GetBoundingSphereRadius() / 2.f));
+	// 플레이어 스크립트 붙여주기.
+	pMonster->AddComponent(new CMonsterScript);
 
-	//Ptr<CTexture> MonsterTex = CResMgr::GetInst()->FindRes<CTexture>(L"Monster01");
-	//pMonsterObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, MonsterTex.GetPointer());
+	CMonsterScript* MonsterScript = pMonster->GetScript<CMonsterScript>();
+	// 플레이어 애니메이션
+	MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 0
+	g_net.SetAniData(pMeshData->GetMesh());
 
-	//// 플레이어 스크립트 붙여주기.
-	//pObject->AddComponent(new CMonsterScript);
-	//CMonsterScript* MonsterScript = pMonsterObject->GetScript<CMonsterScript>();
-	//m_pCurScene->AddGameObject(L"Monster", pMonsterObject, false);
+	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Walk.fbx");
+	//pMeshData->Save(pMeshData->GetPath());
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Walk.mdat", L"MeshData\\Player_Walk.mdat");
+	MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
+	g_net.SetAniData(pMeshData->GetMesh());
+
+	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Run.fbx");
+	//pMeshData->Save(pMeshData->GetPath());
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Run.mdat", L"MeshData\\Player_Run.mdat");
+	MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 2
+	g_net.SetAniData(pMeshData->GetMesh());
+
+	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Attack.fbx");
+	//pMeshData->Save(pMeshData->GetPath());
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Attack.mdat", L"MeshData\\Player_Attack.mdat");
+	MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
+	g_net.SetAniData(pMeshData->GetMesh());
+
+	m_pCurScene->AddGameObject(L"Monster", pMonster, false);
 
 	//// ====================
 	//// Potal 오브젝트 생성
@@ -455,8 +470,8 @@ void CSceneMgr::init()
 	// =================================
 	// Player Layer 와 Monster Layer 는 충돌 검사 진행
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Monster");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Monster");
-	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Sword", L"Monster");
+	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Monster");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Sword", L"Monster");
 
 
 
