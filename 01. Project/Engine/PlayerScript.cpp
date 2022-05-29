@@ -152,7 +152,7 @@ void CPlayerScript::update()
 			GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 850.f, 1700.f));
 
 			SetAttack();
-			CCollisionMgr::GetInst()->CheckCollisionLayer(L"Sword", L"Monster");
+			
 		}
 	}
 
