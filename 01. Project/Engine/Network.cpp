@@ -27,7 +27,7 @@ OBJECT_TYPE CheckType(const short& id)
 
 
 CNetwork g_net;
-const char* SERVER_IP = "127.0.0.1";
+const char* SERVER_IP = "121.190.132.161";
 OBJ GameObject;
 
 SOCKET g_socket;
@@ -382,9 +382,12 @@ void CNetwork::ProcessPacket(char* ptr)
 		}
 		else {
 			if (packet->isRun) {
+				GameObject.find(id)->second->Transform()->SetLocalPos(packet->pos);
+
 				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(id, 2);
 			}
 			else {
+
 				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(id, 0);
 			}
 		}
@@ -561,14 +564,14 @@ void CNetwork::Send_Attack_Animation_Packet(const int& id, const bool& isAttack)
 
 }
 
-void CNetwork::Send_Run_Packet(const int& id, const bool& isRun)
+void CNetwork::Send_Run_Packet(const int& id, Vec3 pos ,const bool& isRun)
 {
 	cs_packet_run packet;
 	packet.type = CS_PACKET_RUN;
 	packet.size = sizeof(packet);
 	packet.id = id;
 	packet.isRun = isRun;
-
+	packet.pos = pos;
 	Send_Packet(&packet);
 
 

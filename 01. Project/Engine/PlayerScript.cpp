@@ -48,17 +48,21 @@ void CPlayerScript::update()
 
 			system_clock::time_point start = system_clock::now();
 
-			g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 
 			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 			{
 				localPos += WorldDir * m_fSpeed * DT;
 				player->SetPlayerAnimation(2);
-				g_net.Send_Run_Packet(GetObj()->GetID(), true);
+				g_net.Send_Run_Packet(GetObj()->GetID(),localPos ,true);
 				
 
 			}
-			else player->SetPlayerAnimation(1);
+			else { 
+				
+				player->SetPlayerAnimation(1);
+				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+
+			};
 		}
 
 		else if (KEY_HOLD(KEY_TYPE::KEY_S))
@@ -69,15 +73,20 @@ void CPlayerScript::update()
 
 			system_clock::time_point start = system_clock::now();
 
-			g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 			{
 				localPos += WorldDir * m_fSpeed * DT;
 				player->SetPlayerAnimation(2);
-				g_net.Send_Run_Packet(GetObj()->GetID(), true);
+				g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
+
 
 			}
-			else player->SetPlayerAnimation(1);
+			else {
+
+				player->SetPlayerAnimation(1);
+				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+
+			};
 		}
 
 		else if (KEY_HOLD(KEY_TYPE::KEY_A))
@@ -87,16 +96,20 @@ void CPlayerScript::update()
 
 			system_clock::time_point start = system_clock::now();
 
-			g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 
 			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 			{
 				localPos += WorldDir * m_fSpeed * DT;
 				player->SetPlayerAnimation(2);
-				g_net.Send_Run_Packet(GetObj()->GetID(), true);
+				g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
 
 			}
-			else player->SetPlayerAnimation(1);
+			else {
+
+				player->SetPlayerAnimation(1);
+				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+
+			};
 		}
 
 		else if (KEY_HOLD(KEY_TYPE::KEY_D))
@@ -106,17 +119,22 @@ void CPlayerScript::update()
 
 			system_clock::time_point start = system_clock::now();
 
-			g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 
 
 			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 			{
 				localPos += WorldDir * m_fSpeed * DT;
 				player->SetPlayerAnimation(2);
-				g_net.Send_Run_Packet(GetObj()->GetID(), true);
+				g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
+
 
 			}
-			else player->SetPlayerAnimation(1);
+			else {
+
+				player->SetPlayerAnimation(1);
+				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+
+			};
 		}
 		else
 		{

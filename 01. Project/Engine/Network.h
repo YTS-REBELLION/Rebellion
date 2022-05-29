@@ -53,7 +53,7 @@ public:
 	void Send_Stop_Packet(const bool& isMoving, const short& id);
 	void Send_Rotate_Packet(const int& id, const Vec3& rotate);
 	void Send_Attack_Animation_Packet(const int& id, const bool& isAttack);
-	void Send_Run_Packet(const int& id, const bool& isRun);
+	void Send_Run_Packet(const int& id, Vec3 pos, const bool& isRun);
 	void SetAnimation(int id, int i);
 public:
 	void err_quit(const char* msg);

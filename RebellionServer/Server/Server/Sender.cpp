@@ -251,14 +251,14 @@ void CSender::SendRotatePacket(SOCKET s, int mover, Vec3 rotate)
 
 }
 
-void CSender::SendRunPacket(SOCKET s, int id, bool isRun)
+void CSender::SendRunPacket(SOCKET s, int id,Vec3 pos, bool isRun)
 {
 	sc_packet_run packet;
 	packet.id = id;
 	packet.size = sizeof(packet);
 	packet.type = SC_PACKET_RUN;
 	packet.isRun = isRun;
-
+	packet.pos = pos;
 	SendPacket(s, &packet);
 }
 

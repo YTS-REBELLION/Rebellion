@@ -256,11 +256,16 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 
 		unordered_set<int> old_viewList = _objects[id].GetViewList();
 
+		Vec3 pos;
+		pos.x = packet->pos.x;
+		pos.y = packet->pos.y;
+		pos.z = packet->pos.z;
+		_objects[id].SetPos(pos);
 		
 		for (auto& ob : old_viewList)
 		{
 			if (ob == id)continue;
-			_sender->SendRunPacket(_objects[ob].GetSocket(), id, packet->isRun);
+			_sender->SendRunPacket(_objects[ob].GetSocket(), id, pos ,packet->isRun);
 		}
 
 

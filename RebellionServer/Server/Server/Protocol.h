@@ -5,7 +5,7 @@
 
 //const char* SERVERIP = "127.0.0.1";
 
-const short SERVER_PORT = 21301;
+const short SERVER_PORT = 9000;
 
 constexpr int MAX_BUFFER = 1024;
 constexpr int MAX_PACKET_SIZE = 255;
@@ -209,6 +209,7 @@ struct sc_packet_run {
 	char type;
 	int id;
 	bool isRun;
+	Vec3 pos;
 };
 //---------------------------------------
 
@@ -293,5 +294,6 @@ struct cs_packet_run {
 	char type;
 	int id;
 	bool isRun;
+	Vec3 pos;
 };
 #pragma pack(pop)
