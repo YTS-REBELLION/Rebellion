@@ -2,6 +2,16 @@
 #include "Script.h"
 #include "Mesh.h"
 
+enum class COL_DIR
+{
+	RIGHT,
+	UP,
+	LEFT,
+	DOWN,
+	END,
+};
+
+
 class CPlayerScript :
 	public CScript
 {
@@ -21,7 +31,7 @@ private:
 	int					m_iCulidx;
 
 	bool				FirstPacket = false;
-
+	COL_DIR				m_eDir = COL_DIR::UP;
 
 	int					m_id;
 	bool				m_isMain;
