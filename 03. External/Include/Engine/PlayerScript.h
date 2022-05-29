@@ -49,7 +49,8 @@ public:
 		else m_bAttack = true;
 	}
 	bool GetAttack() { return m_bAttack; }
-
+	Vec3 Get_PlayerPos() { return this->Transform()->GetLocalPos(); }
+	CPlayerScript* GetPlayer() { return this; }
 public:
 	CLONE(CPlayerScript);
 

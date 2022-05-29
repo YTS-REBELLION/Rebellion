@@ -317,4 +317,6 @@ enum class CAMERASTATE
 {
 	FREE,
 	PLAYER,
+	CENEMATIC00,
+	END,
 };

@@ -3,6 +3,7 @@
 #include "TestScript.h"
 #include "RenderMgr.h"
 #include "Animator3D.h"
+#include"CollisionMgr.h"
 
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
@@ -31,6 +32,7 @@ void CPlayerScript::update()
 {
 	Vec3 WorldDir;
 	Vec3 localPos = GetObj()->Transform()->GetLocalPos();
+	Vec3 localRot = GetObj()->Transform()->GetLocalRot();
 	CTransform* playerTrans = Transform();
 
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
@@ -188,12 +190,18 @@ void CPlayerScript::update()
 	
 	if (KEY_HOLD(KEY_TYPE::KEY_ENTER))
 	{
-		localPos.y = 0.f;
+		localPos.x = 0.f;
+
+		localPos.y = 5000.f;
+		vRot.y = XM_PI;
+
+		localPos.z = 600.f;
+		player->Transform()->SetLocalRot(vRot);
 	}
 
 	//cout << localPos.x << localPos.y << localPos.z << endl;
 	Transform()->SetLocalPos(localPos);
-
+	//Transform()->SetLocalRot(localRot);
 
 	//Transform()->SetLocalRot(vRot);
 }

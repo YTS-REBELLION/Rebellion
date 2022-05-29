@@ -20,21 +20,45 @@ CToolCamScript::CToolCamScript()
 CToolCamScript::~CToolCamScript()
 {
 }
+void CToolCamScript::CameraMode()
+{
+	switch (m_eCamState)
+	{
+	case CAMERASTATE::PLAYER:
+		SetPlayerFixedCamera();
+		break;
+	case CAMERASTATE::FREE:
+		SetFreeCamera();
+		break;
+	case CAMERASTATE::CENEMATIC00:
+		SetCenematic0();
+		break;
 
+	default:
+		break;
+	}
+}
 void CToolCamScript::update()
 {
-	if (KEY_TAB(KEY_TYPE::KEY_Z))
-	{
+	
+	CameraMode();
 
-		if (m_eCamState == CAMERASTATE::FREE)
-			m_eCamState = CAMERASTATE::PLAYER;
-		else
-			m_eCamState = CAMERASTATE::FREE;
+	if (KEY_HOLD(KEY_TYPE::KEY_Z))
+	{
+		m_eCamState = CAMERASTATE::FREE;
+	}
+	if (KEY_HOLD(KEY_TYPE::KEY_Y))
+	{
+		m_eCamState = CAMERASTATE::PLAYER;
 	}
 
-	if (m_eCamState == CAMERASTATE::FREE)
-		SetFreeCamera();
-	else SetPlayerFixedCamera();
+	if (KEY_HOLD(KEY_TYPE::KEY_1))
+	{
+		m_eCamState = CAMERASTATE::CENEMATIC00;
+		m_bCine1 = true;
+	}
+
+
 }
 
 void CToolCamScript::SetFreeCamera()
@@ -43,7 +67,7 @@ void CToolCamScript::SetFreeCamera()
 	float fScale = Camera()->GetScale();
 	float fSpeed = m_fSpeed;
 
-	if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+	if (KEY_HOLD(KEY_TYPE::KEY_NUM0))
 	{
 		fSpeed *= 5.f;
 	}
@@ -112,6 +136,63 @@ void CToolCamScript::SetPlayerFixedCamera()
 
 	Transform()->SetLocalPos(vPos);
 	Transform()->SetLocalRot(vPlayerPos->GetLocalRot() + Vec3(XMConvertToRadians(98.5f), XM_PI, 0.f));
+}
+
+void CToolCamScript::SetCenematic0()
+{
+	Vec3 vPos = Transform()->GetLocalPos();
+	float fScale = Camera()->GetScale();
+	float fSpeed = m_fSpeed;
+
+	//집결지 시네
+	if (m_bCine1 == true && m_bCheckFin1 == false)
+	{
+		checktime += DT;
+
+		//cout << checktime << endl;
+		Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+		Vec3 vUp = Transform()->GetWorldDir(DIR_TYPE::UP);
+		vPos += vFront * fSpeed * 2.f * DT;
+		vPos += vUp * fSpeed * 2.f * DT;
+
+		if (//집결지끝도착하면 180도회전으로
+			checktime >= 3.f)
+		{
+			m_bCheckFin1 = true;
+			checktime = 0.f;
+
+		}
+
+
+	}
+	if (m_bCheckFin1)
+	{
+
+
+		Vec3 vRot = Transform()->GetLocalRot();
+
+		vRot.y += DT * XM_PI * 1 / 5;
+
+		Transform()->SetLocalRot(vRot);
+
+		checktime2 += DT;
+
+		cout << checktime2 << endl;
+
+
+		////한바뀌돌면 원래 위치로
+		if (checktime2 >= 10.f)
+		{
+			checktime2 = 0;
+			m_eCamState = CAMERASTATE::PLAYER;
+
+		}
+
+	}
+
+	Transform()->SetLocalPos(vPos);
+
+
 }
 
 //void CToolCamScript::Fix_Mouse()
