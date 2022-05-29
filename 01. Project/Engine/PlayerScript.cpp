@@ -48,10 +48,11 @@ void CPlayerScript::update()
 
 	//Vec3 vPos = Transform()->GetLocalPos();
 	//Vec3 vRot = Transform()->GetLocalRot();
+
 	if (m_isMain) {
 		if (KEY_HOLD(KEY_TYPE::KEY_W))
 		{
-			WorldDir = playerTrans->GetWorldDir(DIR_TYPE::UP);
+			WorldDir = playerTrans->GetWorldDir(DIR_TYPE::FRONT);
 			localPos += WorldDir * m_fSpeed * DT;
 
 			system_clock::time_point start = system_clock::now();
@@ -210,30 +211,7 @@ void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
 
 void CPlayerScript::OnCollision(CCollider2D* _pOther)
 {
-	//BoundingSphere myBS = Collider2D()->GetBS();
-	//BoundingSphere otherBS = _pOther->Collider2D()->GetBS();
-
 	cout << "Ãæµ¹" << endl;
-
-	//Vec3 WorldDir;
-	//Vec3 localPos = Transform()->GetLocalPos();
-	//CTransform* playerTrans = Transform();
-
-	//WorldDir = playerTrans->GetWorldDir(DIR_TYPE::UP);
-	//localPos -= WorldDir * m_fSpeed * DT * 2.0f;
-
-	//if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
-	//{
-	//	localPos -= WorldDir * m_fSpeed * DT;
-	//}
-
-	////if (L"MIRO" == _pOther->GetObj()->GetName())
-	////{
-	////	//localPos.y += 1000.f;
-	////}
-
-	//Transform()->SetLocalPos(localPos);
-
 }
 
 void CPlayerScript::OnCollisionExit(CCollider2D* _pOther)
