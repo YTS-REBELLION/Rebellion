@@ -51,7 +51,7 @@ void CPlayerScript::update()
 			system_clock::time_point start = system_clock::now();
 
 			g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
-
+			m_eDir == COL_DIR::UP;
 			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 			{
 				localPos += WorldDir * m_fSpeed * DT;
@@ -70,6 +70,7 @@ void CPlayerScript::update()
 			system_clock::time_point start = system_clock::now();
 
 			g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+			m_eDir == COL_DIR::DOWN;
 			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 			{
 				localPos += WorldDir * m_fSpeed * DT;
@@ -86,7 +87,7 @@ void CPlayerScript::update()
 			system_clock::time_point start = system_clock::now();
 
 			g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
-
+			m_eDir == COL_DIR::LEFT;
 			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 			{
 				localPos += WorldDir * m_fSpeed * DT;
@@ -104,7 +105,7 @@ void CPlayerScript::update()
 
 			g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 
-
+			m_eDir == COL_DIR::RIGHT;
 			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 			{
 				localPos += WorldDir * m_fSpeed * DT;
@@ -179,27 +180,27 @@ void CPlayerScript::update()
 	}
 	else
 	{
-		if (WorldDir == -playerTrans->GetWorldDir(DIR_TYPE::UP))
+		if (m_eDir== COL_DIR::UP)
 		{
-			localPos -= WorldDir * m_fSpeed * 2 * DT;
+			localPos -= WorldDir * m_fSpeed * 15 * DT;
 			Transform()->SetLocalPos(localPos);
 		}
 
-		if (WorldDir == playerTrans->GetWorldDir(DIR_TYPE::RIGHT))
+		if (m_eDir == COL_DIR::LEFT)
 		{
-			localPos -= WorldDir * m_fSpeed * 2 * DT;
+			localPos -= WorldDir * m_fSpeed * 15 * DT;
 			Transform()->SetLocalPos(localPos);
 		}
 
-		if (WorldDir == -1*(playerTrans->GetWorldDir(DIR_TYPE::UP)))
+		if (m_eDir == COL_DIR::DOWN)
 		{
-			localPos += WorldDir * m_fSpeed * 2 * DT;
+			localPos += WorldDir * m_fSpeed * 15 * DT;
 			Transform()->SetLocalPos(localPos);
 		}
 
-		if (WorldDir == -1 * (playerTrans->GetWorldDir(DIR_TYPE::RIGHT)))
+		if (m_eDir == COL_DIR::RIGHT)
 		{
-			localPos += WorldDir * m_fSpeed * 2 * DT;
+			localPos += WorldDir * m_fSpeed * 15 * DT;
 			Transform()->SetLocalPos(localPos);
 		}
 
