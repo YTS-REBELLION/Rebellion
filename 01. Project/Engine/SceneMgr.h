@@ -29,8 +29,11 @@ public:
 	bool m_bfindcheck = false;
 	vector<CGameObject*> testvec;
 
+	void InitOtherClinet(int m_id);
+
 
 public:
 	void CreateTargetUI();
+	void CreateMap();
 };
 

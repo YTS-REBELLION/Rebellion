@@ -277,6 +277,11 @@ void CResMgr::CreateDefaultMaterial()
 
 	pMtrl = new CMaterial;
 	pMtrl->DisableFileSave();
+	pMtrl->SetShader(FindRes<CShader>(L"Std3DShader"));
+	AddRes(L"TileMtrl", pMtrl);
+
+	pMtrl = new CMaterial;
+	pMtrl->DisableFileSave();
 	pMtrl->SetShader(FindRes<CShader>(L"SkyboxShader"));
 	AddRes(L"SkyboxMtrl", pMtrl);
 
