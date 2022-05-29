@@ -25,6 +25,8 @@ private:
 
 	int					m_id;
 	bool				m_isMain;
+
+	bool				m_bColCheck = false;
 public:
 	virtual void awake();	
 	virtual void update();

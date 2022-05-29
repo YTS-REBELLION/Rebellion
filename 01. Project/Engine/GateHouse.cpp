@@ -36,3 +36,24 @@ void CGateHouse::update()
 
 
 }
+
+void CGateHouse::OnCollisionEnter(CCollider2D* _pOther)
+{
+	cout << "?" << endl;
+}
+
+void CGateHouse::OnCollision(CCollider2D* _pOther)
+{
+	
+
+	cout << "집충돌" << endl;
+
+	
+
+}
+
+void CGateHouse::OnCollisionExit(CCollider2D* _pOther)
+{
+
+	cout << "충돌 해제" << endl;
+}
