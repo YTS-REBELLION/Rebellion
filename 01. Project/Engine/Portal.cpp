@@ -32,8 +32,6 @@ void CPortal::update()
 	vRot.y = 21.95f;
 
 
-	cout << "Rot:" << vRot.y << endl;
-
 
 	Transform()->SetLocalPos(localPos);
 	Transform()->SetLocalRot(vRot);

@@ -470,7 +470,7 @@ void CSceneMgr::init()
 	// =================================
 	// Player Layer 와 Monster Layer 는 충돌 검사 진행
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Monster");
-	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Monster");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");
 	
 
 
@@ -496,60 +496,60 @@ void CSceneMgr::init()
 	// AddGameObject
 	m_pCurScene->AddGameObject(L"Default", GuardHouseObject, false);
 
-	//// ===========================================================================================
-	//CGameObject* GateHouseObject = nullptr;
-	//GateHouseObject = new CGameObject;
-	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Gatehouses.fbx");
-	//GateHouseObject = pMeshData->Instantiate();
-	//GateHouseObject->SetName(L"Gate_houses");
-	//GateHouseObject->FrustumCheck(false);
+	// ===========================================================================================
+	CGameObject* GateHouseObject = nullptr;
+	GateHouseObject = new CGameObject;
+	pPMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Gatehouses.mdat", L"MeshData\\Gatehouses.mdat");
+	GateHouseObject = pPMeshData->Instantiate();
+	GateHouseObject->SetName(L"Gate_houses");
+	GateHouseObject->FrustumCheck(false);
 
-	//// Transform 설정
-	//GateHouseObject->Transform()->SetLocalPos(Vec3(-1400.f, 200.f, 0.f));
-	//GateHouseObject->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
+	// Transform 설정
+	GateHouseObject->Transform()->SetLocalPos(Vec3(-1400.f, 200.f, 0.f));
+	GateHouseObject->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
 
-	////Script 설정
-	//GateHouseObject->AddComponent(new CGateHouse);
-	//// AddGameObject
-	//m_pCurScene->AddGameObject(L"Default", GateHouseObject, false);
+	//Script 설정
+	GateHouseObject->AddComponent(new CGateHouse);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", GateHouseObject, false);
 
-	//// ===========================================================================================
-	//CGameObject* GateHouseObject2 = nullptr;
-	//GateHouseObject2 = new CGameObject;
-	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Gatehouses.fbx");
-	//GateHouseObject2 = pMeshData->Instantiate();
-	//GateHouseObject2->SetName(L"Gate_houses2");
-	//GateHouseObject2->FrustumCheck(false);
-	////SwordObject->AddComponent(new CTransform);
-	////SwordObject->AddComponent(new CMeshRender);
+	// ===========================================================================================
+	CGameObject* GateHouseObject2 = nullptr;
+	GateHouseObject2 = new CGameObject;
+	pPMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Gatehouses.mdat", L"MeshData\\Gatehouses.mdat");
+	GateHouseObject2 = pPMeshData->Instantiate();
+	GateHouseObject2->SetName(L"Gate_houses2");
+	GateHouseObject2->FrustumCheck(false);
+	//SwordObject->AddComponent(new CTransform);
+	//SwordObject->AddComponent(new CMeshRender);
 
-	//// Transform 설정
-	//GateHouseObject2->Transform()->SetLocalPos(Vec3(1000.f, 200.f, 0.f));
-	//GateHouseObject2->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
+	// Transform 설정
+	GateHouseObject2->Transform()->SetLocalPos(Vec3(1000.f, 200.f, 0.f));
+	GateHouseObject2->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
 
-	////Script 설정
-	//GateHouseObject2->AddComponent(new CGateHouse);
-	//// AddGameObject
-	//m_pCurScene->AddGameObject(L"Default", GateHouseObject2, false);
+	//Script 설정
+	GateHouseObject2->AddComponent(new CGateHouse);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", GateHouseObject2, false);
 
-	//// ===========================================================================================
-	//CGameObject* GateHouseObject3 = nullptr;
-	//GateHouseObject3 = new CGameObject;
-	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Gatehouses.fbx");
-	//GateHouseObject3 = pMeshData->Instantiate();
-	//GateHouseObject3->SetName(L"Gate_houses3");
-	//GateHouseObject3->FrustumCheck(false);
-	////SwordObject->AddComponent(new CTransform);
-	////SwordObject->AddComponent(new CMeshRender);
+	// ===========================================================================================
+	CGameObject* GateHouseObject3 = nullptr;
+	GateHouseObject3 = new CGameObject;
+	pPMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Gatehouses.mdat", L"MeshData\\Gatehouses.mdat");
+	GateHouseObject3 = pPMeshData->Instantiate();
+	GateHouseObject3->SetName(L"Gate_houses3");
+	GateHouseObject3->FrustumCheck(false);
+	//SwordObject->AddComponent(new CTransform);
+	//SwordObject->AddComponent(new CMeshRender);
 
-	//// Transform 설정
-	//GateHouseObject3->Transform()->SetLocalPos(Vec3(-1400.f, 200.f, 1000.f));
-	//GateHouseObject3->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
+	// Transform 설정
+	GateHouseObject3->Transform()->SetLocalPos(Vec3(-1400.f, 200.f, 2000.f));
+	GateHouseObject3->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
 
-	////Script 설정
-	//GateHouseObject3->AddComponent(new CGateHouse);
-	//// AddGameObject
-	//m_pCurScene->AddGameObject(L"Default", GateHouseObject3, false);
+	//Script 설정
+	GateHouseObject3->AddComponent(new CGateHouse);
+	// AddGameObject
+	m_pCurScene->AddGameObject(L"Default", GateHouseObject3, false);
 
 	
 	//// ===========================================================================================

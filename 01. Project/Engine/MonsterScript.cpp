@@ -64,11 +64,7 @@ void CMonsterScript::update()
 	
 	
 
-	if (KEY_TAB(KEY_TYPE::KEY_SPACE))
-	{
-		GetObj()->Animator3D()->SetClipTime(0, 0.f);
-		SetAttack();
-	}
+	
 	if (GetAttack() && m_vecAniClipTime[0] < Animator3D()->GetAnimClip(0).dTimeLength) {
 		m_vecAniClipTime[0] += DT;
 
