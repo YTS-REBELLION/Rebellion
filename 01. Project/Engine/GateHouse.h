@@ -20,6 +20,11 @@ public:
 	CGateHouse();
 	virtual ~CGateHouse();
 
+public:
+	virtual void OnCollisionEnter(CCollider2D* _pOther);
+	virtual void OnCollision(CCollider2D* _pOther);
+	virtual void OnCollisionExit(CCollider2D* _pOther);
+
 };
 
 

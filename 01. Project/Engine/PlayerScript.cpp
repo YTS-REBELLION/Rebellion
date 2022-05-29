@@ -199,11 +199,43 @@ void CPlayerScript::update()
 		player->Transform()->SetLocalRot(vRot);
 	}
 
-	//cout << localPos.x << localPos.y << localPos.z << endl;
-	Transform()->SetLocalPos(localPos);
-	//Transform()->SetLocalRot(localRot);
+	
+	if (!m_bColCheck)
+	{
+		Transform()->SetLocalPos(localPos);
 
-	//Transform()->SetLocalRot(vRot);
+		
+
+
+	}
+	else
+	{
+		if (WorldDir == -playerTrans->GetWorldDir(DIR_TYPE::UP))
+		{
+			localPos -= WorldDir * m_fSpeed * 2 * DT;
+			Transform()->SetLocalPos(localPos);
+		}
+
+		if (WorldDir == playerTrans->GetWorldDir(DIR_TYPE::RIGHT))
+		{
+			localPos -= WorldDir * m_fSpeed * 2 * DT;
+			Transform()->SetLocalPos(localPos);
+		}
+
+		if (WorldDir == -1*(playerTrans->GetWorldDir(DIR_TYPE::UP)))
+		{
+			localPos += WorldDir * m_fSpeed * 2 * DT;
+			Transform()->SetLocalPos(localPos);
+		}
+
+		if (WorldDir == -1 * (playerTrans->GetWorldDir(DIR_TYPE::RIGHT)))
+		{
+			localPos += WorldDir * m_fSpeed * 2 * DT;
+			Transform()->SetLocalPos(localPos);
+		}
+
+	}
+	
 }
 
 void CPlayerScript::SetPlayerAnimation(const int& i)
@@ -237,29 +269,9 @@ void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
 
 void CPlayerScript::OnCollision(CCollider2D* _pOther)
 {
-	//BoundingSphere myBS = Collider2D()->GetBS();
-	//BoundingSphere otherBS = _pOther->Collider2D()->GetBS();
-
 	cout << "충돌" << endl;
+	m_bColCheck = true;
 
-	//Vec3 WorldDir;
-	//Vec3 localPos = Transform()->GetLocalPos();
-	//CTransform* playerTrans = Transform();
-
-	//WorldDir = playerTrans->GetWorldDir(DIR_TYPE::UP);
-	//localPos -= WorldDir * m_fSpeed * DT * 2.0f;
-
-	//if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
-	//{
-	//	localPos -= WorldDir * m_fSpeed * DT;
-	//}
-
-	////if (L"MIRO" == _pOther->GetObj()->GetName())
-	////{
-	////	//localPos.y += 1000.f;
-	////}
-
-	//Transform()->SetLocalPos(localPos);
 
 }
 
@@ -267,4 +279,6 @@ void CPlayerScript::OnCollisionExit(CCollider2D* _pOther)
 {
 
 	cout << "충돌 해제" << endl;
+
+	m_bColCheck = false;
 }

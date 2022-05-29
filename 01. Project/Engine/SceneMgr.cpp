@@ -217,6 +217,7 @@ void CSceneMgr::init()
 	m_pCurScene->GetLayer(3)->SetName(L"Map");
 	m_pCurScene->GetLayer(4)->SetName(L"Portal");
 	m_pCurScene->GetLayer(5)->SetName(L"Sword");
+	m_pCurScene->GetLayer(6)->SetName(L"Object"); 
 	m_pCurScene->GetLayer(30)->SetName(L"UI");
 	m_pCurScene->GetLayer(31)->SetName(L"Tool");
 
@@ -552,7 +553,7 @@ void CSceneMgr::init()
 	// Player Layer 와 Monster Layer 는 충돌 검사 진행
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Monster");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");
-	
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Object", L"Player");
 
 
 
@@ -573,10 +574,14 @@ void CSceneMgr::init()
 	GuardHouseObject->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
 
 	//Script 설정
-	GuardHouseObject->AddComponent(new CGuardHouse);
-	// AddGameObject
-	m_pCurScene->AddGameObject(L"Default", GuardHouseObject, false);
+	GuardHouseObject->AddComponent(new CCollider2D);
+	GuardHouseObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	GuardHouseObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	GuardHouseObject->Collider2D()->SetOffsetScale(Vec3(1000.f, 2200.f, 1000.f));
 
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Monster")->AddGameObject(GuardHouseObject);
+	
 	// ===========================================================================================
 	CGameObject* GateHouseObject = nullptr;
 	GateHouseObject = new CGameObject;
@@ -590,9 +595,15 @@ void CSceneMgr::init()
 	GateHouseObject->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
 
 	//Script 설정
-	GateHouseObject->AddComponent(new CGateHouse);
+	
+	GateHouseObject->AddComponent(new CCollider2D);
+
+	GateHouseObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	GateHouseObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	GateHouseObject->Collider2D()->SetOffsetScale(Vec3(1000.f, 2200.f, 1000.f));
+
 	// AddGameObject
-	m_pCurScene->AddGameObject(L"Default", GateHouseObject, false);
+	m_pCurScene->FindLayer(L"Monster")->AddGameObject(GateHouseObject);
 
 	// ===========================================================================================
 	CGameObject* GateHouseObject2 = nullptr;
