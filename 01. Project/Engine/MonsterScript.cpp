@@ -40,7 +40,7 @@ void CMonsterScript::update()
 	
 	CSceneMgr::GetInst()->FindPlayerPos(L"Player");
 	float fDistanceP_M = Vec3::Distance(CSceneMgr::GetInst()->m_vSavePos, localPos);
-	cout << "거리차이:" << fDistanceP_M << endl;
+	//cout << "거리차이:" << fDistanceP_M << endl;
 	if (fDistanceP_M > 200.f && fDistanceP_M <= 505.f )
 	{
 		m_fSpeed = 200.f;
