@@ -34,5 +34,6 @@ public:
 
 public:
 	void CreateTargetUI();
+	void CreateMap();
 };
 

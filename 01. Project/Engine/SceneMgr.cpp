@@ -107,6 +107,72 @@ void CSceneMgr::CreateTargetUI()
 	}	
 }
 
+void CSceneMgr::CreateMap()
+{
+	CGameObject* pTileObjects = nullptr;
+	Ptr<CTexture> pBirckColor = CResMgr::GetInst()->Load<CTexture>(L"Brick", L"Texture\\Brick.png");
+
+	for (int j = 0; j < 13; ++j)
+	{
+		for (int i = 0; i < 15; ++i)
+		{
+			pTileObjects = new CGameObject;
+			pTileObjects->SetName(L"Tile");
+			pTileObjects->AddComponent(new CTransform);
+			pTileObjects->AddComponent(new CMeshRender);
+
+			// Transform 설정
+			pTileObjects->Transform()->SetLocalPos(Vec3(-7000.f + i * 1000.f, 5000.f, 500.f + j * 1000.f));
+			pTileObjects->Transform()->SetLocalScale(Vec3(1000.f, 1000.f, 1.f));
+			pTileObjects->Transform()->SetLocalRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
+
+			// MeshRender 설정
+			pTileObjects->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+			pTileObjects->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TileMtrl"));
+			pTileObjects->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pBirckColor.GetPointer());
+
+			// AddGameObject
+			m_pCurScene->FindLayer(L"Map")->AddGameObject(pTileObjects);
+		}
+	}
+
+	for (int j = 0; j < 13; ++j)
+	{
+		for (int i = 0; i < 15; ++i)
+		{
+			pTileObjects = new CGameObject;
+			pTileObjects->SetName(L"Tile");
+			pTileObjects->AddComponent(new CTransform);
+			pTileObjects->AddComponent(new CMeshRender);
+
+			// Transform 설정
+			pTileObjects->Transform()->SetLocalPos(Vec3(-7000.f + i * 1000.f, 5490.f, 500.f + j * 1000.f));
+			pTileObjects->Transform()->SetLocalScale(Vec3(1000.f, 1000.f, 1.f));
+			pTileObjects->Transform()->SetLocalRot(Vec3(1.5 * XM_PI, 0.f, 0.f));
+
+			// MeshRender 설정
+			pTileObjects->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+			pTileObjects->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TileMtrl"));
+			pTileObjects->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pBirckColor.GetPointer());
+
+			// AddGameObject
+			m_pCurScene->FindLayer(L"Map")->AddGameObject(pTileObjects);
+		}
+	}
+
+	CGameObject* pCastleObject = nullptr;
+	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\MAP10.mdat", L"MeshData\\MAP10.mdat");
+
+	pCastleObject = pMeshData->Instantiate();
+	pCastleObject->SetName(L"Castle");
+	pCastleObject->FrustumCheck(false);
+	pCastleObject->Transform()->SetLocalPos(Vec3(0.f, 5110.f, 0.f));
+	pCastleObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pCastleObject->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
+
+	m_pCurScene->FindLayer(L"Map")->AddGameObject(pCastleObject);
+}
+
 void CSceneMgr::init()
 {
 	// =================
@@ -170,7 +236,7 @@ void CSceneMgr::init()
 
 
 	//CreateTargetUI();
-
+	CreateMap();
 	// ====================
 	// 3D Light Object 추가
 	// ====================
@@ -211,6 +277,12 @@ void CSceneMgr::init()
 	pPlayer->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
 	pPlayer->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
 	pPlayer->Collider2D()->SetOffsetScale(Vec3(850.f, 850.f, 1700.f));
+
+	Ptr<CTexture> pPlayerColor = CResMgr::GetInst()->Load<CTexture>(L"Player_d", L"Texture\\Player\\Dreyar_diffuse.png");
+	Ptr<CTexture> pPlayerNormal = CResMgr::GetInst()->Load<CTexture>(L"Player_n", L"Texture\\Player\\Dreyar_normal.png");
+
+	pPlayer->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pPlayerColor.GetPointer());
+	pPlayer->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pPlayerNormal.GetPointer());
 
 	// 플레이어 스크립트 붙여주기.
 	pPlayer->AddComponent(new CPlayerScript);
@@ -335,6 +407,7 @@ void CSceneMgr::init()
 	// AddGameObject
 	m_pCurScene->FindLayer(L"Map")->AddGameObject(pObject);
 
+
 	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Idle.mdat", L"MeshData\\Player_Idle.mdat");
 	
 	CGameObject* pMonster = new CGameObject;
@@ -399,6 +472,13 @@ void CSceneMgr::init()
 	pPotalObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
 	pPotalObject->Collider2D()->SetOffsetPos(Vec3(0.f, 50.f, 30.f));
 	pPotalObject->Collider2D()->SetOffsetScale(Vec3(150.f, 100.f, 170.f));
+
+	//Ptr<CTexture> pPotalColor = CResMgr::GetInst()->Load<CTexture>(L"Tile", L"Texture\\Tile\\TILE_01.tga");
+	//Ptr<CTexture> pPotalNormal = CResMgr::GetInst()->Load<CTexture>(L"Tile_n", L"Texture\\Tile\\TILE_01_N.tga");
+
+	//pPotalObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pPotalColor.GetPointer());
+	//pPotalObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pPotalNormal.GetPointer());
+
 	m_pCurScene->FindLayer(L"Monster")->AddGameObject(pPotalObject);
 
 	// ====================

@@ -67,7 +67,7 @@ void CToolCamScript::SetFreeCamera()
 	float fScale = Camera()->GetScale();
 	float fSpeed = m_fSpeed;
 
-	if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+	if (KEY_HOLD(KEY_TYPE::KEY_NUM0))
 	{
 		fSpeed *= 5.f;
 	}
