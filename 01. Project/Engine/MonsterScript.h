@@ -12,6 +12,9 @@ private:
 	Vec3				m_vecPlayerDir;
 	float				m_fSpeed = 200.f;
 	bool				m_bAttack;
+	bool				m_bHit;
+	bool				m_bAniOk;
+
 	sc_packet_move* m_movePacketTemp = nullptr;
 
 	float				m_vecAniClipTime[5]{};
@@ -25,12 +28,14 @@ private:
 
 	float				m_fMaxHp=1200.f;
 	float				m_fHp=0.f;
+
+	vector<tMTAnimClip>			m_pVecAnimClip;
 public:
 	virtual void awake();
 	virtual void update();
 
 	void GetPlayerAnimation(Ptr<CMesh> AniDate) { m_pAniData.push_back(AniDate); };
-	void SetPlayerAnimation(const int& i);
+	void SetPlayerAnimation(const int& i, const UINT& _StartFrame, const UINT& _EndFrame);
 	Ptr<CMesh> GetAniData(const int& type) { return m_pAniData[(int)type]; }
 
 	void SetPlayerAnimation(int other_id, int i);
@@ -49,6 +54,14 @@ public:
 		else m_bAttack = true;
 	}
 	bool GetAttack() { return m_bAttack; }
+
+	void SetHit() {
+		if (m_bAniOk) {
+			m_bAniOk = false;
+		}
+		else m_bAniOk = true;
+	}
+	bool GetHit() { return m_bAniOk; }
 
 	CPlayerScript* m_pPlayer = nullptr;
 	

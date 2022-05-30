@@ -10,7 +10,9 @@ CMonsterScript::CMonsterScript()
 	, m_pOriginMtrl(nullptr)
 	, m_pCloneMtrl(nullptr)
 	, m_bAttack(false)
+	, m_bHit(false)
 	, m_iCulidx(0)
+	, m_bAniOk(false)
 {
 	m_fHp = m_fMaxHp;
 }
@@ -48,60 +50,51 @@ void CMonsterScript::update()
 		//플레이어위치로이동
 		//localPos.z -=  m_fSpeed/10 * DT;
 
-
 		if (fDistanceP_M >= 0.f && fDistanceP_M <= 200.f)
 		{
 			//공격
 			m_fSpeed = 0.f;
-
-
-
-
-		}
-
-	}
-	
-	
-	
-
-	
-	if (GetAttack() && m_vecAniClipTime[0] < Animator3D()->GetAnimClip(0).dTimeLength) {
-		m_vecAniClipTime[0] += DT;
-
-		cout << m_vecAniClipTime[0] << endl;
-		GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 20.f, 70.f));
-		GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 1150.f, 1700.f));
-
-
-		SetPlayerAnimation(3);
-
-		if (m_vecAniClipTime[0] > Animator3D()->GetAnimClip(0).dTimeLength)
-		{
-			m_vecAniClipTime[0] = 0.f;
-			GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
-			GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 850.f, 1700.f));
-
-			SetAttack();
 		}
 	}
+	
+	//if (m_bHit)
+	//{
+	//	//cout << "공격하는 도중에 맞았다." << endl;
+	//	SetPlayerAnimation(1, 0, 40);
+	//	cout << GetObj()->Animator3D()->GetFrameIdx() << endl;
+	//	if (GetObj()->Animator3D()->GetCurTime() > 2.6f && !GetHit())
+	//	{
+	//		SetHit();
+	//		cout << "애니메이션 끝" << endl;
+	//	}
+	//}
+	//else {
+	//}
 
-	if (KEY_HOLD(KEY_TYPE::KEY_ENTER))
-	{
-		localPos.y = 0.f;
-	}
+	SetPlayerAnimation(0, 0, 76);
 	Transform()->SetLocalPos(localPos);
-
-
-	//Transform()->SetLocalRot(vRot);
 }
 
-void CMonsterScript::SetPlayerAnimation(const int& i)
+void CMonsterScript::SetPlayerAnimation(const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
 {
 	//if (m_pAniData.size() == 0)	return;
 	GetObj()->Animator3D()->SetBones(m_pAniData[i]->GetBones());
-	GetObj()->Animator3D()->SetAnimClip(m_pAniData[i]->GetAnimClip());
+
+	tMTAnimClip* tNewAnimClip = new tMTAnimClip;
+	tNewAnimClip->iStartFrame = _StartFrame;
+	tNewAnimClip->iEndFrame = _EndFrame;
+	tNewAnimClip->iFrameLength = _EndFrame - _StartFrame;
+	tNewAnimClip->dStartTime = (double)_StartFrame / (double)30;
+	tNewAnimClip->dEndTime = (double)_EndFrame / (double)30;
+	tNewAnimClip->dTimeLength = tNewAnimClip->dEndTime - tNewAnimClip->dStartTime;
+
+	m_pVecAnimClip.push_back(*tNewAnimClip);
+
+	GetObj()->Animator3D()->SetAnimClip(&m_pVecAnimClip);
+
 	GetObj()->MeshRender()->SetMesh(m_pAniData[i]);
 }
+
 void CMonsterScript::SetPlayerAnimation(int other_id, int i)
 {
 	//if (m_pAniData.size() == 0)	return;
@@ -121,25 +114,20 @@ void CMonsterScript::SetOtherMovePacket(sc_packet_move* p, const float& rtt)
 
 void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 {
-	cout << "?" << endl;
 }
 
 void CMonsterScript::OnCollision(CCollider2D* _pOther)
 {
-	cout << "칼과몬스터충돌" << endl;
-	m_fHp -= 4.f;
+	//m_fHp -= 4.f;
+	m_bHit = true;
 
 	if (m_fHp <= 0.f)
 	{
 		GetObj()->SetDead();
-
 	}
-
-
 }
 
 void CMonsterScript::OnCollisionExit(CCollider2D* _pOther)
 {
-
-	cout << "충돌 해제" << endl;
+	m_bHit = false;
 }
