@@ -111,6 +111,7 @@ void CSceneMgr::CreateMap()
 {
 	CGameObject* pTileObjects = nullptr;
 	Ptr<CTexture> pBirckColor = CResMgr::GetInst()->Load<CTexture>(L"Brick", L"Texture\\Brick.png");
+	Ptr<CTexture> pWallColor = CResMgr::GetInst()->Load<CTexture>(L"Wall_tex", L"Texture\\wall.jpg");
 
 	for (int j = 0; j < 13; ++j)
 	{
@@ -169,6 +170,8 @@ void CSceneMgr::CreateMap()
 	pCastleObject->Transform()->SetLocalPos(Vec3(0.f, 5110.f, 0.f));
 	pCastleObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pCastleObject->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
+
+	pCastleObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pWallColor.GetPointer());
 
 	m_pCurScene->FindLayer(L"Map")->AddGameObject(pCastleObject);
 }
@@ -236,7 +239,7 @@ void CSceneMgr::init()
 
 
 	//CreateTargetUI();
-	//CreateMap();
+	CreateMap();
 	// ====================
 	// 3D Light Object 추가
 	// ====================
@@ -342,21 +345,6 @@ void CSceneMgr::init()
 	m_pCurScene->AddGameObject(L"Player", pSwordObject, false);
 	pPlayer->AddChild(pSwordObject);
 
-
-
-	//// 더미 플레이어 -> 초기 캐릭터가 누워있는거를 회전 시키면 카메라도 같이 회전해서 생성.
-	//Ptr<CMeshData> DmypMeshData;
-
-	//CGameObject* DmypObject = new CGameObject;
-	//DmypObject = DmypMeshData->DmyInstantiate();
-	//DmypObject->SetName(L"Dummy_Player");
-	//DmypObject->FrustumCheck(false);
-	//DmypObject->Transform()->SetLocalPos(Vec3(0.f,0.f,0.f));
-
-	//DmypObject->AddComponent(new CPlayerScript);
-	//CPlayerScript* Dmy_PlayerScript = DmypObject->GetScript<CPlayerScript>();
-	//m_pCurScene->AddGameObject(L"Player", DmypObject, false);
-
 	// ==================
 	// Camera Object 생성
 	// ==================
@@ -424,49 +412,22 @@ void CSceneMgr::init()
 		}
 	}
 
-	// 더미
-	pObject = new CGameObject;
-	pObject->SetName(L"Map Object");
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CMeshRender);
-
-	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	pObject->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
-
-	pObject->AddComponent(new CCollider2D);
-
-	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	pObject->Collider2D()->SetOffsetScale(Vec3(1000.f, 1000.f, 1000.f));
-
-	// MeshRender 설정
-	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
-
-	// AddGameObject
-	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);
-
 	// Monster 객체 생성
 	CGameObject* pMonster = new CGameObject;
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Idle.mdat", L"MeshData\\Player_Idle.mdat");
-	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Monster\\MI.fbx");
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Sword And Shield Idle (2).mdat", L"MeshData\\Sword And Shield Idle (2).mdat");
+	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sword And Shield Idle (2).fbx");
 	//pMeshData->Save(pMeshData->GetPath());
 
 	pMonster = pMeshData->Instantiate();
 	pMonster->SetName(L"Monster1");
 	pMonster->FrustumCheck(false);
 	pMonster->Transform()->SetLocalPos(Vec3(0.f, 0.f, 500.f));
-	pMonster->Transform()->SetLocalScale(Vec3(0.08f, 0.08f, 0.08f));
+	pMonster->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
 	pMonster->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 	pMonster->AddComponent(new CCollider2D);
-
 	pMonster->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
 	pMonster->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
-	pMonster->Collider2D()->SetOffsetScale(Vec3(850.f, 850.f, 1700.f));
+	pMonster->Collider2D()->SetOffsetScale(Vec3(20.f, 20.f, 40.f));
 
 	// 플레이어 스크립트 붙여주기.
 	pMonster->AddComponent(new CMonsterScript);
@@ -478,20 +439,14 @@ void CSceneMgr::init()
 
 	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Walk.fbx");
 	//pMeshData->Save(pMeshData->GetPath());
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Walk.mdat", L"MeshData\\Player_Walk.mdat");
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Big Hit To Head", L"MeshData\\Big Hit To Head.mdat");
 	MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
 	g_net.SetAniData(pMeshData->GetMesh());
 
-	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Run.fbx");
-	//pMeshData->Save(pMeshData->GetPath());
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Run.mdat", L"MeshData\\Player_Run.mdat");
-	MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 2
-	g_net.SetAniData(pMeshData->GetMesh());
-
-	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Attack.fbx");
-	//pMeshData->Save(pMeshData->GetPath());
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Attack.mdat", L"MeshData\\Player_Attack.mdat");
-	MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
+	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Shoulder Hit And Fall.fbx");
+	pMeshData->Save(pMeshData->GetPath());
+	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Big Hit To Head", L"MeshData\\Big Hit To Head.mdat");
+	MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
 	g_net.SetAniData(pMeshData->GetMesh());
 
 	m_pCurScene->AddGameObject(L"Monster", pMonster, false);
@@ -506,14 +461,14 @@ void CSceneMgr::init()
 	pPotalObject = pPMeshData->Instantiate();
 	pPotalObject->SetName(L"Portal");
 	pPotalObject->FrustumCheck(false);
-	pPotalObject->Transform()->SetLocalPos(Vec3(0.f, 50.f, 0.f));
+	pPotalObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 	pPotalObject->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
 	pPotalObject->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
 	pPotalObject->AddComponent(new CCollider2D);
 
 	pPotalObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
 	pPotalObject->Collider2D()->SetOffsetPos(Vec3(0.f, 50.f, 30.f));
-	pPotalObject->Collider2D()->SetOffsetScale(Vec3(150.f, 100.f, 170.f));
+	pPotalObject->Collider2D()->SetOffsetScale(Vec3(10.f, 10.f, 10.f));
 
 	//Ptr<CTexture> pPotalColor = CResMgr::GetInst()->Load<CTexture>(L"Tile", L"Texture\\Tile\\TILE_01.tga");
 	//Ptr<CTexture> pPotalNormal = CResMgr::GetInst()->Load<CTexture>(L"Tile_n", L"Texture\\Tile\\TILE_01_N.tga");
@@ -592,6 +547,7 @@ void CSceneMgr::init()
 	// =================================
 	// Player Layer 와 Monster Layer 는 충돌 검사 진행
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Monster");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Map");
 	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");
 	
 
@@ -602,7 +558,7 @@ void CSceneMgr::init()
 	CGameObject* GuardHouseObject = nullptr;
 
 	GuardHouseObject = new CGameObject;
-	 pPMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Gatehouses.mdat", L"MeshData\\Gatehouses.mdat");
+	pPMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Gatehouses.mdat", L"MeshData\\Gatehouses.mdat");
 	GuardHouseObject = pPMeshData->Instantiate();
 	GuardHouseObject->SetName(L"Guard_houses");
 	GuardHouseObject->FrustumCheck(false);
@@ -674,26 +630,27 @@ void CSceneMgr::init()
 	m_pCurScene->AddGameObject(L"Default", GateHouseObject3, false);
 
 	
-	//// ===========================================================================================
-	CGameObject* Castle = nullptr;
-	Castle = new CGameObject;
+	// 성
+	//CGameObject* Castle = nullptr;
+	//Castle = new CGameObject;
 
-	//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Idle.mdat", L"MeshData\\Player_Idle.mdat");
-	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Castle.fbx");
-	pMeshData->Save(pMeshData->GetPath());
+	////pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Castle.mdat", L"MeshData\\Castle.mdat");
+	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\65.fbx");
+	////pMeshData->Save(pMeshData->GetPath());
 
-	Castle = pMeshData->Instantiate();
-	Castle->SetName(L"Castle");
-	Castle->FrustumCheck(false);
+	//Castle = pMeshData->Instantiate();
+	//Castle->SetName(L"Castle");
+	//Castle->FrustumCheck(false);
 
-	// Transform 설정
-	Castle->Transform()->SetLocalPos(Vec3(0.f, 200.f, 1200.f));
-	Castle->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	//// Transform 설정
+	//Castle->Transform()->SetLocalPos(Vec3(0.f, 200.f, 1200.f));
+	//Castle->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+	////Castle->Transform()->SetLocalRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
 
-	//Script 설정
-	Castle->AddComponent(new CCastle);
-	// AddGameObject
-	m_pCurScene->AddGameObject(L"Default", Castle, false);
+	////Script 설정
+	//Castle->AddComponent(new CCastle);
+	//// AddGameObject
+	//m_pCurScene->AddGameObject(L"Default", Castle, false);
 
 
 	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");

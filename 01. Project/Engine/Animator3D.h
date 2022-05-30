@@ -12,6 +12,7 @@ class CAnimator3D
 private:
 	const vector<tMTBone>*		m_pVecBones;
 	const vector<tMTAnimClip>*	m_pVecClip;
+	vector<tMTAnimClip>			m_pVecAnimClip;
 
 	vector<float>				m_vecClipUpdateTime;
 	vector<Matrix>				m_vecFinalBoneMat; // 텍스쳐에 전달할 최종 행렬정보
@@ -31,11 +32,18 @@ public:
 	void SetClipTime(int _iClipIdx, float _fTime) { m_vecClipUpdateTime[_iClipIdx] = _fTime; }
 	//vector<float> Getab() { return m_vecClipUpdateTime }
 	tMTAnimClip GetAnimClip(int _idx) { return m_pVecClip->at(_idx); }
-	double GetCurTime() { return m_dCurTime; }
+	//double GetCurTime() { return m_dCurTime; }
 	vector<Matrix>& GetFinalBoneMat() { return m_vecFinalBoneMat; }
 
 	int GetFrameIdx() { return m_iFrameIdx; }
+	void SetFrameIdx(const int& _idx) { m_iFrameIdx = _idx; }
+	void SetCurTime(const double& _CurTime) { m_vecClipUpdateTime[m_iCurClip] = _CurTime; }
+	void SetCurTime(const UINT& _iClipIdx, const double& _CurTime) { m_vecClipUpdateTime[_iClipIdx] = _CurTime; }
+	double GetCurTime() { return m_vecClipUpdateTime[m_iCurClip]; }
+	double GetCurTime(const UINT& _iClipIdx) { return m_vecClipUpdateTime[_iClipIdx]; }
 	
+	const vector<tMTAnimClip>* GetAnimClip() { return m_pVecClip; }
+
 private:
 	void check_mesh(Ptr<CMesh> _pMesh);
 

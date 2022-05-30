@@ -146,7 +146,6 @@ void CPlayerScript::update()
 	if (GetAttack() && m_vecAniClipTime[0] < Animator3D()->GetAnimClip(0).dTimeLength) {
 		m_vecAniClipTime[0] += DT;
 
-		cout << m_vecAniClipTime[0] << endl;
 		GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 20.f, 70.f));
 		GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 1150.f, 1700.f));
 
@@ -206,16 +205,13 @@ void CPlayerScript::SetOtherMovePacket(sc_packet_move* p, const float& rtt)
 
 void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
 {
-	cout << "?" << endl;
 }
 
 void CPlayerScript::OnCollision(CCollider2D* _pOther)
 {
-	cout << "충돌" << endl;
 }
 
 void CPlayerScript::OnCollisionExit(CCollider2D* _pOther)
 {
 
-	cout << "충돌 해제" << endl;
 }
