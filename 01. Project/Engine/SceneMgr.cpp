@@ -579,6 +579,7 @@ void CSceneMgr::init()
 	Ptr<CTexture> pBlackTex = CResMgr::GetInst()->Load<CTexture>(L"Black", L"Texture\\asd.png");
 	Ptr<CTexture> pSky01 = CResMgr::GetInst()->Load<CTexture>(L"Sky01", L"Texture\\Skybox\\Sky01.png");
 	Ptr<CTexture> pSky02 = CResMgr::GetInst()->Load<CTexture>(L"Sky02", L"Texture\\Skybox\\Sky02.jpg");
+	Ptr<CTexture> pSky04 = CResMgr::GetInst()->Load<CTexture>(L"Sky04", L"Texture\\Skybox\\Sky08.png");
 
 	Ptr<CTexture> pColor = CResMgr::GetInst()->Load<CTexture>(L"Tile", L"Texture\\Tile\\TILE_01.tga");
 	Ptr<CTexture> pNormal = CResMgr::GetInst()->Load<CTexture>(L"Tile_n", L"Texture\\Tile\\TILE_01_N.tga");
@@ -821,6 +822,24 @@ void CSceneMgr::init()
 
 	m_pCurScene->AddGameObject(L"Monster", pMonster, false);
 
+
+	// Tree 오브젝트
+	
+	//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Idle.mdat", L"MeshData\\Player_Idle.mdat");
+	Ptr<CMeshData> pTreeMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\jul2.fbx");
+	//pMeshData->Save(pMeshData->GetPath());
+
+	CGameObject* pTree = new CGameObject;
+
+	pTree = pTreeMeshData->Instantiate();
+	pTree->SetName(L"Tree");
+	pTree->FrustumCheck(false);
+	pTree->Transform()->SetLocalPos(Vec3(-2500.f, 340.f, 2570.f));
+	pTree->Transform()->SetLocalScale(Vec3(40.f, 20.f, 63.f));
+	pTree->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
+	pTree->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(pTree);
+
 	//// ====================
 	//// Potal 오브젝트 생성
 	//// ====================
@@ -831,7 +850,7 @@ void CSceneMgr::init()
 	pPotalObject = pPMeshData->Instantiate();
 	pPotalObject->SetName(L"Portal");
 	pPotalObject->FrustumCheck(false);
-	pPotalObject->Transform()->SetLocalPos(Vec3(114.f, 150.f, 3450.f));
+	pPotalObject->Transform()->SetLocalPos(Vec3(114.f, 150.f, 3300.f));
 	pPotalObject->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
 	pPotalObject->Transform()->SetLocalRot(Vec3(17.13f, 21.95f, 0.f));
 
@@ -870,7 +889,7 @@ void CSceneMgr::init()
 	// MeshRender 설정
 	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh"));
 	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"SkyboxMtrl"));
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pSky01.GetPointer());
+	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pSky04.GetPointer());
 
 	// AddGameObject
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject, false);
