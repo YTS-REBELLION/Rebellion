@@ -753,25 +753,6 @@ void CSceneMgr::init()
 	PlayerCamScript->SetCameraToPlayer(pPlayer);
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pMainCam);
 
-
-	// 대충 투명 객체 만들기
-
-	//CGameObject* pTr = new CGameObject;
-	//pTr->SetName(L"TR");
-	//pTr->AddComponent(new CTransform);
-	//pTr->AddComponent(new CMeshRender);
-
-	//// Transform 설정
-	//pTr->Transform()->SetLocalPos(Vec3(0.f, 100.f, 0.f));
-	//pTr->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
-	////pObject->Transform()->SetLocalRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
-
-	//// MeshRender 설정
-	//pTr->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-
-	//// AddGameObject
-	//m_pCurScene->FindLayer(L"Default")->AddGameObject(pTr);
-
 	// ==================
 	// Map 오브젝트 생성
 	// ==================
@@ -810,7 +791,7 @@ void CSceneMgr::init()
 	pMonster = pMeshData->Instantiate();
 	pMonster->SetName(L"Monster1");
 	pMonster->FrustumCheck(false);
-	pMonster->Transform()->SetLocalPos(Vec3(0.f, 0.f, 500.f));
+	pMonster->Transform()->SetLocalPos(Vec3(0.f, 5000.f, 3200.f));
 	pMonster->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
 	pMonster->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 	pMonster->AddComponent(new CCollider2D);
@@ -832,10 +813,10 @@ void CSceneMgr::init()
 	MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
 	g_net.SetAniData(pMeshData->GetMesh());
 
-	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Shoulder Hit And Fall.fbx");
-	pMeshData->Save(pMeshData->GetPath());
-	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Big Hit To Head", L"MeshData\\Big Hit To Head.mdat");
-	MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
+	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Shoulder Hit And Fall.fbx");
+	//pMeshData->Save(pMeshData->GetPath());
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Shoulder Hit And Fall", L"MeshData\\Shoulder Hit And Fall.mdat");
+	MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 2
 	g_net.SetAniData(pMeshData->GetMesh());
 
 	m_pCurScene->AddGameObject(L"Monster", pMonster, false);
@@ -854,9 +835,6 @@ void CSceneMgr::init()
 	pPotalObject->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
 	pPotalObject->Transform()->SetLocalRot(Vec3(17.13f, 21.95f, 0.f));
 
-	pPotalObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pPotalObject->Collider2D()->SetOffsetPos(Vec3(0.f, 50.f, 30.f));
-	pPotalObject->Collider2D()->SetOffsetScale(Vec3(10.f, 10.f, 10.f));
 	// 더미
 	pObject = new CGameObject;
 	pObject->SetName(L"Map Object");
@@ -898,26 +876,7 @@ void CSceneMgr::init()
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject, false);
 
 	g_net.SetObj(pPlayer);
-	//CGameObject* MiroObject = nullptr;
-
-	//MiroObject = new CGameObject;
-	//MiroObject->SetName(L"MIRO");
-	//MiroObject->AddComponent(new CTransform);
-	//MiroObject->AddComponent(new CMeshRender);
-	//MiroObject->AddComponent(new CCollider2D);
-	//// Transform 설정
-	//MiroObject->Transform()->SetLocalPos(Vec3(500.f, 0.f, 0.f));
-	//MiroObject->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
-	//// MeshRender 설정
-	//MiroObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-	//MiroObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TestMtrl"));
-
-	//MiroObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	//MiroObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	//MiroObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.0f, 1.f));
-	//m_pCurScene->FindLayer(L"Monster")->AddGameObject(MiroObject);
-
- 
+	 
 	//// ====================
 	//// Grid 오브젝트 생성
 	//// ====================
@@ -1136,43 +1095,6 @@ void CSceneMgr::init()
 	//m_pCurScene->AddGameObject(L"Default", Castle, false);
 
 
-	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Wall 1_New.fbx");
-
-	//CGameObject* WallObject2 = nullptr;
-	//WallObject2 = new CGameObject;
-	//WallObject2 = pMeshData->Instantiate();
-	//WallObject2->SetName(L"Miro");
-	//WallObject2->FrustumCheck(false);
-
-	//// Transform 설정
-	//WallObject2->Transform()->SetLocalPos(Vec3(0.f, 200.f, 3500.f));
-	//WallObject2->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
-
-	////Script 설정
-	//WallObject2->AddComponent(new CMiro);
-	//// AddGameObject
-	//m_pCurScene->AddGameObject(L"Default", WallObject2, false);
-
-
-	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Monster_X_Black.fbx");
-
-	//CGameObject* NpcMon = nullptr;
-	//NpcMon = new CGameObject;
-	//NpcMon = pMeshData->Instantiate();
-	//NpcMon->SetName(L"Miro");
-	//NpcMon->FrustumCheck(false);
-
-	//// Transform 설정
-	//NpcMon->Transform()->SetLocalPos(Vec3(950.f, 110.f, -560.f));
-	//NpcMon->Transform()->SetLocalScale(Vec3(0.03f, 0.03f, 0.03f));
-
-	////Script 설정
-	//NpcMon->AddComponent(new CNpcMon);
-	//// AddGameObject
-	//m_pCurScene->AddGameObject(L"Default", NpcMon, false);
-
-
-
 	// 더미
 	pObject = new CGameObject;
 	pObject->SetName(L"Map Object");
@@ -1261,9 +1183,6 @@ void CSceneMgr::init()
 	// AddGameObject
 	m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
 
-	
-
-	
 	m_pCurScene->awake();
 	m_pCurScene->start();
 }
@@ -1277,7 +1196,6 @@ void CSceneMgr::update()
 	CRenderMgr::GetInst()->ClearCamera();
 	m_pCurScene->finalupdate();
 
-	   
 	// 충돌 처리
 	CCollisionMgr::GetInst()->update();
 }
