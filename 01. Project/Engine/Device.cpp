@@ -446,9 +446,14 @@ void CDevice::SetTextureToRegister(CTexture* _pTex, TEXTURE_REGISTER _eRegisterN
 	// 리소스 상태 변경
 	if (_pTex->GetResState() == D3D12_RESOURCE_STATE_UNORDERED_ACCESS)
 	{
-		CMDLIST->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(_pTex->GetTex2D().Get()
-			, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COMMON));
+		CD3DX12_RESOURCE_BARRIER value = CD3DX12_RESOURCE_BARRIER::Transition(_pTex->GetTex2D().Get()
+			, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COMMON);
+		CMDLIST_CS->ResourceBarrier(1, &value);
 		_pTex->SetResState(D3D12_RESOURCE_STATE_COMMON);
+
+		//CMDLIST->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(_pTex->GetTex2D().Get()
+		//	, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COMMON));
+		//_pTex->SetResState(D3D12_RESOURCE_STATE_COMMON);
 	}
 }
 
@@ -469,9 +474,13 @@ void CDevice::SetBufferToRegister(CStructuredBuffer* _pBuffer, TEXTURE_REGISTER 
 	// 리소스 상태 변경
 	if (_pBuffer->GetResState() == D3D12_RESOURCE_STATE_UNORDERED_ACCESS)
 	{
-		CMDLIST->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(_pBuffer->GetBuffer().Get()
-			, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COMMON));
+		CD3DX12_RESOURCE_BARRIER value = CD3DX12_RESOURCE_BARRIER::Transition(_pBuffer->GetBuffer().Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COMMON);
+		CMDLIST->ResourceBarrier(1, &value);
 		_pBuffer->SetResState(D3D12_RESOURCE_STATE_COMMON);
+
+		//CMDLIST->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(_pBuffer->GetBuffer().Get()
+		//	, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COMMON));
+		//_pBuffer->SetResState(D3D12_RESOURCE_STATE_COMMON);
 	}
 }
 
@@ -525,10 +534,15 @@ void CDevice::SetTextureToRegister_CS(CTexture* _pTex, TEXTURE_REGISTER _eRegist
 	// 리소스 상태 변경
 	if (_pTex->GetResState() == D3D12_RESOURCE_STATE_UNORDERED_ACCESS)
 	{
-		CMDLIST_CS->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(_pTex->GetTex2D().Get()
-			, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COMMON));
-
+		CD3DX12_RESOURCE_BARRIER value = CD3DX12_RESOURCE_BARRIER::Transition(_pTex->GetTex2D().Get()
+			, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COMMON);
+		CMDLIST_CS->ResourceBarrier(1, &value);
 		_pTex->SetResState(D3D12_RESOURCE_STATE_COMMON);
+
+		//CMDLIST_CS->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(_pTex->GetTex2D().Get()
+		//	, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COMMON));
+
+		//_pTex->SetResState(D3D12_RESOURCE_STATE_COMMON);
 	}
 }
 
@@ -546,11 +560,15 @@ void CDevice::SetUAVToRegister_CS(CTexture* _pTex, UAV_REGISTER _eRegister)
 	m_pDevice->CopyDescriptors(1, &hDescHandle, &iDestRange
 		, 1, &hSrcHandle, &iSrcRange, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
+	CD3DX12_RESOURCE_BARRIER value = CD3DX12_RESOURCE_BARRIER::Transition(_pTex->GetTex2D().Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+
 	// 리소스 상태 변경
 	if (_pTex->GetResState() == D3D12_RESOURCE_STATE_COMMON)
 	{
-		CMDLIST_CS->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(_pTex->GetTex2D().Get()
-			, D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_UNORDERED_ACCESS));
+		CMDLIST_CS->ResourceBarrier(1, &value);
+
+		//CMDLIST_CS->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(_pTex->GetTex2D().Get()
+		//	, D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_UNORDERED_ACCESS));
 
 		_pTex->SetResState(D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
 	}
@@ -573,10 +591,16 @@ void CDevice::SetBufferToSRVRegister_CS(CStructuredBuffer* _pBuffer, TEXTURE_REG
 	// 리소스 상태 변경
 	if (_pBuffer->GetResState() == D3D12_RESOURCE_STATE_UNORDERED_ACCESS)
 	{
-		CMDLIST_CS->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(_pBuffer->GetBuffer().Get()
-			, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COMMON));
+
+		CD3DX12_RESOURCE_BARRIER value = CD3DX12_RESOURCE_BARRIER::Transition(_pBuffer->GetBuffer().Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COMMON);
+		CMDLIST_CS->ResourceBarrier(1, &value);
 
 		_pBuffer->SetResState(D3D12_RESOURCE_STATE_COMMON);
+
+		//CMDLIST_CS->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(_pBuffer->GetBuffer().Get()
+		//	, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COMMON));
+
+		//_pBuffer->SetResState(D3D12_RESOURCE_STATE_COMMON);
 	}
 }
 
@@ -597,10 +621,15 @@ void CDevice::SetBufferToUAVRegister_CS(CStructuredBuffer* _pBuffer, UAV_REGISTE
 	// 리소스 상태 변경
 	if (_pBuffer->GetResState() == D3D12_RESOURCE_STATE_COMMON)
 	{
-		CMDLIST_CS->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(_pBuffer->GetBuffer().Get()
-			, D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_UNORDERED_ACCESS));
+		CD3DX12_RESOURCE_BARRIER value = CD3DX12_RESOURCE_BARRIER::Transition(_pBuffer->GetBuffer().Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+		CMDLIST_CS->ResourceBarrier(1, &value);
 
 		_pBuffer->SetResState(D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+
+		//CMDLIST_CS->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(_pBuffer->GetBuffer().Get()
+		//	, D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_UNORDERED_ACCESS));
+
+		//_pBuffer->SetResState(D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
 	}
 }
 
