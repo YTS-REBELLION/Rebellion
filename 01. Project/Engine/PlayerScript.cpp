@@ -242,10 +242,6 @@ void CPlayerScript::update()
 		}
 
 	}
-
-	cout << "플레이어위치x:" << Transform()->GetWorldPos().x << endl;
-	cout << "플레이어위치y:" << Transform()->GetWorldPos().y << endl;
-	cout << "플레이어위치z:" << Transform()->GetWorldPos().z << endl;
 	
 }
 

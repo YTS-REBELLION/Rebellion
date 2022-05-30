@@ -206,7 +206,7 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.find(id)->second->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
 			GameObject.find(id)->second->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
 			GameObject.find(id)->second->Collider2D()->SetOffsetScale(Vec3(800.f, 850.f, 1700.f));
-
+			
 			// 플레이어 스크립트 붙여주기.
 			GameObject.find(id)->second->AddComponent(new CPlayerScript);
 
@@ -248,40 +248,86 @@ void CNetwork::ProcessPacket(char* ptr)
 			/*GameObject.find(id)->second->AddComponent(new CPlayerScript);
 			GameObject.find(id)->second->GetScript<CPlayerScript>();*/
 
-			/*CGameObject* pSwordObject = nullptr;
-			Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\asdq.mdat", L"MeshData\\asdq.mdat");
-			Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
+			//CGameObject* pSwordObject = nullptr;
+			//Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\asdq.mdat", L"MeshData\\asdq.mdat");
+			//Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
 
-			pSwordObject = pSwordMeshData->Instantiate();
-			pSwordObject->SetName(L"Player_Sword");
-			pSwordObject->FrustumCheck(false);
-			pSwordObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-			pSwordObject->Transform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
-			pSwordObject->Transform()->SetLocalRot(Vec3(0.f, XMConvertToRadians(-90.f), XMConvertToRadians(-90.f)));
-			pSwordObject->AddComponent(new CCollider2D);
-			pSwordObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-			pSwordObject->Collider2D()->SetOffsetPos(Vec3(0.f, 50.f, 0.f));
-			pSwordObject->Collider2D()->SetOffsetScale(Vec3(10.f, 140.f, 5.f));
+			//pSwordObject = pSwordMeshData->Instantiate();
+			//pSwordObject->SetName(L"Player_Sword");
+			//pSwordObject->FrustumCheck(false);
+			//pSwordObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+			//pSwordObject->Transform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+			//pSwordObject->Transform()->SetLocalRot(Vec3(0.f, XMConvertToRadians(-90.f), XMConvertToRadians(-90.f)));
+			//pSwordObject->AddComponent(new CCollider2D);
+			//pSwordObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+			//pSwordObject->Collider2D()->SetOffsetPos(Vec3(0.f, 50.f, 0.f));
+			//pSwordObject->Collider2D()->SetOffsetScale(Vec3(10.f, 140.f, 5.f));
 
-			Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
-			pSwordObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, SwordObject.GetPointer());
+			//Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
+			//pSwordObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, SwordObject.GetPointer());
 
-			pSwordObject->AddComponent(new CSwordScript);
-			CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
-			pSwordObject->GetScript<CSwordScript>()->SetTarget(GameObject.find(id)->second);
-			pSwordObject->GetScript<CSwordScript>()->SetBoneIdx(36);
-			pSwordObject->GetScript<CSwordScript>()->SetBoneIdx2(48);
+			//pSwordObject->AddComponent(new CSwordScript);
+			//CSwordScript* SwordScript = GameObject.find(id)->second->GetScript<CSwordScript>();
+			//pSwordObject->GetScript<CSwordScript>()->SetTarget(GameObject.find(id)->second);
+			//pSwordObject->GetScript<CSwordScript>()->SetBoneIdx(36);
+			////pSwordObject->GetScript<CSwordScript>()->SetBoneIdx2(48);
 
-			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pSwordObject, false);
-			GameObject.find(id)->second->AddChild(pSwordObject);*/
+			//CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pSwordObject, false);
+			//GameObject.find(id)->second->AddChild(pSwordObject);
 		}
 
 		else if (CheckType(id) == OBJECT_TYPE::MONSTER) {
 			// 몬스터
 
+					// Monster 객체 생성
+			CGameObject* pMonster = new CGameObject;
+			Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Sword And Shield Idle (2).mdat", L"MeshData\\Sword And Shield Idle (2).mdat");
+			//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sword And Shield Idle (2).fbx");
+			//pMeshData->Save(pMeshData->GetPath());
+			GameObject.emplace(id, pMonster);
+			GameObject.find(id)->second->SetID(id);
 
+			GameObject.find(id)->second = pMeshData->Instantiate();
+			GameObject.find(id)->second->SetName(L"Monster1");
+			GameObject.find(id)->second->FrustumCheck(false);
+			GameObject.find(id)->second->Transform()->SetLocalPos(Vec3(packet->x, packet->y, packet->z));
+			GameObject.find(id)->second->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+			GameObject.find(id)->second->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
+			GameObject.find(id)->second->AddComponent(new CCollider2D);
+			GameObject.find(id)->second->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+			GameObject.find(id)->second->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
+			GameObject.find(id)->second->Collider2D()->SetOffsetScale(Vec3(20.f, 20.f, 40.f));
 
+			// 플레이어 스크립트 붙여주기.
+			GameObject.find(id)->second->AddComponent(new CMonsterScript);
 
+			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", GameObject.find(id)->second, false);
+
+			/*for (auto& data : m_aniData)
+			{
+				GameObject.find(id)->second->GetScript<CMonsterScript>()->GetPlayerAnimation(data);
+			}*/
+
+			CMonsterScript* MonsterScript = GameObject.find(id)->second->GetScript<CMonsterScript>();
+			// 플레이어 애니메이션
+			MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 0
+			SetAniData(pMeshData->GetMesh());
+
+			//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Walk.fbx");
+			//pMeshData->Save(pMeshData->GetPath());
+			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Big Hit To Head", L"MeshData\\Big Hit To Head.mdat");
+			MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
+			SetAniData(pMeshData->GetMesh());
+
+			//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Shoulder Hit And Fall.fbx");
+			//pMeshData->Save(pMeshData->GetPath());
+			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Shoulder Hit And Fall", L"MeshData\\Shoulder Hit And Fall.mdat");
+			MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 2
+			SetAniData(pMeshData->GetMesh());
+
+			
+			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetID(id);
+			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetHP(100);
 
 
 		}

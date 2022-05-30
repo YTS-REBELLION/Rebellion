@@ -46,6 +46,8 @@ public:
 	void SetOtherMovePacket__IsMoving(const bool& isMoving) {
 		if (m_movePacketTemp != nullptr)m_movePacketTemp->isMoving = isMoving;
 	}
+	void SetID(const int& id) { m_id = id; }
+	void SetHP(const int& hp) { m_fHp = hp; }
 
 	void SetAttack() {
 		if (m_bAttack) {

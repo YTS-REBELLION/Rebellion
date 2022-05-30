@@ -71,7 +71,7 @@ void CServerFrame::InitServer()
 
 	// init objcet
 	InitClients();
-
+	CreateMonster();
 	CreateIoCompletionPort(reinterpret_cast<HANDLE>(_listenSocket), _iocp, 10000, 0);
 	SOCKET c_sock = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, 0, WSA_FLAG_OVERLAPPED);
 	EXP_OVER acceptOver;
@@ -1059,9 +1059,9 @@ void CServerFrame::EnterGame(int id, const char* name)
 		if (true == IsNear(id, i)) {
 
 
-			/*if (ST_SLEEP == _objects[i]._status) {
+			if (ST_SLEEP == _objects[i]._status) {
 				ActivateNPC(i);
-			}*/
+			}
 
 			if (ST_ACTIVE == _objects[i]._status) {
 				cout << "STATUS : ST_ACTIVE" << endl;
@@ -1086,5 +1086,63 @@ void CServerFrame::EnterGame(int id, const char* name)
 
 
 	}
+
+}
+
+void CServerFrame::CreateMonster()
+{
+	cout << "Initializing Monster" << endl;
+
+	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_START + 5; ++monsterId) {
+		_objects[monsterId].SetID(monsterId);
+		_objects[monsterId]._status = ST_SLEEP;
+		_objects[monsterId].SetSpeed(80.f);
+
+		_objects[monsterId].SetCurrentHp(150);
+		_objects[monsterId].SetMaxHp(150);
+
+		_objects[monsterId].SetLevel(1);
+
+		//_objects[monsterId].SetMoveType(RANDOM);
+
+		//_objects[monsterId].SetIsAttack(false);
+
+		
+		//_objects[monsterId].SetNextPosIndex(0);
+
+		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 10);
+
+
+
+	}
+
+
+	_objects[NPC_ID_START].SetPos(Vec3(0.f, 5000.f, 3200.f));/*
+	_objects[NPC_ID_START].SetNextPos(0, 900.f, 0.f, 1200.f);
+	_objects[NPC_ID_START].SetNextPos(1, 1300.f, 0.f, 900.f);
+	_objects[NPC_ID_START].SetNextPos(2, 400.f, 0.f, 1500.f);*/
+
+
+	_objects[NPC_ID_START + 1].SetPos(Vec3(200.f, 5000.f, 3400.f));/*
+	_objects[NPC_ID_START + 1].SetNextPos(0, 70.f, 0.f, 450.f);
+	_objects[NPC_ID_START + 1].SetNextPos(1, 370.f, 0.f, 750.f);
+	_objects[NPC_ID_START + 1].SetNextPos(2, 770.f, 0.f, 750.f);*/
+
+	_objects[NPC_ID_START + 2].SetPos(Vec3(400.f, 5000.f, 3400.f));/*
+	_objects[NPC_ID_START + 2].SetNextPos(0, 70.f, 0.f, 450.f);
+	_objects[NPC_ID_START + 2].SetNextPos(1, 370.f, 0.f, 750.f);
+	_objects[NPC_ID_START + 2].SetNextPos(2, 770.f, 0.f, 750.f);*/
+
+	_objects[NPC_ID_START + 3].SetPos(Vec3(-200.f, 5000.f, 3400.f));/*
+	_objects[NPC_ID_START + 3].SetNextPos(0, 70.f, 0.f, 450.f);
+	_objects[NPC_ID_START + 3].SetNextPos(1, 370.f, 0.f, 750.f);
+	_objects[NPC_ID_START + 3].SetNextPos(2, 770.f, 0.f, 750.f);*/
+
+	_objects[NPC_ID_START + 4].SetPos(Vec3(-400.f, 5000.f, 3400.f));/*
+	_objects[NPC_ID_START + 4].SetNextPos(0, 70.f, 0.f, 450.f);
+	_objects[NPC_ID_START + 4].SetNextPos(1, 370.f, 0.f, 750.f);
+	_objects[NPC_ID_START + 4].SetNextPos(2, 770.f, 0.f, 750.f);*/
+
+	printf("Monster Initialization finished.\n");
 
 }

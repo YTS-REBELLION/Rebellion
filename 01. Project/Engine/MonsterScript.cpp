@@ -118,7 +118,7 @@ void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 
 void CMonsterScript::OnCollision(CCollider2D* _pOther)
 {
-	//m_fHp -= 4.f;
+	m_fHp -= 4.f;
 	m_bHit = true;
 
 	if (m_fHp <= 0.f)

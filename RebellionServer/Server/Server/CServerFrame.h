@@ -22,7 +22,7 @@ class CServerFrame {
 	//class
 	CError*		_error;
 	CSender*	_sender;
-	CObject		_objects[101];
+	CObject		_objects[106];
 
 
 
@@ -52,6 +52,7 @@ public:
 	std::thread CreateTimerThread();
 
 	void InitClients();
+	void CreateMonster();
 	void DoWorker();
 	void DoTimer();
 	void RecvPacketProcess(int, int);
