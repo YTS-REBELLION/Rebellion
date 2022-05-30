@@ -30,6 +30,12 @@ void CPlayerScript::awake()
 
 void CPlayerScript::update()
 {
+	// Z-up To Y-up
+	Vec3 vDirUp = Transform()->GetLocalDir(DIR_TYPE::UP);
+	Vec3 vDirFront = Transform()->GetLocalDir(DIR_TYPE::FRONT);
+	Transform()->SetWorldDir(DIR_TYPE::UP, vDirFront);
+	Transform()->SetWorldDir(DIR_TYPE::FRONT, vDirUp);
+
 	Vec3 WorldDir;
 	Vec3 localPos = GetObj()->Transform()->GetLocalPos();
 	Vec3 localRot = GetObj()->Transform()->GetLocalRot();
@@ -42,10 +48,11 @@ void CPlayerScript::update()
 
 	//Vec3 vPos = Transform()->GetLocalPos();
 	//Vec3 vRot = Transform()->GetLocalRot();
+
 	if (m_isMain) {
 		if (KEY_HOLD(KEY_TYPE::KEY_W))
 		{
-			WorldDir = playerTrans->GetWorldDir(DIR_TYPE::UP);
+			WorldDir = playerTrans->GetWorldDir(DIR_TYPE::FRONT);
 			localPos += WorldDir * m_fSpeed * DT;
 
 			system_clock::time_point start = system_clock::now();
@@ -67,10 +74,10 @@ void CPlayerScript::update()
 			};
 		}
 
-		else if (KEY_HOLD(KEY_TYPE::KEY_S))
-		{
-			WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::UP);
-			localPos += WorldDir * m_fSpeed * DT;
+	else if (KEY_HOLD(KEY_TYPE::KEY_S))
+	{
+		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::FRONT);
+		localPos += WorldDir * m_fSpeed * DT;
 
 
 			system_clock::time_point start = system_clock::now();
@@ -167,9 +174,8 @@ void CPlayerScript::update()
 		if (player->GetAttack() && m_vecAniClipTime[0] < GetObj()->Animator3D()->GetAnimClip(0).dTimeLength) {
 			m_vecAniClipTime[0] += DT;
 
-			cout << m_vecAniClipTime[0] << endl;
-			GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 20.f, 70.f));
-			GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 1150.f, 1700.f));
+		GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 20.f, 70.f));
+		GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 1150.f, 1700.f));
 
 			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), player->GetAttack());
 
@@ -236,6 +242,10 @@ void CPlayerScript::update()
 		}
 
 	}
+
+	cout << "플레이어위치x:" << Transform()->GetWorldPos().x << endl;
+	cout << "플레이어위치y:" << Transform()->GetWorldPos().y << endl;
+	cout << "플레이어위치z:" << Transform()->GetWorldPos().z << endl;
 	
 }
 
@@ -265,7 +275,6 @@ void CPlayerScript::SetOtherMovePacket(sc_packet_move* p, const float& rtt)
 
 void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
 {
-	cout << "?" << endl;
 }
 
 void CPlayerScript::OnCollision(CCollider2D* _pOther)
