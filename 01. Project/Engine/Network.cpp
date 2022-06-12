@@ -377,30 +377,33 @@ void CNetwork::ProcessPacket(char* ptr)
 
 		sc_packet_stop* packet = reinterpret_cast<sc_packet_stop*>(ptr);
 		int other_id = packet->id;
-
-		if (other_id == g_myid)
-		{
-			// 혹시나 해서 하는 SetPlayerAnimation g_myid가 맞음
-			GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(g_myid, 0);
-
-
-			GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetOtherMovePacket__IsMoving(packet->isMoving);
+		if (CheckType(other_id) == OBJECT_TYPE::PLAYER) {
+			if (other_id == g_myid)
+			{
+				// 혹시나 해서 하는 SetPlayerAnimation g_myid가 맞음
+				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(g_myid, 0);
 
 
-		}
-		else
-		{
-			GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 0);
+				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetOtherMovePacket__IsMoving(packet->isMoving);
+
+
+			}
+			else
+			{
+				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 0);
 
 
 
-			GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetOtherMovePacket__IsMoving(packet->isMoving);
+				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetOtherMovePacket__IsMoving(packet->isMoving);
 
+			}
 		}
 	}
 	break;
 	case SC_PACKET_ROTATE: {
 		sc_packet_rotate* packet = reinterpret_cast<sc_packet_rotate*>(ptr);
+
+
 
 		GameObject.find(packet->id)->second->Transform()->SetLocalRot(packet->rotate);
 		break;

@@ -265,7 +265,8 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		for (auto& ob : old_viewList)
 		{
 			if (ob == id)continue;
-			_sender->SendRunPacket(_objects[ob].GetSocket(), id, pos ,packet->isRun);
+			if (true == IsPlayer(ob))
+				_sender->SendRunPacket(_objects[ob].GetSocket(), id, pos ,packet->isRun);
 		}
 
 
@@ -300,7 +301,8 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		for (auto& ob : old_viewList)
 		{
 			if (ob == id)continue;
-			_sender->SendRotatePacket(_objects[ob].GetSocket(), id, packet->rotate);
+			if (true == IsPlayer(ob))
+				_sender->SendRotatePacket(_objects[ob].GetSocket(), id, packet->rotate);
 		}
 
 		break;
@@ -312,7 +314,8 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		unordered_set<int> new_viewlist = _objects[id].GetViewList();
 
 		for (auto& user : new_viewlist) {
-			_sender->SendPlayerAttackPacket(_objects[user].GetSocket(), id, packet->isAttack);
+			if (true == IsPlayer(user))
+				_sender->SendPlayerAttackPacket(_objects[user].GetSocket(), id, packet->isAttack);
 		}
 
 		break;
@@ -660,6 +663,7 @@ bool CServerFrame::IsNear(int a, int b)
 {
 
 	if (abs(_objects[a].GetPos().x - _objects[b].GetPos().x) > VIEW_RADIUS) return false;
+	if (abs(_objects[a].GetPos().y - _objects[b].GetPos().y) > VIEW_RADIUS) return false;
 	if (abs(_objects[a].GetPos().z - _objects[b].GetPos().z) > VIEW_RADIUS) return false;
 	return true;
 }
@@ -1029,9 +1033,10 @@ void CServerFrame::Do_stop(const short& id, const bool& isMoving)
     
     for (auto& ob : old_viewList)
     {
-		cout << "서버 -> 클라 스탑 보낸다" << endl;
 		if (ob == id)continue;
-        _sender->Send_Stop_Packet(_objects[ob].GetSocket(),id);
+		if (false == IsPlayer(ob)) continue;
+		//if (true == IsPlayer(ob))
+		_sender->Send_Stop_Packet(_objects[ob].GetSocket(), id);
     }
 
 }

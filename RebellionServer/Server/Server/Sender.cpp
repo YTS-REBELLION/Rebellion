@@ -119,7 +119,7 @@ void CSender::SendPutObjectPacket(SOCKET s, int id, float x, float y, float z, i
 void CSender::Send_Stop_Packet(SOCKET s, int mover_id)
 {
 	sc_packet_stop p;
-	
+	cout << "Send_Stop_Packet" << endl;
 	p.size = sizeof(p);
 	p.type = SC_PACKET_STOP;
 	p.id = mover_id;

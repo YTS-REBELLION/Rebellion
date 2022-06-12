@@ -154,7 +154,7 @@ void CPlayerScript::update()
 		if ((KEY_AWAY(KEY_TYPE::KEY_W) || KEY_AWAY(KEY_TYPE::KEY_A) || KEY_AWAY(KEY_TYPE::KEY_S) || KEY_AWAY(KEY_TYPE::KEY_D)))
 		{
 			cout << "KET_AWAY" << endl;
-			g_net.Send_Stop_Packet(false, g_myid);
+			g_net.Send_Stop_Packet(false, GetObj()->GetID());
 		}
 
 		if (KEY_HOLD(KEY_TYPE::KEY_LBTN))

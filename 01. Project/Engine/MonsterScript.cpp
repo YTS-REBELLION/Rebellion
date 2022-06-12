@@ -124,6 +124,7 @@ void CMonsterScript::OnCollision(CCollider2D* _pOther)
 	if (m_fHp <= 0.f)
 	{
 		GetObj()->SetDead();
+
 	}
 }
 
