@@ -824,22 +824,22 @@ void CSceneMgr::init()
 	//m_pCurScene->AddGameObject(L"Monster", pMonster, false);
 
 
-	//// Tree 오브젝트
-	//
-	////Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Idle.mdat", L"MeshData\\Player_Idle.mdat");
-	//Ptr<CMeshData> pTreeMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\jul2.fbx");
-	////pMeshData->Save(pMeshData->GetPath());
+	// Tree 오브젝트
+	
+	Ptr<CMeshData> pTreeMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\jul2.mdat", L"MeshData\\jul2.mdat");
+	//Ptr<CMeshData> pTreeMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\jul2.FBX");
+	//pTreeMeshData->Save(pTreeMeshData->GetPath());
 
-	//CGameObject* pTree = new CGameObject;
+	CGameObject* pTree = new CGameObject;
 
-	//pTree = pTreeMeshData->Instantiate();
-	//pTree->SetName(L"Tree");
-	//pTree->FrustumCheck(false);
-	//pTree->Transform()->SetLocalPos(Vec3(-2500.f, 340.f, 2570.f));
-	//pTree->Transform()->SetLocalScale(Vec3(40.f, 20.f, 63.f));
-	//pTree->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
-	//pTree->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
-	//m_pCurScene->FindLayer(L"Default")->AddGameObject(pTree);
+	pTree = pTreeMeshData->Instantiate();
+	pTree->SetName(L"Tree");
+	pTree->FrustumCheck(false);
+	pTree->Transform()->SetLocalPos(Vec3(-2500.f, 340.f, 2570.f));
+	pTree->Transform()->SetLocalScale(Vec3(40.f, 20.f, 63.f));
+	pTree->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
+	pTree->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(pTree);
 
 	//// ====================
 	//// Potal 오브젝트 생성
