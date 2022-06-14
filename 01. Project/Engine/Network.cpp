@@ -27,7 +27,8 @@ OBJECT_TYPE CheckType(const short& id)
 
 
 CNetwork g_net;
-const char* SERVER_IP = "121.190.132.161";
+const char* SERVER_IP = "127.0.0.1";
+//const char* SERVER_IP = "121.190.132.161";
 OBJ GameObject;
 
 SOCKET g_socket;
@@ -328,8 +329,6 @@ void CNetwork::ProcessPacket(char* ptr)
 			
 			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetID(id);
 			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetHP(100);
-
-
 		}
 
 		break;

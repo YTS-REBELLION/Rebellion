@@ -196,6 +196,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="Layer.h" />
     <ClInclude Include="Light2D.h" />
     <ClInclude Include="Light3D.h" />
+    <ClInclude Include="LoginScene.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshData.h" />
@@ -260,6 +261,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="Light2D.cpp" />
     <ClCompile Include="Light3D.cpp" />
+    <ClCompile Include="LoginScene.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshData.cpp" />
