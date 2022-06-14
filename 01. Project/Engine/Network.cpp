@@ -342,7 +342,10 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.erase(id);
 
 		}
-
+		else if (CheckType(id) == OBJECT_TYPE::PLAYER) {
+			GameObject.find(id)->second->GetScript<CPlayerScript>()->GetObj()->SetDead();
+			GameObject.erase(id);
+		}
 		break;
 
 
