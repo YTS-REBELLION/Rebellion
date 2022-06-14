@@ -65,6 +65,9 @@
     <Filter Include="04. GameObject\Script\02.Miro">
       <UniqueIdentifier>{b24417d8-ec44-4cba-b201-a592bef31780}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manager\GameScene">
+      <UniqueIdentifier>{89c12c14-8844-47f1-b57f-00d6d29f3e15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -257,6 +260,9 @@
     <ClInclude Include="NpcMon.h">
       <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
     </ClInclude>
+    <ClInclude Include="LoginScene.h">
+      <Filter>Manager\GameScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -436,6 +442,9 @@
     </ClCompile>
     <ClCompile Include="NpcMon.cpp">
       <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginScene.cpp">
+      <Filter>Manager\GameScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
