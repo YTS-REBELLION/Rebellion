@@ -225,6 +225,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="StructuredBuffer.h" />
     <ClInclude Include="Sword.h" />
     <ClInclude Include="SwordScript.h" />
+    <ClInclude Include="SwordStrike.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestScript.h" />
     <ClInclude Include="Texture.h" />
@@ -293,6 +294,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="StructuredBuffer.cpp" />
     <ClCompile Include="Sword.cpp" />
     <ClCompile Include="SwordScript.cpp" />
+    <ClCompile Include="SwordStrike.cpp" />
     <ClCompile Include="TestScript.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TimeMgr.cpp" />

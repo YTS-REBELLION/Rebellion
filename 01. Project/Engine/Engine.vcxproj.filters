@@ -257,6 +257,9 @@
     <ClInclude Include="NpcMon.h">
       <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
     </ClInclude>
+    <ClInclude Include="SwordStrike.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -436,6 +439,9 @@
     </ClCompile>
     <ClCompile Include="NpcMon.cpp">
       <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="SwordStrike.cpp">
+      <Filter>04. GameObject\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
