@@ -646,6 +646,7 @@ void CServerFrame::DoRandomMove(int id)
 				_objects[i].ClientUnLock();
 			}
 		}
+		
 	}
 
 	for (int i = 0; i < NPC_ID_START; ++i) {
@@ -1018,6 +1019,25 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 		}
 	}
 
+
+	for (auto& op : oldViewList) {		// Object°¡ ½Ã¾ß¿¡¼­ ¹þ¾î³µÀ» ¶§.
+		if (0 == newViewList.count(op)) {
+			_objects[id].ClientLock();
+			_objects[id].EraseViewList(op);
+			_objects[id].ClientUnLock();
+			_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), op, _objects[op].GetMyType());
+			if (false == IsPlayer(op)) continue;
+			_objects[op].ClientLock();
+			if (0 != _objects[op].GetViewListCount(id)) {
+				_objects[op].EraseViewList(id);
+				_objects[op].ClientUnLock();
+				_sender->SendLeaveObjectPacket(_objects[op].GetSocket(), id, _objects[id].GetMyType());
+			}
+			else {
+				_objects[op].ClientUnLock();
+			}
+		}
+	}
 	
 }
 

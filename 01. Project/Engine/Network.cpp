@@ -335,6 +335,14 @@ void CNetwork::ProcessPacket(char* ptr)
 
 	}
 	case SC_PACKET_LEAVE_OBJECT: {
+		sc_packet_leave* packet = reinterpret_cast<sc_packet_leave*>(ptr);
+		int id = packet->id;
+		if (CheckType(id) == OBJECT_TYPE::MONSTER) {
+			GameObject.find(id)->second->GetScript<CMonsterScript>()->GetObj()->SetDead();
+			GameObject.erase(id);
+
+		}
+
 		break;
 
 
