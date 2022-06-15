@@ -17,9 +17,6 @@
     <Filter Include="ShaderCode">
       <UniqueIdentifier>{cd8a3c12-734b-42a2-967c-ed03a65c7c67}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Manager">
-      <UniqueIdentifier>{86dda3d4-ee07-4fa7-a80e-d3fe3f031029}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{fe68851c-f8ab-4cef-be15-6a359a8e6cf0}</UniqueIdentifier>
     </Filter>
@@ -31,9 +28,6 @@
     </Filter>
     <Filter Include="04. GameObject\Component">
       <UniqueIdentifier>{0a953554-fee4-4895-8134-01109d249fa2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Manager\SceneMgr">
-      <UniqueIdentifier>{1d96dc12-b567-4188-88bc-4308ff797f37}</UniqueIdentifier>
     </Filter>
     <Filter Include="04. GameObject\Component\Animator2D">
       <UniqueIdentifier>{1ad6d4cd-3b25-4ca4-9376-52fce0a50319}</UniqueIdentifier>
@@ -50,14 +44,8 @@
     <Filter Include="04. GameObject\Script">
       <UniqueIdentifier>{cbb81f79-d307-4371-9e99-ab9e93821102}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Manager\ResMgr">
-      <UniqueIdentifier>{780d6568-f989-431b-be7a-d3c34b23aa99}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Rendering\MRT">
       <UniqueIdentifier>{4f14963d-c0d9-4fff-8025-3322001b56a0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05.Network">
-      <UniqueIdentifier>{00bc92b1-cc2f-4305-9f82-488340dc6010}</UniqueIdentifier>
     </Filter>
     <Filter Include="04. GameObject\Script\01.AssemblyPoint">
       <UniqueIdentifier>{73003f8c-0d9d-4945-b5d2-6276ccbf79c8}</UniqueIdentifier>
@@ -65,8 +53,20 @@
     <Filter Include="04. GameObject\Script\02.Miro">
       <UniqueIdentifier>{b24417d8-ec44-4cba-b201-a592bef31780}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Manager\GameScene">
-      <UniqueIdentifier>{89c12c14-8844-47f1-b57f-00d6d29f3e15}</UniqueIdentifier>
+    <Filter Include="GameScene">
+      <UniqueIdentifier>{f0456b5c-7509-4655-a8ac-adcd2fc223dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{d3261fbc-246f-46f8-88c4-bd95987ffad0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\ResMgr">
+      <UniqueIdentifier>{780d6568-f989-431b-be7a-d3c34b23aa99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\SceneMgr">
+      <UniqueIdentifier>{1d96dc12-b567-4188-88bc-4308ff797f37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Network">
+      <UniqueIdentifier>{00bc92b1-cc2f-4305-9f82-488340dc6010}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -92,15 +92,6 @@
     </ClInclude>
     <ClInclude Include="Device.h">
       <Filter>03. Device</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyMgr.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="TimeMgr.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="PathMgr.h">
-      <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Resource</Filter>
@@ -141,9 +132,6 @@
     <ClInclude Include="Script.h">
       <Filter>04. GameObject\Component</Filter>
     </ClInclude>
-    <ClInclude Include="EventMgr.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
     <ClInclude Include="SceneMgr.h">
       <Filter>Manager\SceneMgr</Filter>
     </ClInclude>
@@ -179,9 +167,6 @@
     </ClInclude>
     <ClInclude Include="Light3D.h">
       <Filter>04. GameObject\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionMgr.h">
-      <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="RenderMgr.h">
       <Filter>Rendering</Filter>
@@ -221,7 +206,7 @@
       <Filter>04. GameObject\Component</Filter>
     </ClInclude>
     <ClInclude Include="Network.h">
-      <Filter>05.Network</Filter>
+      <Filter>05. Network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\RebellionServer\Server\Server\Protocol.h" />
     <ClInclude Include="GuardHouse.h">
@@ -260,8 +245,29 @@
     <ClInclude Include="NpcMon.h">
       <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
     </ClInclude>
+    <ClInclude Include="AssemblyAreaScene.h">
+      <Filter>GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Dungeon.h">
+      <Filter>GameScene</Filter>
+    </ClInclude>
     <ClInclude Include="LoginScene.h">
-      <Filter>Manager\GameScene</Filter>
+      <Filter>GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionMgr.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="EventMgr.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyMgr.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="PathMgr.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeMgr.h">
+      <Filter>Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -271,15 +277,6 @@
     </ClCompile>
     <ClCompile Include="Device.cpp">
       <Filter>03. Device</Filter>
-    </ClCompile>
-    <ClCompile Include="KeyMgr.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="TimeMgr.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="PathMgr.cpp">
-      <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="Resource.cpp">
       <Filter>Resource</Filter>
@@ -320,9 +317,6 @@
     <ClCompile Include="Script.cpp">
       <Filter>04. GameObject\Component</Filter>
     </ClCompile>
-    <ClCompile Include="EventMgr.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
     <ClCompile Include="SceneMgr.cpp">
       <Filter>Manager\SceneMgr</Filter>
     </ClCompile>
@@ -361,9 +355,6 @@
     </ClCompile>
     <ClCompile Include="Light3D.cpp">
       <Filter>04. GameObject\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="CollisionMgr.cpp">
-      <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="RenderMgrInit.cpp">
       <Filter>Rendering</Filter>
@@ -408,7 +399,7 @@
       <Filter>04. GameObject\Component</Filter>
     </ClCompile>
     <ClCompile Include="Network.cpp">
-      <Filter>05.Network</Filter>
+      <Filter>05. Network</Filter>
     </ClCompile>
     <ClCompile Include="GuardHouse.cpp">
       <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
@@ -443,8 +434,29 @@
     <ClCompile Include="NpcMon.cpp">
       <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
     </ClCompile>
+    <ClCompile Include="AssemblyAreaScene.cpp">
+      <Filter>GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Dungeon.cpp">
+      <Filter>GameScene</Filter>
+    </ClCompile>
     <ClCompile Include="LoginScene.cpp">
-      <Filter>Manager\GameScene</Filter>
+      <Filter>GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyMgr.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionMgr.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="EventMgr.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="PathMgr.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeMgr.cpp">
+      <Filter>Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -46,6 +46,8 @@
 
 #include "meshdata.h"
 
+#include "LoginScene.h"
+
 CScene* CSceneMgr::GetCurScene()
 {
 	return m_pCurScene;
@@ -888,19 +890,19 @@ void CSceneMgr::init()
 	// ====================
 	// Skybox 오브젝트 생성
 	// ====================
-	pObject = new CGameObject;
-	pObject->SetName(L"SkyBox");
-	pObject->FrustumCheck(false);
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CMeshRender);	
+	//pObject = new CGameObject;
+	//pObject->SetName(L"SkyBox");
+	//pObject->FrustumCheck(false);
+	//pObject->AddComponent(new CTransform);
+	//pObject->AddComponent(new CMeshRender);	
 
-	// MeshRender 설정
-	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh"));
-	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"SkyboxMtrl"));
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pSky04.GetPointer());
+	//// MeshRender 설정
+	//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh"));
+	//pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"SkyboxMtrl"));
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pSky04.GetPointer());
 
-	// AddGameObject
-	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject, false);
+	//// AddGameObject
+	//m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject, false);
 
 	g_net.SetObj(pPlayer);
 	 

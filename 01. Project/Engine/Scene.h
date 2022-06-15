@@ -13,9 +13,10 @@ private:
 
 
 public:
+	virtual void init() {};
 	void awake();
 	void start();
-	void update();
+	virtual void update();
 	void lateupdate();
 	void finalupdate();	
 
