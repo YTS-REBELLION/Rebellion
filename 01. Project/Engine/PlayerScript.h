@@ -1,6 +1,7 @@
 #pragma once
 #include "Script.h"
 #include "Mesh.h"
+#include "SwordStrike.h"
 
 enum class COL_DIR
 {
@@ -37,6 +38,11 @@ private:
 	bool				m_isMain;
 
 	bool				m_bColCheck = false;
+
+
+
+
+
 public:
 	virtual void awake();	
 	virtual void update();
@@ -53,6 +59,7 @@ public:
 	void SetOtherMovePacket__IsMoving(const bool& isMoving) {
 		if (m_movePacketTemp != nullptr)m_movePacketTemp->isMoving = isMoving;
 	}
+	void SwordStrike();
 
 	void SetAttack() { 
 		if (m_bAttack) {
