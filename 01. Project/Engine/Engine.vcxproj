@@ -197,6 +197,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="Light2D.h" />
     <ClInclude Include="Light3D.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="MegaSlash.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshData.h" />
     <ClInclude Include="MeshRender.h" />
@@ -262,6 +263,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="Light2D.cpp" />
     <ClCompile Include="Light3D.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="MegaSlash.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshData.cpp" />
     <ClCompile Include="MeshRender.cpp" />

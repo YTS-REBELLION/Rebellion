@@ -60,6 +60,7 @@ public:
 		if (m_movePacketTemp != nullptr)m_movePacketTemp->isMoving = isMoving;
 	}
 	void SwordStrike();
+	void MegaSlash();
 
 	void SetAttack() { 
 		if (m_bAttack) {

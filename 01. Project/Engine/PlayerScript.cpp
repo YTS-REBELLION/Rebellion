@@ -5,6 +5,7 @@
 #include "Animator3D.h"
 #include"CollisionMgr.h"
 #include"SwordStrike.h"
+#include"MegaSlash.h"
 
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
@@ -31,6 +32,10 @@ void CPlayerScript::awake()
 
 void CPlayerScript::update()
 {
+
+
+
+
 	// Z-up To Y-up
 	Vec3 vDirUp = Transform()->GetLocalDir(DIR_TYPE::UP);
 	Vec3 vDirFront = Transform()->GetLocalDir(DIR_TYPE::FRONT);
@@ -47,8 +52,9 @@ void CPlayerScript::update()
 
 	CPlayerScript* player = GetObj()->GetScript<CPlayerScript>();
 
-	//Vec3 vPos = Transform()->GetLocalPos();
-	//Vec3 vRot = Transform()->GetLocalRot();
+	cout << "dirx:" << this->Transform()->GetLocalDir(DIR_TYPE::FRONT).x << endl;
+	
+	
 
 	if (m_isMain) {
 		if (KEY_HOLD(KEY_TYPE::KEY_W))
@@ -184,6 +190,13 @@ void CPlayerScript::update()
 
 
 	}
+	if (KEY_AWAY(KEY_TYPE::KEY_3))
+	{
+		cout << "메가슬레시!" << endl;
+		MegaSlash();
+
+
+	}
 
 
 	
@@ -313,7 +326,7 @@ void CPlayerScript::SwordStrike()
 	m_pSwordStrike->SetName(L"SwordStike");
 	m_pSwordStrike->FrustumCheck(false);
 
-
+	
 	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
 	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalDir(DIR_TYPE::FRONT) + Vec3(0.f, -15.f, 0.f));
 	m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
@@ -330,11 +343,42 @@ void CPlayerScript::SwordStrike()
 
 	
 
+	
 
 
+	
+
+}
+
+void CPlayerScript::MegaSlash()
+{
+	//// ====================
+	////  오브젝트 생성
+	//// ====================
+	CGameObject* m_pSwordStrike = new CGameObject;
+	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
+	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
+	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
 
 
+	m_pSwordStrike = pPMeshData->Instantiate();
+	m_pSwordStrike->SetName(L"MegaSlash");
+	m_pSwordStrike->FrustumCheck(false);
 
+
+	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
+	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalDir(DIR_TYPE::FRONT));
+	m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	m_pSwordStrike->AddComponent(new CMegaSlash);
+
+
+	m_pSwordStrike->AddComponent(new CCollider2D);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(300.f, 300.f, 300.f));
+
+	// AddGameObject
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
 
 
 }

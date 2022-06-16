@@ -40,6 +40,13 @@ void CSwordStrike::update()
 
 
 	float Temp = 75 * DT;
+
+
+	if (this->Transform()->GetLocalDir(DIR_TYPE::FRONT).x >= 1.f)
+	{
+		WorldDir *= -1;
+	}
+
 	localPos += WorldDir * Temp;
 
 	

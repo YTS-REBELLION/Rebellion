@@ -65,6 +65,9 @@
     <Filter Include="04. GameObject\Script\02.Miro">
       <UniqueIdentifier>{b24417d8-ec44-4cba-b201-a592bef31780}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. GameObject\Script\03.Skill">
+      <UniqueIdentifier>{69cd0a60-77e8-43f1-a896-4dd7562aeba9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -258,7 +261,10 @@
       <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
     </ClInclude>
     <ClInclude Include="SwordStrike.h">
-      <Filter>04. GameObject\Script</Filter>
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="MegaSlash.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -441,7 +447,10 @@
       <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
     </ClCompile>
     <ClCompile Include="SwordStrike.cpp">
-      <Filter>04. GameObject\Script</Filter>
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="MegaSlash.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
