@@ -30,7 +30,7 @@ using namespace chrono;
 #include <MSWSock.h>
 
 #pragma comment (lib, "MSWSock.LIB")
-#pragma comment(lib, "lua53.lib")
+#pragma comment(lib, "lua54.lib")
 #pragma comment(lib,"WS2_32.lib")
 
 //extern "C" {

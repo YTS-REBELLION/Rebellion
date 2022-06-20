@@ -55,8 +55,8 @@ public:
 	void CreateMonster();
 	void DoWorker();
 	void DoTimer();
+	void AddTimer(int obj_id, EV_TYPE ev_type, system_clock::time_point t);
 	void RecvPacketProcess(int, int);
-	void AddTimer(EVENT ev);
 	void ProcessPacket(int , char*);
 	void EnterGame(int id, const char* name);
 

@@ -175,11 +175,12 @@ void CPlayerScript::update()
 		if (player->GetAttack() && m_vecAniClipTime[0] < GetObj()->Animator3D()->GetAnimClip(0).dTimeLength) {
 			m_vecAniClipTime[0] += DT;
 
-		GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 20.f, 70.f));
-		GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 1150.f, 1700.f));
+			GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 20.f, 70.f));
+			GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 1150.f, 1700.f));
 
 			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), player->GetAttack());
 
+			
 			player->SetPlayerAnimation(3);
 
 			if (m_vecAniClipTime[0] > player->Animator3D()->GetAnimClip(0).dTimeLength)
@@ -256,9 +257,9 @@ void CPlayerScript::update()
 
 	
 
-	cout << "플레이어위치x:" << Transform()->GetWorldPos().x << endl;
+	/*cout << "플레이어위치x:" << Transform()->GetWorldPos().x << endl;
 	cout << "플레이어위치y:" << Transform()->GetWorldPos().y << endl;
-	cout << "플레이어위치z:" << Transform()->GetWorldPos().z << endl;
+	cout << "플레이어위치z:" << Transform()->GetWorldPos().z << endl;*/
 	
 }
 

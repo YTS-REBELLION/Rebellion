@@ -3,11 +3,17 @@
 #define VEC3_TOWN_ENTRANCE_POS Vec3(-3000.f, 0.f, 5683.f)
 
 constexpr float VIEW_RADIUS = 2500.f;
+
 enum class OBJECT_TYPE { PLAYER, MONSTER, NPC };
-enum EV_TYPE { OP_RECV, OP_SEND, OP_ACCEPT, OP_PLAYER_MOVE, EV_BROADCAST, EV_ATTACK, EV_RESPAWN, EV_TRANSFORM, EV_TRANSFORM_COOLDOWNTIME, EV_HEAL };
+
+enum EV_TYPE { OP_RECV, OP_SEND, OP_ACCEPT, OP_PLAYER_MOVE, EV_BROADCAST, EV_MONSTER_MOVE,
+	EV_ATTACK, EV_RESPAWN, EV_TRANSFORM, EV_TRANSFORM_COOLDOWNTIME, EV_HEAL };
+
+
 enum STATUS { ST_FREE,ST_INGAME, ST_ACTIVE, ST_SLEEP };
 enum DIRECTION_TYPE { RIGHT, UP, FRONT };
 enum MOVE_TYPE { TARGET, RANDOM };
+
 enum class OBJECT_KIND
 {
 	
@@ -25,7 +31,7 @@ struct OBSTACLES {
 
 struct EVENT {
 	int obj_id;
-	std::chrono::high_resolution_clock::time_point wakeup_time;
+	std::chrono::system_clock::time_point wakeup_time;
 	EV_TYPE event_type;
 	int target_obj;
 

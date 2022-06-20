@@ -92,8 +92,8 @@ void CServerFrame::InitServer()
 
 	_timerThread = CreateTimerThread();
 
-	EVENT ev{ MASTER, std::chrono::high_resolution_clock::now() + 200ms,EV_BROADCAST,0 };
-	AddTimer(ev);
+	//EVENT ev{ MASTER, std::chrono::high_resolution_clock::now() + 200ms,EV_BROADCAST,0 };
+	AddTimer(MASTER, EV_BROADCAST, system_clock::now() + 200ms);
 
 
 	_timerThread.join();
@@ -473,6 +473,11 @@ void CServerFrame::DoWorker()
 			//cout << "ev_broadcast" << endl;
 			//MoveUpdate();
 			break;
+		case EV_MONSTER_MOVE:
+			cout << "EV_MONSTER_MOVE" << endl;
+			AddTimer(id, EV_MONSTER_MOVE, system_clock::now() + 1s);
+			delete exp_over;
+			break;
 		default:
 			std::cout << "Unknown EVENT\n";
 			while (true);
@@ -493,7 +498,7 @@ void CServerFrame::DoTimer()
 				break;
 			}
 
-			if (_timerQueue.top().wakeup_time > std::chrono::high_resolution_clock::now()) {
+			if (_timerQueue.top().wakeup_time > std::chrono::system_clock::now()) {
 				_timerLock.unlock();
 				break;
 			}
@@ -502,18 +507,27 @@ void CServerFrame::DoTimer()
 			_timerQueue.pop();
 			_timerLock.unlock();
 
-			EXP_OVER* exp_over = new EXP_OVER;
-			exp_over->event_type = ev.event_type;
-			*(reinterpret_cast<int*>(exp_over->net_buf)) = ev.target_obj;
-			PostQueuedCompletionStatus(_iocp, 1, ev.obj_id, &exp_over->over);
+			switch (ev.event_type) {
+			case EV_MONSTER_MOVE: {
+				EXP_OVER* exp_over = new EXP_OVER;
+				exp_over->event_type = ev.event_type;
+				//*(reinterpret_cast<int*>(exp_over->net_buf)) = ev.target_obj;
+				PostQueuedCompletionStatus(_iocp, 1, ev.obj_id, &exp_over->over);
+
+				break;
+			}
+
+			}
+
 		}
 	}
 
 
 }
 
-void CServerFrame::AddTimer(EVENT ev)
+void CServerFrame::AddTimer(int obj_id ,EV_TYPE ev_type, system_clock::time_point t)
 {
+	EVENT ev{ obj_id,t,ev_type };
 	_timerLock.lock();
 	_timerQueue.push(ev);
 	_timerLock.unlock();
@@ -524,7 +538,16 @@ void CServerFrame::AddTimer(EVENT ev)
 void CServerFrame::ActivateNPC(int id)
 {
 	STATUS oldState = ST_SLEEP;
-	std::atomic_compare_exchange_strong(&_objects[id]._status, &oldState, ST_ACTIVE);
+	//std::atomic_compare_exchange_strong(&_objects[id]._status, &oldState, ST_ACTIVE);
+
+	/*if (false == _objects[id]._status)
+	{*/
+		if (true == std::atomic_compare_exchange_strong(&_objects[id]._status, &oldState, ST_ACTIVE))
+		{
+			cout << "activate npc" << endl;
+			AddTimer(id, EV_MONSTER_MOVE, system_clock::now() + 1s);
+		}
+	//}
 
 }
 
@@ -548,8 +571,8 @@ void CServerFrame::MoveUpdate()
 
 	_prevTime = curTime;
 
-	EVENT ev{ MASTER, high_resolution_clock::now() + 200ms, EV_BROADCAST,0 };
-	AddTimer(ev);
+	//EVENT ev{ MASTER, system_clock::now() + 200ms, EV_BROADCAST,0 };
+	AddTimer(MASTER, EV_BROADCAST, system_clock::now() + 200ms);
 
 }
 
@@ -743,8 +766,8 @@ void CServerFrame::DoTargetMove(int npc_id)
 		if (false == _objects[npc_id].GetIsAttack()) {
 			_objects[npc_id].SetIsAttack(true);
 
-			EVENT new_ev{ npc_id, std::chrono::high_resolution_clock::now() + 2s, EV_ATTACK, 0 };
-			AddTimer(new_ev);
+			//EVENT new_ev{ npc_id, std::chrono::system_clock::now() + 2s, EV_ATTACK, 0 };
+			AddTimer(npc_id, EV_ATTACK,system_clock::now());
 
 			// 방어 넣으면 여기
 			if (false == _objects[player_id].GetIsDefence()) {
@@ -970,6 +993,8 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 		if (ST_SLEEP == cl._status) ActivateNPC(cl.GetID());
 		if (ST_ACTIVE != cl._status) continue;
 		if (cl.GetID() == id) continue;
+		/*if (false == IsPlayer(cl.GetID()))
+			ActivateNPC(cl.GetID());*/
 		newViewList.insert(cl.GetID());
 	}
 
@@ -1085,6 +1110,7 @@ void CServerFrame::EnterGame(int id, const char* name)
 
 
 			if (ST_SLEEP == _objects[i]._status) {
+				cout << "sleep" << endl;
 				ActivateNPC(i);
 			}
 

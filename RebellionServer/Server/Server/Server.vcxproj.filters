@@ -93,7 +93,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="lua53.lib">
+    <Library Include="lua54.lib">
       <Filter>etc\lua</Filter>
     </Library>
   </ItemGroup>
