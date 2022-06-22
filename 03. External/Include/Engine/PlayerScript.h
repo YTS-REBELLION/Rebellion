@@ -61,6 +61,9 @@ public:
 	}
 	void SwordStrike();
 	void MegaSlash();
+	void Swing();
+	void Sting();
+	void FireBall();
 
 	void SetAttack() { 
 		if (m_bAttack) {

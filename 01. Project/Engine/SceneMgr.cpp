@@ -1012,8 +1012,13 @@ void CSceneMgr::init()
 
 	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
 	pSwordObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, SwordObject.GetPointer());
+	pSwordObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pTrail01.GetPointer());
+	
+
 
 	pSwordObject->AddComponent(new CSwordScript);
+	pSwordObject->GetScript<CSwordScript>()->init();
+
 	CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
 	pSwordObject->GetScript<CSwordScript>()->SetTarget(pPlayer);
 	pSwordObject->GetScript<CSwordScript>()->SetBoneIdx(36);

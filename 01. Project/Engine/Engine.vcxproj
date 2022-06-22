@@ -185,6 +185,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="EventMgr.h" />
     <ClInclude Include="extern.h" />
     <ClInclude Include="FBXLoader.h" />
+    <ClInclude Include="FireBall.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="func.h" />
     <ClInclude Include="GameObject.h" />
@@ -222,8 +223,10 @@ call EngineCopy.bat</Command>
     <ClInclude Include="Somethings.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Sting.h" />
     <ClInclude Include="struct.h" />
     <ClInclude Include="StructuredBuffer.h" />
+    <ClInclude Include="Swing.h" />
     <ClInclude Include="Sword.h" />
     <ClInclude Include="SwordScript.h" />
     <ClInclude Include="SwordStrike.h" />
@@ -252,6 +255,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EventMgr.cpp" />
     <ClCompile Include="FBXLoader.cpp" />
+    <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="func.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -293,7 +297,9 @@ call EngineCopy.bat</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Sting.cpp" />
     <ClCompile Include="StructuredBuffer.cpp" />
+    <ClCompile Include="Swing.cpp" />
     <ClCompile Include="Sword.cpp" />
     <ClCompile Include="SwordScript.cpp" />
     <ClCompile Include="SwordStrike.cpp" />

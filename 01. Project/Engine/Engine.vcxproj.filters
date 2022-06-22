@@ -266,6 +266,15 @@
     <ClInclude Include="MegaSlash.h">
       <Filter>04. GameObject\Script\03.Skill</Filter>
     </ClInclude>
+    <ClInclude Include="Swing.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Sting.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBall.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -450,6 +459,15 @@
       <Filter>04. GameObject\Script\03.Skill</Filter>
     </ClCompile>
     <ClCompile Include="MegaSlash.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Swing.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Sting.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="FireBall.cpp">
       <Filter>04. GameObject\Script\03.Skill</Filter>
     </ClCompile>
   </ItemGroup>

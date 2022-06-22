@@ -4,6 +4,17 @@
 #include "Animator3D.h"
 #include "Collider2D.h"
 
+
+void CSwordScript::init()
+{
+	Ptr<CMaterial> pMtrl = MeshRender()->GetSharedMaterial();
+
+
+
+
+}
+
+
 CSwordScript::CSwordScript()
 	: CScript((UINT)SCRIPT_TYPE::SWORDSCRIPT)
 {
@@ -33,5 +44,33 @@ void CSwordScript::update()
 	Transform()->SetLocalPos(vTrans1 + vDir * Vec3(0.f, 0.f, 100.f));
 	Transform()->SetQuaternion(qRot1);
 	//Transform()->SetLocalRot(vRot);
+
+
+
+	/*TRIALVTX tTrailTop, tTrailBottom;
+	tTrailTop.dwColor = D3DCOLOR_ARGB(255, 255, 0, 0);
+	D3DXVec3TransformCoord(&tTrailTop.vPosition, &m_vTopPos, &m_pTransformCom->m_matWorld);
+	tTrailBottom.dwColor = D3DCOLOR_ARGB(255, 255, 0, 0);
+	D3DXVec3TransformCoord(&tTrailBottom.vPosition, &m_vBottomPos, &m_pTransformCom->m_matWorld);
+
+	m_lstTrailVtx.push_back(tTrailTop);
+	m_lstTrailVtx.push_back(tTrailBottom);
+
+	while (true)
+	{
+		if (m_lstTrailVtx.size() <= 100)
+			break;
+		m_lstTrailVtx.pop_front();
+	}*/
+
+
+
+
+
+
+
+
+
+
 }
 
