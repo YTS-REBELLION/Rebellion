@@ -37,7 +37,7 @@ void CMegaSlash::update()
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
 	Vec3 vRot = Transform()->GetLocalRot();
 	 
-	vRot.y += m_fcreate_time * 3;
+	vRot.y += DT*2;
 
 
 	Transform()->SetLocalPos(localPos);
