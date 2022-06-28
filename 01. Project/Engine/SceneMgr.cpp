@@ -34,6 +34,7 @@
 #include "ToolCamScript.h"
 #include "GridScript.h"
 #include "Sword.h"
+#include"Quest.h"
 
 #include"GuardHouse.h"
 #include"GateHouse.h"
@@ -861,6 +862,7 @@ void CSceneMgr::init()
 	Ptr<CTexture> pTex = CResMgr::GetInst()->Load<CTexture>(L"TestTex", L"Texture\\Health.png");
 	Ptr<CTexture> pExplosionTex = CResMgr::GetInst()->Load<CTexture>(L"Explosion", L"Texture\\Explosion\\Explosion80.png");	
 	Ptr<CTexture> pBlackTex = CResMgr::GetInst()->Load<CTexture>(L"Black", L"Texture\\asd.png");
+	
 	Ptr<CTexture> pSky01 = CResMgr::GetInst()->Load<CTexture>(L"Sky01", L"Texture\\Skybox\\Sky01.png");
 	Ptr<CTexture> pSky02 = CResMgr::GetInst()->Load<CTexture>(L"Sky02", L"Texture\\Skybox\\Sky02.jpg");
 
@@ -877,11 +879,24 @@ void CSceneMgr::init()
 	pPM = CResMgr::GetInst()->FindRes<CMaterial>(L"PointLightMtrl");
 	pPM->SetData(SHADER_PARAM::TEX_2, pSky01.GetPointer());
 	
+
+	Ptr<CTexture> pUiBoard = CResMgr::GetInst()->Load<CTexture>(L"UiBoard", L"Texture\\Quest\\UIboard.png");
+	pUiBoard = CResMgr::GetInst()->Load<CTexture>(L"npc1_quest1(1)", L"Texture\\Quest\\npc1_quest1(1).png");
+
+	//===========================
+	// QuestBox texture
+	//==========================
+	Ptr<CTexture> pQuestBox = CResMgr::GetInst()->Load<CTexture>(L"QuestBase", L"Texture\\Quest\\QuestBase.png");
+	pQuestBox = CResMgr::GetInst()->Load<CTexture>(L"QuestBase", L"Texture\\Quest\\QuestBase_2.png");
+
 	// ===============
 	// Test Scene 생성
 	// ===============
 	m_pCurScene = new CScene;
 	m_pCurScene->SetName(L"Test Scene");
+
+
+
 
 	// ===============
 	// Layer 이름 지정
@@ -948,6 +963,8 @@ void CSceneMgr::init()
 	pPlayer->Transform()->SetLocalScale(Vec3(0.08f, 0.08f, 0.08f));
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 	pPlayer->AddComponent(new CCollider2D);
+	pPlayer->AddComponent(new CQuest);
+	
 	//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH);
 
 
@@ -1203,6 +1220,8 @@ void CSceneMgr::init()
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Object", L"Player");
 
+
+	
 
 
 	// obstacle 오브젝트 생성
@@ -1477,8 +1496,7 @@ void CSceneMgr::init()
 
 
 	
-
-
+	
 
 
 

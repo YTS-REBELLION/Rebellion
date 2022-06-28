@@ -275,6 +275,15 @@
     <ClInclude Include="FireBall.h">
       <Filter>04. GameObject\Script\03.Skill</Filter>
     </ClInclude>
+    <ClInclude Include="Meteor.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="UnleashedPower.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Quest.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -469,6 +478,15 @@
     </ClCompile>
     <ClCompile Include="FireBall.cpp">
       <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Meteor.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="UnleashedPower.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Quest.cpp">
+      <Filter>04. GameObject\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

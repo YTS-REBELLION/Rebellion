@@ -9,6 +9,8 @@
 #include"Sting.h"
 #include"Swing.h"
 #include"FireBall.h"
+#include"Meteor.h"
+#include"UnleashedPower.h"
 
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
@@ -221,6 +223,19 @@ void CPlayerScript::update()
 
 
 	}
+	if (KEY_AWAY(KEY_TYPE::KEY_7))
+	{
+		cout << "메테오!" << endl;
+		Meteor();
+		m_bMeteor2 = true;
+
+	}
+	if (KEY_AWAY(KEY_TYPE::KEY_8))
+	{
+		UnleashedPower();
+
+
+	}
 
 
 	
@@ -259,7 +274,18 @@ void CPlayerScript::update()
 		}
 
 	}
-
+	if (m_bMeteor2)
+	{
+		m_fcreate_time += DT;
+	}
+	if (m_fcreate_time >= 5.f)
+	{
+		m_bMeteor = true;
+	}
+	if (m_bMeteor)
+	{
+		Delete_Meteor();
+	}
 	
 	
 	cout << "플레이어위치x:" << Transform()->GetWorldPos().x << endl;
@@ -393,7 +419,7 @@ void CPlayerScript::MegaSlash()
 	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{0.f,50.f,0.f});
 	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalDir(DIR_TYPE::FRONT));
 	m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	m_pSwordStrike->AddComponent(new CSwing);
+	m_pSwordStrike->AddComponent(new CMegaSlash);
 
 
 	m_pSwordStrike->AddComponent(new CCollider2D);
@@ -498,6 +524,199 @@ void CPlayerScript::FireBall()
 
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+
+}
+
+void CPlayerScript::UnleashedPower()
+{
+	CGameObject* m_pSwordStrike = new CGameObject;
+	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
+	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
+	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
+
+
+	m_pSwordStrike = pPMeshData->Instantiate();
+	m_pSwordStrike->SetName(L"UnleashedPower");
+	m_pSwordStrike->FrustumCheck(false);
+
+
+	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + this->Transform()->GetWorldDir(DIR_TYPE::UP) * 200);
+	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+	m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	m_pSwordStrike->AddComponent(new CUnleashedPower);
+
+
+	m_pSwordStrike->AddComponent(new CCollider2D);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+
+	// AddGameObject
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+
+
+	 m_pSwordStrike = new CGameObject;
+	
+
+
+	m_pSwordStrike = pPMeshData->Instantiate();
+	m_pSwordStrike->SetName(L"UnleashedPower");
+	m_pSwordStrike->FrustumCheck(false);
+
+
+	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + this->Transform()->GetWorldDir(DIR_TYPE::UP) * 150 + this->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * 100);
+	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+	m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	m_pSwordStrike->AddComponent(new CUnleashedPower);
+
+
+	m_pSwordStrike->AddComponent(new CCollider2D);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+
+	// AddGameObject
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+
+
+	 m_pSwordStrike = new CGameObject;
+	
+
+
+	m_pSwordStrike = pPMeshData->Instantiate();
+	m_pSwordStrike->SetName(L"UnleashedPower");
+	m_pSwordStrike->FrustumCheck(false);
+
+
+	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + this->Transform()->GetWorldDir(DIR_TYPE::UP) * 100 + this->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * 200);
+	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+	m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	m_pSwordStrike->AddComponent(new CUnleashedPower);
+
+
+	m_pSwordStrike->AddComponent(new CCollider2D);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+
+	// AddGameObject
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+
+
+	m_pSwordStrike = new CGameObject;
+
+
+
+	m_pSwordStrike = pPMeshData->Instantiate();
+	m_pSwordStrike->SetName(L"UnleashedPower");
+	m_pSwordStrike->FrustumCheck(false);
+
+
+	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + this->Transform()->GetWorldDir(DIR_TYPE::UP) * 150 - this->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * 100);
+	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+	m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	m_pSwordStrike->AddComponent(new CUnleashedPower);
+
+
+	m_pSwordStrike->AddComponent(new CCollider2D);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+
+	// AddGameObject
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+
+
+	m_pSwordStrike = new CGameObject;
+
+
+
+	m_pSwordStrike = pPMeshData->Instantiate();
+	m_pSwordStrike->SetName(L"UnleashedPower");
+	m_pSwordStrike->FrustumCheck(false);
+
+
+	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + this->Transform()->GetWorldDir(DIR_TYPE::UP) * 100 - this->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * 200);
+	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+	m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	m_pSwordStrike->AddComponent(new CUnleashedPower);
+
+
+	m_pSwordStrike->AddComponent(new CCollider2D);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+
+	// AddGameObject
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+}
+
+void CPlayerScript::Meteor()
+{
+
+	Ptr<CTexture> pMagic = CResMgr::GetInst()->Load<CTexture>(L"Magic", L"Texture\\aming_point_big00.png");
+
+	CGameObject* pMagicJin = nullptr;
+	pMagicJin = new CGameObject;
+	pMagicJin->SetName(L"MagicJin Object");
+	pMagicJin->AddComponent(new CTransform);
+	pMagicJin->AddComponent(new CMeshRender);
+
+	// Transform 설정
+	pMagicJin->Transform()->SetLocalPos(Vec3(this->Transform()->GetLocalPos() + this->Transform()->GetWorldDir(DIR_TYPE::FRONT)*1000));
+	pMagicJin->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+	pMagicJin->Transform()->SetLocalRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
+
+	// MeshRender 설정
+	pMagicJin->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+	pMagicJin->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl"));
+	pMagicJin->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pMagic.GetPointer());
+
+
+	// AddGameObject
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pMagicJin);
+	
+	
+
+
+
+	CGameObject* m_pSwordStrike = new CGameObject;
+	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
+	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
+	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
+
+
+	m_pSwordStrike = pPMeshData->Instantiate();
+	m_pSwordStrike->SetName(L"Meteor");
+	m_pSwordStrike->FrustumCheck(false);
+
+
+	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,800.f,0.f } + this->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 1000);
+	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+	m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	m_pSwordStrike->AddComponent(new CMeteor);
+
+
+	m_pSwordStrike->AddComponent(new CCollider2D);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+
+	// AddGameObject
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+
+
+	Set_MagicJin(pMagicJin);
+
+}
+
+void CPlayerScript::Delete_Meteor()
+{
+	pMagicJinpp->SetDead();
+	m_bMeteor = false;
+	m_fcreate_time = 0.f;
+	m_bMeteor2 = false;
 
 }
 

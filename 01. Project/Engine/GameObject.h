@@ -29,6 +29,8 @@ private:
 
 
 	int						m_iID;
+	// UI
+	bool					m_bUiRenderCheck = true;
 
 public:
 	void awake();
@@ -77,6 +79,12 @@ public:
 	void RegisterToLayer();
 	int& GetID() { return m_iID; }
 	void SetID(const int& id) { m_iID = id; }
+
+
+	// UI
+	void SetUiRenderCheck(bool _bCheck) { m_bUiRenderCheck = _bCheck; }
+	bool GetUiRenderCheck() { return m_bUiRenderCheck; }
+
 
 	//void SetID(int id) { m_iID = id; };
 public:

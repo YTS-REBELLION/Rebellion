@@ -25,7 +25,7 @@ void CMegaSlash::awake()
 void CMegaSlash::update()
 {
 	m_fcreate_time += DT;
-	if (m_fcreate_time >= 1.f)
+	if (m_fcreate_time >= 1.5f)
 	{
 		GetObj()->SetDead();
 	}
@@ -37,7 +37,7 @@ void CMegaSlash::update()
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
 	Vec3 vRot = Transform()->GetLocalRot();
 	 
-	vRot.y += DT;
+	vRot.y += m_fcreate_time * 3;
 
 
 	Transform()->SetLocalPos(localPos);

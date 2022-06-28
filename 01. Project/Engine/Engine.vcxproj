@@ -202,6 +202,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshData.h" />
     <ClInclude Include="MeshRender.h" />
+    <ClInclude Include="Meteor.h" />
     <ClInclude Include="Miro.h" />
     <ClInclude Include="MonsterScript.h" />
     <ClInclude Include="MRT.h" />
@@ -211,6 +212,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="PlayerScript.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Ptr.h" />
+    <ClInclude Include="Quest.h" />
     <ClInclude Include="RenderMgr.h" />
     <ClInclude Include="ResMgr.h" />
     <ClInclude Include="Resource.h" />
@@ -237,6 +239,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="ToolCamScript.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Tree.h" />
+    <ClInclude Include="UnleashedPower.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation2D.cpp" />
@@ -271,6 +274,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshData.cpp" />
     <ClCompile Include="MeshRender.cpp" />
+    <ClCompile Include="Meteor.cpp" />
     <ClCompile Include="Miro.cpp" />
     <ClCompile Include="MonsterScript.cpp" />
     <ClCompile Include="MRT.cpp" />
@@ -279,6 +283,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="PathMgr.cpp" />
     <ClCompile Include="PlayerScript.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="Quest.cpp" />
     <ClCompile Include="RenderMgr.cpp" />
     <ClCompile Include="RenderMgrInit.cpp" />
     <ClCompile Include="ResMgr.cpp" />
@@ -309,6 +314,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="ToolCamScript.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Tree.cpp" />
+    <ClCompile Include="UnleashedPower.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="animation.fx">

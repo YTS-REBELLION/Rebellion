@@ -38,10 +38,10 @@ private:
 	bool				m_isMain;
 
 	bool				m_bColCheck = false;
-
-
-
-
+	bool				m_bMeteor = false;
+	bool				m_bMeteor2 = false;
+	CGameObject* pMagicJinpp = nullptr;
+	float m_fcreate_time = 0.f;
 
 public:
 	virtual void awake();	
@@ -64,7 +64,10 @@ public:
 	void Swing();
 	void Sting();
 	void FireBall();
-
+	void UnleashedPower();
+	void Meteor();
+	void Delete_Meteor();
+	void Set_MagicJin(CGameObject* p) { pMagicJinpp = p; };
 	void SetAttack() { 
 		if (m_bAttack) {
 			m_bAttack = false;
