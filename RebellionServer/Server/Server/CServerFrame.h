@@ -66,6 +66,10 @@ public:
 	void ActivateNPC(int id);
 	void MoveUpdate();
 	
+	//
+	void AggroMove(int id);
+	//
+
 	void DoRandomMove(int id);
 	void DoTargetMove(int id);
 	void UpdatePlayerPos(int id);

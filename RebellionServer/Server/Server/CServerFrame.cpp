@@ -470,13 +470,16 @@ void CServerFrame::DoWorker()
 			delete exp_over;
 			break;
 		case EV_BROADCAST:
-			//cout << "ev_broadcast" << endl;
-			//MoveUpdate();
+			cout << "ev_broadcast" << endl;
+			MoveUpdate();
 			break;
 		case EV_MONSTER_MOVE:
-			cout << "EV_MONSTER_MOVE" << endl;
-			AddTimer(id, EV_MONSTER_MOVE, system_clock::now() + 1s);
+			AggroMove(id);
+			
 			delete exp_over;
+			break;
+		case EV_ATTACK:
+			cout << "EV_ATTACK" << endl;
 			break;
 		default:
 			std::cout << "Unknown EVENT\n";
@@ -574,6 +577,223 @@ void CServerFrame::MoveUpdate()
 	//EVENT ev{ MASTER, system_clock::now() + 200ms, EV_BROADCAST,0 };
 	AddTimer(MASTER, EV_BROADCAST, system_clock::now() + 200ms);
 
+}
+
+void CServerFrame::AggroMove(int npc_id)
+{
+	cout << "몬스터 어그로" << endl;
+	cout << "dotargetmove" << endl;
+
+	time_point<system_clock> curTime = system_clock::now();
+
+
+	Vec3 Pos;
+	int player_id = _objects[npc_id].GetTargetID();
+	
+	if (ST_ACTIVE != _objects[npc_id]._status) return;
+	if (ST_ACTIVE != _objects[player_id]._status) return;
+	if (RANDOM == _objects[npc_id].GetMoveType()) return;
+
+	if (true == IsPlayer(npc_id)) {
+		std::cout << "ID :" << npc_id << " is not NPC!!\n";
+		while (true);
+	}
+
+	//if (false == IsNearNPC(player_id, npc_id)) {
+	//	_objects[npc_id].SetMoveType(RANDOM);
+	//	_objects[npc_id].SetTargetID(-1);
+	//	char type = _objects[npc_id].GetMyType();
+
+	//	/*switch (type) {
+	//	case O_BARGHEST: m_objects[npc_id].SetSpeed(BARGHEST_WALK_SPEED); break;
+	//	case O_GRIFFON: m_objects[npc_id].SetSpeed(GRIFFON_WALK_SPEED); break;
+	//	case O_DRAGON:m_objects[npc_id].SetSpeed(DRAGON_WALK_SPEED); break;
+	//	}*/
+	//	return;
+	//}
+
+	float speed = _objects[npc_id].GetSpeed();
+	Pos.x = _objects[npc_id].GetPos().x;
+	Pos.y = _objects[npc_id].GetPos().y;
+	Pos.z = _objects[npc_id].GetPos().z;
+	Vec3 dir;
+	dir.x = _objects[player_id].GetPos().x - Pos.x;
+	dir.y = _objects[player_id].GetPos().y - Pos.y;
+	dir.z = _objects[player_id].GetPos().z - Pos.z;
+	Vec3 nor = dir.Normalize();
+
+	//std::cout << nor.x << ", " << nor.y << ", " << nor.z << std::endl;
+	//std::cout << m_elapsedTime.count() << std::endl;
+
+	Vec3 A_vPos;
+	A_vPos = _objects[player_id].GetPos();
+
+	Vec3 B_vPos;
+	B_vPos = _objects[npc_id].GetPos();
+
+	float distance = Vec3::Distance(A_vPos, B_vPos);
+
+	bool closed = false;
+
+	if (distance < 490.f) closed = true;
+
+	/*switch (m_objects[npc_id].GetMyType()) {
+	case 몬스터 이름:
+		if (O_DRAKKEN == m_objects[player_id].GetMyType()) {
+			if (distance < 490.f) closed = true;
+		}
+		else if (O_PLAYER == m_objects[player_id].GetMyType()) {
+			if (distance < 310.f) closed = true;
+		}
+		break;
+	case 몬스터 이름:
+	case 몬스터 이름:
+		if (몬스터 이름 == m_objects[player_id].GetMyType()) {
+			if (distance < 310.f) closed = true;
+		}
+		else if (O_PLAYER == m_objects[player_id].GetMyType()) {
+			if (distance < 130.f) closed = true;
+		}
+		break;
+	}*/
+
+	//if (true == closed) {
+		if (false == _objects[npc_id].GetIsAttack()) {
+			_objects[npc_id].SetIsAttack(true);
+
+			//EVENT new_ev{ npc_id, std::chrono::system_clock::now() + 2s, EV_ATTACK, 0 };
+			AddTimer(npc_id, EV_ATTACK, system_clock::now());
+
+			// 방어 넣으면 여기
+			if (false == _objects[player_id].GetIsDefence()) {
+				_objects[player_id].SetCurrentHp(_objects[player_id].GetCurrentHp() - _objects[npc_id].GetDamage());
+				
+				//_sender->SendHpPacket(_objects[player_id].GetSocket(), _objects[player_id].GetCurrentHp());
+				
+				//printf("Hp: %d\n", m_objects[player_id].GetCurrentHp());
+
+				if (0 >= _objects[player_id].GetCurrentHp()) {
+					// 죽음
+					short level = _objects[player_id].GetLevel();
+					short hp = _objects[player_id].GetCurrentHp();
+					short changeHp = hp - (50 * level);
+					if (0 > changeHp) changeHp = 0;
+					_objects[player_id].SetCurrentExp(changeHp);
+					_objects[player_id].SetCurrentHp(50);
+					_objects[player_id].SetPos(VEC3_TOWN_ENTRANCE_POS);
+				
+					/*_sender->SendPlayerDiePacket(_objects[player_id].GetSocket(), player_id);
+					std::unordered_set<int> vl = _objects[player_id].GetViewList();
+					for (const auto& id : vl) {
+						if (false == IsPlayer(id)) continue;
+						if (ST_ACTIVE != _objects[id]._status) continue;
+						_sender->SendPlayerDiePacket(_objects[id].GetSocket(), player_id);
+					}*/
+
+				}
+			}
+			//////////////////////
+
+			for (auto& cl : _objects) {
+				if (false == IsPlayer(cl.GetID())) continue;
+				if (false == IsNear(cl.GetID(), npc_id)) continue;
+				cl.ClientLock();
+				if (ST_ACTIVE == cl._status) {
+					cout << "NPC Attack" << endl;
+					//_sender->SendNPCAttackPacket(cl.GetSocket(), npc_id, Pos.x, Pos.z);
+				}
+				cl.ClientUnLock();
+			}
+		}
+
+
+		//return;
+	//}
+
+	Pos.x += _elapsedTime.count() * speed * nor.x;
+	Pos.y += _elapsedTime.count() * speed * nor.y;
+	Pos.z += _elapsedTime.count() * speed * nor.z;
+
+	bool check = false;
+	for (int i = 0; i < NUM_OBSTACLES; ++i) {
+		if (-999 == _obstacles[i].xScale) break;
+
+		// 플레이어
+		Vec3 pPos;
+		pPos.x = Pos.x;
+		pPos.y = Pos.y;
+		pPos.z = Pos.z;
+		// obstacles
+		Vec3 oPos;
+		oPos.x = _obstacles[i].xPos;
+		oPos.y = _obstacles[i].yPos;
+		oPos.z = _obstacles[i].zPos;
+		float r = _obstacles[i].zScale;
+
+		float distance = Vec3::Distance(pPos, oPos);
+
+		if (distance <= r) {
+			check = true;
+			break;
+		}
+	}
+
+	if (false == check) {
+		cout << "check false" << endl;
+		cout << Pos.x << ", " << Pos.z << endl;
+		_objects[npc_id].SetPos(Pos);
+	}
+
+	_objects[npc_id].SetLook(nor);
+
+	char status{}; // 애니메이션 상태
+	//if (O_BARGHEST == m_objects[npc_id].GetMyType()) status = RUN;
+	//else status = WALK;
+
+	for (int i = 0; i < NPC_ID_START; ++i) {
+		if (ST_ACTIVE != _objects[i]._status) continue;
+		if (true == IsNear(i, npc_id)) {
+			_objects[i].ClientLock();
+			if (0 != _objects[i].GetViewListCount(npc_id)) {
+				_objects[i].ClientUnLock();
+				/*_sender->SendMovePacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos().x,
+					_objects[npc_id].GetPos().y,  _objects[npc_id].GetPos().z,
+					_objects[npc_id].GetLook().x, _objects[npc_id].GetLook().y,
+					_objects[npc_id].GetLook().z, status, std::chrono::system_clock::now());*/
+				_sender->SendMovePacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos(),
+					_objects[npc_id].GetLook().x, _objects[npc_id].GetLook().y, _objects[npc_id].GetLook().z, true,
+					std::chrono::system_clock::now());
+			}
+			else {
+				_objects[i].InsertViewList(npc_id);
+				_objects[i].ClientUnLock();
+				//cout << "sendputobject2" << endl;
+
+				_sender->SendPutObjectPacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos().x,
+					_objects[npc_id].GetPos().y, _objects[npc_id].GetPos().z,
+					_objects[npc_id].GetMyType());
+			}
+		}
+		else {
+			_objects[i].ClientLock();
+			if (0 != _objects[i].GetViewListCount(npc_id)) {
+				_objects[i].EraseViewList(npc_id);
+				_objects[i].ClientUnLock();
+				_sender->SendLeaveObjectPacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetMyType());
+			}
+			else {
+				_objects[i].ClientUnLock();
+			}
+		}
+	}
+	_elapsedTime = curTime - _prevTime;
+
+	_prevTime = curTime;
+
+	AddTimer(npc_id, EV_MONSTER_MOVE, system_clock::now() + 200ms);
+	//AddTimer(., EV_ATTACK, system_clock::now());
+
+	
 }
 
 bool CServerFrame::IsPlayer(int id)
@@ -990,7 +1210,11 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 
 	for (auto& cl : _objects) {
 		if (false == IsNear(cl.GetID(), id)) continue;
-		if (ST_SLEEP == cl._status) ActivateNPC(cl.GetID());
+		if (ST_SLEEP == cl._status) {
+		
+			ActivateNPC(cl.GetID());
+
+		}
 		if (ST_ACTIVE != cl._status) continue;
 		if (cl.GetID() == id) continue;
 		/*if (false == IsPlayer(cl.GetID()))
@@ -1168,31 +1392,31 @@ void CServerFrame::CreateMonster()
 	}
 
 
-	_objects[NPC_ID_START].SetPos(Vec3(0.f, 5000.f, 3200.f));/*
-	_objects[NPC_ID_START].SetNextPos(0, 900.f, 0.f, 1200.f);
-	_objects[NPC_ID_START].SetNextPos(1, 1300.f, 0.f, 900.f);
-	_objects[NPC_ID_START].SetNextPos(2, 400.f, 0.f, 1500.f);*/
+	_objects[NPC_ID_START].SetPos(Vec3(0.f, 5000.f, 3200.f));
+	_objects[NPC_ID_START].SetNextPos(0, 300.f, 5000.f, 3400.f);
+	_objects[NPC_ID_START].SetNextPos(1, 150.f, 5000.f, 3000.f);
+	_objects[NPC_ID_START].SetNextPos(2, 0.f, 5000.f, 3200.f);
 
 
-	_objects[NPC_ID_START + 1].SetPos(Vec3(200.f, 5000.f, 3400.f));/*
-	_objects[NPC_ID_START + 1].SetNextPos(0, 70.f, 0.f, 450.f);
-	_objects[NPC_ID_START + 1].SetNextPos(1, 370.f, 0.f, 750.f);
-	_objects[NPC_ID_START + 1].SetNextPos(2, 770.f, 0.f, 750.f);*/
+	_objects[NPC_ID_START + 1].SetPos(Vec3(200.f, 5000.f, 3400.f));
+	_objects[NPC_ID_START + 1].SetNextPos(0, 500.f, 5000.f, 3200.f);
+	_objects[NPC_ID_START + 1].SetNextPos(1, 400.f, 5000.f, 3600.f);
+	_objects[NPC_ID_START + 1].SetNextPos(2, 200.f, 5000.f, 3400.f);
 
-	_objects[NPC_ID_START + 2].SetPos(Vec3(400.f, 5000.f, 3400.f));/*
-	_objects[NPC_ID_START + 2].SetNextPos(0, 70.f, 0.f, 450.f);
-	_objects[NPC_ID_START + 2].SetNextPos(1, 370.f, 0.f, 750.f);
-	_objects[NPC_ID_START + 2].SetNextPos(2, 770.f, 0.f, 750.f);*/
+	_objects[NPC_ID_START + 2].SetPos(Vec3(400.f, 5000.f, 3400.f));
+	_objects[NPC_ID_START + 2].SetNextPos(0, 200.f, 5000.f, 3400.f);
+	_objects[NPC_ID_START + 2].SetNextPos(1, 300.f, 5000.f, 3600.f);
+	_objects[NPC_ID_START + 2].SetNextPos(2, 400.f, 5000.f, 3400.f);
 
-	_objects[NPC_ID_START + 3].SetPos(Vec3(-200.f, 5000.f, 3400.f));/*
-	_objects[NPC_ID_START + 3].SetNextPos(0, 70.f, 0.f, 450.f);
-	_objects[NPC_ID_START + 3].SetNextPos(1, 370.f, 0.f, 750.f);
-	_objects[NPC_ID_START + 3].SetNextPos(2, 770.f, 0.f, 750.f);*/
+	_objects[NPC_ID_START + 3].SetPos(Vec3(-200.f, 5000.f, 3400.f));
+	_objects[NPC_ID_START + 3].SetNextPos(0, -300.f, 5000.f, 3400.f);
+	_objects[NPC_ID_START + 3].SetNextPos(1, -200.f, 5000.f, 3600.f);
+	_objects[NPC_ID_START + 3].SetNextPos(2, -100.f, 5000.f, 3400.f);
 
-	_objects[NPC_ID_START + 4].SetPos(Vec3(-400.f, 5000.f, 3400.f));/*
-	_objects[NPC_ID_START + 4].SetNextPos(0, 70.f, 0.f, 450.f);
-	_objects[NPC_ID_START + 4].SetNextPos(1, 370.f, 0.f, 750.f);
-	_objects[NPC_ID_START + 4].SetNextPos(2, 770.f, 0.f, 750.f);*/
+	_objects[NPC_ID_START + 4].SetPos(Vec3(-400.f, 5000.f, 3400.f));
+	_objects[NPC_ID_START + 4].SetNextPos(0, -200.f, 5000.f, 3400.f);
+	_objects[NPC_ID_START + 4].SetNextPos(1, -100.f, 5000.f, 3600.f);
+	_objects[NPC_ID_START + 4].SetNextPos(2, -300.f, 5000.f, 3400.f);
 
 	printf("Monster Initialization finished.\n");
 

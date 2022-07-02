@@ -362,7 +362,8 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 		}
 		else
-		{
+		{ 
+
 			if (CheckType(other_id) == OBJECT_TYPE::PLAYER)
 			{
 				GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
@@ -375,9 +376,22 @@ void CNetwork::ProcessPacket(char* ptr)
 					GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 0);*/
 
 				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetOtherMovePacket(packet, 1 * 0.00000001);
+			
 			}
 			else if (CheckType(other_id) == OBJECT_TYPE::MONSTER)
 			{
+				cout << "클라이언트 몬스터 무브" << endl;
+				cout << "서버에서 보낸 몬스터 packet move 좌표" << endl;
+				cout << packet->localPos.x << ", " << packet->localPos.z << endl;
+				GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
+
+				GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetBisFrist(true);
+				GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetOtherMovePacket__IsMoving(true);
+				/*if (packet->status)
+					GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 1);
+				*/
+				GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetOtherMovePacket(packet, 1 * 0.00000001);
+
 			}
 		}
 		//break;
