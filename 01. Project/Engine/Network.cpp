@@ -339,6 +339,7 @@ void CNetwork::ProcessPacket(char* ptr)
 	case SC_PACKET_LEAVE_OBJECT: {
 		sc_packet_leave* packet = reinterpret_cast<sc_packet_leave*>(ptr);
 		int id = packet->id;
+		cout << "leave id : " << id << endl;
 		if (CheckType(id) == OBJECT_TYPE::MONSTER) {
 			GameObject.find(id)->second->GetScript<CMonsterScript>()->GetObj()->SetDead();
 			GameObject.erase(id);
@@ -351,6 +352,14 @@ void CNetwork::ProcessPacket(char* ptr)
 		break;
 
 
+	}
+	case SC_PACKET_MONSTERDIE: {
+		sc_packet_monsterdie* packet = reinterpret_cast<sc_packet_monsterdie*>(ptr);
+		int id = packet->id;
+
+		GameObject.find(id)->second->GetScript<CMonsterScript>()->GetObj()->SetDead();
+
+		break;
 	}
 	case SC_PACKET_MOVE: {
 		sc_packet_move* packet = reinterpret_cast<sc_packet_move*>(ptr);

@@ -29,6 +29,7 @@ public:
 	void Send_Enter_Packet(SOCKET s, Vec3 target_pos, const short& id, const short& other_id);
 	void SendRotatePacket(SOCKET s, int mover, Vec3 rotate);
 	void SendRunPacket(SOCKET s, int id, Vec3 pos, bool isRun);
+	void SendMonsterDiePacket(SOCKET s, const int& monsterid);
 
 	void Activate_Player_Move_Event(int target, int player_id);
 private:

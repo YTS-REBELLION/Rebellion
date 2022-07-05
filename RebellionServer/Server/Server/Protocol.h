@@ -43,11 +43,12 @@ const char	SC_PACKET_MOVE = 8;
 const char	SC_PACKET_STOP = 9;
 const char	SC_PACKET_PLAYER_ATTACK = 10;
 const char	SC_PACKET_RUN = 11;
+const char	SC_PACKET_MONSTERDIE = 12;
 
 const char	SC_PACKET_NPC_ATTACK = 8;
 const char	SC_PACKET_HP_CHANGE = 10;
 const char	SC_PACKET_PLAYER_DIE = 11;
-const char	SC_PACKET_DEFENCE = 12;
+const char	SC_PACKET_DEFENCE = 15;
 const char	SC_PACKET_RETURN = 13;
 const char	SC_PACKET_ROTATE = 14;
 
@@ -213,6 +214,13 @@ struct sc_packet_run {
 	int id;
 	bool isRun;
 	Vec3 pos;
+};
+
+struct sc_packet_monsterdie {
+	char size;
+	char type;
+	int id;
+	
 };
 //---------------------------------------
 

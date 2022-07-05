@@ -262,6 +262,18 @@ void CSender::SendRunPacket(SOCKET s, int id,Vec3 pos, bool isRun)
 	SendPacket(s, &packet);
 }
 
+void CSender::SendMonsterDiePacket(SOCKET s, const int& monsterid)
+{
+	sc_packet_monsterdie packet;
+	packet.id = monsterid;
+	packet.type = SC_PACKET_MONSTERDIE;
+
+	packet.size = sizeof(packet);
+	SendPacket(s, &packet);
+
+
+}
+
 
 
 //private function

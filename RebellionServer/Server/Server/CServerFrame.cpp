@@ -127,7 +127,6 @@ void CServerFrame::InitClients()
 		_objects[i].SetID(i);
 		//_objects[i].SetSpeed(i);
 		_objects[i].SetMyType(PLAYER);
-
 		int idx = 0;
 		float x, z;
 		idx = (idx + 1) % 3;
@@ -168,7 +167,7 @@ void CServerFrame::InitClients()
 		_objects[i].SetCurrentHp(200);
 		_objects[i].SetMaxHp(200);
 		_objects[i].SetPos(pos);
-		_objects[i].SetDamage(50);
+		_objects[i].SetDamage(400);
 		_objects[i].SetLevel(1);
 		_objects[i].SetIsAttack(false);
 		
@@ -343,11 +342,17 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 	case CS_PACKET_P2MCOL: {
 		cout << "몬스터와 검 충돌" << endl;
 		cs_packet_player2monstercol* packet = reinterpret_cast<cs_packet_player2monstercol*>(buf);
-		int id = packet->id;
+		int other_id = packet->id;
 		int pid = packet->playerId;
 		cout << "충돌된 몬스터 ID : " << packet->id << endl;
 		//_objects[id].GetCurrentHp() -= _objects[pid].GetDamage();
+		_objects[other_id].SetCurrentHp(_objects[other_id].GetCurrentHp() - _objects[pid].GetDamage());
 
+		if (_objects[other_id].GetCurrentHp() <= 0) {
+			_objects[other_id]._status = ST_FREE;
+			//_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), other_id, _objects[other_id].GetMyType());
+			_sender->SendMonsterDiePacket(_objects[id].GetSocket(), other_id);
+		}
 
 		break;
 	}
@@ -1401,7 +1406,7 @@ void CServerFrame::CreateMonster()
 
 
 		_objects[monsterId].SetCurrentHp(1200);
-		_objects[monsterId].SetMaxHp(1200);
+		_objects[monsterId].SetMaxHp(2000);
 
 		_objects[monsterId].SetLevel(1);
 

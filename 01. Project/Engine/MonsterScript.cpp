@@ -165,6 +165,8 @@ void CMonsterScript::OnCollision(CCollider2D* _pOther)
 	{
 		cout << "검과 충돌" << endl;
 		m_bHit = true;
+		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
+
 	}
 
 	if (m_fHp < 0.f)
@@ -172,13 +174,6 @@ void CMonsterScript::OnCollision(CCollider2D* _pOther)
 		cout << "몬스터 사망" << endl;
 		GetObj()->SetDead();
 		
-	}
-
-	if (_pOther->GetObj()->GetName() == L"Player_Sword")
-	{
-		cout << "검과 충돌" << endl;
-		m_bHit = true;
-		g_net.Send_Player2MonsterCol_Packet(GetID(),GetObj()->GetID(),true);
 	}
 }
 
