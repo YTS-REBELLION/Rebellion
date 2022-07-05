@@ -26,6 +26,7 @@ private:
 	Vec3				m_vecPlayerDir;
 	float				m_fSpeed = PLAYER_SPEED;
 	bool				m_bAttack;
+	bool				m_bCol;
 	sc_packet_move* m_movePacketTemp = nullptr;
 
 	float				m_vecAniClipTime[5]{};
@@ -39,16 +40,14 @@ private:
 
 	bool				m_bColCheck = false;
 
-
-
-
-
+	vector<tMTAnimClip>			m_pVecAnimClip;
 public:
 	virtual void awake();	
 	virtual void update();
 
 	void GetPlayerAnimation(Ptr<CMesh> AniDate) { m_pAniData.push_back(AniDate); };
 	void SetPlayerAnimation(const int& i);
+	void SetPlayerAnimation(const int& i, const UINT& _StartFrame, const UINT& _EndFrame);
 	Ptr<CMesh> GetAniData(const int& type) { return m_pAniData[(int)type]; }
 
 	void SetPlayerAnimation(int other_id, int i);
@@ -67,7 +66,14 @@ public:
 		}
 		else m_bAttack = true;
 	}
+	void SetCol() {
+		if (m_bCol) {
+			m_bCol = false;
+		}
+		else m_bCol = true;
+	}
 	bool GetAttack() { return m_bAttack; }
+	bool GetCol() { return m_bCol; }
 	Vec3 Get_PlayerPos() { return this->Transform()->GetLocalPos(); }
 	CPlayerScript* GetPlayer() { return this; }
 public:

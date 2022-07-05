@@ -42,6 +42,43 @@ void CMonsterScript::update()
 	
 	CSceneMgr::GetInst()->FindPlayerPos(L"Player");
 	float fDistanceP_M = Vec3::Distance(CSceneMgr::GetInst()->m_vSavePos, localPos);
+
+	CMonsterScript* Monster = GetObj()->GetScript<CMonsterScript>();
+	const vector<CGameObject*>& vecObject = CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetObjects();
+	
+	
+	if (vecObject.size() > 0)
+	{
+		m_pPlayer = vecObject[0]->GetScript<CPlayerScript>();
+
+		if (KEY_TAB(KEY_TYPE::KEY_SPACE))
+		{
+			cout << "몬스터 키입력" << endl;
+			Monster->Animator3D()->SetClipTime(0, 0.0f);
+		}
+		//cout << m_pPlayer->GetCol() << endl;
+		if (m_bHit/*&&m_pPlayer->GetCol()*/)
+		{
+			if (m_vecAniClipTime[0] <= Monster->Animator3D()->GetAnimClip(0).dTimeLength - 2.0f)
+			{
+				m_vecAniClipTime[0] += DT;
+				Monster->SetPlayerAnimation(1, 0, 40);
+				if (m_vecAniClipTime[0] > Monster->Animator3D()->GetAnimClip(0).dTimeLength - 2.0f)
+				{
+					m_vecAniClipTime[0] = 0.f;
+					m_bHit = false;
+				}
+			}
+
+			//SetPlayerAnimation(1, 0, 40);
+			//cout << Monster->Animator3D()->GetAnimClip(0).dTimeLength << endl;
+
+		}
+		else
+			SetPlayerAnimation(0, 0, 76);
+	}
+
+	//CPlayerScript* player = vecObject[0]->GetScript<CPlayerScript>();
 	//cout << "거리차이:" << fDistanceP_M << endl;
 	if (fDistanceP_M > 200.f && fDistanceP_M <= 505.f )
 	{
@@ -56,22 +93,23 @@ void CMonsterScript::update()
 			m_fSpeed = 0.f;
 		}
 	}
-	
-	//if (m_bHit)
-	//{
-	//	//cout << "공격하는 도중에 맞았다." << endl;
-	//	SetPlayerAnimation(1, 0, 40);
-	//	cout << GetObj()->Animator3D()->GetFrameIdx() << endl;
-	//	if (GetObj()->Animator3D()->GetCurTime() > 2.6f && !GetHit())
-	//	{
-	//		SetHit();
-	//		cout << "애니메이션 끝" << endl;
-	//	}
-	//}
-	//else {
-	//}
+	////if (m_bHit&& player->GetCol())
+	////{
+	////	SetPlayerAnimation(1, 0, 40);
+	////}
+	////cout << player->GetCol() << endl;
+	////if (player->GetCol()) {
+	////	cout << "아 시 팔" << endl;
 
-	SetPlayerAnimation(0, 0, 76);
+	////}
+	////if (m_bHit)
+	////{
+	////	Monster->Animator3D()->SetClipTime(0, 0.3f);
+	////	SetPlayerAnimation(1, 0, 30);
+	////}
+	//else
+	//	SetPlayerAnimation(0, 0, 76); // idle
+	//SetPlayerAnimation(1, 0, 40); // idle
 	Transform()->SetLocalPos(localPos);
 }
 
@@ -118,8 +156,16 @@ void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 
 void CMonsterScript::OnCollision(CCollider2D* _pOther)
 {
-	m_fHp -= 4.f;
-	m_bHit = true;
+	//m_fHp -= 4.f;
+	if (_pOther->GetObj()->GetName() == L"Player1")
+	{
+		cout << "플레이어와 충돌" << endl;
+	}
+	else if (_pOther->GetObj()->GetName() == L"Player_Sword")
+	{
+		cout << "검과 충돌" << endl;
+		m_bHit = true;
+	}
 
 	if (m_fHp < 0.f)
 	{
@@ -138,5 +184,8 @@ void CMonsterScript::OnCollision(CCollider2D* _pOther)
 
 void CMonsterScript::OnCollisionExit(CCollider2D* _pOther)
 {
-	m_bHit = false;
+	if (_pOther->GetObj()->GetName() == L"Player_Sword")
+	{
+		cout << "검과 충돌 해제" << endl;
+	}
 }
