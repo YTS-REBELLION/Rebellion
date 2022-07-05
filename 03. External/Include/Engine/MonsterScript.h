@@ -64,6 +64,7 @@ public:
 		else m_bAniOk = true;
 	}
 	bool GetHit() { return m_bAniOk; }
+	int GetID() { return m_id; }
 
 	CPlayerScript* m_pPlayer = nullptr;
 	

@@ -28,6 +28,9 @@ const char	CS_PACKET_MOVE = 10;
 const char	CS_PACKET_STOP = 11;
 const char	CS_PACKET_ROTATE = 12;
 const char	CS_PACKET_RUN = 13;
+const char	CS_PACKET_MD = 14;
+const char	CS_PACKET_P2MCOL = 15;
+
 
 const char  SC_PACKET_LOGIN_OK = 1;
 const char  SC_PACKET_LOGIN_FAIL = 2;
@@ -295,5 +298,18 @@ struct cs_packet_run {
 	int id;
 	bool isRun;
 	Vec3 pos;
+};
+struct cs_packet_monsterdie {
+	char size;
+	char type;
+	int id;
+	bool isDead;
+};
+struct cs_packet_player2monstercol {
+	char size;
+	char type;
+	int id;
+	int playerId;
+	bool iscol;
 };
 #pragma pack(pop)

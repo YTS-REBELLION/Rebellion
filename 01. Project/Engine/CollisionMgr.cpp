@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CollisionMgr.h"
 
+#include "Network.h"
 #include "SceneMgr.h"
 #include "Scene.h"
 #include "Layer.h"
@@ -74,7 +75,7 @@ void CCollisionMgr::CollisionLayer(const CLayer * _pLayer1, const CLayer * _pLay
 	const vector<CGameObject*>& vecObj2 = _pLayer2->GetObjects();
 
 	map<DWORD_PTR, bool>::iterator iter;
-
+	
 	for (size_t i = 0; i < vecObj1.size(); ++i)
 	{
 		CCollider2D* pCollider1 = vecObj1[i]->Collider2D();
@@ -97,11 +98,19 @@ void CCollisionMgr::CollisionLayer(const CLayer * _pLayer1, const CLayer * _pLay
 			id.iColID1 = pCollider1->GetColID();
 			id.iColID2 = pCollider2->GetColID();
 			iter = m_mapCol.find(id.ID);
-
 			bool IsDead = false;
-			if (pCollider1->GetObj()->IsDead() || pCollider2->GetObj()->IsDead())
+			if (pCollider1->GetObj()->IsDead()) {
+				cout << "pCollider1" << endl;
 				IsDead = true;
+				//g_net.Send_MonsterDie_Packet(pCollider1->GetObj()->GetID(), IsDead);
+			}
 
+			if (pCollider2->GetObj()->IsDead()) {
+				cout << "pCollider2" << endl;
+				IsDead = true;
+				//g_net.Send_MonsterDie_Packet(pCollider1->GetObj()->GetID(), IsDead);
+			}
+				
 			// 충돌했다.
 			if (IsCollision(pCollider1, pCollider2))
 			{

@@ -125,7 +125,7 @@ void CServerFrame::InitClients()
 		_objects[i].SetIsDummy(false);
 		_objects[i]._status = ST_FREE;
 		_objects[i].SetID(i);
-		_objects[i].SetSpeed(i);
+		//_objects[i].SetSpeed(i);
 		_objects[i].SetMyType(PLAYER);
 
 		int idx = 0;
@@ -313,10 +313,44 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 
 		unordered_set<int> new_viewlist = _objects[id].GetViewList();
 
+		// 애니메이션 보이기.
 		for (auto& user : new_viewlist) {
 			if (true == IsPlayer(user))
 				_sender->SendPlayerAttackPacket(_objects[user].GetSocket(), id, packet->isAttack);
 		}
+
+		// 충돌 했을 때
+		// 몬스터 체력 -= 플레이어 데미지
+		// 만약 몬스터가 죽으면 sendmonsterdiepacket
+		// 
+
+
+
+
+		break;
+	}
+	case CS_PACKET_MD: {
+		cout << "몬스터 다이!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+		cs_packet_monsterdie* packet = reinterpret_cast<cs_packet_monsterdie*>(buf);
+		cout << "몬스터 아이디 " << packet->id << endl;
+
+		if (packet->isDead) {
+			
+
+
+		}
+
+
+		break;
+	}
+	case CS_PACKET_P2MCOL: {
+		cout << "몬스터와 검 충돌" << endl;
+		cs_packet_player2monstercol* packet = reinterpret_cast<cs_packet_player2monstercol*>(buf);
+		int id = packet->id;
+		int pid = packet->playerId;
+		cout << "충돌된 몬스터 ID : " << packet->id << endl;
+		//_objects[id].GetCurrentHp() -= _objects[pid].GetDamage();
+
 
 		break;
 	}
@@ -778,6 +812,7 @@ void CServerFrame::AggroMove(int npc_id)
 			_objects[i].ClientLock();
 			if (0 != _objects[i].GetViewListCount(npc_id)) {
 				_objects[i].EraseViewList(npc_id);
+				//_objects[npc_id]._status = ST_SLEEP;
 				_objects[i].ClientUnLock();
 				_sender->SendLeaveObjectPacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetMyType());
 			}
@@ -789,8 +824,19 @@ void CServerFrame::AggroMove(int npc_id)
 	_elapsedTime = curTime - _prevTime;
 
 	_prevTime = curTime;
+	
+	for (int i = 0; i < NPC_ID_START; ++i) {
+		if (true == IsNear(npc_id, i)) {
+			if (ST_ACTIVE == _objects[i]._status) {
+				AddTimer(npc_id, EV_MONSTER_MOVE, system_clock::now() + 200ms);
+				return;
+			}
+		}
+	}
 
-	AddTimer(npc_id, EV_MONSTER_MOVE, system_clock::now() + 200ms);
+	_objects[npc_id]._status = ST_SLEEP;
+
+	
 	//AddTimer(., EV_ATTACK, system_clock::now());
 
 	
@@ -1211,9 +1257,7 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 	for (auto& cl : _objects) {
 		if (false == IsNear(cl.GetID(), id)) continue;
 		if (ST_SLEEP == cl._status) {
-		
 			ActivateNPC(cl.GetID());
-
 		}
 		if (ST_ACTIVE != cl._status) continue;
 		if (cl.GetID() == id) continue;
@@ -1275,6 +1319,7 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 			_objects[id].EraseViewList(op);
 			_objects[id].ClientUnLock();
 			_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), op, _objects[op].GetMyType());
+			//std::atomic_compare_exchange_strong(&_objects[id]._status, &oldState, ST_ACTIVE);
 			if (false == IsPlayer(op)) continue;
 			_objects[op].ClientLock();
 			if (0 != _objects[op].GetViewListCount(id)) {
@@ -1371,16 +1416,17 @@ void CServerFrame::CreateMonster()
 	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_START + 5; ++monsterId) {
 		_objects[monsterId].SetID(monsterId);
 		_objects[monsterId]._status = ST_SLEEP;
-		_objects[monsterId].SetSpeed(80.f);
+		_objects[monsterId].SetSpeed(200.f);
 
-		_objects[monsterId].SetCurrentHp(150);
-		_objects[monsterId].SetMaxHp(150);
+
+		_objects[monsterId].SetCurrentHp(1200);
+		_objects[monsterId].SetMaxHp(1200);
 
 		_objects[monsterId].SetLevel(1);
 
 		//_objects[monsterId].SetMoveType(RANDOM);
 
-		//_objects[monsterId].SetIsAttack(false);
+		_objects[monsterId].SetIsAttack(false);
 
 		
 		//_objects[monsterId].SetNextPosIndex(0);
@@ -1393,30 +1439,30 @@ void CServerFrame::CreateMonster()
 
 
 	_objects[NPC_ID_START].SetPos(Vec3(0.f, 5000.f, 3200.f));
-	_objects[NPC_ID_START].SetNextPos(0, 300.f, 5000.f, 3400.f);
-	_objects[NPC_ID_START].SetNextPos(1, 150.f, 5000.f, 3000.f);
-	_objects[NPC_ID_START].SetNextPos(2, 0.f, 5000.f, 3200.f);
+	//_objects[NPC_ID_START].SetNextPos(0, 300.f, 5000.f, 3400.f);
+	//_objects[NPC_ID_START].SetNextPos(1, 150.f, 5000.f, 3000.f);
+	//_objects[NPC_ID_START].SetNextPos(2, 0.f, 5000.f, 3200.f);
 
 
 	_objects[NPC_ID_START + 1].SetPos(Vec3(200.f, 5000.f, 3400.f));
-	_objects[NPC_ID_START + 1].SetNextPos(0, 500.f, 5000.f, 3200.f);
-	_objects[NPC_ID_START + 1].SetNextPos(1, 400.f, 5000.f, 3600.f);
-	_objects[NPC_ID_START + 1].SetNextPos(2, 200.f, 5000.f, 3400.f);
+	//_objects[NPC_ID_START + 1].SetNextPos(0, 500.f, 5000.f, 3200.f);
+	//_objects[NPC_ID_START + 1].SetNextPos(1, 400.f, 5000.f, 3600.f);
+	//_objects[NPC_ID_START + 1].SetNextPos(2, 200.f, 5000.f, 3400.f);
 
 	_objects[NPC_ID_START + 2].SetPos(Vec3(400.f, 5000.f, 3400.f));
-	_objects[NPC_ID_START + 2].SetNextPos(0, 200.f, 5000.f, 3400.f);
-	_objects[NPC_ID_START + 2].SetNextPos(1, 300.f, 5000.f, 3600.f);
-	_objects[NPC_ID_START + 2].SetNextPos(2, 400.f, 5000.f, 3400.f);
+	//_objects[NPC_ID_START + 2].SetNextPos(0, 200.f, 5000.f, 3400.f);
+	//_objects[NPC_ID_START + 2].SetNextPos(1, 300.f, 5000.f, 3600.f);
+	//_objects[NPC_ID_START + 2].SetNextPos(2, 400.f, 5000.f, 3400.f);
 
 	_objects[NPC_ID_START + 3].SetPos(Vec3(-200.f, 5000.f, 3400.f));
-	_objects[NPC_ID_START + 3].SetNextPos(0, -300.f, 5000.f, 3400.f);
-	_objects[NPC_ID_START + 3].SetNextPos(1, -200.f, 5000.f, 3600.f);
-	_objects[NPC_ID_START + 3].SetNextPos(2, -100.f, 5000.f, 3400.f);
+	///_objects[NPC_ID_START + 3].SetNextPos(0, -300.f, 5000.f, 3400.f);
+	///_objects[NPC_ID_START + 3].SetNextPos(1, -200.f, 5000.f, 3600.f);
+	///_objects[NPC_ID_START + 3].SetNextPos(2, -100.f, 5000.f, 3400.f);
 
 	_objects[NPC_ID_START + 4].SetPos(Vec3(-400.f, 5000.f, 3400.f));
-	_objects[NPC_ID_START + 4].SetNextPos(0, -200.f, 5000.f, 3400.f);
-	_objects[NPC_ID_START + 4].SetNextPos(1, -100.f, 5000.f, 3600.f);
-	_objects[NPC_ID_START + 4].SetNextPos(2, -300.f, 5000.f, 3400.f);
+	//_objects[NPC_ID_START + 4].SetNextPos(0, -200.f, 5000.f, 3400.f);
+	//_objects[NPC_ID_START + 4].SetNextPos(1, -100.f, 5000.f, 3600.f);
+	//_objects[NPC_ID_START + 4].SetNextPos(2, -300.f, 5000.f, 3400.f);
 
 	printf("Monster Initialization finished.\n");
 

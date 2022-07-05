@@ -194,7 +194,6 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.emplace(id, pObject);
 			GameObject.find(id)->second->SetID(id);
 
-
 			GameObject.find(id)->second = pMeshData->Instantiate();
 			GameObject.find(id)->second->SetName(L"Player1");
 			GameObject.find(id)->second->FrustumCheck(false);
@@ -287,7 +286,7 @@ void CNetwork::ProcessPacket(char* ptr)
 			//pMeshData->Save(pMeshData->GetPath());
 			GameObject.emplace(id, pMonster);
 			GameObject.find(id)->second->SetID(id);
-
+			cout << "몬스터 id " << id << endl;
 			GameObject.find(id)->second = pMeshData->Instantiate();
 			GameObject.find(id)->second->SetName(L"Monster1");
 			GameObject.find(id)->second->FrustumCheck(false);
@@ -298,11 +297,11 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.find(id)->second->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
 			GameObject.find(id)->second->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
 			GameObject.find(id)->second->Collider2D()->SetOffsetScale(Vec3(20.f, 20.f, 40.f));
-
 			// 플레이어 스크립트 붙여주기.
 			GameObject.find(id)->second->AddComponent(new CMonsterScript);
-
+			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetID(id);
 			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", GameObject.find(id)->second, false);
+
 
 			/*for (auto& data : m_aniData)
 			{
@@ -652,6 +651,32 @@ void CNetwork::Send_Run_Packet(const int& id, Vec3 pos ,const bool& isRun)
 	packet.pos = pos;
 	Send_Packet(&packet);
 
+
+}
+
+void CNetwork::Send_MonsterDie_Packet(const int& id, const bool& isDead)
+{
+	cs_packet_monsterdie packet;
+	packet.type = CS_PACKET_MD;
+	packet.id = id;
+	packet.size = sizeof(packet);
+	packet.isDead = isDead;
+
+	Send_Packet(&packet);
+
+}
+
+void CNetwork::Send_Player2MonsterCol_Packet(const int& id, const int& playerid, const bool& iscol)
+{
+
+	cs_packet_player2monstercol packet;
+	packet.type = CS_PACKET_P2MCOL;
+	packet.id = id;
+	packet.playerId = playerid;
+	packet.size = sizeof(packet);
+	packet.iscol = iscol;
+
+	Send_Packet(&packet);
 
 }
 
