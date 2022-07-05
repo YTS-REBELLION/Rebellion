@@ -286,7 +286,6 @@ void CNetwork::ProcessPacket(char* ptr)
 			//pMeshData->Save(pMeshData->GetPath());
 			GameObject.emplace(id, pMonster);
 			GameObject.find(id)->second->SetID(id);
-			cout << "몬스터 id " << id << endl;
 			GameObject.find(id)->second = pMeshData->Instantiate();
 			GameObject.find(id)->second->SetName(L"Monster1");
 			GameObject.find(id)->second->FrustumCheck(false);
@@ -298,8 +297,11 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.find(id)->second->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
 			GameObject.find(id)->second->Collider2D()->SetOffsetScale(Vec3(20.f, 20.f, 40.f));
 			// 플레이어 스크립트 붙여주기.
+			
+			
 			GameObject.find(id)->second->AddComponent(new CMonsterScript);
 			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetID(id);
+			
 			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", GameObject.find(id)->second, false);
 
 
@@ -309,6 +311,7 @@ void CNetwork::ProcessPacket(char* ptr)
 			}*/
 
 			CMonsterScript* MonsterScript = GameObject.find(id)->second->GetScript<CMonsterScript>();
+			
 			// 플레이어 애니메이션
 			MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 0
 			SetAniData(pMeshData->GetMesh());

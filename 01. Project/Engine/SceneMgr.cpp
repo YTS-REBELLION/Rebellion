@@ -1071,8 +1071,8 @@ void CSceneMgr::init()
 	}
 
 	// Monster °´Ã¼ »ý¼º
-	//CGameObject* pMonster = new CGameObject;
-	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Sword And Shield Idle (2).mdat", L"MeshData\\Sword And Shield Idle (2).mdat");
+	CGameObject* pMonster = new CGameObject;
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Sword And Shield Idle (2).mdat", L"MeshData\\Sword And Shield Idle (2).mdat");
 	////pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sword And Shield Idle (2).fbx");
 	////pMeshData->Save(pMeshData->GetPath());
 

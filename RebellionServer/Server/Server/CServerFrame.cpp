@@ -234,7 +234,6 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 
 	}
 	case CS_PACKET_MOVE: {
-		std::cout << "ID : " << id << "이동" << std::endl;
 		cs_packet_move* packet = reinterpret_cast<cs_packet_move*>(buf);
 		
 		
@@ -251,7 +250,6 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 
 	}
 	case CS_PACKET_RUN: {
-		cout << "CS_PACKET_RUN" << endl;
 		cs_packet_run* packet = reinterpret_cast<cs_packet_run*>(buf);
 
 		unordered_set<int> old_viewList = _objects[id].GetViewList();
@@ -282,7 +280,6 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 
 	}
 	case CS_PACKET_STOP: {
-		cout << "CS_PACKET_STOP" << endl;
 		cs_packet_stop* packet = reinterpret_cast<cs_packet_stop*>(buf);
 		short id = packet->id;
 		
@@ -666,11 +663,13 @@ void CServerFrame::AggroMove(int npc_id)
 	B_vPos = _objects[npc_id].GetPos();
 
 	float distance = Vec3::Distance(A_vPos, B_vPos);
-
-	bool closed = false;
-
-	if (distance < 490.f) closed = true;
-
+	cout << "디스턴스 : " << distance << endl;
+	bool closed;
+	if (distance < 130.f)
+		closed = true;
+	else
+		closed = false;
+	
 	/*switch (m_objects[npc_id].GetMyType()) {
 	case 몬스터 이름:
 		if (O_DRAKKEN == m_objects[player_id].GetMyType()) {
@@ -691,7 +690,8 @@ void CServerFrame::AggroMove(int npc_id)
 		break;
 	}*/
 
-	//if (true == closed) {
+	if (true == closed) {
+		cout << "closed" << endl;
 		if (false == _objects[npc_id].GetIsAttack()) {
 			_objects[npc_id].SetIsAttack(true);
 
@@ -714,7 +714,7 @@ void CServerFrame::AggroMove(int npc_id)
 					if (0 > changeHp) changeHp = 0;
 					_objects[player_id].SetCurrentExp(changeHp);
 					_objects[player_id].SetCurrentHp(50);
-					_objects[player_id].SetPos(VEC3_TOWN_ENTRANCE_POS);
+					//_objects[player_id].SetPos(VEC3_TOWN_ENTRANCE_POS);
 				
 					/*_sender->SendPlayerDiePacket(_objects[player_id].GetSocket(), player_id);
 					std::unordered_set<int> vl = _objects[player_id].GetViewList();
@@ -728,6 +728,7 @@ void CServerFrame::AggroMove(int npc_id)
 			}
 			//////////////////////
 
+
 			for (auto& cl : _objects) {
 				if (false == IsPlayer(cl.GetID())) continue;
 				if (false == IsNear(cl.GetID(), npc_id)) continue;
@@ -740,43 +741,44 @@ void CServerFrame::AggroMove(int npc_id)
 			}
 		}
 
-
 		//return;
-	//}
+	}
 
 	Pos.x += _elapsedTime.count() * speed * nor.x;
 	Pos.y += _elapsedTime.count() * speed * nor.y;
 	Pos.z += _elapsedTime.count() * speed * nor.z;
 
-	bool check = false;
-	for (int i = 0; i < NUM_OBSTACLES; ++i) {
-		if (-999 == _obstacles[i].xScale) break;
+	//bool check = false;
+	//for (int i = 0; i < NUM_OBSTACLES; ++i) {
+	//	if (-999 == _obstacles[i].xScale) break;
 
-		// 플레이어
-		Vec3 pPos;
-		pPos.x = Pos.x;
-		pPos.y = Pos.y;
-		pPos.z = Pos.z;
-		// obstacles
-		Vec3 oPos;
-		oPos.x = _obstacles[i].xPos;
-		oPos.y = _obstacles[i].yPos;
-		oPos.z = _obstacles[i].zPos;
-		float r = _obstacles[i].zScale;
+	//	// 플레이어
+	//	Vec3 pPos;
+	//	pPos.x = Pos.x;
+	//	pPos.y = Pos.y;
+	//	pPos.z = Pos.z;
+	//	// obstacles
+	//	Vec3 oPos;
+	//	oPos.x = _obstacles[i].xPos;
+	//	oPos.y = _obstacles[i].yPos;
+	//	oPos.z = _obstacles[i].zPos;
+	//	float r = _obstacles[i].zScale;
+	//	cout << oPos.x << ", " << oPos.y << ", " << oPos.z << endl;
+	//	float distance = Vec3::Distance(pPos, oPos);
 
-		float distance = Vec3::Distance(pPos, oPos);
+	//	if (distance <= r) {
+	//		check = true;
+	//		break;
+	//	}
+	//}
 
-		if (distance <= r) {
-			check = true;
-			break;
-		}
-	}
-
-	if (false == check) {
-		cout << "check false" << endl;
+	//if (false == check) {
+	//	cout << "check false" << endl;
+	if (false == closed) {
 		cout << Pos.x << ", " << Pos.z << endl;
 		_objects[npc_id].SetPos(Pos);
 	}
+	//}
 
 	_objects[npc_id].SetLook(nor);
 
@@ -821,6 +823,7 @@ void CServerFrame::AggroMove(int npc_id)
 			}
 		}
 	}
+
 	_elapsedTime = curTime - _prevTime;
 
 	_prevTime = curTime;
@@ -834,6 +837,7 @@ void CServerFrame::AggroMove(int npc_id)
 		}
 	}
 
+	cout << "몬스터 잔다" << endl;
 	_objects[npc_id]._status = ST_SLEEP;
 
 	
