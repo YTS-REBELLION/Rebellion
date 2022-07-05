@@ -612,8 +612,6 @@ void CServerFrame::MoveUpdate()
 
 void CServerFrame::AggroMove(int npc_id)
 {
-	cout << "몬스터 어그로" << endl;
-	cout << "dotargetmove" << endl;
 
 	time_point<system_clock> curTime = system_clock::now();
 
@@ -653,8 +651,6 @@ void CServerFrame::AggroMove(int npc_id)
 	dir.z = _objects[player_id].GetPos().z - Pos.z;
 	Vec3 nor = dir.Normalize();
 
-	//std::cout << nor.x << ", " << nor.y << ", " << nor.z << std::endl;
-	//std::cout << m_elapsedTime.count() << std::endl;
 
 	Vec3 A_vPos;
 	A_vPos = _objects[player_id].GetPos();
@@ -663,35 +659,13 @@ void CServerFrame::AggroMove(int npc_id)
 	B_vPos = _objects[npc_id].GetPos();
 
 	float distance = Vec3::Distance(A_vPos, B_vPos);
-	cout << "디스턴스 : " << distance << endl;
 	bool closed;
 	if (distance < 130.f)
 		closed = true;
 	else
 		closed = false;
 	
-	/*switch (m_objects[npc_id].GetMyType()) {
-	case 몬스터 이름:
-		if (O_DRAKKEN == m_objects[player_id].GetMyType()) {
-			if (distance < 490.f) closed = true;
-		}
-		else if (O_PLAYER == m_objects[player_id].GetMyType()) {
-			if (distance < 310.f) closed = true;
-		}
-		break;
-	case 몬스터 이름:
-	case 몬스터 이름:
-		if (몬스터 이름 == m_objects[player_id].GetMyType()) {
-			if (distance < 310.f) closed = true;
-		}
-		else if (O_PLAYER == m_objects[player_id].GetMyType()) {
-			if (distance < 130.f) closed = true;
-		}
-		break;
-	}*/
-
 	if (true == closed) {
-		cout << "closed" << endl;
 		if (false == _objects[npc_id].GetIsAttack()) {
 			_objects[npc_id].SetIsAttack(true);
 
@@ -744,6 +718,10 @@ void CServerFrame::AggroMove(int npc_id)
 		//return;
 	}
 
+	_elapsedTime = curTime - _prevTime;
+
+	_prevTime = curTime;
+
 	Pos.x += _elapsedTime.count() * speed * nor.x;
 	Pos.y += _elapsedTime.count() * speed * nor.y;
 	Pos.z += _elapsedTime.count() * speed * nor.z;
@@ -792,13 +770,15 @@ void CServerFrame::AggroMove(int npc_id)
 			_objects[i].ClientLock();
 			if (0 != _objects[i].GetViewListCount(npc_id)) {
 				_objects[i].ClientUnLock();
-				/*_sender->SendMovePacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos().x,
-					_objects[npc_id].GetPos().y,  _objects[npc_id].GetPos().z,
-					_objects[npc_id].GetLook().x, _objects[npc_id].GetLook().y,
-					_objects[npc_id].GetLook().z, status, std::chrono::system_clock::now());*/
-				_sender->SendMovePacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos(),
-					_objects[npc_id].GetLook().x, _objects[npc_id].GetLook().y, _objects[npc_id].GetLook().z, true,
-					std::chrono::system_clock::now());
+				if (false == closed) {
+					/*_sender->SendMovePacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos().x,
+						_objects[npc_id].GetPos().y,  _objects[npc_id].GetPos().z,
+						_objects[npc_id].GetLook().x, _objects[npc_id].GetLook().y,
+						_objects[npc_id].GetLook().z, status, std::chrono::system_clock::now());*/
+					_sender->SendMovePacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos(),
+						_objects[npc_id].GetLook().x, _objects[npc_id].GetLook().y, _objects[npc_id].GetLook().z, true,
+						std::chrono::system_clock::now());
+				}
 			}
 			else {
 				_objects[i].InsertViewList(npc_id);
@@ -824,9 +804,7 @@ void CServerFrame::AggroMove(int npc_id)
 		}
 	}
 
-	_elapsedTime = curTime - _prevTime;
-
-	_prevTime = curTime;
+	
 	
 	for (int i = 0; i < NPC_ID_START; ++i) {
 		if (true == IsNear(npc_id, i)) {
@@ -837,7 +815,6 @@ void CServerFrame::AggroMove(int npc_id)
 		}
 	}
 
-	cout << "몬스터 잔다" << endl;
 	_objects[npc_id]._status = ST_SLEEP;
 
 	
@@ -1442,7 +1419,7 @@ void CServerFrame::CreateMonster()
 	}
 
 
-	_objects[NPC_ID_START].SetPos(Vec3(0.f, 5000.f, 3200.f));
+	_objects[NPC_ID_START].SetPos(Vec3(10.f, 5000.f, 3200.f));
 	//_objects[NPC_ID_START].SetNextPos(0, 300.f, 5000.f, 3400.f);
 	//_objects[NPC_ID_START].SetNextPos(1, 150.f, 5000.f, 3000.f);
 	//_objects[NPC_ID_START].SetNextPos(2, 0.f, 5000.f, 3200.f);
