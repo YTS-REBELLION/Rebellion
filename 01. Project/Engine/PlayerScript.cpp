@@ -67,8 +67,8 @@ void CPlayerScript::update()
 
 			}
 			else { 
-				
 				player->SetPlayerAnimation(1);
+				//player->SetPlayerAnimation(0, 0, 55);
 				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 
 			};
@@ -148,7 +148,11 @@ void CPlayerScript::update()
 		}
 		else
 		{
-			player->SetPlayerAnimation(0);
+			player->SetPlayerAnimation(0, 0, 55); // idle
+			//player->SetPlayerAnimation(1, 0, 35); // walk
+			//player->SetPlayerAnimation(2, 0, 21); // run
+			//player->SetPlayerAnimation(3, 0, 20); // attack - true
+			//player->SetPlayerAnimation(3, 0, 45); // attack - all
 		}
 
 		if ((KEY_AWAY(KEY_TYPE::KEY_W) || KEY_AWAY(KEY_TYPE::KEY_A) || KEY_AWAY(KEY_TYPE::KEY_S) || KEY_AWAY(KEY_TYPE::KEY_D)))
@@ -168,24 +172,28 @@ void CPlayerScript::update()
 		{
 			//player->GetObj()->Animator3D()->SetClipTime(0, 0.f);
 			player->Animator3D()->SetClipTime(0, 0.f);
-
 			player->SetAttack();
+			player->m_bCol = true;
 		}
 		if (player->GetAttack() && m_vecAniClipTime[0] < GetObj()->Animator3D()->GetAnimClip(0).dTimeLength) {
 			m_vecAniClipTime[0] += DT;
 
-		GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 20.f, 70.f));
-		GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 1150.f, 1700.f));
+		/*	GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 20.f, 70.f));
+			GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 1150.f, 1700.f));*/
 
 			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), player->GetAttack());
 
 			player->SetPlayerAnimation(3);
-
+			//cout << player->GetCol() << endl;
+			if (m_vecAniClipTime[0] > player->Animator3D()->GetAnimClip(0).dTimeLength - 1.0)
+			{
+				player->m_bCol = false;
+			}
 			if (m_vecAniClipTime[0] > player->Animator3D()->GetAnimClip(0).dTimeLength)
 			{
 				m_vecAniClipTime[0] = 0.f;
-				GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
-				GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 850.f, 1700.f));
+				//GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
+				//GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 850.f, 1700.f));
 
 				player->SetAttack();
 				g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), player->GetAttack());
@@ -252,6 +260,32 @@ void CPlayerScript::SetPlayerAnimation(const int& i)
 	GetObj()->Animator3D()->SetAnimClip(m_pAniData[i]->GetAnimClip());
 	GetObj()->MeshRender()->SetMesh(m_pAniData[i]);
 }
+
+void CPlayerScript::SetPlayerAnimation(const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
+{
+	//if (m_pAniData.size() == 0)	return;
+	//GetObj()->Animator3D()->SetBones(m_pAniData[i]->GetBones());
+	//GetObj()->Animator3D()->SetAnimClip(m_pAniData[i]->GetAnimClip());
+	//GetObj()->MeshRender()->SetMesh(m_pAniData[i]);
+
+	GetObj()->Animator3D()->SetBones(m_pAniData[i]->GetBones());
+
+	tMTAnimClip* tNewAnimClip = new tMTAnimClip;
+	tNewAnimClip->iStartFrame = _StartFrame;
+	tNewAnimClip->iEndFrame = _EndFrame;
+	tNewAnimClip->iFrameLength = _EndFrame - _StartFrame;
+	tNewAnimClip->dStartTime = (double)_StartFrame / (double)30;
+	tNewAnimClip->dEndTime = (double)_EndFrame / (double)30;
+	tNewAnimClip->dTimeLength = tNewAnimClip->dEndTime - tNewAnimClip->dStartTime;
+
+	m_pVecAnimClip.push_back(*tNewAnimClip);
+
+	GetObj()->Animator3D()->SetAnimClip(&m_pVecAnimClip);
+
+	GetObj()->MeshRender()->SetMesh(m_pAniData[i]);
+
+}
+
 void CPlayerScript::SetPlayerAnimation(int other_id, int i)
 {
 	//if (m_pAniData.size() == 0)	return;

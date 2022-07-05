@@ -709,7 +709,7 @@ void CSceneMgr::init()
 	m_pCurScene->AddGameObject(L"Player", pPlayer, false);
 
 
-	// Sword °´Ã¼
+	//// Sword °´Ã¼
 	CGameObject* pSwordObject = new CGameObject;
 	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
 	//pMeshData->Save(pMeshData->GetPath());
@@ -795,7 +795,8 @@ void CSceneMgr::init()
 	pMonster = pMeshData->Instantiate();
 	pMonster->SetName(L"Monster1");
 	pMonster->FrustumCheck(false);
-	pMonster->Transform()->SetLocalPos(Vec3(0.f, 5000.f, 3200.f));
+	//pMonster->Transform()->SetLocalPos(Vec3(0.f, 5000.f, 3200.f));
+	pMonster->Transform()->SetLocalPos(Vec3(0.f, 0.f, 200.f));
 	pMonster->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
 	pMonster->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 	pMonster->AddComponent(new CCollider2D);
