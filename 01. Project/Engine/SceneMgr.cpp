@@ -887,7 +887,7 @@ void CSceneMgr::init()
 	// QuestBox texture
 	//==========================
 	Ptr<CTexture> pQuestBox = CResMgr::GetInst()->Load<CTexture>(L"QuestBase", L"Texture\\Quest\\QuestBase.png");
-	pQuestBox = CResMgr::GetInst()->Load<CTexture>(L"QuestBase", L"Texture\\Quest\\QuestBase_2.png");
+	pQuestBox = CResMgr::GetInst()->Load<CTexture>(L"QuestBase", L"Texture\\Quest\\QuestBase.png");
 
 	// ===============
 	// Test Scene »ý¼º
@@ -963,8 +963,11 @@ void CSceneMgr::init()
 	pPlayer->Transform()->SetLocalScale(Vec3(0.08f, 0.08f, 0.08f));
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 	pPlayer->AddComponent(new CCollider2D);
-	pPlayer->AddComponent(new CQuest);
+
 	
+
+	
+
 	//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH);
 
 
@@ -1009,7 +1012,6 @@ void CSceneMgr::init()
 
 
 
-
 	// Sword °´Ã¼
 	CGameObject* pSwordObject = new CGameObject;
 	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
@@ -1035,7 +1037,7 @@ void CSceneMgr::init()
 
 	pSwordObject->AddComponent(new CSwordScript);
 	pSwordObject->GetScript<CSwordScript>()->init();
-
+	
 	CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
 	pSwordObject->GetScript<CSwordScript>()->SetTarget(pPlayer);
 	pSwordObject->GetScript<CSwordScript>()->SetBoneIdx(36);

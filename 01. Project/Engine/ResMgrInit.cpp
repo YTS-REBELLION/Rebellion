@@ -290,7 +290,22 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl->SetShader(FindRes<CShader>(L"GridShader"));	
 	//Ptr<CTexture> pPositionTargetTex = CResMgr::GetInst()->FindRes<CTexture>(L"PositionTargetTex");
 	//pMtrl->SetData(SHADER_PARAM::TEX_0, pPositionTargetTex.GetPointer());
+
 	AddRes(L"GridMtrl", pMtrl);
+
+
+	pMtrl = new CMaterial;
+	pMtrl->DisableFileSave();
+	pMtrl->SetShader(FindRes<CShader>(L"TestShader"));
+	AddRes(L"QuestBoxMtrl", pMtrl);
+
+	/*pMtrl = new CMaterial;
+	pMtrl->DisableFileSave();
+	pMtrl->SetShader(FindRes<CShader>(L"TexShader"));
+	AddRes(L"TexMtrl", pMtrl);*/
+
+
+
 
 	{
 		pMtrl = new CMaterial;

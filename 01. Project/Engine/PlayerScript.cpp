@@ -236,6 +236,47 @@ void CPlayerScript::update()
 
 
 	}
+	Ptr<CTexture> pQuestBox = CResMgr::GetInst()->Load<CTexture>(L"QuestBase", L"Texture\\Quest\\QuestBase.png");
+	if (KEY_AWAY(KEY_TYPE::KEY_Q))
+	{
+		if (m_iClearCnt==0)
+		{
+			tResolution res = CRenderMgr::GetInst()->GetResolution();
+			Vec3	QuestBoxScale = Vec3(300.f, 400.f, 1.f);
+			CGameObject* pObject = new CGameObject;
+			
+
+			pObject->SetName(L"QuestBoxBase");
+			pObject->FrustumCheck(false);
+
+
+			pObject->AddComponent(new CTransform);
+			pObject->AddComponent(new CMeshRender);
+			pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 2.f) - (QuestBoxScale.x / 2.f), (res.fHeight / 2.f) - (QuestBoxScale.y / 2.f) - 30.f, 1.f));
+			//pObject->Transform()->SetLocalPos(Vec3(0,10,0));
+			pObject->Transform()->SetLocalScale(QuestBoxScale);
+			
+
+
+			//MeshRender ¼³Á¤
+			float fUI = 1.0f;
+			pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+			pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"QuestBoxMtrl"));
+			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuestBox.GetPointer());
+			
+
+			// AddGameObject
+			CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+
+			cout << "Äù½ºÆ®!!!!!!!!!!!!" << endl;
+			
+		}
+
+
+
+
+
+	}
 
 
 	

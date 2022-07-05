@@ -42,6 +42,7 @@ private:
 	bool				m_bMeteor2 = false;
 	CGameObject* pMagicJinpp = nullptr;
 	float m_fcreate_time = 0.f;
+	int m_iClearCnt = 0;
 
 public:
 	virtual void awake();	
