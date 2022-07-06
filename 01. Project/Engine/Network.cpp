@@ -305,14 +305,16 @@ void CNetwork::ProcessPacket(char* ptr)
 			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", GameObject.find(id)->second, false);
 
 
-			/*for (auto& data : m_aniData)
-			{
-				GameObject.find(id)->second->GetScript<CMonsterScript>()->GetPlayerAnimation(data);
-			}*/
+
 
 			CMonsterScript* MonsterScript = GameObject.find(id)->second->GetScript<CMonsterScript>();
-			
-			// 플레이어 애니메이션
+
+			//for (auto& data : m_aniData)
+			//{
+			//	GameObject.find(id)->second->GetScript<CMonsterScript>()->GetPlayerAnimation(data);
+			//}
+
+			//플레이어 애니메이션
 			MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 0
 			SetAniData(pMeshData->GetMesh());
 
@@ -399,8 +401,8 @@ void CNetwork::ProcessPacket(char* ptr)
 				GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetBisFrist(true);
 				GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetOtherMovePacket__IsMoving(true);
 				/*if (packet->status)
-					GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 1);
-				*/
+					GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetPlayerAnimation(other_id, 1, 0, 40);*/
+				
 				GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetOtherMovePacket(packet, 1 * 0.00000001);
 
 			}

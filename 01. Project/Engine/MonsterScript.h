@@ -38,7 +38,7 @@ public:
 	void SetPlayerAnimation(const int& i, const UINT& _StartFrame, const UINT& _EndFrame);
 	Ptr<CMesh> GetAniData(const int& type) { return m_pAniData[(int)type]; }
 
-	void SetPlayerAnimation(int other_id, int i);
+	void SetPlayerAnimation(int other_id, const int& i, const UINT& _StartFrame, const UINT& _EndFrame);
 	void SetMain() { m_isMain = true; };
 
 	void SetOtherMovePacket(sc_packet_move* p, const float& rtt);

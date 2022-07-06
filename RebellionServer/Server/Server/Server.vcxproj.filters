@@ -93,8 +93,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="lua54.lib">
-      <Filter>etc\lua</Filter>
-    </Library>
+    <Library Include="lua53.lib" />
   </ItemGroup>
 </Project>

@@ -1098,34 +1098,34 @@ void CSceneMgr::init()
 	pMonster->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
 	pMonster->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
 	pMonster->Collider2D()->SetOffsetScale(Vec3(20.f, 20.f, 40.f));
-	//// 플레이어 스크립트 붙여주기.
-	//pMonster->AddComponent(new CMonsterScript);
+	// 플레이어 스크립트 붙여주기.
+	pMonster->AddComponent(new CMonsterScript);
 
-	//CMonsterScript* MonsterScript = pMonster->GetScript<CMonsterScript>();
-	//// 플레이어 애니메이션
-	//MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 0
-	//g_net.SetAniData(pMeshData->GetMesh());
+	CMonsterScript* MonsterScript = pMonster->GetScript<CMonsterScript>();
+	// 플레이어 애니메이션
+	MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 0
+	g_net.SetAniData(pMeshData->GetMesh());
 
-	////pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Walk.fbx");
-	////pMeshData->Save(pMeshData->GetPath());
-	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Big Hit To Head", L"MeshData\\Big Hit To Head.mdat");
-	//MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
-	//g_net.SetAniData(pMeshData->GetMesh());
+	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Walk.fbx");
+	//pMeshData->Save(pMeshData->GetPath());
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Big Hit To Head", L"MeshData\\Big Hit To Head.mdat");
+	MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
+	g_net.SetAniData(pMeshData->GetMesh());
 
-	////pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Shoulder Hit And Fall.fbx");
-	////pMeshData->Save(pMeshData->GetPath());
-	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Shoulder Hit And Fall", L"MeshData\\Shoulder Hit And Fall.mdat");
-	//MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 2
-	//g_net.SetAniData(pMeshData->GetMesh());
+	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Shoulder Hit And Fall.fbx");
+	//pMeshData->Save(pMeshData->GetPath());
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Shoulder Hit And Fall", L"MeshData\\Shoulder Hit And Fall.mdat");
+	MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 2
+	g_net.SetAniData(pMeshData->GetMesh());
 
 
-	////pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\FMMonster_Walk.fbx");
-	////pMeshData->Save(pMeshData->GetPath());
-	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FMMonster_Walk.mat", L"MeshData\\FMMonster_Walk.mdat");
-	//MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
-	//g_net.SetAniData(pMeshData->GetMesh());
+	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\FMMonster_Walk.fbx");
+	//pMeshData->Save(pMeshData->GetPath());
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FMMonster_Walk.mat", L"MeshData\\FMMonster_Walk.mdat");
+	MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
+	g_net.SetAniData(pMeshData->GetMesh());
 
-	//m_pCurScene->AddGameObject(L"Monster", pMonster, false);
+	m_pCurScene->AddGameObject(L"Monster", pMonster, false);
 
 
 	// Tree 오브젝트

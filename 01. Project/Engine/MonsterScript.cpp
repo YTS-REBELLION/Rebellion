@@ -74,25 +74,30 @@ void CMonsterScript::update()
 			//cout << Monster->Animator3D()->GetAnimClip(0).dTimeLength << endl;
 
 		}
+		//else if (walking_move)
+		//{
+
+		//}
 		else
-			SetPlayerAnimation(0, 0, 76);
+			//Monster->SetPlayerAnimation(0, 0, 76);
+			Monster->SetPlayerAnimation(1, 0, 40);
 	}
 
 	//CPlayerScript* player = vecObject[0]->GetScript<CPlayerScript>();
 	//cout << "거리차이:" << fDistanceP_M << endl;
-	if (fDistanceP_M > 200.f && fDistanceP_M <= 505.f )
-	{
-		m_fSpeed = 200.f;
-		//이동
-		//플레이어위치로이동
-		//localPos.z -=  m_fSpeed/10 * DT;
+	//if (fDistanceP_M > 200.f && fDistanceP_M <= 505.f )
+	//{
+	//	m_fSpeed = 200.f;
+	//	//이동
+	//	//플레이어위치로이동
+	//	//localPos.z -=  m_fSpeed/10 * DT;
 
-		if (fDistanceP_M >= 0.f && fDistanceP_M <= 200.f)
-		{
-			//공격
-			m_fSpeed = 0.f;
-		}
-	}
+	//	if (fDistanceP_M >= 0.f && fDistanceP_M <= 200.f)
+	//	{
+	//		//공격
+	//		m_fSpeed = 0.f;
+	//	}
+	//}
 	////if (m_bHit&& player->GetCol())
 	////{
 	////	SetPlayerAnimation(1, 0, 40);
@@ -133,10 +138,21 @@ void CMonsterScript::SetPlayerAnimation(const int& i, const UINT& _StartFrame, c
 	GetObj()->MeshRender()->SetMesh(m_pAniData[i]);
 }
 
-void CMonsterScript::SetPlayerAnimation(int other_id, int i)
+void CMonsterScript::SetPlayerAnimation(int other_id, const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
 {
 	//if (m_pAniData.size() == 0)	return;
 	GameObject.find(other_id)->second->Animator3D()->SetBones(m_pAniData[i]->GetBones());
+
+	tMTAnimClip* tNewAnimClip = new tMTAnimClip;
+	tNewAnimClip->iStartFrame = _StartFrame;
+	tNewAnimClip->iEndFrame = _EndFrame;
+	tNewAnimClip->iFrameLength = _EndFrame - _StartFrame;
+	tNewAnimClip->dStartTime = (double)_StartFrame / (double)30;
+	tNewAnimClip->dEndTime = (double)_EndFrame / (double)30;
+	tNewAnimClip->dTimeLength = tNewAnimClip->dEndTime - tNewAnimClip->dStartTime;
+
+	m_pVecAnimClip.push_back(*tNewAnimClip);
+
 	GameObject.find(other_id)->second->Animator3D()->SetAnimClip(m_pAniData[i]->GetAnimClip());
 	GameObject.find(other_id)->second->MeshRender()->SetMesh(m_pAniData[i]);
 }
