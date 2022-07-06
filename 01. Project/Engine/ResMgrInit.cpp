@@ -110,6 +110,16 @@ void CResMgr::CreateDefaultShader()
 	AddRes(L"Std3DShader", pShader);
 
 	// =============
+	// ShadowMa Shader
+	// =============
+	pShader = new CShader;
+	pShader->CreateVertexShader(L"Shader\\light.fx", "VS_ShadowMap", "vs_5_0");
+	pShader->CreatePixelShader(L"Shader\\light.fx", "PS_ShadowMap", "ps_5_0");
+	pShader->SetDepthStencilType(DEPTH_STENCIL_TYPE::LESS);
+	pShader->Create(SHADER_POV::SHADOWMAP);
+	AddRes(L"ShadowMapShader", pShader);
+
+	// =============
 	// Skybox Shader
 	// =============
 	pShader = new CShader;
@@ -350,6 +360,11 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl->DisableFileSave();
 	pMtrl->SetShader(FindRes<CShader>(L"Animaion3DUpdateShader"));
 	AddRes(L"Animation3DUpdateMtrl", pMtrl);
+
+	pMtrl = new CMaterial;
+	pMtrl->DisableFileSave();
+	pMtrl->SetShader(FindRes<CShader>(L"ShadowMapShader"));
+	AddRes(L"ShadowMapMtrl", pMtrl);
 
 	//pMtrl = new CMaterial;
 	////pMtrl->DisableFileSave();
