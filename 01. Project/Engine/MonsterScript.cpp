@@ -61,6 +61,7 @@ void CMonsterScript::update()
 		{
 			if (m_vecAniClipTime[0] <= Monster->Animator3D()->GetAnimClip(0).dTimeLength - 2.0f)
 			{
+				cout << Monster->Animator3D()->GetAnimClip(0).dTimeLength << endl;
 				m_vecAniClipTime[0] += DT;
 				Monster->SetPlayerAnimation(1, 0, 40);
 				if (m_vecAniClipTime[0] > Monster->Animator3D()->GetAnimClip(0).dTimeLength - 2.0f)
@@ -74,13 +75,26 @@ void CMonsterScript::update()
 			//cout << Monster->Animator3D()->GetAnimClip(0).dTimeLength << endl;
 
 		}
-		//else if (walking_move)
+		//else if (m_movePacketTemp!=nullptr && m_movePacketTemp->isMoving)
 		//{
-
+		//	//cout << m_movePacketTemp->isMoving << endl;
+		//	Monster->SetPlayerAnimation(3, 0, 8);
+		//	//cout << "몬스터 움직이는 중" << endl;
+		//	//cout << Monster->Animator3D()->GetAnimClip(0).dTimeLength << endl;
+		//	if (m_vecAniClipTime[1] <= Monster->Animator3D()->GetAnimClip(0).dTimeLength - 20.0f)
+		//	{
+		//		m_vecAniClipTime[1] += DT;
+		//		cout << m_vecAniClipTime[1] << endl;
+		//		Monster->SetPlayerAnimation(3, 0, 20);
+		//		if (m_vecAniClipTime[1] > Monster->Animator3D()->GetAnimClip(0).dTimeLength - 20.0f)
+		//		{
+		//			m_vecAniClipTime[1] = 0.f;
+		//		}
+		//	}
 		//}
 		else
-			//Monster->SetPlayerAnimation(0, 0, 76);
-			Monster->SetPlayerAnimation(1, 0, 40);
+			Monster->SetPlayerAnimation(0, 0, 76);
+			//Monster->SetPlayerAnimation(3, 0, 8);
 	}
 
 	//CPlayerScript* player = vecObject[0]->GetScript<CPlayerScript>();

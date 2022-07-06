@@ -320,17 +320,28 @@ void CNetwork::ProcessPacket(char* ptr)
 
 			//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Walk.fbx");
 			//pMeshData->Save(pMeshData->GetPath());
-			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Big Hit To Head", L"MeshData\\Big Hit To Head.mdat");
+			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Big Hit To Head.mdat", L"MeshData\\Big Hit To Head.mdat");
 			MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
 			SetAniData(pMeshData->GetMesh());
 
 			//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Shoulder Hit And Fall.fbx");
 			//pMeshData->Save(pMeshData->GetPath());
-			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Shoulder Hit And Fall", L"MeshData\\Shoulder Hit And Fall.mdat");
+			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Shoulder Hit And Fall.mdat", L"MeshData\\Shoulder Hit And Fall.mdat");
 			MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 2
 			SetAniData(pMeshData->GetMesh());
 
+			pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\FMMonster_Run.fbx");
+			pMeshData->Save(pMeshData->GetPath());
+			//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Shoulder Hit And Fall", L"MeshData\\Shoulder Hit And Fall.mdat");
+			MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
+			SetAniData(pMeshData->GetMesh());
 			
+			pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\FMMonster_Attack.fbx");
+			pMeshData->Save(pMeshData->GetPath());
+			//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Shoulder Hit And Fall", L"MeshData\\Shoulder Hit And Fall.mdat");
+			MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 4
+			SetAniData(pMeshData->GetMesh());
+
 			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetID(id);
 			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetHP(100);
 		}

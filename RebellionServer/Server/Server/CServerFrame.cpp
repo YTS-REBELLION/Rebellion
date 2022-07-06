@@ -723,9 +723,7 @@ void CServerFrame::AggroMove(int npc_id)
 		//return;
 	}
 
-	_elapsedTime = curTime - _prevTime;
-
-	_prevTime = curTime;
+	
 
 	Pos.x += _elapsedTime.count() * speed * nor.x;
 	Pos.y += _elapsedTime.count() * speed * nor.y;
@@ -809,7 +807,9 @@ void CServerFrame::AggroMove(int npc_id)
 		}
 	}
 
-	
+	_elapsedTime = curTime - _prevTime;
+
+	_prevTime = curTime;
 	
 	for (int i = 0; i < NPC_ID_START; ++i) {
 		if (true == IsNear(npc_id, i)) {

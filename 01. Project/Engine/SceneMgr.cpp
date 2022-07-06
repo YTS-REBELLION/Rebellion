@@ -1108,21 +1108,33 @@ void CSceneMgr::init()
 
 	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Walk.fbx");
 	//pMeshData->Save(pMeshData->GetPath());
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Big Hit To Head", L"MeshData\\Big Hit To Head.mdat");
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Big Hit To Head.mdat", L"MeshData\\Big Hit To Head.mdat");
 	MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
 	g_net.SetAniData(pMeshData->GetMesh());
 
 	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Shoulder Hit And Fall.fbx");
 	//pMeshData->Save(pMeshData->GetPath());
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Shoulder Hit And Fall", L"MeshData\\Shoulder Hit And Fall.mdat");
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Shoulder Hit And Fall.mdat", L"MeshData\\Shoulder Hit And Fall.mdat");
 	MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 2
 	g_net.SetAniData(pMeshData->GetMesh());
 
 
 	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\FMMonster_Walk.fbx");
 	//pMeshData->Save(pMeshData->GetPath());
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FMMonster_Walk.mat", L"MeshData\\FMMonster_Walk.mdat");
+	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FMMonster_Walk.mat", L"MeshData\\FMMonster_Walk.mdat");
+	//MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
+	//g_net.SetAniData(pMeshData->GetMesh());
+
+	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\FMMonster_Run.fbx");
+	//pMeshData->Save(pMeshData->GetPath());
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FMMonster_Run.mdat", L"MeshData\\FMMonster_Run.mdat");
 	MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
+	g_net.SetAniData(pMeshData->GetMesh());
+
+	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\FMMonster_Attack.fbx");
+	//pMeshData->Save(pMeshData->GetPath());
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FMMonster_Run.mdat", L"MeshData\\FMMonster_Run.mdat");
+	MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 4
 	g_net.SetAniData(pMeshData->GetMesh());
 
 	m_pCurScene->AddGameObject(L"Monster", pMonster, false);
