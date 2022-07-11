@@ -6,6 +6,7 @@
 #include"CollisionMgr.h"
 #include"SwordStrike.h"
 
+bool isReckoning = false;
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
 	, m_pOriginMtrl(nullptr)
