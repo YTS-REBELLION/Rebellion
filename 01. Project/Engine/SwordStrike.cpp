@@ -42,13 +42,6 @@ void CSwordStrike::update()
 	float Temp = 75 * DT;
 	localPos += WorldDir * Temp;
 
-	
-
-
-
-
-
-
 	Transform()->SetLocalPos(localPos);
 	Transform()->SetLocalRot(vRot);
 

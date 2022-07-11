@@ -28,10 +28,12 @@ OBJECT_TYPE CheckType(const short& id)
 
 CNetwork g_net;
 const char* SERVER_IP = "127.0.0.1";
+//const char* SERVER_IP = "192.168.63.11";
 //const char* SERVER_IP = "121.190.132.161";
 OBJ GameObject;
 
 SOCKET g_socket;
+
 int packetTest;
 int g_myid = -1;
 
@@ -305,10 +307,6 @@ void CNetwork::ProcessPacket(char* ptr)
 			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", GameObject.find(id)->second, false);
 
 
-			/*for (auto& data : m_aniData)
-			{
-				GameObject.find(id)->second->GetScript<CMonsterScript>()->GetPlayerAnimation(data);
-			}*/
 
 			CMonsterScript* MonsterScript = GameObject.find(id)->second->GetScript<CMonsterScript>();
 			
@@ -328,7 +326,12 @@ void CNetwork::ProcessPacket(char* ptr)
 			MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 2
 			SetAniData(pMeshData->GetMesh());
 
-			
+
+			for (auto& data : m_aniData)
+			{
+				GameObject.find(id)->second->GetScript<CMonsterScript>()->GetPlayerAnimation(data);
+			}
+
 			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetID(id);
 			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetHP(100);
 		}
@@ -370,13 +373,14 @@ void CNetwork::ProcessPacket(char* ptr)
 		{
 			if (packet->status)
 				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 1);
+			cout << "현재 위치 x : " << packet->localPos.x << ", z : " << packet->localPos.z << endl;
 			GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 		}
 		else
 		{ 
-
 			if (CheckType(other_id) == OBJECT_TYPE::PLAYER)
 			{
+				cout << "현재 위치 x : " << packet->localPos.x << ", z : " << packet->localPos.z << endl;
 				GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetBisFrist(true);
 				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetOtherMovePacket__IsMoving(true);
@@ -391,9 +395,6 @@ void CNetwork::ProcessPacket(char* ptr)
 			}
 			else if (CheckType(other_id) == OBJECT_TYPE::MONSTER)
 			{
-				cout << "클라이언트 몬스터 무브" << endl;
-				cout << "서버에서 보낸 몬스터 packet move 좌표" << endl;
-				cout << packet->localPos.x << ", " << packet->localPos.z << endl;
 				GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 
 				GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetBisFrist(true);
