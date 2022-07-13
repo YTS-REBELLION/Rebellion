@@ -2,6 +2,7 @@
 #include "Script.h"
 #include "Mesh.h"
 #include "SwordStrike.h"
+#include "DeadReckoning.h"
 
 enum class COL_DIR
 {
@@ -12,7 +13,7 @@ enum class COL_DIR
 	END,
 };
 
-
+class DeadReckoning;
 class CPlayerScript :
 	public CScript
 {
@@ -39,6 +40,8 @@ private:
 	bool				m_isMain;
 
 	bool				m_bColCheck = false;
+
+	DeadReckoning*		m_DeadReckoner;
 
 	vector<tMTAnimClip>			m_pVecAnimClip;
 public:
@@ -74,8 +77,12 @@ public:
 	}
 	bool GetAttack() { return m_bAttack; }
 	bool GetCol() { return m_bCol; }
+	float GetSpeed() { return m_fSpeed; }
+
 	Vec3 Get_PlayerPos() { return this->Transform()->GetLocalPos(); }
 	CPlayerScript* GetPlayer() { return this; }
+	void initDeadReckoner() { m_DeadReckoner = new DeadReckoning(g_myid); }
+	DeadReckoning* GetReckoner() { return m_DeadReckoner; }
 public:
 	CLONE(CPlayerScript);
 

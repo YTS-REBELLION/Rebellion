@@ -159,13 +159,8 @@ void CNetwork::ProcessPacket(char* ptr)
 
 		GameObject.emplace(g_myid, m_pObj);
 		GameObject.find(g_myid)->second->SetID(g_myid);
-
+		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->initDeadReckoner();
 		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetMain();
-		//GameObject.find(g_myid)->second->//GetScript<CPlayerScript>()->SetMain();
-		/*GameObject.emplace(g_myid, m_pObj);
-
-		GameObject.find(g_myid)->second->SetID(g_myid);*/
-
 
 		break;
 
@@ -237,7 +232,8 @@ void CNetwork::ProcessPacket(char* ptr)
 
 
 			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", GameObject.find(id)->second, false);
-			
+			GameObject.find(id)->second->GetScript<CPlayerScript>()->initDeadReckoner();
+
 
 			for (auto& data : m_aniData)
 			{
@@ -601,7 +597,7 @@ void CNetwork::Send_Move_Packet(unsigned const char& dir, const Vec3& localPos, 
 
 void CNetwork::Send_Move_Packet(const Vec3& localPos, const Vec3& dirVec, const float& rotate, const system_clock::time_point& startTime, const float& delta)
 {
-
+	cout << "send_move_packet" << endl;
 	cs_packet_move packet;
 
 	packet.type = CS_PACKET_MOVE;

@@ -702,6 +702,8 @@ void CServerFrame::AggroMove(int npc_id)
 					for (const auto& id : vl) {
 						if (false == IsPlayer(id)) continue;
 						if (ST_ACTIVE != _objects[id]._status) continue;
+
+
 						_sender->SendPlayerDiePacket(_objects[id].GetSocket(), player_id);
 					}*/
 
@@ -726,10 +728,6 @@ void CServerFrame::AggroMove(int npc_id)
 	}
 
 	
-
-	Pos.x += _elapsedTime.count() * speed * nor.x;
-	Pos.y += _elapsedTime.count() * speed * nor.y;
-	Pos.z += _elapsedTime.count() * speed * nor.z;
 
 	//bool check = false;
 	//for (int i = 0; i < NUM_OBSTACLES; ++i) {
@@ -757,6 +755,17 @@ void CServerFrame::AggroMove(int npc_id)
 
 	//if (false == check) {
 	//	cout << "check false" << endl;
+
+
+	_elapsedTime = curTime - _prevTime;
+
+	_prevTime = curTime;
+
+	Pos.x += _elapsedTime.count() * speed * nor.x;
+	Pos.y += _elapsedTime.count() * speed * nor.y;
+	Pos.z += _elapsedTime.count() * speed * nor.z;
+
+
 	if (false == closed) {
 		_objects[npc_id].SetPos(Pos);
 	}
@@ -805,9 +814,7 @@ void CServerFrame::AggroMove(int npc_id)
 	}
 
 
-	_elapsedTime = curTime - _prevTime;
-
-	_prevTime = curTime;
+	
 	
 	for (int i = 0; i < NPC_ID_START; ++i) {
 		if (true == IsNear(npc_id, i)) {
@@ -1233,6 +1240,8 @@ void CServerFrame::UpdatePlayerPos(int id)
 void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, const float& rotate)
 {
 	
+	time_point<system_clock> curTime = system_clock::now();
+
 	unordered_set<int> vl = _objects[id].GetViewList();
 	for (const int& npc : vl) {
 		if (true == IsPlayer(npc)) continue;
@@ -1332,7 +1341,10 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 			}
 		}
 	}
-	
+
+	_elapsedTime = curTime - _prevTime;
+
+	_prevTime = curTime;
 }
 
 void CServerFrame::Do_stop(const short& id, const bool& isMoving)
@@ -1416,7 +1428,7 @@ void CServerFrame::CreateMonster()
 	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_START + 39; ++monsterId) {
 		_objects[monsterId].SetID(monsterId);
 		_objects[monsterId]._status = ST_SLEEP;
-		_objects[monsterId].SetSpeed(200.f);
+		_objects[monsterId].SetSpeed(1200.f);
 
 
 		_objects[monsterId].SetCurrentHp(1200);

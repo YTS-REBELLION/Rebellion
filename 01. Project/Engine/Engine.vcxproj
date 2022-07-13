@@ -180,6 +180,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="d3dx12.h" />
+    <ClInclude Include="DeadReckoning.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="Device.h" />
     <ClInclude Include="Dungeon.h" />
@@ -252,6 +253,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="Core.cpp" />
+    <ClCompile Include="DeadReckoning.cpp" />
     <ClCompile Include="desc.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="Dungeon.cpp">

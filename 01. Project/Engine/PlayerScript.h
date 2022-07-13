@@ -81,6 +81,8 @@ public:
 
 	Vec3 Get_PlayerPos() { return this->Transform()->GetLocalPos(); }
 	CPlayerScript* GetPlayer() { return this; }
+	void initDeadReckoner() { m_DeadReckoner = new DeadReckoning(g_myid); }
+	DeadReckoning* GetReckoner() { return m_DeadReckoner; }
 public:
 	CLONE(CPlayerScript);
 

@@ -64,22 +64,21 @@ void CPlayerScript::update()
 			{
 				localPos += WorldDir * m_fSpeed * DT;
 				player->SetPlayerAnimation(2);
-				g_net.Send_Run_Packet(GetObj()->GetID(),localPos ,true);
-				
+				//g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
 
 			}
-			else { 
+			else {
 				player->SetPlayerAnimation(1);
 				//player->SetPlayerAnimation(0, 0, 55);
-				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+				//g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 
 			};
 		}
 
-	else if (KEY_HOLD(KEY_TYPE::KEY_S))
-	{
-		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::FRONT);
-		localPos += WorldDir * m_fSpeed * DT;
+		else if (KEY_HOLD(KEY_TYPE::KEY_S))
+		{
+			WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::FRONT);
+			localPos += WorldDir * m_fSpeed * DT;
 
 
 			system_clock::time_point start = system_clock::now();
@@ -88,14 +87,14 @@ void CPlayerScript::update()
 			{
 				localPos += WorldDir * m_fSpeed * DT;
 				player->SetPlayerAnimation(2);
-				g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
+				//g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
 
 
 			}
 			else {
 
 				player->SetPlayerAnimation(1);
-				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+				//g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 
 			};
 		}
@@ -113,13 +112,13 @@ void CPlayerScript::update()
 			{
 				localPos += WorldDir * m_fSpeed * DT;
 				player->SetPlayerAnimation(2);
-				g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
+				//g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
 
 			}
 			else {
 
 				player->SetPlayerAnimation(1);
-				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+				//g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 
 			};
 		}
@@ -137,14 +136,14 @@ void CPlayerScript::update()
 			{
 				localPos += WorldDir * m_fSpeed * DT;
 				player->SetPlayerAnimation(2);
-				g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
+				//g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
 
 
 			}
 			else {
 
 				player->SetPlayerAnimation(1);
-				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+				//g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 
 			};
 		}
@@ -157,11 +156,30 @@ void CPlayerScript::update()
 			//player->SetPlayerAnimation(3, 0, 45); // attack - all
 		}
 
+		if (KEY_HOLD(KEY_TYPE::KEY_W) || KEY_HOLD(KEY_TYPE::KEY_A) || KEY_HOLD(KEY_TYPE::KEY_S) || KEY_HOLD(KEY_TYPE::KEY_D))
+			GetReckoner()->DeadReck(GetObj());
+		if ((GetReckoner()->isFollowing() || !isReckoning) &&
+			(KEY_HOLD(KEY_TYPE::KEY_W) || KEY_HOLD(KEY_TYPE::KEY_A) || KEY_HOLD(KEY_TYPE::KEY_S) || KEY_HOLD(KEY_TYPE::KEY_D)))
+		{
+			isReckoning = true;
+			system_clock::time_point start = system_clock::now();
+			g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+
+			GetReckoner()->SetDirVec(WorldDir);
+			GetReckoner()->SetRotateY(vRot.y);
+			GetReckoner()->SetLocalPos(GetObj()->Transform()->GetLocalPos());
+
+		}
+
+
 		if ((KEY_AWAY(KEY_TYPE::KEY_W) || KEY_AWAY(KEY_TYPE::KEY_A) || KEY_AWAY(KEY_TYPE::KEY_S) || KEY_AWAY(KEY_TYPE::KEY_D)))
 		{
 			cout << "KET_AWAY" << endl;
+			isReckoning = false;
 			g_net.Send_Stop_Packet(false, GetObj()->GetID());
 		}
+
+		
 
 		if (KEY_HOLD(KEY_TYPE::KEY_LBTN))
 		{
