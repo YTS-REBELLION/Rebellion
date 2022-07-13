@@ -233,6 +233,11 @@ void CResMgr::CreateDefaultMaterial()
 
 	pMtrl = new CMaterial;
 	pMtrl->DisableFileSave();
+	pMtrl->SetShader(FindRes<CShader>(L"UITexShader"));
+	AddRes(L"UITexMtrl", pMtrl);
+
+	pMtrl = new CMaterial;
+	pMtrl->DisableFileSave();
 	pMtrl->SetShader(FindRes<CShader>(L"TestShader"));
 	AddRes(L"TestMtrl", pMtrl);
 

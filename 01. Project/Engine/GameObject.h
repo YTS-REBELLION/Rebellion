@@ -86,6 +86,10 @@ public:
 	bool GetUiRenderCheck() { return m_bUiRenderCheck; }
 
 
+	CCamera* m_pCameraProj;
+	void SetCameraProj(CCamera* _cam) { m_pCameraProj = _cam; }
+	CCamera* GetCameraProj() { return m_pCameraProj; }
+
 	//void SetID(int id) { m_iID = id; };
 public:
 	CLONE(CGameObject);

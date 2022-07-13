@@ -20,6 +20,8 @@ public:
 	
 
 private:
+	CGameObject* m_pQuestBoxBase;
+	CGameObject* m_pQuestBox0;
 	Ptr<CMaterial>		m_pOriginMtrl;
 	Ptr<CMaterial>		m_pCloneMtrl;
 	vector<Ptr<CMesh>>	m_pAniData;
@@ -43,7 +45,8 @@ private:
 	CGameObject* pMagicJinpp = nullptr;
 	float m_fcreate_time = 0.f;
 	int m_iClearCnt = 0;
-
+	int m_Q_Cnt = 0;
+	
 public:
 	virtual void awake();	
 	virtual void update();
@@ -78,6 +81,9 @@ public:
 	bool GetAttack() { return m_bAttack; }
 	Vec3 Get_PlayerPos() { return this->Transform()->GetLocalPos(); }
 	CPlayerScript* GetPlayer() { return this; }
+
+
+	
 public:
 	CLONE(CPlayerScript);
 
