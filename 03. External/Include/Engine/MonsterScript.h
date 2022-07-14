@@ -15,8 +15,8 @@ private:
 	bool				m_bHit;
 	bool				m_bAniOk;
 
-	sc_packet_move* m_movePacketTemp = nullptr;
-
+	sc_packet_move*		  m_movePacketTemp = nullptr;
+	sc_packet_npc_attack* m_attackPacket = nullptr;
 	float				m_vecAniClipTime[5]{};
 	int					m_iCulidx;
 
@@ -50,7 +50,10 @@ public:
 	}
 	void SetID(const int& id) { m_id = id; }
 	void SetHP(const int& hp) { m_fHp = hp; }
-
+	void SetMonsterPacket(sc_packet_npc_attack* p);
+	void SetMonsterAttackPacket(const bool& isAttack) {
+		if (m_attackPacket != nullptr) m_attackPacket->isAttack = isAttack;
+	}
 	void SetAttack() {
 		if (m_bAttack) {
 			m_bAttack = false;

@@ -469,6 +469,20 @@ void CNetwork::ProcessPacket(char* ptr)
 		}
 		break;
 	}
+	case SC_PACKET_NPC_ATTACK: {
+		cout << "SC_PACKET_NPC_ATTACK" << endl;
+		sc_packet_npc_attack* packet = reinterpret_cast<sc_packet_npc_attack*>(ptr);
+		int monsterId = packet->id;
+		GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->SetOtherMovePacket__IsMoving(false);
+
+		CMonsterScript* monsterScr = GameObject.find(monsterId)->second->GetScript<CMonsterScript>();
+		GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->SetMonsterPacket(packet);
+
+		//GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->AnimationPlay(MONSTER_ANI_TYPE::ATTACK);
+		GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->SetMonsterAttackPacket(true);
+
+		break;
+	}
 	default:
 		printf("Unknown PACKET type [%d]\n", ptr[1]);
 	}

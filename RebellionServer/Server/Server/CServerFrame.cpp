@@ -675,6 +675,7 @@ void CServerFrame::AggroMove(int npc_id)
 	if (true == closed) {
 		if (false == _objects[npc_id].GetIsAttack()) {
 			_objects[npc_id].SetIsAttack(true);
+			cout << "몬스터 공격 범위" << endl;
 
 			//EVENT new_ev{ npc_id, std::chrono::system_clock::now() + 2s, EV_ATTACK, 0 };
 			AddTimer(npc_id, EV_ATTACK, system_clock::now());
@@ -716,7 +717,7 @@ void CServerFrame::AggroMove(int npc_id)
 				cl.ClientLock();
 				if (ST_ACTIVE == cl._status) {
 					cout << "NPC Attack" << endl;
-					//_sender->SendNPCAttackPacket(cl.GetSocket(), npc_id, Pos.x, Pos.z);
+					_sender->SendNPCAttackPacket(cl.GetSocket(), npc_id, Pos.x, Pos.z,true);
 				}
 				cl.ClientUnLock();
 			}
@@ -1050,7 +1051,7 @@ void CServerFrame::DoTargetMove(int npc_id)
 				if (false == IsNear(cl.GetID(), npc_id)) continue;
 				cl.ClientLock();
 				if (ST_ACTIVE == cl._status) {
-					_sender->SendNPCAttackPacket(cl.GetSocket(), npc_id, Pos.x, Pos.z);
+				//	_sender->SendNPCAttackPacket(cl.GetSocket(), npc_id, Pos.x, Pos.z);
 				}
 				cl.ClientUnLock();
 			}

@@ -45,7 +45,7 @@ const char	SC_PACKET_PLAYER_ATTACK = 10;
 const char	SC_PACKET_RUN = 11;
 const char	SC_PACKET_MONSTERDIE = 12;
 
-const char	SC_PACKET_NPC_ATTACK = 8;
+const char	SC_PACKET_NPC_ATTACK = 13;
 const char	SC_PACKET_HP_CHANGE = 10;
 const char	SC_PACKET_PLAYER_DIE = 11;
 const char	SC_PACKET_DEFENCE = 15;
@@ -182,6 +182,7 @@ struct sc_packet_npc_attack {
 	float x;
 	//float y;
 	float z;
+	bool isAttack;
 };
 
 struct sc_packet_player_die {
