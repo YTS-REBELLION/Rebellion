@@ -458,7 +458,7 @@ bool CCollisionMgr::CollisionCube(CCollider2D* _pCollider1, CCollider2D* _pColli
 		XMMATRIX matCol5;
 		XMMATRIX matCol6;
 
-		if (_pCollider1->GetObj()->GetName() == L"Player1" /*|| _pCollider1->GetObj()->GetName() == L"Player_Sword"*/) {
+		if (_pCollider1->GetObj()->GetName() == L"Player1") {
 			XMMATRIX matColPR = {
 				{1,0,0,0},
 				{0,cos(XM_PI/2),-sin(XM_PI/2),0},
@@ -472,13 +472,27 @@ bool CCollisionMgr::CollisionCube(CCollider2D* _pCollider1, CCollider2D* _pColli
 			};
 			matCol5 = matColPR * matCol3;
 		}
+		else if (_pCollider1->GetObj()->GetName() == L"Player_Sword")
+		{
+			XMMATRIX matColPR = {
+				{cos(XM_PI / 2),-sin(XM_PI / 2),0,0},
+				{sin(XM_PI / 2),cos(XM_PI / 2),0,0},
+				{0,0,1,0},
+				{0,0,0,1}
+				//{cos(-XM_PI / 2),0,-sin(-XM_PI / 2),0},
+				//{0,1,0,0},
+				//{sin(-XM_PI / 2),0, cos(-XM_PI / 2),0},
+				//{0,0,0,1}
+			};
+			matCol5 = matColPR * matCol3;
+		}
 		else matCol5 = matCol3;
 
 		if (_pCollider2->GetObj()->GetName() == L"Monster1") {
 			XMMATRIX matColPR = {
 				{1,0,0,0},
-				{0,cos(XM_PI / 2),-sin(XM_PI / 2),0},
-				{0,sin(XM_PI / 2), cos(XM_PI / 2),0},
+				{0,cos(-XM_PI / 2),-sin(-XM_PI / 2),0},
+				{0,sin(-XM_PI / 2), cos(-XM_PI / 2),0},
 				{0,0,0,1}
 
 				//{cos(XM_PI / 2),-sin(XM_PI / 2),0,0},

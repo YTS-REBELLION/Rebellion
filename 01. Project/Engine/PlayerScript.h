@@ -45,15 +45,14 @@ public:
 	virtual void awake();	
 	virtual void update();
 
-	void SetPlayerAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame); //{ m_pAniData.push_back(AniDate); };
+	void SetPlayerAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame);
 	
 	void SetPlayerAnimation(const int& i);
-	void SetPlayerAnimation(const int& i, const UINT& _StartFrame, const UINT& _EndFrame);
+	void SetPlayerAnimation(int other_id, int i);
 
-	Ptr<CMesh> GetAniData(const int& type) { return m_pAniData[(int)type]; }
 	void AnimationPlay(const PLAYER_ANI_TYPE& type);
 
-	void SetPlayerAnimation(int other_id, int i);
+	Ptr<CMesh> GetAniData(const int& type) { return m_pAniData[(int)type]; }
 
 	void SetMain() { m_isMain = true; };
 
@@ -80,6 +79,7 @@ public:
 	bool GetCol() { return m_bCol; }
 	Vec3 Get_PlayerPos() { return this->Transform()->GetLocalPos(); }
 	CPlayerScript* GetPlayer() { return this; }
+
 public:
 	CLONE(CPlayerScript);
 

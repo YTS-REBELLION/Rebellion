@@ -34,8 +34,6 @@ void CPlayerScript::update()
 	// Z-up To Y-up
 	Vec3 vDirUp = Transform()->GetLocalDir(DIR_TYPE::UP);
 	Vec3 vDirFront = Transform()->GetLocalDir(DIR_TYPE::FRONT);
-	//Transform()->SetWorldDir(DIR_TYPE::UP, vDirFront);
-	//Transform()->SetWorldDir(DIR_TYPE::FRONT, vDirUp);
 
 	Vec3 WorldDir;
 	Vec3 localPos = GetObj()->Transform()->GetLocalPos();
@@ -47,8 +45,6 @@ void CPlayerScript::update()
 
 	CPlayerScript* player = GetObj()->GetScript<CPlayerScript>();
 
-	//Vec3 vPos = Transform()->GetLocalPos();
-	//Vec3 vRot = Transform()->GetLocalRot();
 
 	if (m_isMain) {
 		if ((KEY_TAB(KEY_TYPE::KEY_W) || KEY_TAB(KEY_TYPE::KEY_A) || KEY_TAB(KEY_TYPE::KEY_S) || KEY_TAB(KEY_TYPE::KEY_D)))
@@ -101,12 +97,6 @@ void CPlayerScript::update()
 		}
 		
 
-		//if ((KEY_AWAY(KEY_TYPE::KEY_W) || KEY_AWAY(KEY_TYPE::KEY_A) || KEY_AWAY(KEY_TYPE::KEY_S) || KEY_AWAY(KEY_TYPE::KEY_D)))
-		//{
-		//	cout << "KET_AWAY" << endl;
-		//	g_net.Send_Stop_Packet(false, GetObj()->GetID());
-		//}
-
 		if (KEY_HOLD(KEY_TYPE::KEY_LBTN))
 		{
 			vRot.y += vDrag.x * DT * 0.5f;
@@ -125,23 +115,15 @@ void CPlayerScript::update()
 			player->Transform()->SetLocalRot(vRot);
 		}
 
-		/*if (KEY_AWAY(KEY_TYPE::KEY_2))
+		if ((KEY_AWAY(KEY_TYPE::KEY_W) || KEY_AWAY(KEY_TYPE::KEY_A) || KEY_AWAY(KEY_TYPE::KEY_S) || KEY_AWAY(KEY_TYPE::KEY_D)))
 		{
-			cout << "소드스트라이크!" << endl;
-			SwordStrike();
-
-
+			cout << "KET_AWAY" << endl;
+			g_net.Send_Stop_Packet(false, GetObj()->GetID());
 		}
-
-
 
 		if (!m_bColCheck)
 		{
 			Transform()->SetLocalPos(localPos);
-
-
-
-
 		}
 		else
 		{
@@ -169,10 +151,8 @@ void CPlayerScript::update()
 				Transform()->SetLocalPos(localPos);
 			}
 
-		}*/
+		}
 	}
-
-	Transform()->SetLocalPos(localPos);
 
 }
 void CPlayerScript::SetPlayerAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
@@ -199,15 +179,6 @@ void CPlayerScript::SetPlayerAnimation(const int& i)
 	GetObj()->MeshRender()->SetMesh(m_pAniData[i]);
 }
 
-void CPlayerScript::SetPlayerAnimation(const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
-{
-	GetObj()->Animator3D()->SetBones(m_pAniData[i]->GetBones());
-
-	GetObj()->Animator3D()->SetAnimClip(&m_pVecAnimClip);
-
-	GetObj()->MeshRender()->SetMesh(m_pAniData[i]);
-
-}
 
 void CPlayerScript::SetPlayerAnimation(int other_id, int i)
 {

@@ -54,19 +54,22 @@ void CMonsterScript::update()
 		if (m_movePacketTemp != nullptr && m_movePacketTemp->isMoving) {
 			AnimationPlay(MONSTER_ANI_TYPE::WALK);
 		}
-		else if (m_bHit && m_vecAniClipTime[0] < GetObj()->Animator3D()->GetAnimClip(2).dTimeLength)
+		else if ( m_bHit && m_vecAniClipTime[0] < GetObj()->Animator3D()->GetAnimClip(2).dTimeLength)
 		{
-			m_vecAniClipTime[0] += DT;
+			m_vecAniClipTime[0] += (DT*1.5f);
 			AnimationPlay(MONSTER_ANI_TYPE::HIT);
-
 			if (m_vecAniClipTime[0] > GetObj()->Animator3D()->GetAnimClip(2).dTimeLength)
 			{
 				m_vecAniClipTime[0] = 0.0f;
+				GetObj()->Animator3D()->SetClipTime(0, 0.f);
 				m_bHit = false;
 			}
+
 		}
-		else
-			AnimationPlay(MONSTER_ANI_TYPE::IDLE);			
+		else {
+			cout << m_pPlayer->GetAttack() << endl;
+			AnimationPlay(MONSTER_ANI_TYPE::IDLE);
+		}
 	}
 
 	Transform()->SetLocalPos(localPos);
@@ -140,8 +143,8 @@ void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 {
 	if (_pOther->GetObj()->GetName() == L"Player_Sword")
 	{
-	cout << "검과 충돌" << endl;
-	m_bHit = true;
+	//cout << "검과 충돌" << endl;
+		m_bHit = true;
 	//g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
 
 	}
@@ -156,8 +159,8 @@ void CMonsterScript::OnCollision(CCollider2D* _pOther)
 	}
 	else if (_pOther->GetObj()->GetName() == L"Player_Sword")
 	{
-		cout << "검과 충돌" << endl;
-		m_bHit = true;
+		//cout << "검과 충돌" << endl;
+		//m_bHit = true;
 		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
 
 	}
@@ -174,6 +177,6 @@ void CMonsterScript::OnCollisionExit(CCollider2D* _pOther)
 {
 	if (_pOther->GetObj()->GetName() == L"Player_Sword")
 	{
-		cout << "검과 충돌 해제" << endl;
+		//cout << "검과 충돌 해제" << endl;
 	}
 }
