@@ -66,10 +66,11 @@ void CMonsterScript::update()
 			}
 
 		}
-		else {
-			cout << m_pPlayer->GetAttack() << endl;
-			AnimationPlay(MONSTER_ANI_TYPE::IDLE);
+		else if (m_attackPacket != nullptr && m_attackPacket->isAttack) {
+			AnimationPlay(MONSTER_ANI_TYPE::ATTACK);
 		}
+		else
+			AnimationPlay(MONSTER_ANI_TYPE::IDLE);			
 	}
 
 	Transform()->SetLocalPos(localPos);
@@ -133,9 +134,15 @@ void CMonsterScript::AnimationPlay(const MONSTER_ANI_TYPE& type)
 void CMonsterScript::SetOtherMovePacket(sc_packet_move* p, const float& rtt)
 {
 	m_movePacketTemp = new sc_packet_move;
-
 	m_movePacketTemp = p;
-	//m_fRTT = rtt;
+
+}
+
+void CMonsterScript::SetMonsterPacket(sc_packet_npc_attack* p)
+{
+	m_attackPacket = new sc_packet_npc_attack;
+
+	m_attackPacket = p;
 }
 
 

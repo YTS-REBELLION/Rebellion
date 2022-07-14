@@ -12,7 +12,7 @@ public:
 	void SendLoginOkPacket(SOCKET s, int id, float xPos, float yPos, float zPos, short damage, short c_hp, short m_hp, short level, short c_exp, short m_exp);
 	void SendLoginFailPacket(SOCKET s);
 	void SendLeaveObjectPacket(SOCKET s, int id, int objType);
-	void SendNPCAttackPacket(SOCKET s, int id, float x, float z);
+	void SendNPCAttackPacket(SOCKET s, int id, float x, float z,bool isAttack);
 	void SendMovePacket(SOCKET s, int mover, Vec3 localPos, float dx, float dy, float dz, bool status, std::chrono::time_point<std::chrono::system_clock> time);
 	void SendMovePacket(SOCKET s, int mover, Vec3 localPos);
 

@@ -61,7 +61,7 @@ void CSender::SendLeaveObjectPacket(SOCKET s, int id, int objType)
 	SendPacket(s, &packet);
 }
 
-void CSender::SendNPCAttackPacket(SOCKET s, int id, float x, float z)
+void CSender::SendNPCAttackPacket(SOCKET s, int id, float x, float z,bool isAttack)
 {
 	sc_packet_npc_attack packet;
 	packet.id = id;
@@ -70,7 +70,7 @@ void CSender::SendNPCAttackPacket(SOCKET s, int id, float x, float z)
 	packet.x = x;
 	//packet.yNor = y;
 	packet.z = z;
-
+	packet.isAttack = isAttack;
 	SendPacket(s, &packet);
 }
 

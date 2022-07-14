@@ -28,10 +28,12 @@ OBJECT_TYPE CheckType(const short& id)
 
 CNetwork g_net;
 const char* SERVER_IP = "127.0.0.1";
+//const char* SERVER_IP = "192.168.63.11";
 //const char* SERVER_IP = "121.190.132.161";
 OBJ GameObject;
 
 SOCKET g_socket;
+
 int packetTest;
 int g_myid = -1;
 
@@ -357,13 +359,14 @@ void CNetwork::ProcessPacket(char* ptr)
 		{
 			if (packet->status)
 				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 1);
+			cout << "현재 위치 x : " << packet->localPos.x << ", z : " << packet->localPos.z << endl;
 			GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 		}
 		else
 		{ 
-
 			if (CheckType(other_id) == OBJECT_TYPE::PLAYER)
 			{
+				cout << "현재 위치 x : " << packet->localPos.x << ", z : " << packet->localPos.z << endl;
 				GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetBisFrist(true);
 				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetOtherMovePacket__IsMoving(true);
@@ -378,9 +381,6 @@ void CNetwork::ProcessPacket(char* ptr)
 			}
 			else if (CheckType(other_id) == OBJECT_TYPE::MONSTER)
 			{
-				cout << "클라이언트 몬스터 무브" << endl;
-				cout << "서버에서 보낸 몬스터 packet move 좌표" << endl;
-				cout << packet->localPos.x << ", " << packet->localPos.z << endl;
 				GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 
 				GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetBisFrist(true);
@@ -467,6 +467,20 @@ void CNetwork::ProcessPacket(char* ptr)
 				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(id, 0);
 			}
 		}
+		break;
+	}
+	case SC_PACKET_NPC_ATTACK: {
+		cout << "SC_PACKET_NPC_ATTACK" << endl;
+		sc_packet_npc_attack* packet = reinterpret_cast<sc_packet_npc_attack*>(ptr);
+		int monsterId = packet->id;
+		GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->SetOtherMovePacket__IsMoving(false);
+
+		CMonsterScript* monsterScr = GameObject.find(monsterId)->second->GetScript<CMonsterScript>();
+		GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->SetMonsterPacket(packet);
+
+		//GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->AnimationPlay(MONSTER_ANI_TYPE::ATTACK);
+		GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->SetMonsterAttackPacket(true);
+
 		break;
 	}
 	default:
