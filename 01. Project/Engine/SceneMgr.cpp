@@ -896,25 +896,11 @@ void CSceneMgr::init()
 	m_pCurScene->GetLayer(4)->SetName(L"Portal");
 	m_pCurScene->GetLayer(5)->SetName(L"Sword");
 	m_pCurScene->GetLayer(6)->SetName(L"Object"); 
-	m_pCurScene->GetLayer(30)->SetName(L"UI");
+	m_pCurScene->GetLayer(29)->SetName(L"UI");
 	m_pCurScene->GetLayer(31)->SetName(L"Tool");
 
 	CGameObject* pObject = nullptr;
 	
-	//// UI Camera
-	//CGameObject* pUICam = new CGameObject;
-	//pUICam->SetName(L"MainCam");
-	//pUICam->AddComponent(new CTransform);
-	//pUICam->AddComponent(new CCamera);	
-
-	//pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHGRAPHIC);
-	//pUICam->Camera()->SetFar(100.f);	
-	//pUICam->Camera()->SetLayerCheck(30, true);	
-
-	//m_pCurScene->FindLayer(L"Default")->AddGameObject(pUICam);
-
-
-	//CreateTargetUI();
 	CreateMap();
 	// ====================
 	// 3D Light Object 추가
@@ -1027,6 +1013,20 @@ void CSceneMgr::init()
 	CToolCamScript* PlayerCamScript = pMainCam->GetScript<CToolCamScript>();
 	PlayerCamScript->SetCameraToPlayer(pPlayer);
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pMainCam);
+
+	// UI Camera
+	CGameObject* pUICam = new CGameObject;
+	pUICam->SetName(L"UICam");
+	pUICam->AddComponent(new CTransform);
+	pUICam->AddComponent(new CCamera);	
+	
+	pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHGRAPHIC);
+	pUICam->Camera()->SetFar(100.f);	
+	pUICam->Camera()->SetLayerCheck(29, true);	
+	
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(pUICam);
+	
+	CreateTargetUI();
 
 	// ==================
 	// Map 오브젝트 생성
