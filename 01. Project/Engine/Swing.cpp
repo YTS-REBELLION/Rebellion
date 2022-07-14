@@ -1,59 +1,44 @@
 #include "stdafx.h"
-#include "SwordStrike.h"
-CSwordStrike::CSwordStrike()
+#include "Swing.h"
+
+
+CSwing::CSwing()
 	: CScript((UINT)SCRIPT_TYPE::SWORDSCRIPT)
 	, m_pOriginMtrl(nullptr)
 	, m_pCloneMtrl(nullptr)
 {
-	
+
 
 
 }
 
-CSwordStrike::~CSwordStrike()
+CSwing::~CSwing()
 {
 }
 
-void CSwordStrike::awake()
+void CSwing::awake()
 {
 	m_pOriginMtrl = MeshRender()->GetSharedMaterial();
 	m_pCloneMtrl = m_pOriginMtrl->Clone();
 
 }
 
-void CSwordStrike::update()
+void CSwing::update()
 {
 	m_fcreate_time += DT;
-	if (m_fcreate_time >= 3.f)
+	if (m_fcreate_time >= 1.f)
 	{
 		GetObj()->SetDead();
 	}
 
 
-	Vec3 WorldDir= Transform()->GetWorldDir(DIR_TYPE::UP);
+	Vec3 WorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 	Vec3 localPos = Transform()->GetLocalPos();
-	
+
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
 	Vec3 vRot = Transform()->GetLocalRot();
 
-	localPos.y += 50 * DT;
-
-
-	float Temp = 75 * DT;
-
-
-	/*if (this->Transform()->GetLocalDir(DIR_TYPE::FRONT).x >= 1.f)
-	{
-		WorldDir *= -1;
-	}*/
-
-	localPos += WorldDir * Temp;
-
 	
-
-
-
-
 
 
 	Transform()->SetLocalPos(localPos);

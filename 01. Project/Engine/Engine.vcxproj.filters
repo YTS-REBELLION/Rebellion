@@ -68,6 +68,9 @@
     <Filter Include="05. Network">
       <UniqueIdentifier>{00bc92b1-cc2f-4305-9f82-488340dc6010}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. GameObject\Script\03.Skill">
+      <UniqueIdentifier>{69cd0a60-77e8-43f1-a896-4dd7562aeba9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -259,6 +262,29 @@
     </ClInclude>
     <ClInclude Include="EventMgr.h">
       <Filter>Manager</Filter>
+    <ClInclude Include="SwordStrike.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="MegaSlash.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Swing.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Sting.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBall.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Meteor.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="UnleashedPower.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Quest.h">
+      <Filter>04. GameObject\Script</Filter>
     </ClInclude>
     <ClInclude Include="KeyMgr.h">
       <Filter>Manager</Filter>
@@ -458,6 +484,29 @@
     </ClCompile>
     <ClCompile Include="TimeMgr.cpp">
       <Filter>Manager</Filter>
+    <ClCompile Include="SwordStrike.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="MegaSlash.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Swing.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Sting.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="FireBall.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Meteor.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="UnleashedPower.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Quest.cpp">
+      <Filter>04. GameObject\Script</Filter>
     </ClCompile>
     <ClCompile Include="SwordStrike.cpp" />
   </ItemGroup>

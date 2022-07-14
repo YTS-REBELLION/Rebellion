@@ -29,6 +29,8 @@ private:
 
 
 	int						m_iID;
+	// UI
+	bool					m_bUiRenderCheck = true;
 
 public:
 	void awake();
@@ -77,6 +79,16 @@ public:
 	void RegisterToLayer();
 	int& GetID() { return m_iID; }
 	void SetID(const int& id) { m_iID = id; }
+
+
+	// UI
+	void SetUiRenderCheck(bool _bCheck) { m_bUiRenderCheck = _bCheck; }
+	bool GetUiRenderCheck() { return m_bUiRenderCheck; }
+
+
+	CCamera* m_pCameraProj;
+	void SetCameraProj(CCamera* _cam) { m_pCameraProj = _cam; }
+	CCamera* GetCameraProj() { return m_pCameraProj; }
 
 	//void SetID(int id) { m_iID = id; };
 public:

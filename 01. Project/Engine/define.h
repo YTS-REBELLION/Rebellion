@@ -145,6 +145,7 @@ enum class COMPONENT_TYPE
 	ANIMATOR3D,
 	LIGHT2D,
 	LIGHT3D,
+	QUEST,
 	END,
 	SCRIPT,
 };
@@ -339,4 +340,24 @@ enum class MONSTER_ANI_TYPE
 	HIT,
 	RUN,
 	ATTACK,
+};
+};
+
+
+// player
+enum class QUEST_TYPE
+{
+	KILL_MONSTER,
+	GET_ITEM,
+	BUY_WEAPON,
+	BUY_POTION,
+	END
+};
+
+enum class QUESTBOX_TYPE
+{
+	EMPTY,
+	NPC_1,
+	NPC_2,
+	END,
 };
