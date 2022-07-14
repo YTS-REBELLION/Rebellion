@@ -346,7 +346,7 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		int pid = packet->playerId;
 		cout << "충돌된 몬스터 ID : " << packet->id << endl;
 		//_objects[id].GetCurrentHp() -= _objects[pid].GetDamage();
-		_objects[other_id].SetCurrentHp(_objects[other_id].GetCurrentHp() - _objects[pid].GetDamage());
+		//_objects[other_id].SetCurrentHp(_objects[other_id].GetCurrentHp() - _objects[pid].GetDamage());
 
 		if (_objects[other_id].GetCurrentHp() <= 0) {
 			_objects[other_id]._status = ST_FREE;
@@ -803,7 +803,6 @@ void CServerFrame::AggroMove(int npc_id)
 			}
 		}
 	}
-
 
 	_elapsedTime = curTime - _prevTime;
 

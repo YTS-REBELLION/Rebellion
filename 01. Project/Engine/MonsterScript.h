@@ -34,17 +34,19 @@ public:
 	virtual void awake();
 	virtual void update();
 
-	void GetPlayerAnimation(Ptr<CMesh> AniDate) { m_pAniData.push_back(AniDate); };
-	void SetPlayerAnimation(const int& i, const UINT& _StartFrame, const UINT& _EndFrame);
+	void SetMonsterAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame);
+	void SetMonsterAnimation(const int& i);
+	void SetMonsterAnimation(int other_id, const int& i);
+	void AnimationPlay(const MONSTER_ANI_TYPE& type);
+
 	Ptr<CMesh> GetAniData(const int& type) { return m_pAniData[(int)type]; }
 
-	void SetPlayerAnimation(int other_id, int i);
 	void SetMain() { m_isMain = true; };
 
 	void SetOtherMovePacket(sc_packet_move* p, const float& rtt);
 	void SetBisFrist(const bool& bis) { FirstPacket = bis; }
 	void SetOtherMovePacket__IsMoving(const bool& isMoving) {
-		if (m_movePacketTemp != nullptr)m_movePacketTemp->isMoving = isMoving;
+		if (m_movePacketTemp != nullptr) m_movePacketTemp->isMoving = isMoving;
 	}
 	void SetID(const int& id) { m_id = id; }
 	void SetHP(const int& hp) { m_fHp = hp; }

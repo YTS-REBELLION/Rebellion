@@ -51,72 +51,30 @@ void CMonsterScript::update()
 	{
 		m_pPlayer = vecObject[0]->GetScript<CPlayerScript>();
 
-		if (KEY_TAB(KEY_TYPE::KEY_SPACE))
-		{
-			cout << "몬스터 키입력" << endl;
-			Monster->Animator3D()->SetClipTime(0, 0.0f);
+		if (m_movePacketTemp != nullptr && m_movePacketTemp->isMoving) {
+			AnimationPlay(MONSTER_ANI_TYPE::WALK);
 		}
-		//cout << m_pPlayer->GetCol() << endl;
-		if (m_bHit/*&&m_pPlayer->GetCol()*/)
+		else if (m_bHit && m_vecAniClipTime[0] < GetObj()->Animator3D()->GetAnimClip(2).dTimeLength)
 		{
-			if (m_vecAniClipTime[0] <= Monster->Animator3D()->GetAnimClip(0).dTimeLength - 2.0f)
+			m_vecAniClipTime[0] += DT;
+			AnimationPlay(MONSTER_ANI_TYPE::HIT);
+
+			if (m_vecAniClipTime[0] > GetObj()->Animator3D()->GetAnimClip(2).dTimeLength)
 			{
-				m_vecAniClipTime[0] += DT;
-				Monster->SetPlayerAnimation(1, 0, 40);
-				if (m_vecAniClipTime[0] > Monster->Animator3D()->GetAnimClip(0).dTimeLength - 2.0f)
-				{
-					m_vecAniClipTime[0] = 0.f;
-					m_bHit = false;
-				}
+				m_vecAniClipTime[0] = 0.0f;
+				m_bHit = false;
 			}
-
-			//SetPlayerAnimation(1, 0, 40);
-			//cout << Monster->Animator3D()->GetAnimClip(0).dTimeLength << endl;
-
 		}
 		else
-			SetPlayerAnimation(0, 0, 76);
+			AnimationPlay(MONSTER_ANI_TYPE::IDLE);			
 	}
 
-	//CPlayerScript* player = vecObject[0]->GetScript<CPlayerScript>();
-	//cout << "거리차이:" << fDistanceP_M << endl;
-	if (fDistanceP_M > 200.f && fDistanceP_M <= 505.f )
-	{
-		m_fSpeed = 200.f;
-		//이동
-		//플레이어위치로이동
-		//localPos.z -=  m_fSpeed/10 * DT;
-
-		if (fDistanceP_M >= 0.f && fDistanceP_M <= 200.f)
-		{
-			//공격
-			m_fSpeed = 0.f;
-		}
-	}
-	////if (m_bHit&& player->GetCol())
-	////{
-	////	SetPlayerAnimation(1, 0, 40);
-	////}
-	////cout << player->GetCol() << endl;
-	////if (player->GetCol()) {
-	////	cout << "아 시 팔" << endl;
-
-	////}
-	////if (m_bHit)
-	////{
-	////	Monster->Animator3D()->SetClipTime(0, 0.3f);
-	////	SetPlayerAnimation(1, 0, 30);
-	////}
-	//else
-	//	SetPlayerAnimation(0, 0, 76); // idle
-	//SetPlayerAnimation(1, 0, 40); // idle
 	Transform()->SetLocalPos(localPos);
 }
 
-void CMonsterScript::SetPlayerAnimation(const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
+void CMonsterScript::SetMonsterAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
 {
-	//if (m_pAniData.size() == 0)	return;
-	GetObj()->Animator3D()->SetBones(m_pAniData[i]->GetBones());
+	m_pAniData.push_back(AniDate);
 
 	tMTAnimClip* tNewAnimClip = new tMTAnimClip;
 	tNewAnimClip->iStartFrame = _StartFrame;
@@ -129,16 +87,44 @@ void CMonsterScript::SetPlayerAnimation(const int& i, const UINT& _StartFrame, c
 	m_pVecAnimClip.push_back(*tNewAnimClip);
 
 	GetObj()->Animator3D()->SetAnimClip(&m_pVecAnimClip);
+}
 
+void CMonsterScript::SetMonsterAnimation(const int& i)
+{
+	GetObj()->Animator3D()->SetBones(m_pAniData[i]->GetBones());
+	GetObj()->Animator3D()->SetAnimClip(&m_pVecAnimClip);
 	GetObj()->MeshRender()->SetMesh(m_pAniData[i]);
 }
 
-void CMonsterScript::SetPlayerAnimation(int other_id, int i)
+void CMonsterScript::SetMonsterAnimation(int other_id, const int& i)
 {
-	//if (m_pAniData.size() == 0)	return;
 	GameObject.find(other_id)->second->Animator3D()->SetBones(m_pAniData[i]->GetBones());
-	GameObject.find(other_id)->second->Animator3D()->SetAnimClip(m_pAniData[i]->GetAnimClip());
+	GameObject.find(other_id)->second->Animator3D()->SetAnimClip(&m_pVecAnimClip);
 	GameObject.find(other_id)->second->MeshRender()->SetMesh(m_pAniData[i]);
+}
+
+void CMonsterScript::AnimationPlay(const MONSTER_ANI_TYPE& type)
+{
+	if (type == MONSTER_ANI_TYPE::IDLE)
+	{
+		GetObj()->Animator3D()->SetCurClip(0);
+		SetMonsterAnimation(0);
+	}
+	if (type == MONSTER_ANI_TYPE::WALK)
+	{
+		GetObj()->Animator3D()->SetCurClip(1);
+		SetMonsterAnimation(1);
+	}
+	if (type == MONSTER_ANI_TYPE::HIT)
+	{
+		GetObj()->Animator3D()->SetCurClip(2);
+		SetMonsterAnimation(2);
+	}
+	if (type == MONSTER_ANI_TYPE::ATTACK)
+	{
+		GetObj()->Animator3D()->SetCurClip(3);
+		SetMonsterAnimation(3);
+	}
 }
 
 void CMonsterScript::SetOtherMovePacket(sc_packet_move* p, const float& rtt)
@@ -152,6 +138,13 @@ void CMonsterScript::SetOtherMovePacket(sc_packet_move* p, const float& rtt)
 
 void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 {
+	if (_pOther->GetObj()->GetName() == L"Player_Sword")
+	{
+	cout << "검과 충돌" << endl;
+	m_bHit = true;
+	//g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
+
+	}
 }
 
 void CMonsterScript::OnCollision(CCollider2D* _pOther)

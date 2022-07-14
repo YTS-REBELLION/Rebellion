@@ -34,7 +34,7 @@ static type* GetInst()\
 #define DBG_MSG(pStr) CDebugMgr::GetInst()->AddDbgMsg(DBG_TYPE::DBG_MSG, pStr);
 
 #define MAX_LAYER 32
-#define PLAYER_SPEED 200.f
+#define PLAYER_SPEED 300.f
 
 typedef DirectX::SimpleMath::Vector2 Vec2;
 typedef DirectX::SimpleMath::Vector3 Vec3;
@@ -319,4 +319,24 @@ enum class CAMERASTATE
 	PLAYER,
 	CENEMATIC00,
 	END,
+};
+
+enum class PLAYER_ANI_TYPE
+{
+	IDLE,
+	WALK,
+	RUN,
+	ATTACK,
+	SKILL_1,
+	SKILL_2,
+	SKILL_3,
+};
+
+enum class MONSTER_ANI_TYPE
+{
+	IDLE,
+	WALK,
+	HIT,
+	RUN,
+	ATTACK,
 };

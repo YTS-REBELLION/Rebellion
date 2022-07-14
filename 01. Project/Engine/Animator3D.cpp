@@ -9,7 +9,7 @@
 CAnimator3D::CAnimator3D()
 	: m_iCurClip(0)
 	, m_dCurTime(0.)
-	, m_iFrameCount(60)
+	, m_iFrameCount(30)
 	, m_pBoneFinalMat(nullptr)
 	, m_bFinalMatUpdate(false)
 	, CComponent(COMPONENT_TYPE::ANIMATOR3D)
@@ -33,8 +33,15 @@ void CAnimator3D::lateupdate()
 void CAnimator3D::finalupdate()
 {
 	m_dCurTime = 0.f;
+	float Double_DT = DT * 1.5f;
 	// 현재 재생중인 Clip 의 시간을 진행한다.
-	m_vecClipUpdateTime[m_iCurClip] += DT;
+	if (m_iCurClip == 3 && GetObj()->GetName() == L"Player1")
+	{
+		m_vecClipUpdateTime[m_iCurClip] += Double_DT;
+	}
+	else {
+		m_vecClipUpdateTime[m_iCurClip] += DT;
+	}
 
 	if (m_vecClipUpdateTime[m_iCurClip] >= m_pVecClip->at(m_iCurClip).dTimeLength)
 	{

@@ -396,6 +396,7 @@ bool CCollisionMgr::CollisionCube(CCollider2D* _pCollider1, CCollider2D* _pColli
 		Vec3 arrCol2[4] = {};
 		Vec3 arrCenter[2] = {};
 
+
 		for (UINT i = 0; i < 4; ++i)
 		{
 			arrCol1[i] = XMVector3TransformCoord(arrLocal[i], matCol1);
@@ -457,7 +458,7 @@ bool CCollisionMgr::CollisionCube(CCollider2D* _pCollider1, CCollider2D* _pColli
 		XMMATRIX matCol5;
 		XMMATRIX matCol6;
 
-		if (_pCollider1->GetObj()->GetName() == L"Player1" || _pCollider1->GetObj()->GetName() == L"Player_Sword") {
+		if (_pCollider1->GetObj()->GetName() == L"Player1" /*|| _pCollider1->GetObj()->GetName() == L"Player_Sword"*/) {
 			XMMATRIX matColPR = {
 				{1,0,0,0},
 				{0,cos(XM_PI/2),-sin(XM_PI/2),0},
