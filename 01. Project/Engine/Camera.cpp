@@ -23,7 +23,7 @@ CCamera::CCamera()
 	, m_fNear(1.f)
 	, m_fFOV(XM_PI / 4.f)
 	, m_fScale(1.f)
-	, m_eProjType(PROJ_TYPE::ORTHGRAPHIC)
+	, m_eProjType(PROJ_TYPE::PERSPECTIVE)
 	, m_iLayerCheck(0)
 {		
 }

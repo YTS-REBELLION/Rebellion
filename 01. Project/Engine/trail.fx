@@ -3,7 +3,13 @@
 
 #include "value.fx"
 
+// g_float_0 : frametime
+// g_float_1 : padding
+// g_vec4_0 : scrollspeeds
+// g_vec4_1 : scales
 
+
+//g_tex_1
 vector	g_vLightDir = (vector)0.f;
 
 vector	g_vLightDiffuse;
@@ -34,14 +40,14 @@ VS_OUT	VS_TRAIL(VS_IN In)
 {
 	VS_OUT		Out = (VS_OUT)0;
 
-	/*matrix		matWV, matWVP;
+	matrix		matWV, matWVP;
 
 	matWV = mul(g_matWorld, g_matView);
 	matWVP = mul(matWV, g_matProj);
 
 	Out.vPosition = mul(vector(In.vPosition.xyz, 1.f), matWVP);
 
-	Out.vTexUV = In.vTexUV;*/
+	Out.vTexUV = In.vTexUV;
 
 	return Out;
 }
@@ -61,13 +67,13 @@ PS_OUT	PS_TRAIL(PS_IN In) : SV_Target
 {
 	PS_OUT		Out = (PS_OUT)0;
 
-	//Out.vColor = g_tex_1.Sample(g_sam_1, In.vTexUV);
-	////Out.vColor = In.vColor;
-	//float fValue = ((In.vTexUV.x + (In.vTexUV.y)) * 0.9f);
-	//fValue = min(fValue, 1.f);
-	//Out.vColor.argb *= fValue;
-	//Out.vColor.argb = min(Out.vColor.a, 1.f);
-	//Out.vColor.argb = saturate(pow(Out.vColor.a, 2));
+	Out.vColor = g_tex_1.Sample(g_sam_1, In.vTexUV);
+	//Out.vColor = In.vColor;
+	float fValue = ((In.vTexUV.x + (In.vTexUV.y)) * 0.9f);
+	fValue = min(fValue, 1.f);
+	Out.vColor.argb *= fValue;
+	Out.vColor.argb = min(Out.vColor.a, 1.f);
+	Out.vColor.argb = saturate(pow(Out.vColor.a, 2));
 
 	return Out;
 }
