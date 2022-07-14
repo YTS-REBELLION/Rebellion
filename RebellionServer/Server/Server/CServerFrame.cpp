@@ -1243,6 +1243,7 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 			_objects[npc].SetMoveType(TARGET);
 			_objects[npc].SetTargetID(id);
 			//char type = _objects[npc].GetMyType();
+			//ActivateNPC(npc);
 
 		}
 	}
