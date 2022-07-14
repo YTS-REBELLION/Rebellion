@@ -45,12 +45,16 @@ public:
 	virtual void awake();	
 	virtual void update();
 
-	void GetPlayerAnimation(Ptr<CMesh> AniDate) { m_pAniData.push_back(AniDate); };
+	void SetPlayerAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame); //{ m_pAniData.push_back(AniDate); };
+	
 	void SetPlayerAnimation(const int& i);
 	void SetPlayerAnimation(const int& i, const UINT& _StartFrame, const UINT& _EndFrame);
+
 	Ptr<CMesh> GetAniData(const int& type) { return m_pAniData[(int)type]; }
+	void AnimationPlay(const PLAYER_ANI_TYPE& type);
 
 	void SetPlayerAnimation(int other_id, int i);
+
 	void SetMain() { m_isMain = true; };
 
 	void SetOtherMovePacket(sc_packet_move* p, const float& rtt);

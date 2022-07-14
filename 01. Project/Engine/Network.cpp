@@ -188,7 +188,7 @@ void CNetwork::ProcessPacket(char* ptr)
 			// 다른 사람꺼
 
 
-			Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Idle.mdat", L"MeshData\\Player_Idle.mdat");
+			Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Idle.mdat", L"MeshData\\Player_FM_Idle.mdat");
 
 			CGameObject* pObject = new CGameObject;
 			GameObject.emplace(id, pObject);
@@ -237,10 +237,10 @@ void CNetwork::ProcessPacket(char* ptr)
 			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", GameObject.find(id)->second, false);
 			
 
-			for (auto& data : m_aniData)
-			{
-				GameObject.find(id)->second->GetScript<CPlayerScript>()->GetPlayerAnimation(data);
-			}
+			//for (auto& data : m_aniData)
+			//{
+			//	GameObject.find(id)->second->GetScript<CPlayerScript>()->GetPlayerAnimation(data);
+			//}
 			// 
 			// 플레이어 스크립트 붙여주기.
 			//pObject->AddComponent(new CPlayerScript);
@@ -277,73 +277,47 @@ void CNetwork::ProcessPacket(char* ptr)
 		}
 
 		else if (CheckType(id) == OBJECT_TYPE::MONSTER) {
-			// 몬스터
+			//// 몬스터
 
-					// Monster 객체 생성
 			CGameObject* pMonster = new CGameObject;
-			Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Sword And Shield Idle (2).mdat", L"MeshData\\Sword And Shield Idle (2).mdat");
-			//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sword And Shield Idle (2).fbx");
-			//pMeshData->Save(pMeshData->GetPath());
+			Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Idle.mdat", L"MeshData\\Monster_FM_Idle.mdat");
 			GameObject.emplace(id, pMonster);
 			GameObject.find(id)->second->SetID(id);
 			GameObject.find(id)->second = pMeshData->Instantiate();
 			GameObject.find(id)->second->SetName(L"Monster1");
 			GameObject.find(id)->second->FrustumCheck(false);
 			GameObject.find(id)->second->Transform()->SetLocalPos(Vec3(packet->x, packet->y, packet->z));
-			GameObject.find(id)->second->Transform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+			GameObject.find(id)->second->Transform()->SetLocalScale(Vec3(4.5f, 4.5f, 4.5f));
 			GameObject.find(id)->second->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 			GameObject.find(id)->second->AddComponent(new CCollider2D);
 			GameObject.find(id)->second->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
 			GameObject.find(id)->second->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
 			GameObject.find(id)->second->Collider2D()->SetOffsetScale(Vec3(20.f, 20.f, 40.f));
-			// 플레이어 스크립트 붙여주기.
-			
-			
+
+			// 몬스터 스크립트 붙여주기.
 			GameObject.find(id)->second->AddComponent(new CMonsterScript);
 			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetID(id);
-			
-			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", GameObject.find(id)->second, false);
-
-
-
 
 			CMonsterScript* MonsterScript = GameObject.find(id)->second->GetScript<CMonsterScript>();
-
-			//for (auto& data : m_aniData)
-			//{
-			//	GameObject.find(id)->second->GetScript<CMonsterScript>()->GetPlayerAnimation(data);
-			//}
-
-			//플레이어 애니메이션
-			MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 0
-			SetAniData(pMeshData->GetMesh());
-
-			//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Walk.fbx");
-			//pMeshData->Save(pMeshData->GetPath());
-			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Big Hit To Head.mdat", L"MeshData\\Big Hit To Head.mdat");
-			MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
-			SetAniData(pMeshData->GetMesh());
-
-			//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Shoulder Hit And Fall.fbx");
-			//pMeshData->Save(pMeshData->GetPath());
-			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Shoulder Hit And Fall.mdat", L"MeshData\\Shoulder Hit And Fall.mdat");
-			MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 2
-			SetAniData(pMeshData->GetMesh());
-
-			pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\FMMonster_Run.fbx");
-			pMeshData->Save(pMeshData->GetPath());
-			//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Shoulder Hit And Fall", L"MeshData\\Shoulder Hit And Fall.mdat");
-			MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
-			SetAniData(pMeshData->GetMesh());
 			
-			pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\FMMonster_Attack.fbx");
-			pMeshData->Save(pMeshData->GetPath());
-			//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Shoulder Hit And Fall", L"MeshData\\Shoulder Hit And Fall.mdat");
-			MonsterScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 4
-			SetAniData(pMeshData->GetMesh());
+			//몬스터 애니메이션
+			MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 0, 0, 100);				
+			//g_net.SetAniData(pMeshData->GetMesh());
+			
+			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Walk.mdat", L"MeshData\\Monster_FM_Walk.mdat");
+			MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 1, 0, 29);								
+			//g_net.SetAniData(pMeshData->GetMesh());
+
+			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Hit.mdat", L"MeshData\\Monster_FM_Hit.mdat");
+			MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 1, 0, 40);
+
+			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Attack.mdat", L"MeshData\\Monster_FM_Attack.mdat");
+			MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 3, 0, 36);
 
 			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetID(id);
 			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetHP(100);
+
+			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", GameObject.find(id)->second, false);
 		}
 
 		break;

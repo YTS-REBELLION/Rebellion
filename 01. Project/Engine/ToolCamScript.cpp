@@ -131,11 +131,11 @@ void CToolCamScript::SetPlayerFixedCamera()
 	// °øÅë
 	float fDistance = 500.f; //200.f;
 
-	vPos = vPlayerPos->GetLocalPos() - (vPlayerPos->GetWorldDir(DIR_TYPE::UP) * fDistance);
+	vPos = vPlayerPos->GetLocalPos() - (vPlayerPos->GetWorldDir(DIR_TYPE::FRONT) * fDistance);
 	vPos.y = vPlayerPos->GetLocalPos().y + 200.f;
 
 	Transform()->SetLocalPos(vPos);
-	Transform()->SetLocalRot(vPlayerPos->GetLocalRot() + Vec3(XMConvertToRadians(98.5f), XM_PI, 0.f));
+	Transform()->SetLocalRot(vPlayerPos->GetLocalRot() + Vec3(XMConvertToRadians(185.f), XM_PI, 0.f));
 }
 
 void CToolCamScript::SetCenematic0()

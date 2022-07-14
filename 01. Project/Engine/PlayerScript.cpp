@@ -34,8 +34,8 @@ void CPlayerScript::update()
 	// Z-up To Y-up
 	Vec3 vDirUp = Transform()->GetLocalDir(DIR_TYPE::UP);
 	Vec3 vDirFront = Transform()->GetLocalDir(DIR_TYPE::FRONT);
-	Transform()->SetWorldDir(DIR_TYPE::UP, vDirFront);
-	Transform()->SetWorldDir(DIR_TYPE::FRONT, vDirUp);
+	//Transform()->SetWorldDir(DIR_TYPE::UP, vDirFront);
+	//Transform()->SetWorldDir(DIR_TYPE::FRONT, vDirUp);
 
 	Vec3 WorldDir;
 	Vec3 localPos = GetObj()->Transform()->GetLocalPos();
@@ -51,6 +51,11 @@ void CPlayerScript::update()
 	//Vec3 vRot = Transform()->GetLocalRot();
 
 	if (m_isMain) {
+		if ((KEY_TAB(KEY_TYPE::KEY_W) || KEY_TAB(KEY_TYPE::KEY_A) || KEY_TAB(KEY_TYPE::KEY_S) || KEY_TAB(KEY_TYPE::KEY_D)))
+		{
+			GetObj()->Animator3D()->SetClipTime(0, 0.f);
+		}
+
 		if (KEY_HOLD(KEY_TYPE::KEY_W))
 		{
 			WorldDir = playerTrans->GetWorldDir(DIR_TYPE::FRONT);
@@ -62,105 +67,45 @@ void CPlayerScript::update()
 			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 			{
 				localPos += WorldDir * m_fSpeed * DT;
-				player->SetPlayerAnimation(2);
-				g_net.Send_Run_Packet(GetObj()->GetID(),localPos ,true);
-				
-
-			}
-			else { 
-				player->SetPlayerAnimation(1);
-				//player->SetPlayerAnimation(0, 0, 55);
-				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
-
-			};
-		}
-
-	else if (KEY_HOLD(KEY_TYPE::KEY_S))
-	{
-		WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::FRONT);
-		localPos += WorldDir * m_fSpeed * DT;
-
-
-			system_clock::time_point start = system_clock::now();
-			m_eDir == COL_DIR::DOWN;
-			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
-			{
-				localPos += WorldDir * m_fSpeed * DT;
-				player->SetPlayerAnimation(2);
+				AnimationPlay(PLAYER_ANI_TYPE::RUN);
 				g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
 
 
 			}
 			else {
-
-				player->SetPlayerAnimation(1);
-				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
-
-			};
-		}
-
-		else if (KEY_HOLD(KEY_TYPE::KEY_A))
-		{
-			WorldDir = playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
-			localPos += WorldDir * m_fSpeed * DT;
-
-			system_clock::time_point start = system_clock::now();
-			m_eDir == COL_DIR::LEFT;
-			g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
-
-			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
-			{
-				localPos += WorldDir * m_fSpeed * DT;
-				player->SetPlayerAnimation(2);
-				g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
-
-			}
-			else {
-
-				player->SetPlayerAnimation(1);
-				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
-
-			};
-		}
-
-		else if (KEY_HOLD(KEY_TYPE::KEY_D))
-		{
-			WorldDir = -playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
-			localPos += WorldDir * m_fSpeed * DT;
-
-			system_clock::time_point start = system_clock::now();
-
-
-			m_eDir == COL_DIR::RIGHT;
-			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
-			{
-				localPos += WorldDir * m_fSpeed * DT;
-				player->SetPlayerAnimation(2);
-				g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
-
-
-			}
-			else {
-
-				player->SetPlayerAnimation(1);
+				AnimationPlay(PLAYER_ANI_TYPE::WALK);
 				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 
 			};
 		}
 		else
 		{
-			player->SetPlayerAnimation(0, 0, 55); // idle
-			//player->SetPlayerAnimation(1, 0, 35); // walk
-			//player->SetPlayerAnimation(2, 0, 21); // run
-			//player->SetPlayerAnimation(3, 0, 20); // attack - true
-			//player->SetPlayerAnimation(3, 0, 45); // attack - all
+			AnimationPlay(PLAYER_ANI_TYPE::IDLE);
 		}
 
-		if ((KEY_AWAY(KEY_TYPE::KEY_W) || KEY_AWAY(KEY_TYPE::KEY_A) || KEY_AWAY(KEY_TYPE::KEY_S) || KEY_AWAY(KEY_TYPE::KEY_D)))
+		if (KEY_TAB(KEY_TYPE::KEY_SPACE))
 		{
-			cout << "KET_AWAY" << endl;
-			g_net.Send_Stop_Packet(false, GetObj()->GetID());
+			GetObj()->Animator3D()->SetClipTime(0, 0.f);
+			SetAttack();
 		}
+		else if (GetAttack()&& m_vecAniClipTime[0] <GetObj()->Animator3D()->GetAnimClip(3).dTimeLength)
+		{
+			m_vecAniClipTime[0] += (DT*1.5f);
+			AnimationPlay(PLAYER_ANI_TYPE::ATTACK);
+
+			if (m_vecAniClipTime[0] > GetObj()->Animator3D()->GetAnimClip(3).dTimeLength)
+			{
+				m_vecAniClipTime[0] = 0.0f;
+				SetAttack();
+			}
+		}
+		
+
+		//if ((KEY_AWAY(KEY_TYPE::KEY_W) || KEY_AWAY(KEY_TYPE::KEY_A) || KEY_AWAY(KEY_TYPE::KEY_S) || KEY_AWAY(KEY_TYPE::KEY_D)))
+		//{
+		//	cout << "KET_AWAY" << endl;
+		//	g_net.Send_Stop_Packet(false, GetObj()->GetID());
+		//}
 
 		if (KEY_HOLD(KEY_TYPE::KEY_LBTN))
 		{
@@ -169,124 +114,70 @@ void CPlayerScript::update()
 			player->Transform()->SetLocalRot(vRot);
 		}
 
-		if (KEY_TAB(KEY_TYPE::KEY_SPACE))
+		if (KEY_HOLD(KEY_TYPE::KEY_ENTER))
 		{
-			//player->GetObj()->Animator3D()->SetClipTime(0, 0.f);
-			player->Animator3D()->SetClipTime(0, 0.f);
-			player->SetAttack();
-			player->m_bCol = true;
+			localPos.x = 0.f;
+
+			localPos.y = 5000.f;
+			vRot.y = XM_PI;
+
+			localPos.z = 600.f;
+			player->Transform()->SetLocalRot(vRot);
 		}
-		if (player->GetAttack() && m_vecAniClipTime[0] < GetObj()->Animator3D()->GetAnimClip(0).dTimeLength) {
-			m_vecAniClipTime[0] += DT;
 
-		/*	GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 20.f, 70.f));
-			GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 1150.f, 1700.f));*/
+		/*if (KEY_AWAY(KEY_TYPE::KEY_2))
+		{
+			cout << "소드스트라이크!" << endl;
+			SwordStrike();
 
-			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), player->GetAttack());
 
-			
-			player->SetPlayerAnimation(3);
-			//cout << player->GetCol() << endl;
-			if (m_vecAniClipTime[0] > player->Animator3D()->GetAnimClip(0).dTimeLength - 1.0)
+		}
+
+
+
+		if (!m_bColCheck)
+		{
+			Transform()->SetLocalPos(localPos);
+
+
+
+
+		}
+		else
+		{
+			if (m_eDir == COL_DIR::UP)
 			{
-				player->m_bCol = false;
+				localPos -= WorldDir * m_fSpeed * 15 * DT;
+				Transform()->SetLocalPos(localPos);
 			}
-			if (m_vecAniClipTime[0] > player->Animator3D()->GetAnimClip(0).dTimeLength)
+
+			if (m_eDir == COL_DIR::LEFT)
 			{
-				m_vecAniClipTime[0] = 0.f;
-				//GetObj()->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
-				//GetObj()->Collider2D()->SetOffsetScale(Vec3(800.f, 850.f, 1700.f));
-
-				player->SetAttack();
-				g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), player->GetAttack());
-
+				localPos -= WorldDir * m_fSpeed * 15 * DT;
+				Transform()->SetLocalPos(localPos);
 			}
-		}
 
-	}
-	
-	if (KEY_HOLD(KEY_TYPE::KEY_ENTER))
-	{
-		localPos.x = 0.f;
+			if (m_eDir == COL_DIR::DOWN)
+			{
+				localPos += WorldDir * m_fSpeed * 15 * DT;
+				Transform()->SetLocalPos(localPos);
+			}
 
-		localPos.y = 5000.f;
-		vRot.y = XM_PI;
+			if (m_eDir == COL_DIR::RIGHT)
+			{
+				localPos += WorldDir * m_fSpeed * 15 * DT;
+				Transform()->SetLocalPos(localPos);
+			}
 
-		localPos.z = 600.f;
-		player->Transform()->SetLocalRot(vRot);
-	}
-
-
-	if (KEY_AWAY(KEY_TYPE::KEY_2))
-	{
-		cout << "소드스트라이크!" << endl;
-		SwordStrike();
-
-
+		}*/
 	}
 
+	Transform()->SetLocalPos(localPos);
 
-	
-	if (!m_bColCheck)
-	{
-		Transform()->SetLocalPos(localPos);
-
-		
-
-
-	}
-	else
-	{
-		if (m_eDir== COL_DIR::UP)
-		{
-			localPos -= WorldDir * m_fSpeed * 15 * DT;
-			Transform()->SetLocalPos(localPos);
-		}
-
-		if (m_eDir == COL_DIR::LEFT)
-		{
-			localPos -= WorldDir * m_fSpeed * 15 * DT;
-			Transform()->SetLocalPos(localPos);
-		}
-
-		if (m_eDir == COL_DIR::DOWN)
-		{
-			localPos += WorldDir * m_fSpeed * 15 * DT;
-			Transform()->SetLocalPos(localPos);
-		}
-
-		if (m_eDir == COL_DIR::RIGHT)
-		{
-			localPos += WorldDir * m_fSpeed * 15 * DT;
-			Transform()->SetLocalPos(localPos);
-		}
-
-	}
-
-	
-
-	/*cout << "플레이어위치x:" << Transform()->GetWorldPos().x << endl;
-	cout << "플레이어위치y:" << Transform()->GetWorldPos().y << endl;
-	cout << "플레이어위치z:" << Transform()->GetWorldPos().z << endl;*/
-	
 }
-
-void CPlayerScript::SetPlayerAnimation(const int& i)
+void CPlayerScript::SetPlayerAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
 {
-	//if (m_pAniData.size() == 0)	return;
-	GetObj()->Animator3D()->SetBones(m_pAniData[i]->GetBones());
-	GetObj()->Animator3D()->SetAnimClip(m_pAniData[i]->GetAnimClip());
-	GetObj()->MeshRender()->SetMesh(m_pAniData[i]);
-}
-
-void CPlayerScript::SetPlayerAnimation(const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
-{
-	//if (m_pAniData.size() == 0)	return;
-	//GetObj()->Animator3D()->SetBones(m_pAniData[i]->GetBones());
-	//GetObj()->Animator3D()->SetAnimClip(m_pAniData[i]->GetAnimClip());
-	//GetObj()->MeshRender()->SetMesh(m_pAniData[i]);
-
-	GetObj()->Animator3D()->SetBones(m_pAniData[i]->GetBones());
+	m_pAniData.push_back(AniDate);
 
 	tMTAnimClip* tNewAnimClip = new tMTAnimClip;
 	tNewAnimClip->iStartFrame = _StartFrame;
@@ -299,6 +190,20 @@ void CPlayerScript::SetPlayerAnimation(const int& i, const UINT& _StartFrame, co
 	m_pVecAnimClip.push_back(*tNewAnimClip);
 
 	GetObj()->Animator3D()->SetAnimClip(&m_pVecAnimClip);
+}
+
+void CPlayerScript::SetPlayerAnimation(const int& i)
+{
+	GetObj()->Animator3D()->SetBones(m_pAniData[i]->GetBones());
+	GetObj()->Animator3D()->SetAnimClip(&m_pVecAnimClip);
+	GetObj()->MeshRender()->SetMesh(m_pAniData[i]);
+}
+
+void CPlayerScript::SetPlayerAnimation(const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
+{
+	GetObj()->Animator3D()->SetBones(m_pAniData[i]->GetBones());
+
+	GetObj()->Animator3D()->SetAnimClip(&m_pVecAnimClip);
 
 	GetObj()->MeshRender()->SetMesh(m_pAniData[i]);
 
@@ -308,7 +213,7 @@ void CPlayerScript::SetPlayerAnimation(int other_id, int i)
 {
 	//if (m_pAniData.size() == 0)	return;
 	GameObject.find(other_id)->second->Animator3D()->SetBones(m_pAniData[i]->GetBones());
-	GameObject.find(other_id)->second->Animator3D()->SetAnimClip(m_pAniData[i]->GetAnimClip());
+	GameObject.find(other_id)->second->Animator3D()->SetAnimClip(&m_pVecAnimClip);
 	GameObject.find(other_id)->second->MeshRender()->SetMesh(m_pAniData[i]);
 }
 
@@ -318,6 +223,30 @@ void CPlayerScript::SetOtherMovePacket(sc_packet_move* p, const float& rtt)
 
 	m_movePacketTemp = p;
 	
+}
+
+void CPlayerScript::AnimationPlay(const PLAYER_ANI_TYPE& type)
+{
+	if (type == PLAYER_ANI_TYPE::IDLE)
+	{
+		GetObj()->Animator3D()->SetCurClip(0);
+		SetPlayerAnimation(0);
+	}
+	if (type == PLAYER_ANI_TYPE::WALK)
+	{
+		GetObj()->Animator3D()->SetCurClip(1);
+		SetPlayerAnimation(1);
+	}
+	if (type == PLAYER_ANI_TYPE::RUN)
+	{
+		GetObj()->Animator3D()->SetCurClip(2);
+		SetPlayerAnimation(2);
+	}
+	if (type == PLAYER_ANI_TYPE::ATTACK)
+	{
+		GetObj()->Animator3D()->SetCurClip(3);
+		SetPlayerAnimation(3);
+	}
 }
 
 void CPlayerScript::SwordStrike()

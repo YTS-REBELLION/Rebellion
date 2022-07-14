@@ -35,9 +35,13 @@ public:
 	//double GetCurTime() { return m_dCurTime; }
 	vector<Matrix>& GetFinalBoneMat() { return m_vecFinalBoneMat; }
 
+	void SetCurClip(int CurClip) { m_iCurClip = CurClip; }
+	int GetCurClip() { return m_iCurClip;}
+
 	int GetFrameIdx() { return m_iFrameIdx; }
 	void SetFrameIdx(const int& _idx) { m_iFrameIdx = _idx; }
 	void SetCurTime(const double& _CurTime) { m_vecClipUpdateTime[m_iCurClip] = _CurTime; }
+	
 	void SetCurTime(const UINT& _iClipIdx, const double& _CurTime) { m_vecClipUpdateTime[_iClipIdx] = _CurTime; }
 	double GetCurTime() { return m_vecClipUpdateTime[m_iCurClip]; }
 	double GetCurTime(const UINT& _iClipIdx) { return m_vecClipUpdateTime[_iClipIdx]; }
