@@ -235,10 +235,9 @@ void CNetwork::ProcessPacket(char* ptr)
 			//PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
 			//SetAniData(pMeshData->GetMesh());
 
-
+			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetID(id);
 			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", GameObject.find(id)->second, false);
 			
-
 			//for (auto& data : m_aniData)
 			//{
 			//	GameObject.find(id)->second->GetScript<CPlayerScript>()->GetPlayerAnimation(data);
@@ -289,6 +288,7 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.find(id)->second->SetName(L"Monster1");
 			GameObject.find(id)->second->FrustumCheck(false);
 			GameObject.find(id)->second->Transform()->SetLocalPos(Vec3(packet->x, packet->y, packet->z));
+
 			GameObject.find(id)->second->Transform()->SetLocalScale(Vec3(4.5f, 4.5f, 4.5f));
 			GameObject.find(id)->second->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 			GameObject.find(id)->second->AddComponent(new CCollider2D);
@@ -318,6 +318,8 @@ void CNetwork::ProcessPacket(char* ptr)
 
 			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetID(id);
 			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetHP(100);
+			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetLerpPos(Vec3(packet->x, packet->y, packet->z));
+
 
 			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", GameObject.find(id)->second, false);
 		}
@@ -354,7 +356,6 @@ void CNetwork::ProcessPacket(char* ptr)
 		sc_packet_move* packet = reinterpret_cast<sc_packet_move*>(ptr);
 		int other_id = packet->id;
 
-
 		if (other_id == g_myid)
 		{
 			if (packet->status)
@@ -381,15 +382,10 @@ void CNetwork::ProcessPacket(char* ptr)
 			}
 			else if (CheckType(other_id) == OBJECT_TYPE::MONSTER)
 			{
-				GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
-
-				GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetBisFrist(true);
-				GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetOtherMovePacket__IsMoving(true);
-				/*if (packet->status)
-					GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetPlayerAnimation(other_id, 1, 0, 40);*/
-				
-				GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetOtherMovePacket(packet, 1 * 0.00000001);
-
+				//GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
+				GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetLerpPos(packet->localPos);
+				GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetMove(packet->status);
+				//GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetNor(Vec3(packet->D_x, packet->D_y, packet->D_z));
 			}
 		}
 		//break;
@@ -473,13 +469,10 @@ void CNetwork::ProcessPacket(char* ptr)
 		cout << "SC_PACKET_NPC_ATTACK" << endl;
 		sc_packet_npc_attack* packet = reinterpret_cast<sc_packet_npc_attack*>(ptr);
 		int monsterId = packet->id;
-		GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->SetOtherMovePacket__IsMoving(false);
 
 		CMonsterScript* monsterScr = GameObject.find(monsterId)->second->GetScript<CMonsterScript>();
-		GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->SetMonsterPacket(packet);
 
-		//GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->AnimationPlay(MONSTER_ANI_TYPE::ATTACK);
-		GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->SetMonsterAttackPacket(true);
+		GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->SetAttack(packet->isAttack);
 
 		break;
 	}

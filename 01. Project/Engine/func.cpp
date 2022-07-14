@@ -412,3 +412,18 @@ void CreateBoundingCubeCollisionMesh(Vec4* vecMMax, wstring _fName)
 	CResMgr::GetInst()->AddRes<CMesh>(pMesh->GetName(), pMesh);
 
 }
+
+float Dot(const Vec3 vec1, const Vec3 vec2)
+{
+	XMVECTOR v1 = XMLoadFloat3(&vec1);
+	XMVECTOR v2 = XMLoadFloat3(&vec2);
+
+	XMVECTOR r = XMVector3Dot(v1, v2);
+
+	return XMVectorGetX(r);
+}
+float Length(const Vec3 vec1)
+{
+	XMVECTOR X = XMVector3Length(vec1);
+	return XMVectorGetX(X);
+}

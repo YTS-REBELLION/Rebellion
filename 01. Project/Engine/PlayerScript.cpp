@@ -96,6 +96,23 @@ void CPlayerScript::update()
 				SetAttack();
 			}
 		}
+
+		if (KEY_TAB(KEY_TYPE::KEY_2))
+		{
+			GetObj()->Animator3D()->SetClipTime(0, 0.f);
+			SetSkill();
+		}
+		else if (GetSkill()&&m_vecAniClipTime[1] < GetObj()->Animator3D()->GetAnimClip(4).dTimeLength)
+		{
+			m_vecAniClipTime[1] += (DT * 1.5f);
+			AnimationPlay(PLAYER_ANI_TYPE::SKILL_1);
+
+			if (m_vecAniClipTime[1] > GetObj()->Animator3D()->GetAnimClip(4).dTimeLength)
+			{
+				m_vecAniClipTime[1] = 0.0f;
+				SetSkill();
+			}
+		}
 		
 
 		if (KEY_HOLD(KEY_TYPE::KEY_LBTN))
@@ -122,7 +139,7 @@ void CPlayerScript::update()
 			g_net.Send_Stop_Packet(false, GetObj()->GetID());
 		}
 
-		if (!m_bColCheck)
+		/*if (!m_bColCheck)
 		{
 			Transform()->SetLocalPos(localPos);
 		}
@@ -152,9 +169,10 @@ void CPlayerScript::update()
 				Transform()->SetLocalPos(localPos);
 			}
 
-		}
+		}*/
 	}
 
+	Transform()->SetLocalPos(localPos);
 }
 void CPlayerScript::SetPlayerAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
 {
@@ -218,6 +236,11 @@ void CPlayerScript::AnimationPlay(const PLAYER_ANI_TYPE& type)
 	{
 		GetObj()->Animator3D()->SetCurClip(3);
 		SetPlayerAnimation(3);
+	}
+	if (type == PLAYER_ANI_TYPE::SKILL_1)
+	{
+		GetObj()->Animator3D()->SetCurClip(4);
+		SetPlayerAnimation(4);
 	}
 }
 

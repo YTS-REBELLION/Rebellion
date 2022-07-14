@@ -49,3 +49,6 @@ Matrix GetMatrix(FbxAMatrix& _mat);
 void CreateBoundingSphereCollisionMesh(float _fRadius, wstring _fName);
 
 void CreateBoundingCubeCollisionMesh(Vec4* vecMMax, wstring _fName);
+
+float Dot(const Vec3 v1, const Vec3 v2);
+float Length(const Vec3 vec1);

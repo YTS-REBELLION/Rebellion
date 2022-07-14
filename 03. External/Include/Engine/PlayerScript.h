@@ -2,6 +2,7 @@
 #include "Script.h"
 #include "Mesh.h"
 #include "SwordStrike.h"
+#include "DeadReckoning.h"
 
 enum class COL_DIR
 {
@@ -12,7 +13,7 @@ enum class COL_DIR
 	END,
 };
 
-
+class DeadReckoning;
 class CPlayerScript :
 	public CScript
 {
@@ -26,6 +27,7 @@ private:
 	Vec3				m_vecPlayerDir;
 	float				m_fSpeed = PLAYER_SPEED;
 	bool				m_bAttack;
+	bool				m_bSkill;
 	bool				m_bCol;
 	sc_packet_move* m_movePacketTemp = nullptr;
 
@@ -35,12 +37,15 @@ private:
 	bool				FirstPacket = false;
 	COL_DIR				m_eDir = COL_DIR::UP;
 
-	int					m_id;
 	bool				m_isMain;
 
 	bool				m_bColCheck = false;
 
+	DeadReckoning*		m_DeadReckoner;
+
 	vector<tMTAnimClip>			m_pVecAnimClip;
+
+	int					m_iID;
 public:
 	virtual void awake();	
 	virtual void update();
@@ -54,8 +59,8 @@ public:
 
 	Ptr<CMesh> GetAniData(const int& type) { return m_pAniData[(int)type]; }
 
-	void SetMain() { m_isMain = true; };
-
+	void SetMain() { m_isMain = true; }
+	bool GetMain() { return m_isMain; }
 	void SetOtherMovePacket(sc_packet_move* p, const float& rtt);
 	void SetBisFrist(const bool& bis) { FirstPacket = bis; }
 	void SetOtherMovePacket__IsMoving(const bool& isMoving) {
@@ -69,6 +74,12 @@ public:
 		}
 		else m_bAttack = true;
 	}
+	void SetSkill() {
+		if (m_bSkill) {
+			m_bSkill = false;
+		}
+		else m_bSkill = true;
+	}
 	void SetCol() {
 		if (m_bCol) {
 			m_bCol = false;
@@ -76,9 +87,15 @@ public:
 		else m_bCol = true;
 	}
 	bool GetAttack() { return m_bAttack; }
+	bool GetSkill() { return m_bSkill; }
 	bool GetCol() { return m_bCol; }
+	float GetSpeed() { return m_fSpeed; }
+
 	Vec3 Get_PlayerPos() { return this->Transform()->GetLocalPos(); }
 	CPlayerScript* GetPlayer() { return this; }
+
+	int GetID() { return m_iID; }
+	void SetID(const int& id) { m_iID = id; }
 
 public:
 	CLONE(CPlayerScript);

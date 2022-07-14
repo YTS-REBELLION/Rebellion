@@ -69,7 +69,7 @@ void CToolCamScript::SetFreeCamera()
 
 	if (KEY_HOLD(KEY_TYPE::KEY_NUM0))
 	{
-		fSpeed *= 5.f;
+		fSpeed *= 100.f;
 	}
 
 	if (KEY_HOLD(KEY_TYPE::KEY_UP))

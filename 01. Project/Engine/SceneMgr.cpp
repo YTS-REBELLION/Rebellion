@@ -1060,39 +1060,39 @@ void CSceneMgr::init()
 	// ===================
 	// Monster 파일 로드
 	// ===================
-	CGameObject* pMonster = new CGameObject;
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Idle.mdat", L"MeshData\\Monster_FM_Idle.mdat");
+	//CGameObject* pMonster = new CGameObject;
+	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Idle.mdat", L"MeshData\\Monster_FM_Idle.mdat");
 
-	pMonster = pMeshData->Instantiate();
-	pMonster->SetName(L"Monster1");
-	pMonster->FrustumCheck(false);
-	pMonster->Transform()->SetLocalPos(Vec3(0.f, 0.f, 200.f));
-	pMonster->Transform()->SetLocalScale(Vec3(4.5f, 4.5f, 4.5f));
-	pMonster->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
-	pMonster->AddComponent(new CCollider2D);
-	pMonster->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pMonster->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 110.f));
-	pMonster->Collider2D()->SetOffsetScale(Vec3(20.f, 20.f, 45.f));
-	
-	// 몬스터 스크립트 붙여주기.
-	pMonster->AddComponent(new CMonsterScript);
+	//pMonster = pMeshData->Instantiate();
+	//pMonster->SetName(L"Monster1");
+	//pMonster->FrustumCheck(false);
+	//pMonster->Transform()->SetLocalPos(Vec3(0.f, 0.f, 1000.f));
+	//pMonster->Transform()->SetLocalScale(Vec3(4.5f, 4.5f, 4.5f));
+	//pMonster->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
+	//pMonster->AddComponent(new CCollider2D);
+	//pMonster->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	//pMonster->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 110.f));
+	//pMonster->Collider2D()->SetOffsetScale(Vec3(20.f, 20.f, 45.f));
+	//
+	//// 몬스터 스크립트 붙여주기.
+	//pMonster->AddComponent(new CMonsterScript);
 
-	CMonsterScript* MonsterScript = pMonster->GetScript<CMonsterScript>();
-	//몬스터 애니메이션
-	MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 0, 0, 100);								// AniData Index 0
-	//g_net.SetAniData(pMeshData->GetMesh());
+	//CMonsterScript* MonsterScript = pMonster->GetScript<CMonsterScript>();
+	////몬스터 애니메이션
+	//MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 0, 0, 100);								// AniData Index 0
+	////g_net.SetAniData(pMeshData->GetMesh());
 
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Walk.mdat", L"MeshData\\Monster_FM_Walk.mdat");
-	MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 1, 0, 29);								// AniData Index 1
-	//g_net.SetAniData(pMeshData->GetMesh());
- 
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Hit.mdat", L"MeshData\\Monster_FM_Hit.mdat");
-	MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 2, 0, 40);
-	
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Attack.mdat", L"MeshData\\Monster_FM_Attack.mdat");
-	MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 3, 0, 36);
+	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Walk.mdat", L"MeshData\\Monster_FM_Walk.mdat");
+	//MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 1, 0, 29);								// AniData Index 1
+	////g_net.SetAniData(pMeshData->GetMesh());
+ //
+	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Hit.mdat", L"MeshData\\Monster_FM_Hit.mdat");
+	//MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 2, 0, 40);
+	//
+	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Attack.mdat", L"MeshData\\Monster_FM_Attack.mdat");
+	//MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 3, 0, 36);
 
-	m_pCurScene->AddGameObject(L"Monster", pMonster, false);
+	//m_pCurScene->AddGameObject(L"Monster", pMonster, false);
 
 	// Tree 오브젝트
 	
@@ -1196,9 +1196,9 @@ void CSceneMgr::init()
 	// CollisionMgr 충돌 그룹(Layer) 지정
 	// =================================
 	// Player Layer 와 Monster Layer 는 충돌 검사 진행
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Monster");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Object", L"Player");
+	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Monster");
+	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");
+	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Object", L"Player");
 
 
 
@@ -1238,9 +1238,9 @@ void CSceneMgr::init()
 	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
 
 	//// AddGameObject
-	//m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
-	//// AddGameObject
-	//m_pCurScene->FindLayer(L"Monster")->AddGameObject(GuardHouseObject);
+	////m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
+	////// AddGameObject
+	////m_pCurScene->FindLayer(L"Monster")->AddGameObject(GuardHouseObject);
 	//
 	// ===========================================================================================
 	CGameObject* GateHouseObject = nullptr;

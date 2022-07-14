@@ -11,8 +11,11 @@ private:
 	vector<Ptr<CMesh>>	m_pAniData;
 	Vec3				m_vecPlayerDir;
 	float				m_fSpeed = 200.f;
-	bool				m_bAttack;
+	
+	bool				m_Is_Move;
+	bool				m_Is_Attack;
 	bool				m_bHit;
+
 	bool				m_bAniOk;
 
 	sc_packet_move*		  m_movePacketTemp = nullptr;
@@ -30,6 +33,12 @@ private:
 	float				m_fHp=0.f;
 
 	vector<tMTAnimClip>			m_pVecAnimClip;
+
+	Vec3 Monster_Dir;
+	Vec3 Monster_Nor;
+	float m_fAngle;
+
+	Vec3 LerpPos;
 public:
 	virtual void awake();
 	virtual void update();
@@ -43,37 +52,30 @@ public:
 
 	void SetMain() { m_isMain = true; };
 
-	void SetOtherMovePacket(sc_packet_move* p, const float& rtt);
+	void SetOtherMovePacket(sc_packet_move* p);
 	void SetBisFrist(const bool& bis) { FirstPacket = bis; }
 	void SetOtherMovePacket__IsMoving(const bool& isMoving) {
 		if (m_movePacketTemp != nullptr) m_movePacketTemp->isMoving = isMoving;
 	}
-	void SetID(const int& id) { m_id = id; }
+
 	void SetHP(const int& hp) { m_fHp = hp; }
 	void SetMonsterPacket(sc_packet_npc_attack* p);
 	void SetMonsterAttackPacket(const bool& isAttack) {
 		if (m_attackPacket != nullptr) m_attackPacket->isAttack = isAttack;
 	}
-	void SetAttack() {
-		if (m_bAttack) {
-			m_bAttack = false;
-		}
-		else m_bAttack = true;
-	}
-	bool GetAttack() { return m_bAttack; }
 
-	void SetHit() {
-		if (m_bAniOk) {
-			m_bAniOk = false;
-		}
-		else m_bAniOk = true;
-	}
-	bool GetHit() { return m_bAniOk; }
-	int GetID() { return m_id; }
+	void SetMove(bool _Is_Move) { m_Is_Move = _Is_Move; }
+	void SetAttack(bool _Is_Attack) { m_Is_Attack = _Is_Attack; }
 
-	CPlayerScript* m_pPlayer = nullptr;
+	void SetNor(Vec3 nor) { Monster_Dir = nor; }
 	
+	int GetID() { return m_id; }
+	void SetID(const int& id) { m_id = id; }
 
+	CGameObject* m_pPlayer;
+	
+	void SetLerpPos(Vec3 Pos) { LerpPos = Pos; }
+	void UpdateLerpPos();
 public:
 	CLONE(CMonsterScript);
 
