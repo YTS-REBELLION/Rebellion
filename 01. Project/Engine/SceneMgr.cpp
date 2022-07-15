@@ -1485,20 +1485,10 @@ void CSceneMgr::init()
 
 	CGameObject* pObject = nullptr;
 	
-	//// UI Camera
-	//CGameObject* pUICam = new CGameObject;
-	//pUICam->SetName(L"MainCam");
-	//pUICam->AddComponent(new CTransform);
-	//pUICam->AddComponent(new CCamera);	
-
-	//pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHGRAPHIC);
-	//pUICam->Camera()->SetFar(100.f);	
-	//pUICam->Camera()->SetLayerCheck(30, true);	
-
-	//m_pCurScene->FindLayer(L"Default")->AddGameObject(pUICam);
+	
 
 
-	CreateTargetUI();
+	
 	CreateMap();
 	// ====================
 	// 3D Light Object 추가
@@ -1582,8 +1572,6 @@ void CSceneMgr::init()
 	m_pCurScene->AddGameObject(L"Player", pPlayer, false);
 
 
-
-
 	// Sword 객체
 	CGameObject* pSwordObject = new CGameObject;
 	pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
@@ -1620,6 +1608,7 @@ void CSceneMgr::init()
 	// ==================
 	// Camera Object 생성
 	// ==================
+
 	//Main Camera
 	CGameObject* pMainCam = new CGameObject;
 	pMainCam->SetName(L"MainCam");
@@ -1630,11 +1619,26 @@ void CSceneMgr::init()
 	pMainCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
 	pMainCam->Camera()->SetFar(100000.f);
 	pMainCam->Camera()->SetLayerAllCheck();
-	pMainCam->Camera()->SetLayerCheck(30, false);
+	pMainCam->Camera()->SetLayerCheck(29, false);
 
 	CToolCamScript* PlayerCamScript = pMainCam->GetScript<CToolCamScript>();
 	PlayerCamScript->SetCameraToPlayer(pPlayer);
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pMainCam);
+
+
+	// UI Camera
+	CGameObject* pUICam = new CGameObject;
+	pUICam->SetName(L"MainCam");
+	pUICam->AddComponent(new CTransform);
+	pUICam->AddComponent(new CCamera);
+
+	pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHGRAPHIC);
+	pUICam->Camera()->SetFar(100.f);
+	pUICam->Camera()->SetLayerCheck(29, true);
+
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(pUICam);
+
+	//CreateTargetUI();
 
 
 	// ==================

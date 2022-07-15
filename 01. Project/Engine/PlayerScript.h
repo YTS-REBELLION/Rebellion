@@ -20,8 +20,11 @@ public:
 	
 
 private:
-	CGameObject* m_pQuestBoxBase;
-	CGameObject* m_pQuestBox0;
+	
+	CGameObject* m_pQuestBox1;
+	CGameObject* m_pQuestBox2;
+	CGameObject* m_pQuestBox3;
+	CGameObject* m_pQuestBox4;
 	Ptr<CMaterial>		m_pOriginMtrl;
 	Ptr<CMaterial>		m_pCloneMtrl;
 	vector<Ptr<CMesh>>	m_pAniData;
@@ -46,6 +49,14 @@ private:
 	float m_fcreate_time = 0.f;
 	int m_iClearCnt = 0;
 	int m_Q_Cnt = 0;
+
+
+	bool m_bQuest_01_clear = false;
+	bool m_bQuest_02_clear = false;
+	bool m_bQuest_03_clear = false;
+	bool m_bQuest_04_clear = false;
+	bool m_bQuest_05_clear = false;
+
 	
 public:
 	virtual void awake();	
