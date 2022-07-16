@@ -943,6 +943,8 @@ void CSceneMgr::init()
 	pPlayer->AddComponent(new CPlayerScript);
 
 	CPlayerScript* PlayerScript = pPlayer->GetScript<CPlayerScript>();
+	pPlayer->GetScript<CPlayerScript>()->init();
+
 	// 플레이어 애니메이션
 	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 0, 0, 55);							// AniData Index 0
 	g_net.SetAniData(pMeshData->GetMesh());

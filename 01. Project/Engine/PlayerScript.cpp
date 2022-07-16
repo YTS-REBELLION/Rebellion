@@ -3,6 +3,7 @@
 #include "TestScript.h"
 #include "RenderMgr.h"
 #include "Animator3D.h"
+#include "SwordScript.h"
 #include"CollisionMgr.h"
 #include"SwordStrike.h"
 
@@ -20,6 +21,38 @@ CPlayerScript::~CPlayerScript()
 {
 }
 
+void CPlayerScript::init()
+{
+	// ===================
+	// Sword 파일 로드
+	// ===================
+	CGameObject* pSwordObject = new CGameObject;
+
+	Ptr<CMeshData>pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Sword.mdat", L"MeshData\\Player_Sword.mdat");
+	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
+
+	pSwordObject = pMeshData->Instantiate();
+	pSwordObject->SetName(L"Player_Sword");
+	pSwordObject->FrustumCheck(false);
+	pSwordObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	pSwordObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pSwordObject->AddComponent(new CCollider2D);
+	pSwordObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pSwordObject->Collider2D()->SetOffsetPos(Vec3(0.f, 50.f, 0.f));
+	pSwordObject->Collider2D()->SetOffsetScale(Vec3(10.f, 140.f, 5.f));
+
+	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
+	pSwordObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, SwordObject.GetPointer());
+
+
+	pSwordObject->AddComponent(new CSwordScript);
+	CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
+	pSwordObject->GetScript<CSwordScript>()->SetTarget(GetObj());
+	pSwordObject->GetScript<CSwordScript>()->SetBoneIdx(25);
+
+	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pSwordObject, false);
+	GetObj()->AddChild(pSwordObject);
+}
 
 void CPlayerScript::awake()
 {

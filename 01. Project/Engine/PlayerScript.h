@@ -50,6 +50,8 @@ public:
 	virtual void awake();	
 	virtual void update();
 
+	void init();
+
 	void SetPlayerAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame);
 	
 	void SetPlayerAnimation(const int& i);
