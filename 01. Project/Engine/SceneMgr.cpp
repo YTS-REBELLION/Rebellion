@@ -943,17 +943,19 @@ void CSceneMgr::init()
 	pPlayer->AddComponent(new CPlayerScript);
 
 	CPlayerScript* PlayerScript = pPlayer->GetScript<CPlayerScript>();
+	pPlayer->GetScript<CPlayerScript>()->init();
+
 	// 플레이어 애니메이션
 	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 0, 0, 55);							// AniData Index 0
-	//g_net.SetAniData(pMeshData->GetMesh());
+	g_net.SetAniData(pMeshData->GetMesh());
 
 	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Walk.mdat", L"MeshData\\Player_FM_Walk.mdat");
 	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(),1,0,30);							// AniData Index 1
-	//g_net.SetAniData(pMeshData->GetMesh());
+	g_net.SetAniData(pMeshData->GetMesh());
 
 	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Run.mdat", L"MeshData\\Player_FM_Run.mdat");
 	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 2, 0, 22);						// AniData Index 2
-	//g_net.SetAniData(pMeshData->GetMesh());
+	g_net.SetAniData(pMeshData->GetMesh());
 
 	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Attack.mdat", L"MeshData\\Player_FM_Attack.mdat");
 	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 3, 0, 45);							// AniData Index 3
@@ -969,7 +971,7 @@ void CSceneMgr::init()
 	// ===================
 	// Sword 파일 로드
 	// ===================
-	CGameObject* pSwordObject = new CGameObject;
+	/*CGameObject* pSwordObject = new CGameObject;
 
 	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Sword.mdat", L"MeshData\\Player_Sword.mdat");
 	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
@@ -993,7 +995,7 @@ void CSceneMgr::init()
 	pSwordObject->GetScript<CSwordScript>()->SetBoneIdx(25);
 
 	m_pCurScene->AddGameObject(L"Player", pSwordObject, false);
-	pPlayer->AddChild(pSwordObject);
+	pPlayer->AddChild(pSwordObject);*/
 
 	// ==================
 	// Camera Object 생성

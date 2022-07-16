@@ -161,6 +161,7 @@ void CNetwork::ProcessPacket(char* ptr)
 		GameObject.find(g_myid)->second->SetID(g_myid);
 
 		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetMain();
+		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetID(g_myid);
 		//GameObject.find(g_myid)->second->//GetScript<CPlayerScript>()->SetMain();
 		/*GameObject.emplace(g_myid, m_pObj);
 
@@ -200,81 +201,36 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.find(id)->second->SetName(L"Player1");
 			GameObject.find(id)->second->FrustumCheck(false);
 			GameObject.find(id)->second->Transform()->SetLocalPos(Vec3(packet->x, packet->y, packet->z));
-			GameObject.find(id)->second->Transform()->SetLocalScale(Vec3(0.08f, 0.08f, 0.08f));
-			GameObject.find(id)->second->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
+			GameObject.find(id)->second->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+			GameObject.find(id)->second->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), 0.f, 0.f));
+			
 			GameObject.find(id)->second->AddComponent(new CCollider2D);
-			//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::MESH);
-
 			GameObject.find(id)->second->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-			GameObject.find(id)->second->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
-			GameObject.find(id)->second->Collider2D()->SetOffsetScale(Vec3(800.f, 850.f, 1700.f));
+			GameObject.find(id)->second->Collider2D()->SetOffsetPos(Vec3(0.f, -100.f, 0.f));
+			GameObject.find(id)->second->Collider2D()->SetOffsetScale(Vec3(100.f, 200.f, 100.f));
 			
 			// 플레이어 스크립트 붙여주기.
 			GameObject.find(id)->second->AddComponent(new CPlayerScript);
+			CPlayerScript* PlayerScript = GameObject.find(id)->second->GetScript<CPlayerScript>();
+			GameObject.find(id)->second->GetScript<CPlayerScript>()->init();
+			GameObject.find(id)->second->GetScript<CPlayerScript>()->SetID(id);
 
-			//CPlayerScript* PlayerScript = GameObject.find(id)->second->GetScript<CPlayerScript>();
-			//// 플레이어 애니메이션
-			//PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 0
-			//SetAniData(pMeshData->GetMesh());
+			PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 0, 0, 55);									// AniData Index 0
 
-			////pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Walk.fbx");
-			////pMeshData->Save(pMeshData->GetPath());
-			//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Walk.mdat", L"MeshData\\Player_Walk.mdat");
-			//PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 1
-			//SetAniData(pMeshData->GetMesh());
+			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Walk.mdat", L"MeshData\\Player_FM_Walk.mdat");
+			PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 1, 0, 30);									// AniData Index 1
 
-			////pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Run.fbx");
-			////pMeshData->Save(pMeshData->GetPath());
-			//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Run.mdat", L"MeshData\\Player_Run.mdat");
-			//PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 2
-			//SetAniData(pMeshData->GetMesh());
+			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Run.mdat", L"MeshData\\Player_FM_Run.mdat");
+			PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 2, 0, 22);									// AniData Index 2
 
-			////pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Player_Attack.fbx");
-			////pMeshData->Save(pMeshData->GetPath());
-			//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Attack.mdat", L"MeshData\\Player_Attack.mdat");
-			//PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
-			//SetAniData(pMeshData->GetMesh());
+			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Attack.mdat", L"MeshData\\Player_FM_Attack.mdat");
+			PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 3, 0, 45);									// AniData Index 3
 
-			//GameObject.find(id)->second->GetScript<CMonsterScript>()->SetID(id);
+			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Skill_1.mdat", L"MeshData\\Player_FM_Skill_1.mdat");
+			PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 4, 0, 75);									// AniData Index 3
+
+
 			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", GameObject.find(id)->second, false);
-			
-			//for (auto& data : m_aniData)
-			//{
-			//	GameObject.find(id)->second->GetScript<CPlayerScript>()->GetPlayerAnimation(data);
-			//}
-			// 
-			// 플레이어 스크립트 붙여주기.
-			//pObject->AddComponent(new CPlayerScript);
-			//CPlayerScript* PlayerScript = pObject->GetScript<CPlayerScript>();
-			/*GameObject.find(id)->second->AddComponent(new CPlayerScript);
-			GameObject.find(id)->second->GetScript<CPlayerScript>();*/
-
-			//CGameObject* pSwordObject = nullptr;
-			//Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\asdq.mdat", L"MeshData\\asdq.mdat");
-			//Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
-
-			//pSwordObject = pSwordMeshData->Instantiate();
-			//pSwordObject->SetName(L"Player_Sword");
-			//pSwordObject->FrustumCheck(false);
-			//pSwordObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-			//pSwordObject->Transform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
-			//pSwordObject->Transform()->SetLocalRot(Vec3(0.f, XMConvertToRadians(-90.f), XMConvertToRadians(-90.f)));
-			//pSwordObject->AddComponent(new CCollider2D);
-			//pSwordObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-			//pSwordObject->Collider2D()->SetOffsetPos(Vec3(0.f, 50.f, 0.f));
-			//pSwordObject->Collider2D()->SetOffsetScale(Vec3(10.f, 140.f, 5.f));
-
-			//Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
-			//pSwordObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, SwordObject.GetPointer());
-
-			//pSwordObject->AddComponent(new CSwordScript);
-			//CSwordScript* SwordScript = GameObject.find(id)->second->GetScript<CSwordScript>();
-			//pSwordObject->GetScript<CSwordScript>()->SetTarget(GameObject.find(id)->second);
-			//pSwordObject->GetScript<CSwordScript>()->SetBoneIdx(36);
-			////pSwordObject->GetScript<CSwordScript>()->SetBoneIdx2(48);
-
-			//CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pSwordObject, false);
-			//GameObject.find(id)->second->AddChild(pSwordObject);
 		}
 
 		else if (CheckType(id) == OBJECT_TYPE::MONSTER) {
@@ -304,11 +260,9 @@ void CNetwork::ProcessPacket(char* ptr)
 			
 			//몬스터 애니메이션
 			MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 0, 0, 100);				
-			//g_net.SetAniData(pMeshData->GetMesh());
 			
 			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Walk.mdat", L"MeshData\\Monster_FM_Walk.mdat");
 			MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 1, 0, 29);								
-			//g_net.SetAniData(pMeshData->GetMesh());
 
 			pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Hit.mdat", L"MeshData\\Monster_FM_Hit.mdat");
 			MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 1, 0, 40);
@@ -359,7 +313,7 @@ void CNetwork::ProcessPacket(char* ptr)
 		if (other_id == g_myid)
 		{
 			if (packet->status)
-				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 1);
+				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->AnimationPlay(other_id, PLAYER_ANI_TYPE::WALK);
 			cout << "현재 위치 x : " << packet->localPos.x << ", z : " << packet->localPos.z << endl;
 			GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 		}
@@ -370,22 +324,14 @@ void CNetwork::ProcessPacket(char* ptr)
 				cout << "현재 위치 x : " << packet->localPos.x << ", z : " << packet->localPos.z << endl;
 				GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetBisFrist(true);
-				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetOtherMovePacket__IsMoving(true);
 
 				if (packet->status)
-					GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 1);	//SetPlayerAnimation(other_id, 1);
-				/*else
-					GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 0);*/
-
-				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetOtherMovePacket(packet, 1 * 0.00000001);
-			
+					GameObject.find(other_id)->second->GetScript<CPlayerScript>()->AnimationPlay(other_id, PLAYER_ANI_TYPE::WALK);			
 			}
 			else if (CheckType(other_id) == OBJECT_TYPE::MONSTER)
 			{
-				//GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 				GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetLerpPos(packet->localPos);
 				GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetMove(packet->status);
-				//GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetNor(Vec3(packet->D_x, packet->D_y, packet->D_z));
 			}
 		}
 		//break;
@@ -399,21 +345,11 @@ void CNetwork::ProcessPacket(char* ptr)
 			if (other_id == g_myid)
 			{
 				// 혹시나 해서 하는 SetPlayerAnimation g_myid가 맞음
-				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(g_myid, 0);
-
-
-				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetOtherMovePacket__IsMoving(packet->isMoving);
-
-
+				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->AnimationPlay(other_id, PLAYER_ANI_TYPE::IDLE);
 			}
 			else
 			{
-				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(other_id, 0);
-
-
-
-				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetOtherMovePacket__IsMoving(packet->isMoving);
-
+				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->AnimationPlay(other_id, PLAYER_ANI_TYPE::IDLE);
 			}
 		}
 	}
@@ -435,11 +371,10 @@ void CNetwork::ProcessPacket(char* ptr)
 		}
 		else {
 			if (packet->isAttack) {
-				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(id, 3);
+				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::ATTACK);
 			}
 			else {
-				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(id, 0);
-
+				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::IDLE);
 			}
 		}
 
@@ -456,11 +391,11 @@ void CNetwork::ProcessPacket(char* ptr)
 			if (packet->isRun) {
 				GameObject.find(id)->second->Transform()->SetLocalPos(packet->pos);
 
-				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(id, 2);
+				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::RUN);
 			}
 			else {
 
-				GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetPlayerAnimation(id, 0);
+				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::IDLE);
 			}
 		}
 		break;
