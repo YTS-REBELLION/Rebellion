@@ -89,11 +89,13 @@ void CPlayerScript::update()
 		{
 			m_vecAniClipTime[0] += (DT*1.5f);
 			AnimationPlay(PLAYER_ANI_TYPE::ATTACK);
+			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
 
 			if (m_vecAniClipTime[0] > GetObj()->Animator3D()->GetAnimClip(3).dTimeLength)
 			{
 				m_vecAniClipTime[0] = 0.0f;
 				SetAttack();
+				g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
 			}
 		}
 
@@ -241,6 +243,35 @@ void CPlayerScript::AnimationPlay(const PLAYER_ANI_TYPE& type)
 	{
 		GetObj()->Animator3D()->SetCurClip(4);
 		SetPlayerAnimation(4);
+	}
+}
+
+void CPlayerScript::AnimationPlay(int other_id, const PLAYER_ANI_TYPE& type)
+{
+	if (type == PLAYER_ANI_TYPE::IDLE)
+	{
+		GetObj()->Animator3D()->SetCurClip(0);
+		SetPlayerAnimation(other_id, 0);
+	}
+	if (type == PLAYER_ANI_TYPE::WALK)
+	{
+		GetObj()->Animator3D()->SetCurClip(1);
+		SetPlayerAnimation(other_id, 1);
+	}
+	if (type == PLAYER_ANI_TYPE::RUN)
+	{
+		GetObj()->Animator3D()->SetCurClip(2);
+		SetPlayerAnimation(other_id, 2);
+	}
+	if (type == PLAYER_ANI_TYPE::ATTACK)
+	{
+		GetObj()->Animator3D()->SetCurClip(3);
+		SetPlayerAnimation(other_id, 3);
+	}
+	if (type == PLAYER_ANI_TYPE::SKILL_1)
+	{
+		GetObj()->Animator3D()->SetCurClip(4);
+		SetPlayerAnimation(other_id, 4);
 	}
 }
 

@@ -56,6 +56,7 @@ public:
 	void SetPlayerAnimation(int other_id, int i);
 
 	void AnimationPlay(const PLAYER_ANI_TYPE& type);
+	void AnimationPlay(int other_id, const PLAYER_ANI_TYPE& type);
 
 	Ptr<CMesh> GetAniData(const int& type) { return m_pAniData[(int)type]; }
 
