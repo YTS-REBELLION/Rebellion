@@ -22,7 +22,7 @@ class CServerFrame {
 	//class
 	CError*		_error;
 	CSender*	_sender;
-	CObject		_objects[141-38];
+	CObject		_objects[141];
 
 
 
@@ -59,6 +59,7 @@ public:
 	void RecvPacketProcess(int, int);
 	void ProcessPacket(int , char*);
 	void EnterGame(int id, const char* name);
+	bool CAS(volatile atomic<STATUS>* addr, STATUS expected, STATUS new_val);
 
 
 	void Disconnect(int);

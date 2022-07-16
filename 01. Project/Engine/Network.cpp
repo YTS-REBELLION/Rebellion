@@ -235,7 +235,7 @@ void CNetwork::ProcessPacket(char* ptr)
 			//PlayerScript->GetPlayerAnimation(pMeshData->GetMesh());							// AniData Index 3
 			//SetAniData(pMeshData->GetMesh());
 
-			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetID(id);
+			//GameObject.find(id)->second->GetScript<CMonsterScript>()->SetID(id);
 			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", GameObject.find(id)->second, false);
 			
 			//for (auto& data : m_aniData)
