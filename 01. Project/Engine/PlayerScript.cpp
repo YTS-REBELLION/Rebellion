@@ -37,30 +37,166 @@ void CPlayerScript::awake()
 	Ptr<CTexture> pS_astrostone = CResMgr::GetInst()->Load<CTexture>(L"Astrostone", L"Texture\\Icon\\S_astrostone.png");
 	Ptr<CTexture> pS_Blood_splash = CResMgr::GetInst()->Load<CTexture>(L"Bloodsplash", L"Texture\\Icon\\S_Blood_splash.png");
 	Ptr<CTexture> pS_Blue_firework = CResMgr::GetInst()->Load<CTexture>(L"Blue_firework", L"Texture\\Icon\\S_Blue_firework.png");
-	
+	Ptr<CTexture> pPlayer_Frame = CResMgr::GetInst()->Load<CTexture>(L"Player_Frame", L"Texture\\HpUi\\Player_Frame.png");
+	Ptr<CTexture> pCharacter_Box = CResMgr::GetInst()->Load<CTexture>(L"Character_Box", L"Texture\\HpUi\\Character_Box.png");
+	Ptr<CTexture> pHealth = CResMgr::GetInst()->Load<CTexture>(L"Health", L"Texture\\HpUi\\Health.png");
+	Ptr<CTexture> pHealthMana_Cover = CResMgr::GetInst()->Load<CTexture>(L"HealthMana_Cover", L"Texture\\HpUi\\HealthMana_Cover.png");
+	Ptr<CTexture> pMana = CResMgr::GetInst()->Load<CTexture>(L"Mana", L"Texture\\HpUi\\Mana.png");
+
+
+		tResolution res = CRenderMgr::GetInst()->GetResolution();
+		CGameObject* pObject = new CGameObject;
 		//체력 UI
+
 		
+		pObject = new CGameObject;
+		pObject->SetName(L"HpUi");
+		pObject->FrustumCheck(false);
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
+
+		pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 2.f)- (res.fWidth / 1.5f), res.fHeight / 2.5f, 1.f));
+		pObject->Transform()->SetLocalScale(FrameUiScale);
+
+		//MeshRender 설정
+
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+		Ptr<CMaterial>  pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+		pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pCharacter_Box.GetPointer());
+
+		// AddGameObject
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+
+		pObject = new CGameObject;
+		pObject->SetName(L"HpUi");
+		pObject->FrustumCheck(false);
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
+
+		pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f), res.fHeight / 2.5f, 1.f));
+		pObject->Transform()->SetLocalScale(CharacterBoxScale);
+
+		//MeshRender 설정
+
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+		pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+		pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pPlayer_Frame.GetPointer());
+
+		// AddGameObject
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+
+
+
+		pObject = new CGameObject;
+		pObject->SetName(L"MpUiCover");
+		pObject->FrustumCheck(false);
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
+
+		pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 2.f) - (res.fWidth / 1.5f), res.fHeight / 2.7f, 1.f));
+		pObject->Transform()->SetLocalScale(HpcoverUiScale);
+
+		//MeshRender 설정
+
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+		pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+		pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pHealthMana_Cover.GetPointer());
+
+		// AddGameObject
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+
+
+		pObject = new CGameObject;
+		pObject->SetName(L"HpUiCover");
+		pObject->FrustumCheck(false);
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
+
+		pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 2.f) - (res.fWidth / 1.5f), res.fHeight / 2.3f, 1.f));
+		pObject->Transform()->SetLocalScale(HpcoverUiScale);
+
+		//MeshRender 설정
+
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+		pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+		pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pHealthMana_Cover.GetPointer());
+
+		// AddGameObject
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+
+		pObject = new CGameObject;
+		pObject->SetName(L"MpUi");
+		pObject->FrustumCheck(false);
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
+
+		pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 2.f) - (res.fWidth / 1.5f), res.fHeight / 2.7f, 1.f));
+		pObject->Transform()->SetLocalScale(MpUiScale);
+
+		//MeshRender 설정
+
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+		pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+		pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pMana.GetPointer());
+
+		// AddGameObject
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+
+
+		pObject = new CGameObject;
+		pObject->SetName(L"HpUi");
+		pObject->FrustumCheck(false);
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
+
+		pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 2.f) - (res.fWidth / 1.5f), res.fHeight / 2.3f, 1.f));
+		pObject->Transform()->SetLocalScale(HpUiScale);
+
+		//MeshRender 설정
+
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+		pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+		pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pHealth.GetPointer());
+
+		// AddGameObject
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+
+
+
+
 
 		//스킬 UI
-			tResolution res = CRenderMgr::GetInst()->GetResolution();
+			
 
-			Vec3	QuestBoxinScale = Vec3(50.f, 50.f, 1.f);
-			CGameObject* pObject = new CGameObject;
+			Vec3	SkillUiScale = Vec3(50.f, 50.f, 1.f);
+			
 
 			pObject = new CGameObject;
-			pObject->SetName(L"QuestBox");
+			pObject->SetName(L"SkillIcon");
 			pObject->FrustumCheck(false);
 			pObject->AddComponent(new CTransform);
 			pObject->AddComponent(new CMeshRender);
 
 			pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth/1.5f ), 0.f - (res.fHeight /3.f), 1.f));
-			pObject->Transform()->SetLocalScale(QuestBoxinScale);
+			pObject->Transform()->SetLocalScale(SkillUiScale);
 
 			//MeshRender 설정
 
 			pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 
-			Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+			 pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
 			pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
 			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pS_astrostone.GetPointer());
 
@@ -69,13 +205,13 @@ void CPlayerScript::awake()
 
 
 			pObject = new CGameObject;
-			pObject->SetName(L"QuestBox");
+			pObject->SetName(L"SkillIcon");
 			pObject->FrustumCheck(false);
 			pObject->AddComponent(new CTransform);
 			pObject->AddComponent(new CMeshRender);
 
-			pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f)+ QuestBoxinScale.x, 0.f - (res.fHeight / 3.f), 1.f));
-			pObject->Transform()->SetLocalScale(QuestBoxinScale);
+			pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f)+ SkillUiScale.x, 0.f - (res.fHeight / 3.f), 1.f));
+			pObject->Transform()->SetLocalScale(SkillUiScale);
 
 			//MeshRender 설정
 
@@ -89,13 +225,13 @@ void CPlayerScript::awake()
 			CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
 
 			pObject = new CGameObject;
-			pObject->SetName(L"QuestBox");
+			pObject->SetName(L"SkillIcon");
 			pObject->FrustumCheck(false);
 			pObject->AddComponent(new CTransform);
 			pObject->AddComponent(new CMeshRender);
 
-			pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f) + QuestBoxinScale.x*2, 0.f - (res.fHeight / 3.f), 1.f));
-			pObject->Transform()->SetLocalScale(QuestBoxinScale);
+			pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f) + SkillUiScale.x*2, 0.f - (res.fHeight / 3.f), 1.f));
+			pObject->Transform()->SetLocalScale(SkillUiScale);
 
 			//MeshRender 설정
 
@@ -130,7 +266,7 @@ void CPlayerScript::update()
 
 	CPlayerScript* player = GetObj()->GetScript<CPlayerScript>();
 
-	
+	HpUiScale.x -= DT * 5;
 	
 	
 
@@ -292,7 +428,7 @@ void CPlayerScript::update()
 	if (KEY_AWAY(KEY_TYPE::KEY_6))
 	{
 		cout << "파이어볼!" << endl;
-		FireBall();
+		FireBall();  
 
 
 	}

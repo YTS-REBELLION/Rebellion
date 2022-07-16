@@ -57,6 +57,12 @@ private:
 	bool m_bQuest_04_clear = false;
 	bool m_bQuest_05_clear = false;
 
+
+	Vec3	CharacterBoxScale = Vec3(100.f, 100.f, 1.f);
+	Vec3	FrameUiScale = Vec3(600.f, 100.f, 1.f);
+	Vec3	HpcoverUiScale = Vec3(500.f, 40.f, 1.f);
+	Vec3	HpUiScale = Vec3(500.f, 40.f, 1.f);
+	Vec3	MpUiScale = Vec3(500.f, 40.f, 1.f);
 	
 public:
 	virtual void awake();	
