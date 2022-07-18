@@ -1414,7 +1414,7 @@ void CServerFrame::CreateMonster()
 	}
 
 
-	_objects[NPC_ID_START].SetPos(Vec3(10.f, 5000.f, 3600.f));
+	_objects[NPC_ID_START].SetPos(Vec3(10.f, 0.f, 8600.f));
 	//_objects[NPC_ID_START + 1].SetPos(Vec3(200.f, 5000.f, 3400.f));
 	//_objects[NPC_ID_START + 2].SetPos(Vec3(400.f, 5000.f, 3400.f));
 	//_objects[NPC_ID_START + 3].SetPos(Vec3(-200.f, 5000.f, 3400.f));

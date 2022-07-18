@@ -126,7 +126,7 @@ void CSceneMgr::CreateMap()
 			pTileObjects->AddComponent(new CMeshRender);
 
 			// Transform 설정
-			pTileObjects->Transform()->SetLocalPos(Vec3(-7000.f + i * 1000.f, 5000.f, 500.f + j * 1000.f));
+			pTileObjects->Transform()->SetLocalPos(Vec3(-7000.f + i * 1000.f, 0.f, 5500.f + j * 1000.f));
 			pTileObjects->Transform()->SetLocalScale(Vec3(1000.f, 1000.f, 1.f));
 			pTileObjects->Transform()->SetLocalRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
 
@@ -150,7 +150,7 @@ void CSceneMgr::CreateMap()
 			pTileObjects->AddComponent(new CMeshRender);
 
 			// Transform 설정
-			pTileObjects->Transform()->SetLocalPos(Vec3(-7000.f + i * 1000.f, 5490.f, 500.f + j * 1000.f));
+			pTileObjects->Transform()->SetLocalPos(Vec3(-7000.f + i * 1000.f, 490.f, 5500.f + j * 1000.f));
 			pTileObjects->Transform()->SetLocalScale(Vec3(1000.f, 1000.f, 1.f));
 			pTileObjects->Transform()->SetLocalRot(Vec3(1.5 * XM_PI, 0.f, 0.f));
 
@@ -1075,13 +1075,14 @@ void CSceneMgr::init()
 	//pMonster = pMeshData->Instantiate();
 	//pMonster->SetName(L"Monster1");
 	//pMonster->FrustumCheck(false);
-	//pMonster->Transform()->SetLocalPos(Vec3(0.f, 0.f, 1000.f));
+	//pMonster->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 	//pMonster->Transform()->SetLocalScale(Vec3(4.5f, 4.5f, 4.5f));
 	//pMonster->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 	//pMonster->AddComponent(new CCollider2D);
 	//pMonster->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	//pMonster->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 110.f));
-	//pMonster->Collider2D()->SetOffsetScale(Vec3(20.f, 20.f, 45.f));
+	//pMonster->Collider2D()->SetOffsetPos(Vec3(100.f, 100.f, 0.f));
+	//pMonster->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
+	//pMonster->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(90.f), 0.f, 0.f));
 	//
 	//// 몬스터 스크립트 붙여주기.
 	//pMonster->AddComponent(new CMonsterScript);

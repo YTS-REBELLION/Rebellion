@@ -88,9 +88,9 @@ void CM_MonsterScript::update()
 
 	m_fAngle = atan2(localPos.x - m_pPlayer->Transform()->GetLocalPos().x, localPos.z - m_pPlayer->Transform()->GetLocalPos().z) * (180 / XM_PI) * 0.0174532925f;//acosf(Dot(vDirFront, Monster_Nor));
 
-	vRot = Vec3(localRot.x, m_fAngle, localRot.z);
+	vRot = Vec3(m_fAngle, localRot.y, localRot.z);
 
-	//Transform()->SetLocalRot(vRot);
+	Transform()->SetLocalRot(vRot);
 
 
 	if (m_Is_Move) {

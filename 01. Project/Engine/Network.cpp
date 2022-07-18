@@ -252,8 +252,9 @@ void CNetwork::ProcessPacket(char* ptr)
 			
 			GameObject.find(id)->second->AddComponent(new CCollider2D);
 			GameObject.find(id)->second->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-			GameObject.find(id)->second->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 70.f));
-			GameObject.find(id)->second->Collider2D()->SetOffsetScale(Vec3(20.f, 20.f, 40.f));
+			GameObject.find(id)->second->Collider2D()->SetOffsetPos(Vec3(0.f, 100.f, 0.f));
+			GameObject.find(id)->second->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
+			GameObject.find(id)->second->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(90.f), 0.f, 0.f));
 
 			// 몬스터 스크립트 붙여주기.
 			GameObject.find(id)->second->AddComponent(new CMonsterScript);

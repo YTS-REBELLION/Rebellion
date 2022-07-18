@@ -74,8 +74,8 @@ void CMonsterScript::update()
 		m_fAngle = atan2(localPos.x - m_pPlayer->Transform()->GetLocalPos().x, localPos.z - m_pPlayer->Transform()->GetLocalPos().z) * (180 / XM_PI) * 0.0174532925f;//acosf(Dot(vDirFront, Monster_Nor));
 
 		//cout << "몬스터 방향: " << Monster_Dir.x << ",  " << Monster_Dir.y << ",  " << Monster_Dir.z << endl;
-		cout << "몬스터 방향: " << Monster_Nor.x << ",  " << Monster_Nor.y << ",  " << Monster_Nor.z << endl;
-		cout << "몬스터 프론: " << vDirFront.x << ",  " << vDirFront.y << ",  " << vDirFront.z << endl<<endl;
+		/*cout << "몬스터 방향: " << Monster_Nor.x << ",  " << Monster_Nor.y << ",  " << Monster_Nor.z << endl;
+		*/cout << "몬스터 프론: " << vDirFront.x << ",  " << vDirFront.y << ",  " << vDirFront.z << endl<<endl;
 		//float angle = (Monster_Nor.x * vDirFront.y - Monster_Nor.y * vDirFront.x > 0.0f) ? m_fAngle : -m_fAngle;
 		//float angle = XMConvertToDegrees(m_fAngle);
 

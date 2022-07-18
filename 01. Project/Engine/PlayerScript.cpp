@@ -645,7 +645,7 @@ void CPlayerScript::update()
 
 		}*/
 	}
-	cout << GetObj()->Transform()->GetLocalPos().x <<", " << GetObj()->Transform()->GetLocalPos().z << endl;
+	//cout << GetObj()->Transform()->GetLocalPos().x <<", " << GetObj()->Transform()->GetLocalPos().z << endl;
 	Transform()->SetLocalPos(localPos);
 }
 void CPlayerScript::SetPlayerAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
