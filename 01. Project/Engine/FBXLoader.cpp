@@ -138,21 +138,21 @@ void CFBXLoader::LoadMesh(FbxMesh * _pFbxMesh)
 
 	int iVtxCnt = _pFbxMesh->GetControlPointsCount();
 	Container.Resize(iVtxCnt);
-
+	
 	FbxVector4* pFbxPos = _pFbxMesh->GetControlPoints();
 
-	float fx = (float)pFbxPos[0].mData[0];
-	float fy = (float)pFbxPos[0].mData[2];
-	float fz = (float)pFbxPos[0].mData[1];
+	//float fx = (float)pFbxPos[0].mData[0];
+	//float fy = (float)pFbxPos[0].mData[2];
+	//float fz = (float)pFbxPos[0].mData[1];
 
 	//Vec4 vecMin{ Vec3(fx,fy,fz),0.f };
 	//Vec4 vecMax{ };
 
 	for (int i = 0; i < iVtxCnt; ++i)
 	{
-		Container.vecPos[i].x = (float)pFbxPos[i].mData[0];
-		Container.vecPos[i].y = (float)pFbxPos[i].mData[2];
-		Container.vecPos[i].z = (float)pFbxPos[i].mData[1];
+		Container.vecPos[i].x = static_cast<float>(pFbxPos[i].mData[0]);
+		Container.vecPos[i].y = static_cast<float>(pFbxPos[i].mData[2]);
+		Container.vecPos[i].z = static_cast<float>(pFbxPos[i].mData[1]);
 	}
 
 	// Æú¸®°ï °³¼ö
@@ -182,9 +182,9 @@ void CFBXLoader::LoadMesh(FbxMesh * _pFbxMesh)
 			int iIdx = _pFbxMesh->GetPolygonVertex(i, j);
 			arrIdx[j] = iIdx;
 
-			GetTangent(_pFbxMesh, &Container, iIdx, iVtxOrder );
-			GetBinormal(_pFbxMesh, &Container, iIdx, iVtxOrder);
 			GetNormal(_pFbxMesh, &Container, iIdx, iVtxOrder);
+			GetTangent(_pFbxMesh, &Container, iIdx, iVtxOrder );
+			//GetBinormal(_pFbxMesh, &Container, iIdx, iVtxOrder);
 			GetUV(_pFbxMesh, &Container, iIdx, _pFbxMesh->GetTextureUVIndex(i, j));
 			
 			++iVtxOrder;
@@ -398,6 +398,7 @@ void CFBXLoader::LoadTexture()
 		{
 			wstring strPath;
 			wstring strFileName;
+
 			if (m_vecContainer[i].vecMtrl[j].strDiff == L"") {
 
 			}
