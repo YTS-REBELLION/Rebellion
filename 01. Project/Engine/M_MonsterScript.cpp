@@ -4,6 +4,7 @@
 #include "RenderMgr.h"
 #include "Animator3D.h"
 #include "PlayerScript.h"
+#include "SwordScript.h"
 
 CM_MonsterScript::CM_MonsterScript()
 	: CScript((UINT)SCRIPT_TYPE::MONSTERSCRIPT)
@@ -24,6 +25,34 @@ CM_MonsterScript::~CM_MonsterScript()
 {
 }
 
+void CM_MonsterScript::init()
+{
+	// ===================
+	// Sword 파일 로드
+	// ===================
+	CGameObject* pSwordObject = new CGameObject;
+	
+	//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Monster\\Monster_M_Sword4.fbx");
+	//pMeshData->Save(pMeshData->GetPath());
+	Ptr<CMeshData>pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Sword4.mdat", L"MeshData\\Monster_M_Sword4.mdat");
+
+	pSwordObject = pMeshData->Instantiate();
+	pSwordObject->SetName(L"M_Monster_Sword");
+	pSwordObject->FrustumCheck(false);
+	pSwordObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	pSwordObject->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
+	pSwordObject->AddComponent(new CCollider2D);
+	pSwordObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pSwordObject->Collider2D()->SetOffsetPos(Vec3(0.f, 80.f, 0.f));
+	pSwordObject->Collider2D()->SetOffsetScale(Vec3(7.f, 50.f, 7.f));
+
+	pSwordObject->AddComponent(new CSwordScript);
+	CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
+	pSwordObject->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::M_MONSTER, GetObj(), 12);
+
+	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", pSwordObject, false);
+	GetObj()->AddChild(pSwordObject);
+}
 
 void CM_MonsterScript::awake()
 {
@@ -71,7 +100,7 @@ void CM_MonsterScript::update()
 		AnimationPlay(MONSTER_ANI_TYPE::ATTACK);
 	}
 	else
-		AnimationPlay(MONSTER_ANI_TYPE::IDLE);
+		AnimationPlay(MONSTER_ANI_TYPE::WALK);
 
 	if (m_bHit && m_vecAniClipTime[0] < GetObj()->Animator3D()->GetAnimClip(2).dTimeLength)
 	{

@@ -39,7 +39,7 @@ void CPlayerScript::init()
 	pSwordObject->AddComponent(new CCollider2D);
 	pSwordObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
 	pSwordObject->Collider2D()->SetOffsetPos(Vec3(0.f, 50.f, 0.f));
-	pSwordObject->Collider2D()->SetOffsetScale(Vec3(10.f, 140.f, 5.f));
+	pSwordObject->Collider2D()->SetOffsetScale(Vec3(20.f, 140.f, 20.f));
 
 	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
 	pSwordObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, SwordObject.GetPointer());
@@ -47,8 +47,7 @@ void CPlayerScript::init()
 
 	pSwordObject->AddComponent(new CSwordScript);
 	CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
-	pSwordObject->GetScript<CSwordScript>()->SetTarget(GetObj());
-	pSwordObject->GetScript<CSwordScript>()->SetBoneIdx(25);
+	pSwordObject->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, GetObj(), 25);
 
 	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pSwordObject, false);
 	GetObj()->AddChild(pSwordObject);

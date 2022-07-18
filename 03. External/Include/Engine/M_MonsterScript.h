@@ -44,6 +44,8 @@ public:
 	virtual void awake();
 	virtual void update();
 
+	void init();
+
 	void SetMonsterAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame);
 	void SetMonsterAnimation(const int& i);
 	void SetMonsterAnimation(int other_id, const int& i);

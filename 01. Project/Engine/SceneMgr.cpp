@@ -1053,8 +1053,9 @@ void CSceneMgr::init()
 	pMonster->AddComponent(new CM_MonsterScript);
 
 	CM_MonsterScript* M_MonsterScript = pMonster->GetScript<CM_MonsterScript>();
-	////몬스터 애니메이션
+	pMonster->GetScript<CM_MonsterScript>()->init();
 
+	////몬스터 애니메이션
 	M_MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 0, 0, 55);								// AniData Index 0
 
 	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Walk.mdat", L"MeshData\\Monster_M_Walk.mdat");
