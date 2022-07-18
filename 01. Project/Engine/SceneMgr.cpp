@@ -170,7 +170,7 @@ void CSceneMgr::CreateMap()
 	pCastleObject = pMeshData->Instantiate();
 	pCastleObject->SetName(L"Castle");
 	pCastleObject->FrustumCheck(false);
-	pCastleObject->Transform()->SetLocalPos(Vec3(0.f, 5110.f, 0.f));
+	pCastleObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 5000.f));
 	pCastleObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pCastleObject->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
 
@@ -189,7 +189,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(870.f, 5110.f, 1000.f));
+	pObject->Transform()->SetLocalPos(Vec3(870.f, 0.f, 6000.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -204,16 +204,13 @@ void CSceneMgr::CreateMap()
 	// AddGameObject
 	m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
 
-
-
-
 	// 더미
 	pObject = new CGameObject;
 	pObject->SetName(L"Map Object");
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(380.f, 5110.f, 2500.f));
+	pObject->Transform()->SetLocalPos(Vec3(380.f, 0.f, 7500.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -234,7 +231,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(600.f, 5110.f, 3250.f));
+	pObject->Transform()->SetLocalPos(Vec3(600.f, 0.f, 8250.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -256,7 +253,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(370.f, 5110.f, 3800.f));
+	pObject->Transform()->SetLocalPos(Vec3(370.f, 0.f, 8800.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -278,7 +275,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(295.f, 5110.f, 22.f));
+	pObject->Transform()->SetLocalPos(Vec3(295.f, 0.f, 5022.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -300,7 +297,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(-925.f, 5110.f, 1200.f));
+	pObject->Transform()->SetLocalPos(Vec3(-925.f, 0.f, 6200.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -324,7 +321,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(-380.f, 5110.f, 2500.f));
+	pObject->Transform()->SetLocalPos(Vec3(-380.f, 0.f, 7500.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -349,7 +346,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(-600.f, 5110.f, 3250.f));
+	pObject->Transform()->SetLocalPos(Vec3(-600.f, 0.f, 8250.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -371,7 +368,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(-370.f, 5110.f, 3800.f));
+	pObject->Transform()->SetLocalPos(Vec3(-370.f, 0.f, 8800.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -394,7 +391,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(720.f, 5110.f, 4080.f));
+	pObject->Transform()->SetLocalPos(Vec3(720.f, 0.f, 9080.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -416,7 +413,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(-720.f, 5110.f, 4080.f));
+	pObject->Transform()->SetLocalPos(Vec3(-720.f, 0.f, 9080.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -439,7 +436,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(1800.f, 5110.f, 5220.f));
+	pObject->Transform()->SetLocalPos(Vec3(1800.f, 0.f, 10220.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -461,7 +458,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(-1800.f, 5110.f, 5220.f));
+	pObject->Transform()->SetLocalPos(Vec3(-1800.f, 0.f, 10220.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -482,7 +479,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(1800.f, 5110.f, 6520.f));
+	pObject->Transform()->SetLocalPos(Vec3(1800.f, 0.f, 11520.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -504,7 +501,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(-1800.f, 5110.f, 6520.f));
+	pObject->Transform()->SetLocalPos(Vec3(-1800.f, 0.f, 11520.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -527,7 +524,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(675.f, 5110.f, 7655.f));
+	pObject->Transform()->SetLocalPos(Vec3(675.f, 0.f, 12655.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -549,7 +546,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(-675.f, 5110.f, 7655.f));
+	pObject->Transform()->SetLocalPos(Vec3(-675.f, 0.f, 12655.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -573,7 +570,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(2650.f, 5110.f, 5475.f));
+	pObject->Transform()->SetLocalPos(Vec3(2650.f, 0.f, 10475.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -597,7 +594,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(2650.f, 5110.f, 6245.f));
+	pObject->Transform()->SetLocalPos(Vec3(2650.f, 0.f, 11245.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -620,7 +617,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(3500.f, 5110.f, 6790.f));
+	pObject->Transform()->SetLocalPos(Vec3(3500.f, 0.f, 11790.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -643,7 +640,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(3500.f, 5110.f, 5010.f));
+	pObject->Transform()->SetLocalPos(Vec3(3500.f, 0.f, 10010.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -667,7 +664,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(3500.f, 5110.f, 5010.f));
+	pObject->Transform()->SetLocalPos(Vec3(3500.f, 0.f, 10010.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -691,7 +688,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(4300.f, 5110.f, 5835.f));
+	pObject->Transform()->SetLocalPos(Vec3(4300.f, 0.f, 10835.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -713,7 +710,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(5150.f, 5110.f, 4955.f));
+	pObject->Transform()->SetLocalPos(Vec3(5150.f, 0.f, 9955.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -735,7 +732,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(5150.f, 5110.f, 4255.f));
+	pObject->Transform()->SetLocalPos(Vec3(5150.f, 0.f, 9255.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -759,7 +756,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(5150.f, 5110.f, 7525.f));
+	pObject->Transform()->SetLocalPos(Vec3(5150.f, 0.f, 12525.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -783,7 +780,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(5150.f, 5110.f, 6675.f));
+	pObject->Transform()->SetLocalPos(Vec3(5150.f, 0.f, 5675.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -809,7 +806,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(6750.f, 5110.f, 5800.f));
+	pObject->Transform()->SetLocalPos(Vec3(6750.f, 0.f, 10800.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -832,7 +829,7 @@ void CSceneMgr::CreateMap()
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
 	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(6050.f, 5110.f, 5800.f));
+	pObject->Transform()->SetLocalPos(Vec3(6050.f, 0.f, 10800.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -937,9 +934,10 @@ void CSceneMgr::init()
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), 0.f, 0.f));
 	pPlayer->AddComponent(new CCollider2D);
 	pPlayer->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pPlayer->Collider2D()->SetOffsetPos(Vec3(0.f, -100.f, 0.f));
-	pPlayer->Collider2D()->SetOffsetScale(Vec3(100.f, 200.f, 100.f));
-
+	pPlayer->Collider2D()->SetOffsetPos(Vec3(0.f, 100.f, 0.f));
+	pPlayer->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+	pPlayer->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(-180.f), 0.f, 0.f));
+	//pPlayer->Collider2D()->SetOffsetRot(Vec3(0.f, XMConvertToRadians(180.f), 0.f));
 	// 플레이어 스크립트 붙여주기.
 	pPlayer->AddComponent(new CPlayerScript);
 
@@ -1044,10 +1042,12 @@ void CSceneMgr::init()
 	pMonster->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 	pMonster->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 	pMonster->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, XMConvertToRadians(-90.f)));
+	//pMonster->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
 	pMonster->AddComponent(new CCollider2D);
 	pMonster->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pMonster->Collider2D()->SetOffsetPos(Vec3(-120.f, 15.f, 0.f));
-	pMonster->Collider2D()->SetOffsetScale(Vec3(45.f, 35.f, 25.f));
+	pMonster->Collider2D()->SetOffsetPos(Vec3(0.f, 100.f, 0.f));
+	pMonster->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
+	pMonster->Collider2D()->SetOffsetRot(Vec3(0.f, XMConvertToRadians(-90.f), XMConvertToRadians(90.f)));
 
 	// 몬스터 스크립트 붙여주기.
 	pMonster->AddComponent(new CM_MonsterScript);
@@ -1206,7 +1206,7 @@ void CSceneMgr::init()
 	// =================================
 	// Player Layer 와 Monster Layer 는 충돌 검사 진행
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Monster");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");
+	/*CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");*/
 	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Object", L"Player");
 
 

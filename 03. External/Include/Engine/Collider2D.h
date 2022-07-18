@@ -14,6 +14,8 @@ private:
 private:
 	Vec3			m_vOffsetPos;
 	Vec3			m_vOffsetScale;
+	Vec3			m_vOffsetRot;
+
 	COLLIDER2D_TYPE m_eType;
 	int				m_iCollisionCount;	// Ãæµ¹ È½¼ö
 		
@@ -39,6 +41,7 @@ public:
 public:
 	void SetOffsetPos(const Vec3& _vPos) { m_vOffsetPos = _vPos; }
 	void SetOffsetScale(const Vec3& _vScale) { m_vOffsetScale = _vScale; }
+	void SetOffsetRot(const Vec3& _vRot) { m_vOffsetRot = _vRot; }
 
 	const Vec3& GetOffsetPos() { return m_vOffsetPos; }
 	const Vec3& GetOffsetScale() { return m_vOffsetScale; }

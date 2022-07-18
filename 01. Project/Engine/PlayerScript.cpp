@@ -420,10 +420,10 @@ void CPlayerScript::update()
 		{
 			localPos.x = 0.f;
 
-			localPos.y = 5000.f;
+			localPos.y = 0.f;
 			vRot.y = XM_PI;
 
-			localPos.z = 600.f;
+			localPos.z = 5600.f;
 			player->Transform()->SetLocalRot(vRot);
 		}
 
@@ -645,7 +645,7 @@ void CPlayerScript::update()
 
 		}*/
 	}
-
+	cout << GetObj()->Transform()->GetLocalPos().x <<", " << GetObj()->Transform()->GetLocalPos().z << endl;
 	Transform()->SetLocalPos(localPos);
 }
 void CPlayerScript::SetPlayerAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
@@ -783,13 +783,14 @@ void CPlayerScript::SwordStrike()
 	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
 	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
 
+	Vec3 pPos = Get_PlayerPos();
 
 	m_pSwordStrike = pPMeshData->Instantiate();
 	m_pSwordStrike->SetName(L"SwordStike");
 	m_pSwordStrike->FrustumCheck(false);
 
 
-	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
+	m_pSwordStrike->Transform()->SetLocalPos(Vec3(pPos.x, pPos.y + 150.f, pPos.z));
 	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
 	m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	m_pSwordStrike->AddComponent(new CSwordStrike);
@@ -812,7 +813,7 @@ void CPlayerScript::SwordStrike()
 	m_pSwordStrike->FrustumCheck(false);
 
 
-	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
+	m_pSwordStrike->Transform()->SetLocalPos(Vec3(pPos.x, pPos.y + 150.f, pPos.z));
 	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot() + Vec3(0.f, 15.f, 0.f));
 	m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	m_pSwordStrike->AddComponent(new CSwordStrike);
@@ -833,7 +834,7 @@ void CPlayerScript::SwordStrike()
 	m_pSwordStrike->FrustumCheck(false);
 
 
-	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
+	m_pSwordStrike->Transform()->SetLocalPos(Vec3(pPos.x, pPos.y + 150.f, pPos.z));
 	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot() + Vec3(0.f, -15.f, 0.f));
 	m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	m_pSwordStrike->AddComponent(new CSwordStrike);
