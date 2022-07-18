@@ -139,6 +139,9 @@ public:
 	int GetID() { return m_iID; }
 	void SetID(const int& id) { m_iID = id; }
 
+	CGameObject* m_pColObj;
+	void SetColObj(CGameObject* _obj) { m_pColObj = _obj; }
+
 public:
 	CLONE(CPlayerScript);
 

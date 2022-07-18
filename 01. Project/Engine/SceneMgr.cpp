@@ -195,6 +195,7 @@ void CSceneMgr::CreateMap()
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
 	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	pObject->Collider2D()->SetOffsetScale(Vec3(100.f, 500.f, 2000.f));
+
 	// MeshRender ¼³Á¤
 	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
 	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));

@@ -591,11 +591,6 @@ void CPlayerScript::update()
 				m_pQuestBox4->SetDead();
 				m_Q_Cnt = 0;
 			}
-
-
-
-
-
 		}
 		if (m_bMeteor2)
 		{
@@ -610,16 +605,20 @@ void CPlayerScript::update()
 			Delete_Meteor();
 		}
 
-
-
-
-		/*if (!m_bColCheck)
+		if (!m_bColCheck)
 		{
 			Transform()->SetLocalPos(localPos);
 		}
 		else
 		{
-			if (m_eDir == COL_DIR::UP)
+			Vec3 dir_vec = m_pColObj->Transform()->GetLocalDir(DIR_TYPE::RIGHT);
+
+			Vec3 slide_vec = localPos - dir_vec * (Dot(localPos, dir_vec));
+
+			localPos -= slide_vec * m_fSpeed * DT;
+
+			Transform()->SetLocalPos(localPos);
+			/*if (m_eDir == COL_DIR::UP)
 			{
 				localPos -= WorldDir * m_fSpeed * 15 * DT;
 				Transform()->SetLocalPos(localPos);
@@ -641,12 +640,11 @@ void CPlayerScript::update()
 			{
 				localPos += WorldDir * m_fSpeed * 15 * DT;
 				Transform()->SetLocalPos(localPos);
-			}
+			}*/
 
-		}*/
+		}
 	}
 	//cout << GetObj()->Transform()->GetLocalPos().x <<", " << GetObj()->Transform()->GetLocalPos().z << endl;
-	Transform()->SetLocalPos(localPos);
 }
 void CPlayerScript::SetPlayerAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
 {
@@ -756,18 +754,22 @@ void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
 
 void CPlayerScript::OnCollision(CCollider2D* _pOther)
 {
-	cout << "面倒" << endl;
-	m_bColCheck = true;
-
-
+	if (_pOther->GetObj()->GetName() == L"Map Object")
+	{
+		m_bColCheck = true;
+		SetColObj(_pOther->GetObj());
+		Vec3 dir_vec = m_pColObj->Transform()->GetLocalDir(DIR_TYPE::RIGHT);
+		cout << "面倒" << endl;
+	}
 }
 
 void CPlayerScript::OnCollisionExit(CCollider2D* _pOther)
 {
-
-	cout << "面倒 秦力" << endl;
-
-	m_bColCheck = false;
+	if (_pOther->GetObj()->GetName() == L"Map Object") 
+	{
+		m_bColCheck = false;
+		cout << "面倒 秦力" << endl;
+	}
 }
 
 
