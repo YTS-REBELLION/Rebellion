@@ -187,6 +187,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="EventMgr.h" />
     <ClInclude Include="extern.h" />
     <ClInclude Include="FBXLoader.h" />
+    <ClInclude Include="FireBall.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="func.h" />
     <ClInclude Include="GameObject.h" />
@@ -200,9 +201,11 @@ call EngineCopy.bat</Command>
     <ClInclude Include="Light3D.h" />
     <ClInclude Include="LoginScene.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="MegaSlash.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshData.h" />
     <ClInclude Include="MeshRender.h" />
+    <ClInclude Include="Meteor.h" />
     <ClInclude Include="Miro.h" />
     <ClInclude Include="MonsterScript.h" />
     <ClInclude Include="MRT.h" />
@@ -225,8 +228,10 @@ call EngineCopy.bat</Command>
     <ClInclude Include="Somethings.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Sting.h" />
     <ClInclude Include="struct.h" />
     <ClInclude Include="StructuredBuffer.h" />
+    <ClInclude Include="Swing.h" />
     <ClInclude Include="Sword.h" />
     <ClInclude Include="SwordScript.h" />
     <ClInclude Include="SwordStrike.h" />
@@ -237,6 +242,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="ToolCamScript.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Tree.h" />
+    <ClInclude Include="UnleashedPower.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation2D.cpp" />
@@ -261,6 +267,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EventMgr.cpp" />
     <ClCompile Include="FBXLoader.cpp" />
+    <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="func.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -278,9 +285,11 @@ call EngineCopy.bat</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="MegaSlash.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshData.cpp" />
     <ClCompile Include="MeshRender.cpp" />
+    <ClCompile Include="Meteor.cpp" />
     <ClCompile Include="Miro.cpp" />
     <ClCompile Include="MonsterScript.cpp" />
     <ClCompile Include="MRT.cpp" />
@@ -308,7 +317,9 @@ call EngineCopy.bat</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Sting.cpp" />
     <ClCompile Include="StructuredBuffer.cpp" />
+    <ClCompile Include="Swing.cpp" />
     <ClCompile Include="Sword.cpp" />
     <ClCompile Include="SwordScript.cpp" />
     <ClCompile Include="SwordStrike.cpp" />
@@ -318,6 +329,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="ToolCamScript.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Tree.cpp" />
+    <ClCompile Include="UnleashedPower.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="animation.fx">

@@ -5,7 +5,7 @@ CSwordStrike::CSwordStrike()
 	, m_pOriginMtrl(nullptr)
 	, m_pCloneMtrl(nullptr)
 {
-	
+
 
 
 }
@@ -30,9 +30,9 @@ void CSwordStrike::update()
 	}
 
 
-	Vec3 WorldDir= Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	Vec3 WorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 	Vec3 localPos = Transform()->GetLocalPos();
-	
+
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
 	Vec3 vRot = Transform()->GetLocalRot();
 
@@ -40,7 +40,21 @@ void CSwordStrike::update()
 
 
 	float Temp = 75 * DT;
+
+
+	/*if (this->Transform()->GetLocalDir(DIR_TYPE::FRONT).x >= 1.f)
+	{
+		WorldDir *= -1;
+	}*/
+
 	localPos += WorldDir * Temp;
+
+
+
+
+
+
+
 
 	Transform()->SetLocalPos(localPos);
 	Transform()->SetLocalRot(vRot);
