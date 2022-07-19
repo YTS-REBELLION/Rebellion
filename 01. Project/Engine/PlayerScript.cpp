@@ -435,15 +435,69 @@ void CPlayerScript::update()
 
 
 
-		//퀘스트 png
-		Ptr<CTexture> pQuest = CResMgr::GetInst()->Load<CTexture>(L"Quest", L"Texture\\Quest\\npc1_quest1(1).png");
-		Ptr<CTexture> pQuest2 = CResMgr::GetInst()->Load<CTexture>(L"Quest2", L"Texture\\Quest\\npc1_quest1(2).png");
-		Ptr<CTexture> pQuest3 = CResMgr::GetInst()->Load<CTexture>(L"Quest3", L"Texture\\Quest\\UIboard.png");
-		Ptr<CTexture> pQuest4 = CResMgr::GetInst()->Load<CTexture>(L"Quest4", L"Texture\\Quest\\QuestBase.png");
+		//퀘스트1 png
+		Ptr<CTexture> pQuestexplane1 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane", L"Texture\\Quest\\quest01.png");
+
+		Ptr<CTexture> pQuest0 = CResMgr::GetInst()->Load<CTexture>(L"Quest", L"Texture\\Quest\\npc1_quest00.png");
+		Ptr<CTexture> pQuest1 = CResMgr::GetInst()->Load<CTexture>(L"Quest2", L"Texture\\Quest\\npc1_quest01.png");
+		Ptr<CTexture> pQuest2 = CResMgr::GetInst()->Load<CTexture>(L"Quest3", L"Texture\\Quest\\npc1_quest02.png");
+		//퀘스트2 png
+		Ptr<CTexture> pQuestexplane2_0 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane2_0", L"Texture\\Quest\\quest02_0.png");
+		Ptr<CTexture> pQuestexplane2_1 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane2_1", L"Texture\\Quest\\quest02_1.png");
+		Ptr<CTexture> pQuestexplane2_2 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane2_2", L"Texture\\Quest\\quest02_2.png");
+		Ptr<CTexture> pQuestexplane2_3 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane2_3", L"Texture\\Quest\\quest02_3.png");
+
+		Ptr<CTexture> pQuest2_0 = CResMgr::GetInst()->Load<CTexture>(L"Quest2_1", L"Texture\\Quest\\npc2_quest00.png");
+		Ptr<CTexture> pQuest2_1 = CResMgr::GetInst()->Load<CTexture>(L"Quest2_2", L"Texture\\Quest\\npc2_quest01.png");
+		Ptr<CTexture> pQuest2_2 = CResMgr::GetInst()->Load<CTexture>(L"Quest2_3", L"Texture\\Quest\\npc2_quest02.png");
+
+		//퀘스트3 png
+
+		Ptr<CTexture> pQuestexplane3_0 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_0", L"Texture\\Quest\\quest03_0.png");
+		Ptr<CTexture> pQuestexplane3_1 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_1", L"Texture\\Quest\\quest03_1.png");
+		Ptr<CTexture> pQuestexplane3_2 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_2", L"Texture\\Quest\\quest03_2.png");
+		Ptr<CTexture> pQuestexplane3_3 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_3", L"Texture\\Quest\\quest03_3.png");
+
+		Ptr<CTexture> pQuest3_0 = CResMgr::GetInst()->Load<CTexture>(L"Quest3_1", L"Texture\\Quest\\npc3_quest00.png");
+		Ptr<CTexture> pQuest3_1 = CResMgr::GetInst()->Load<CTexture>(L"Quest3_2", L"Texture\\Quest\\npc3_quest01.png");
+		Ptr<CTexture> pQuest3_2 = CResMgr::GetInst()->Load<CTexture>(L"Quest3_3", L"Texture\\Quest\\npc3_quest02.png");
+
+
+		Ptr<CTexture> pQuestComplete = CResMgr::GetInst()->Load<CTexture>(L"QuestComplete", L"Texture\\Quest\\QuestComplete.png"); 
+
+		
 		if (KEY_TAB(KEY_TYPE::KEY_0))
 		{
 			//임시로 퀘스트 클리어 늘려서 다른퀘스트띄우려 만든거
 			m_iClearCnt += 1;
+			tResolution res = CRenderMgr::GetInst()->GetResolution();
+
+			Vec3	QuestBoxinScale = Vec3(128, 54, 1.f);
+			CGameObject* pObject = new CGameObject;
+
+			pObject = new CGameObject;
+			pObject->SetName(L"QuestBoxComplete");
+			pObject->FrustumCheck(false);
+			pObject->AddComponent(new CTransform);
+			pObject->AddComponent(new CMeshRender);
+
+			pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f), 0.f, 1.f));
+			pObject->Transform()->SetLocalScale(QuestBoxinScale);
+
+			//MeshRender 설정
+
+			pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+			Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+			pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuestComplete.GetPointer());
+
+			// AddGameObject
+			CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+			m_pQuestComplete = pObject;
+
+
+
 		}
 
 		if (KEY_TAB(KEY_TYPE::KEY_Q))
@@ -473,7 +527,7 @@ void CPlayerScript::update()
 
 				Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
 				pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
-				pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuest.GetPointer());
+				pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuest0.GetPointer());
 
 				// AddGameObject
 				CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
@@ -505,7 +559,7 @@ void CPlayerScript::update()
 
 				Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
 				pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
-				pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuest2.GetPointer());
+				pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuest1.GetPointer());
 
 				// AddGameObject
 				CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
@@ -517,14 +571,6 @@ void CPlayerScript::update()
 			{
 
 				m_pQuestBox2->SetDead();
-				m_Q_Cnt = 0;
-			}
-
-
-
-			//두번째 퀘스트고 q 를 한번눌렀을시
-			if (m_iClearCnt == 1 && m_Q_Cnt == 1)
-			{
 				tResolution res = CRenderMgr::GetInst()->GetResolution();
 
 				Vec3	QuestBoxinScale = Vec3(800.f, 200.f, 1.f);
@@ -545,7 +591,7 @@ void CPlayerScript::update()
 
 				Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
 				pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
-				pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuest3.GetPointer());
+				pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuest2.GetPointer());
 
 				// AddGameObject
 				CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
@@ -553,10 +599,49 @@ void CPlayerScript::update()
 
 
 			}
-			if (m_iClearCnt == 1 && m_Q_Cnt == 2)
+			if (m_iClearCnt == 0 && m_Q_Cnt == 4)
 			{
 
 				m_pQuestBox3->SetDead();
+				m_Q_Cnt = 0;
+				tResolution res = CRenderMgr::GetInst()->GetResolution();
+
+				Vec3	QuestBoxinScale = Vec3(200, 54, 1.f);
+				CGameObject* pObject = new CGameObject;
+
+				pObject = new CGameObject;
+				pObject->SetName(L"QuestBoxExplane");
+				pObject->FrustumCheck(false);
+				pObject->AddComponent(new CTransform);
+				pObject->AddComponent(new CMeshRender);
+
+				pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f), 0.f , 1.f));
+				pObject->Transform()->SetLocalScale(QuestBoxinScale);
+
+				//MeshRender 설정
+
+				pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+				Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+				pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+				pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuestexplane1.GetPointer());
+
+				// AddGameObject
+				CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+				m_pQuestBoxExplane1 = pObject;
+
+
+
+			}
+
+
+
+			//두번째 퀘스트고 q 를 한번눌렀을시
+			if (m_iClearCnt == 1 && m_Q_Cnt == 1)
+			{
+				m_pQuestComplete->SetDead();
+
+
 				tResolution res = CRenderMgr::GetInst()->GetResolution();
 
 				Vec3	QuestBoxinScale = Vec3(800.f, 200.f, 1.f);
@@ -577,21 +662,343 @@ void CPlayerScript::update()
 
 				Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
 				pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
-				pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuest4.GetPointer());
+				pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuest2_0.GetPointer());
 
 				// AddGameObject
 				CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
-				m_pQuestBox4 = pObject;
+				m_pQuestBox2_1 = pObject;
+
+
+			}
+			if (m_iClearCnt == 1 && m_Q_Cnt == 2)
+			{
+
+				m_pQuestBox2_1->SetDead();
+				tResolution res = CRenderMgr::GetInst()->GetResolution();
+
+				Vec3	QuestBoxinScale = Vec3(800.f, 200.f, 1.f);
+				CGameObject* pObject = new CGameObject;
+
+				pObject = new CGameObject;
+				pObject->SetName(L"QuestBox");
+				pObject->FrustumCheck(false);
+				pObject->AddComponent(new CTransform);
+				pObject->AddComponent(new CMeshRender);
+
+				pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 5.f), 0.f - (res.fHeight / 8.f), 1.f));
+				pObject->Transform()->SetLocalScale(QuestBoxinScale);
+
+				//MeshRender 설정
+
+				pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+				Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+				pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+				pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuest2_1.GetPointer());
+
+				// AddGameObject
+				CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+				m_pQuestBox2_2 = pObject;
 
 
 			}
 			if (m_iClearCnt == 1 && m_Q_Cnt == 3)
 			{
 
-				m_pQuestBox4->SetDead();
-				m_Q_Cnt = 0;
+				m_pQuestBox2_2->SetDead();
+				tResolution res = CRenderMgr::GetInst()->GetResolution();
+
+				Vec3	QuestBoxinScale = Vec3(800.f, 200.f, 1.f);
+				CGameObject* pObject = new CGameObject;
+
+				pObject = new CGameObject;
+				pObject->SetName(L"QuestBox");
+				pObject->FrustumCheck(false);
+				pObject->AddComponent(new CTransform);
+				pObject->AddComponent(new CMeshRender);
+
+				pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 5.f), 0.f - (res.fHeight / 8.f), 1.f));
+				pObject->Transform()->SetLocalScale(QuestBoxinScale);
+
+				//MeshRender 설정
+
+				pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+				Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+				pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+				pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuest2_2.GetPointer());
+
+				// AddGameObject
+				CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+				m_pQuestBox2_3 = pObject;
+
+
 			}
+			if (m_iClearCnt == 1 && m_Q_Cnt == 4)
+			{
+
+				m_pQuestBox2_3->SetDead();
+				m_Q_Cnt = 0;
+
+
+
+				tResolution res = CRenderMgr::GetInst()->GetResolution();
+
+				Vec3	QuestBoxinScale = Vec3(200, 54, 1.f);
+				CGameObject* pObject = new CGameObject;
+
+				pObject = new CGameObject;
+				pObject->SetName(L"QuestBoxExplane");
+				pObject->FrustumCheck(false);
+				pObject->AddComponent(new CTransform);
+				pObject->AddComponent(new CMeshRender);
+
+				pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f), 0.f, 1.f));
+				pObject->Transform()->SetLocalScale(QuestBoxinScale);
+
+				//MeshRender 설정
+
+				pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+				Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+				pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+				pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuestexplane2_0.GetPointer());
+
+				// AddGameObject
+				CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+				m_pQuestBoxExplane2 = pObject;
+
+			}
+
+
+			//세번째 퀘스트고 q 를 한번눌렀을시
+			if (m_iClearCnt == 2 && m_Q_Cnt == 1)
+			{
+
+				m_pQuestComplete->SetDead();
+				tResolution res = CRenderMgr::GetInst()->GetResolution();
+
+				Vec3	QuestBoxinScale = Vec3(800.f, 200.f, 1.f);
+				CGameObject* pObject = new CGameObject;
+
+				pObject = new CGameObject;
+				pObject->SetName(L"QuestBox");
+				pObject->FrustumCheck(false);
+				pObject->AddComponent(new CTransform);
+				pObject->AddComponent(new CMeshRender);
+
+				pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 5.f), 0.f - (res.fHeight / 8.f), 1.f));
+				pObject->Transform()->SetLocalScale(QuestBoxinScale);
+
+				//MeshRender 설정
+
+				pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+				Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+				pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+				pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuest3_0.GetPointer());
+
+				// AddGameObject
+				CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+				m_pQuestBox3_1 = pObject;
+
+
+			}
+			if (m_iClearCnt == 2 && m_Q_Cnt == 2)
+			{
+
+				m_pQuestBox3_1->SetDead();
+				tResolution res = CRenderMgr::GetInst()->GetResolution();
+
+				Vec3	QuestBoxinScale = Vec3(800.f, 200.f, 1.f);
+				CGameObject* pObject = new CGameObject;
+
+				pObject = new CGameObject;
+				pObject->SetName(L"QuestBox");
+				pObject->FrustumCheck(false);
+				pObject->AddComponent(new CTransform);
+				pObject->AddComponent(new CMeshRender);
+
+				pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 5.f), 0.f - (res.fHeight / 8.f), 1.f));
+				pObject->Transform()->SetLocalScale(QuestBoxinScale);
+
+				//MeshRender 설정
+
+				pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+				Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+				pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+				pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuest3_1.GetPointer());
+
+				// AddGameObject
+				CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+				m_pQuestBox3_2 = pObject;
+
+
+			}
+			if (m_iClearCnt == 2 && m_Q_Cnt == 3)
+			{
+
+				m_pQuestBox3_2->SetDead();
+				tResolution res = CRenderMgr::GetInst()->GetResolution();
+
+				Vec3	QuestBoxinScale = Vec3(800.f, 200.f, 1.f);
+				CGameObject* pObject = new CGameObject;
+
+				pObject = new CGameObject;
+				pObject->SetName(L"QuestBox");
+				pObject->FrustumCheck(false);
+				pObject->AddComponent(new CTransform);
+				pObject->AddComponent(new CMeshRender);
+
+				pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 5.f), 0.f - (res.fHeight / 8.f), 1.f));
+				pObject->Transform()->SetLocalScale(QuestBoxinScale);
+
+				//MeshRender 설정
+
+				pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+				Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+				pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+				pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuest3_2.GetPointer());
+
+				// AddGameObject
+				CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+				m_pQuestBox3_3 = pObject;
+
+
+			}
+			if (m_iClearCnt == 2 && m_Q_Cnt == 4)
+			{
+
+				m_pQuestBox3_3->SetDead();
+				m_Q_Cnt = 0;
+
+				tResolution res = CRenderMgr::GetInst()->GetResolution();
+
+				Vec3	QuestBoxinScale = Vec3(200, 54, 1.f);
+				CGameObject* pObject = new CGameObject;
+
+				pObject = new CGameObject;
+				pObject->SetName(L"QuestBoxExplane");
+				pObject->FrustumCheck(false);
+				pObject->AddComponent(new CTransform);
+				pObject->AddComponent(new CMeshRender);
+
+				pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f), 0.f, 1.f));
+				pObject->Transform()->SetLocalScale(QuestBoxinScale);
+
+				//MeshRender 설정
+
+				pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+				Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+				pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+				pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuestexplane3_0.GetPointer());
+
+				// AddGameObject
+				CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+				m_pQuestBoxExplane3 = pObject;
+
+			}
+
+
 		}
+		if (m_iKillMonCnt == 1)
+		{
+			m_pQuestBoxExplane2->SetDead();
+			tResolution res = CRenderMgr::GetInst()->GetResolution();
+
+			Vec3	QuestBoxinScale = Vec3(200, 54, 1.f);
+			CGameObject* pObject = new CGameObject;
+
+			pObject = new CGameObject;
+			pObject->SetName(L"QuestBoxExplane");
+			pObject->FrustumCheck(false);
+			pObject->AddComponent(new CTransform);
+			pObject->AddComponent(new CMeshRender);
+
+			pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f), 0.f, 1.f));
+			pObject->Transform()->SetLocalScale(QuestBoxinScale);
+
+			//MeshRender 설정
+
+			pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+			Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+			pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuestexplane2_1.GetPointer());
+
+			// AddGameObject
+			CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+			m_pQuestBoxExplane3 = pObject;
+
+		}
+
+		if (m_iKillMonCnt == 2)
+		{
+			m_pQuestBoxExplane3->SetDead();
+			tResolution res = CRenderMgr::GetInst()->GetResolution();
+
+			Vec3	QuestBoxinScale = Vec3(200, 54, 1.f);
+			CGameObject* pObject = new CGameObject;
+
+			pObject = new CGameObject;
+			pObject->SetName(L"QuestBoxExplane");
+			pObject->FrustumCheck(false);
+			pObject->AddComponent(new CTransform);
+			pObject->AddComponent(new CMeshRender);
+
+			pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f), 0.f, 1.f));
+			pObject->Transform()->SetLocalScale(QuestBoxinScale);
+
+			//MeshRender 설정
+
+			pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+			Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+			pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuestexplane2_2.GetPointer());
+
+			// AddGameObject
+			CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+			m_pQuestBoxExplane4 = pObject;
+
+		}
+		if (m_iKillMonCnt == 3)
+		{
+			m_pQuestBoxExplane4->SetDead();
+			tResolution res = CRenderMgr::GetInst()->GetResolution();
+
+			Vec3	QuestBoxinScale = Vec3(200, 54, 1.f);
+			CGameObject* pObject = new CGameObject;
+
+			pObject = new CGameObject;
+			pObject->SetName(L"QuestBoxExplane");
+			pObject->FrustumCheck(false);
+			pObject->AddComponent(new CTransform);
+			pObject->AddComponent(new CMeshRender);
+
+			pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f), 0.f, 1.f));
+			pObject->Transform()->SetLocalScale(QuestBoxinScale);
+
+			//MeshRender 설정
+
+			pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+			Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+			pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuestexplane2_3.GetPointer());
+
+			// AddGameObject
+			CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+			m_pQuestBoxExplane5 = pObject;
+
+			m_iClearCnt += 1;
+
+		}
+
+
 		if (m_bMeteor2)
 		{
 			m_fcreate_time += DT;
@@ -1135,6 +1542,7 @@ void CPlayerScript::Meteor()
 
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pMagicJin);
+	
 
 
 

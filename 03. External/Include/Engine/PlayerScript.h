@@ -21,10 +21,34 @@ public:
 	
 
 private:
+
+	
+
+	CGameObject* m_pQuestComplete;
+	CGameObject* m_pQuestBoxExplane1;
+	CGameObject* m_pQuestBoxExplane2;
+	CGameObject* m_pQuestBoxExplane3;
+	CGameObject* m_pQuestBoxExplane4;
+	CGameObject* m_pQuestBoxExplane5;
+	CGameObject* m_pQuestBoxExplane6;
+	CGameObject* m_pQuestBoxExplane7;
+	CGameObject* m_pQuestBoxExplane8;
+
 	CGameObject* m_pQuestBox1;
 	CGameObject* m_pQuestBox2;
 	CGameObject* m_pQuestBox3;
-	CGameObject* m_pQuestBox4;
+
+	CGameObject* m_pQuestBox2_1;
+	CGameObject* m_pQuestBox2_2;
+	CGameObject* m_pQuestBox2_3;
+
+	CGameObject* m_pQuestBox3_1;
+	CGameObject* m_pQuestBox3_2;
+	CGameObject* m_pQuestBox3_3;
+
+	int m_iKillMonCnt = 0;
+
+
 	Ptr<CMaterial>		m_pOriginMtrl;
 	Ptr<CMaterial>		m_pCloneMtrl;
 	vector<Ptr<CMesh>>	m_pAniData;
