@@ -88,7 +88,7 @@ void CMonsterScript::update()
 
 		vRot = Vec3(localRot.x, m_fAngle, localRot.z);
 
-		Transform()->SetLocalRot(vRot);
+		//Transform()->SetLocalRot(vRot);
 		if (m_Is_Move) {
 			AnimationPlay(MONSTER_ANI_TYPE::WALK);
 		}
