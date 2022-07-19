@@ -447,7 +447,7 @@ bool CCollisionMgr::CollisionCube(CCollider2D* _pCollider1, CCollider2D* _pColli
 	//}
 	{
 		static Vec3 arrLocal[4] = {               // 0 -- 1
-			 Vec3(-0.5f, 0.0f, 0.5f)            // |   |
+			 Vec3(-0.5f, 0.0f, 0.5f)			  // |    |
 		   , Vec3(0.5f, 0.0f, 0.5f)               // 3 -- 2
 		   , Vec3(0.5f, 0.0f, -0.5f)
 		   , Vec3(-0.5f, 0.0f, -0.5f) };
@@ -497,6 +497,11 @@ bool CCollisionMgr::CollisionCube(CCollider2D* _pCollider1, CCollider2D* _pColli
 
 		for (UINT i = 0; i < 4; ++i)
 		{
+			//if (_pCollider1->GetObj()->GetName() == L"Player1" && _pCollider2->GetObj()->GetName() == L"Map Object") {
+			//	cout << i << " 표면   : " << arrOriginVec[i].x << ", " << arrOriginVec[i].y << ", " << arrOriginVec[i].z << endl;
+			//	cout << i << " 단위   : " << arrProjVec[i].x << ", " << arrProjVec[i].y << ", " << arrProjVec[i].z << endl;
+			//}
+			//cout << endl;
 			float fCenter = abs(vCenter.Dot(arrProjVec[i])); // 중심 거리 벡터를 해당 투영축으로 투영시킨 길이
 
 			float fAcc = 0.f;

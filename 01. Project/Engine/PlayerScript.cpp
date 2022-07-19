@@ -610,42 +610,104 @@ void CPlayerScript::update()
 			Transform()->SetLocalPos(localPos);
 		}
 		else
-		{
-			Vec3 dir_vec = m_pColObj->Transform()->GetLocalDir(DIR_TYPE::RIGHT);
+		{			
+			Vec3 dir_vec_x = m_pColObj->Transform()->GetLocalDir(DIR_TYPE::RIGHT);
+			Vec3 dir_vec_z = m_pColObj->Transform()->GetLocalDir(DIR_TYPE::FRONT);
+			Vec3 dir_p = GetObj()->Transform()->GetLocalDir(DIR_TYPE::FRONT);
 
-			Vec3 slide_vec = localPos - dir_vec * (Dot(localPos, dir_vec));
+			Vec3 slide_vec_x = {};
+			Vec3 slide_vec_z = {};
+			Vec3 Col_pos = m_pColObj->Transform()->GetLocalPos();
+			Vec3 Col_Scale = m_pColObj->Collider2D()->GetOffsetScale();
 
-			localPos -= slide_vec * m_fSpeed * DT;
+			//cout << Col_pos.x + Col_Scale.x / 2 << endl;
+			//cout << Col_pos.x - Col_Scale.x / 2 << endl;
+			//cout << GetObj()->Transform()->GetLocalPos().x << endl;
+			float a = 0;
+			if (Col_pos.x + Col_Scale.x /2 > GetObj()->Transform()->GetLocalPos().x
+				&& Col_pos.x - Col_Scale.x / 2 < GetObj()->Transform()->GetLocalPos().x
+				&& Col_pos.z + Col_Scale.z / 2 < GetObj()->Transform()->GetLocalPos().z)
+			{
+				/*Dot(dir_p, dir_vec_z) > 0 ? 
+					(Dot(dir_p, dir_vec_z) > 0 ?
+						(localPos.z += dir_p.z * m_fSpeed * DT, a = 1) :
+						(localPos.z -= dir_p.z * m_fSpeed * DT, a = 2)):
+					(Dot(dir_p, -dir_vec_z) > 0 ?
+						(localPos.z += dir_p.z * m_fSpeed * DT, a = 3) :
+						(localPos.z -= dir_p.z * m_fSpeed * DT, a = 4));
+
+				cout << a << endl;
+				cout << "sli_vx: " << slide_vec_x.x << ", " << slide_vec_x.y << ", " << slide_vec_x.z << endl << endl;*/
+				//cout << "범위에 들어옴" << endl;
+				//slide_vec_x = dir_p - (Dot(dir_p, dir_vec_z)) * dir_vec_z;
+				//if (Dot(dir_p, -dir_vec_z) > 0)
+				//	//localPos.z += dir_p.z * m_fSpeed * DT;
+				//	cout << "내적값이 0보다 큼" << endl;
+				//else
+				//	cout << "내적값이 0보다 작음" << endl;
+					//localPos.z -= dir_p.z * m_fSpeed * DT;
+				cout << "1" << endl;
+				Dot(dir_p, dir_vec_z) > 0 ? dir_p *= -1 : dir_p *= 1;
+				localPos.x += slide_vec_x.x * DT;
+				localPos.z -= dir_p.z * m_fSpeed * DT;
+			}
+			if (Col_pos.x + Col_Scale.x / 2 > GetObj()->Transform()->GetLocalPos().x
+				&& Col_pos.x - Col_Scale.x / 2 < GetObj()->Transform()->GetLocalPos().x
+				&& Col_pos.z - Col_Scale.z / 2 > GetObj()->Transform()->GetLocalPos().z)
+			{
+				cout << "2" << endl;
+				Dot(dir_p, dir_vec_z) > 0 ? dir_p *= 1 : dir_p *= -1;
+				localPos.x += slide_vec_x.x * DT;
+				localPos.z -= dir_p.z * m_fSpeed * DT;
+			}
+
+			if (Col_pos.z + Col_Scale.z / 2 > GetObj()->Transform()->GetLocalPos().z
+				&& Col_pos.z - Col_Scale.z / 2 < GetObj()->Transform()->GetLocalPos().z
+				&&Col_pos.x - Col_Scale.x / 2 > GetObj()->Transform()->GetLocalPos().x)
+			{
+				cout << "3" << endl;
+				localPos.x -= dir_p.x *m_fSpeed * DT;
+				localPos.z += slide_vec_z.z * DT;
+			}
+
+			if (Col_pos.z + Col_Scale.z / 2 > GetObj()->Transform()->GetLocalPos().z
+				&& Col_pos.z - Col_Scale.z / 2 < GetObj()->Transform()->GetLocalPos().z
+				&& Col_pos.x + Col_Scale.x / 2 < GetObj()->Transform()->GetLocalPos().x)
+			{
+				cout << "4" << endl;
+				localPos.x -= dir_p.x * m_fSpeed * DT;
+				localPos.z += slide_vec_z.z * DT;
+			}
+			//cout << "pos   : " << localPos.x << ", " << localPos.y << ", " << localPos.z << endl;
+			//cout << "dir_p : " << dir_p.x << ", " << dir_p.y << ", " << dir_p.z << endl;
+			//cout << "dir_x : " << dir_vec_x.x << ", " << dir_vec_x.y << ", " << dir_vec_x.z << endl;
+			//cout << "dir_z : " << dir_vec_z.x << ", " << dir_vec_z.y << ", " << dir_vec_z.z << endl;
+
+			//if (Dot(dir_p, dir_vec_x) > 0)
+			//	//slide_vec_x = dir_p + (Dot(-dir_p, dir_vec_z)) * dir_vec_z;
+			//	slide_vec_z = dir_p + (Dot(-dir_p, dir_vec_x)) * dir_vec_x;
+			//else
+				//slide_vec_z = dir_p - (Dot(dir_p, dir_vec_x)) * dir_vec_x;
+			/*slide_vec_x = dir_p - (Dot(dir_p, dir_vec_z)) * dir_vec_z;*/
+			//if(Dot(dir_p, dir_vec_z) > 0)
+			//	//slide_vec_x = dir_p + (Dot(-dir_p, dir_vec_z)) * dir_vec_z;
+			//	slide_vec_z = dir_p + (Dot(-dir_p, dir_vec_x)) * dir_vec_x;
+			//else
+			//	slide_vec_z = dir_p - (Dot(dir_p, dir_vec_x)) * dir_vec_x;
+
+			//cout << "sli_vx: " << slide_vec_x.x << ", " << slide_vec_x.y << ", " << slide_vec_x.z << endl;
+			//cout << "sli_vz: " << slide_vec_z.x << ", " << slide_vec_z.y << ", " << slide_vec_z.z << endl;
+			//localPos -= slide_vec_z * m_fSpeed * DT;
+			//localPos.x += slide_vec_x.x * m_fSpeed * DT;
+			//localPos.x += slide_vec_x.x * DT;
+			//localPos.z -= dir_p.z * m_fSpeed * DT;
 
 			Transform()->SetLocalPos(localPos);
-			/*if (m_eDir == COL_DIR::UP)
-			{
-				localPos -= WorldDir * m_fSpeed * 15 * DT;
-				Transform()->SetLocalPos(localPos);
-			}
-
-			if (m_eDir == COL_DIR::LEFT)
-			{
-				localPos -= WorldDir * m_fSpeed * 15 * DT;
-				Transform()->SetLocalPos(localPos);
-			}
-
-			if (m_eDir == COL_DIR::DOWN)
-			{
-				localPos += WorldDir * m_fSpeed * 15 * DT;
-				Transform()->SetLocalPos(localPos);
-			}
-
-			if (m_eDir == COL_DIR::RIGHT)
-			{
-				localPos += WorldDir * m_fSpeed * 15 * DT;
-				Transform()->SetLocalPos(localPos);
-			}*/
-
 		}
 	}
-	//cout << GetObj()->Transform()->GetLocalPos().x <<", " << GetObj()->Transform()->GetLocalPos().z << endl;
+
 }
+
 void CPlayerScript::SetPlayerAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
 {
 	m_pAniData.push_back(AniDate);
@@ -669,7 +731,6 @@ void CPlayerScript::SetPlayerAnimation(const int& i)
 	GetObj()->Animator3D()->SetAnimClip(&m_pVecAnimClip);
 	GetObj()->MeshRender()->SetMesh(m_pAniData[i]);
 }
-
 
 void CPlayerScript::SetPlayerAnimation(int other_id, int i)
 {
@@ -745,9 +806,6 @@ void CPlayerScript::AnimationPlay(int other_id, const PLAYER_ANI_TYPE& type)
 	}
 }
 
-
-
-
 void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
 {
 }
@@ -758,8 +816,10 @@ void CPlayerScript::OnCollision(CCollider2D* _pOther)
 	{
 		m_bColCheck = true;
 		SetColObj(_pOther->GetObj());
+		//cout << _pOther->Transform()->GetLocalPos().x << endl;
+		//cout << _pOther->Transform()->GetLocalPos().z << endl<<endl;
 		Vec3 dir_vec = m_pColObj->Transform()->GetLocalDir(DIR_TYPE::RIGHT);
-		cout << "충돌" << endl;
+		//cout << "충돌" << endl;
 	}
 }
 
@@ -771,9 +831,6 @@ void CPlayerScript::OnCollisionExit(CCollider2D* _pOther)
 		cout << "충돌 해제" << endl;
 	}
 }
-
-
-
 
 void CPlayerScript::SwordStrike()
 {

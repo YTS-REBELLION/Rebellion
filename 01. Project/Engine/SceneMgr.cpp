@@ -165,7 +165,9 @@ void CSceneMgr::CreateMap()
 	}
 
 	CGameObject* pCastleObject = nullptr;
-	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\MAP10.mdat", L"MeshData\\MAP10.mdat");
+	//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\MAP10.mdat", L"MeshData\\MAP10.mdat");
+	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Main_Map.fbx");
+	pMeshData->Save(pMeshData->GetPath());
 
 	pCastleObject = pMeshData->Instantiate();
 	pCastleObject->SetName(L"Castle");
@@ -174,7 +176,7 @@ void CSceneMgr::CreateMap()
 	pCastleObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pCastleObject->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
 
-	pCastleObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pWallColor.GetPointer());
+	//pCastleObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pWallColor.GetPointer());
 
 	m_pCurScene->FindLayer(L"Map")->AddGameObject(pCastleObject);
 
@@ -936,7 +938,7 @@ void CSceneMgr::init()
 	pPlayer->AddComponent(new CCollider2D);
 	pPlayer->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
 	pPlayer->Collider2D()->SetOffsetPos(Vec3(0.f, 100.f, 0.f));
-	pPlayer->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+	pPlayer->Collider2D()->SetOffsetScale(Vec3(50.f, 50.f, 50.f));
 	pPlayer->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(-180.f), 0.f, 0.f));
 	//pPlayer->Collider2D()->SetOffsetRot(Vec3(0.f, XMConvertToRadians(180.f), 0.f));
 	// 플레이어 스크립트 붙여주기.
@@ -1126,7 +1128,10 @@ void CSceneMgr::init()
 	//// Potal 오브젝트 생성
 	//// ====================
 	CGameObject* pPotalObject = nullptr;
-	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\DragonJawPortal.mdat", L"MeshData\\DragonJawPortal.mdat");
+	//Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Assembly_Portal.fbx");
+	//pPMeshData->Save(pPMeshData->GetPath());
+
+	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Assembly_Portal.mdat", L"MeshData\\Assembly_Portal.mdat");
 
 	pPotalObject = pPMeshData->Instantiate();
 	pPotalObject->SetName(L"Portal");
@@ -1256,7 +1261,10 @@ void CSceneMgr::init()
 	// ===========================================================================================
 	CGameObject* GateHouseObject = nullptr;
 	GateHouseObject = new CGameObject;
-	pPMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Gatehouses.mdat", L"MeshData\\Gatehouses.mdat");
+
+	pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Assembly_House_1.fbx");
+	pPMeshData->Save(pPMeshData->GetPath());
+	//pPMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Gatehouses.mdat", L"MeshData\\Gatehouses.mdat");
 	GateHouseObject = pPMeshData->Instantiate();
 	GateHouseObject->SetName(L"Gate_houses");
 	GateHouseObject->FrustumCheck(false);
