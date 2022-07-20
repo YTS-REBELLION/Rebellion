@@ -98,7 +98,7 @@ public:
 	void SetOtherMovePacket__IsMoving(const bool& isMoving) {
 		if (m_movePacketTemp != nullptr)m_movePacketTemp->isMoving = isMoving;
 	}
-	void SwordStrike();
+
 	void SetTargetID(const int& targetID) { m_targetId = targetID; }
 	void SetTarget(const bool& isTarget) { m_isTarget = isTarget; }
 	int GetTargetId() const { return m_targetId; }
@@ -144,8 +144,8 @@ public:
 	int GetID() { return m_iID; }
 	void SetID(const int& id) { m_iID = id; }
 
-	CGameObject* m_pColObj;
-	void SetColObj(CGameObject* _obj) { m_pColObj = _obj; }
+	CCollider2D* m_pColObj;
+	void SetColObj(CCollider2D* _obj) { m_pColObj = _obj; }
 
 public:
 	CLONE(CPlayerScript);

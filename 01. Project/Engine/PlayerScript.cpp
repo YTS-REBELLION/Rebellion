@@ -331,7 +331,6 @@ void CPlayerScript::update()
 		{
 			AnimationPlay(PLAYER_ANI_TYPE::IDLE);
 		}
-
 		if (KEY_TAB(KEY_TYPE::KEY_SPACE))
 		{
 			GetObj()->Animator3D()->SetClipTime(0, 0.f);
@@ -690,7 +689,6 @@ void CPlayerScript::update()
 			Transform()->SetLocalPos(localPos);
 		}
 	}
-
 }
 
 void CPlayerScript::SetPlayerAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame)

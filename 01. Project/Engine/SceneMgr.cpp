@@ -902,7 +902,7 @@ void CSceneMgr::init()
 
 	CGameObject* pObject = nullptr;
 	
-	//CreateMap();
+	CreateMap();
 	// ====================
 	// 3D Light Object Ãß°¡
 	// ====================

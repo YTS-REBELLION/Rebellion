@@ -222,6 +222,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="PlayerScript.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Ptr.h" />
+    <ClInclude Include="Quest.h" />
     <ClInclude Include="RenderMgr.h" />
     <ClInclude Include="ResMgr.h" />
     <ClInclude Include="Resource.h" />
@@ -307,6 +308,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="PathMgr.cpp" />
     <ClCompile Include="PlayerScript.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="Quest.cpp" />
     <ClCompile Include="RenderMgr.cpp" />
     <ClCompile Include="RenderMgrInit.cpp" />
     <ClCompile Include="ResMgr.cpp" />

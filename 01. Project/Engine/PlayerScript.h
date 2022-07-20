@@ -98,6 +98,7 @@ public:
 	void SetOtherMovePacket__IsMoving(const bool& isMoving) {
 		if (m_movePacketTemp != nullptr)m_movePacketTemp->isMoving = isMoving;
 	}
+
 	void SetTargetID(const int& targetID) { m_targetId = targetID; }
 	void SetTarget(const bool& isTarget) { m_isTarget = isTarget; }
 	int GetTargetId() const { return m_targetId; }
