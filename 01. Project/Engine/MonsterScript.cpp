@@ -85,7 +85,7 @@ void CMonsterScript::update()
 
 	vRot = Vec3(localRot.x, m_fAngle, localRot.z);
 	
-	g_net.Send_MonsterRotate_Packet(GetID(), GetObj()->GetID(), vRot);
+	//g_net.Send_MonsterRotate_Packet(GetID(), GetObj()->GetID(), vRot);
 
 
 	Monster->Transform()->SetLocalRot(vRot);

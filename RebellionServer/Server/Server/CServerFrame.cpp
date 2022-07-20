@@ -713,7 +713,7 @@ void CServerFrame::AggroMove(int npc_id)
 	
 	if (false == closed) {
 		_objects[npc_id].SetPos(Pos);
-		//_objects[npc_id].SetMonsterMove(true);
+		_objects[npc_id].SetMonsterMove(true);
 	}
 
 	_objects[npc_id].SetLook(nor);
@@ -725,11 +725,11 @@ void CServerFrame::AggroMove(int npc_id)
 
 	for (int i = 0; i < NPC_ID_START; ++i) {
 		if (ST_ACTIVE != _objects[i]._status) continue;
-		if (_objects[npc_id].GetTarget() == false) continue;
-		
+		//if (_objects[npc_id].GetTarget() == false) continue;
+		if (_objects[npc_id].GetMonsterMove() == false) continue;
+
 		/*_sender->SendTargetPlayerPacket(_objects[i].GetSocket(), _objects[npc_id].GetTargetID(), true , npc_id);
 		_objects[npc_id].SetTarget(false);*/
-		//if (_objects[npc_id].GetMonsterMove() == false) continue;
 		//cout << "플레이어 : " << _objects[i].GetPos().z << endl;
 		//cout << "NPC : " << _objects[npc_id].GetPos().x <<", " << _objects[npc_id].GetPos().y << ", " <<  _objects[npc_id].GetPos().z << endl;
 		if (true == IsNear(i, npc_id)) {
@@ -746,7 +746,7 @@ void CServerFrame::AggroMove(int npc_id)
 					_objects[npc_id].SetMonsterMove(false);
 				}*/
 				else {
-					//_objects[npc_id].SetMonsterMove(false);
+					_objects[npc_id].SetMonsterMove(false);
 					_sender->SendMovePacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos(),
 						_objects[npc_id].GetLook().x, _objects[npc_id].GetLook().y, _objects[npc_id].GetLook().z, false // false
 						,std::chrono::system_clock::now());
