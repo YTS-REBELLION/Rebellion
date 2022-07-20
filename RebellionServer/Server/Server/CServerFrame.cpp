@@ -597,7 +597,6 @@ void CServerFrame::ActivateNPC(int id)
 
 void CServerFrame::AggroMove(int npc_id)
 {
-	time_point<system_clock> curTime = system_clock::now();
 
 	Vec3 Pos;
 	int player_id = _objects[npc_id].GetTargetID();
@@ -698,18 +697,15 @@ void CServerFrame::AggroMove(int npc_id)
 		}
 	}
 
-	_elapsedTime = curTime - _prevTime;
-
-	_prevTime = curTime;
 
 
-	Pos.x += speed * nor.x;//_elapsedTime.count() * speed * nor.x;
-	Pos.z += speed * nor.z;//_elapsedTime.count() * speed * nor.z;
-	Pos.y += speed * nor.y;//_elapsedTime.count() * speed * nor.y;
+	//Pos.x += speed * nor.x;//_elapsedTime.count() * speed * nor.x;
+	//Pos.z += speed * nor.z;//_elapsedTime.count() * speed * nor.z;
+	//Pos.y += speed * nor.y;//_elapsedTime.count() * speed * nor.y;
 
-	//Pos.x += _elapsedTime.count() * speed * nor.x;
-	//Pos.y += _elapsedTime.count() * speed * nor.y;
-	//Pos.z += _elapsedTime.count() * speed * nor.z;
+	Pos.x += _elapsedTime.count() * speed * nor.x;
+	Pos.y += _elapsedTime.count() * speed * nor.y;
+	Pos.z += _elapsedTime.count() * speed * nor.z;
 	
 	if (false == closed) {
 		_objects[npc_id].SetPos(Pos);
@@ -725,13 +721,7 @@ void CServerFrame::AggroMove(int npc_id)
 
 	for (int i = 0; i < NPC_ID_START; ++i) {
 		if (ST_ACTIVE != _objects[i]._status) continue;
-		//if (_objects[npc_id].GetTarget() == false) continue;
 		if (_objects[npc_id].GetMonsterMove() == false) continue;
-
-		/*_sender->SendTargetPlayerPacket(_objects[i].GetSocket(), _objects[npc_id].GetTargetID(), true , npc_id);
-		_objects[npc_id].SetTarget(false);*/
-		//cout << "플레이어 : " << _objects[i].GetPos().z << endl;
-		//cout << "NPC : " << _objects[npc_id].GetPos().x <<", " << _objects[npc_id].GetPos().y << ", " <<  _objects[npc_id].GetPos().z << endl;
 		if (true == IsNear(i, npc_id)) {
 			_objects[i].ClientLock();
 			if (0 != _objects[i].GetViewListCount(npc_id)) {
@@ -741,10 +731,7 @@ void CServerFrame::AggroMove(int npc_id)
 						_objects[npc_id].GetLook().x, _objects[npc_id].GetLook().y, _objects[npc_id].GetLook().z, true // true
 						,std::chrono::system_clock::now());
 					cout << "Send_Move_Packet true " << endl;
-				}/*
-				else {
-					_objects[npc_id].SetMonsterMove(false);
-				}*/
+				}
 				else {
 					_objects[npc_id].SetMonsterMove(false);
 					_sender->SendMovePacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos(),
@@ -840,6 +827,8 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 {
 	
 	unordered_set<int> vl = _objects[id].GetViewList();
+	time_point<system_clock> curTime = system_clock::now();
+
 	// 몬스터 관련 패킷
 	for (const int& npc : vl) {
 		if (true == IsPlayer(npc)) continue;
@@ -847,7 +836,6 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 		if (true == IsNearNPC(id, npc) ) {
 			cout << "isnearnpc true" << endl;
 			_objects[npc].SetTargetID(id);
-			//_sender->SendTargetPlayerPacket(_objects[id].GetSocket(), _objects[npc].GetTargetID(), true , npc);
 			_objects[npc].SetTarget(true);
 		}
 		_sender->SendTargetPlayerPacket(_objects[id].GetSocket(), _objects[npc].GetTargetID(), true, npc);
@@ -858,6 +846,12 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 	std::unordered_set<int> oldViewList = _objects[id].GetViewList();
 	_objects[id].ClientUnLock();
 	std::unordered_set<int> newViewList;
+
+
+
+	_elapsedTime = curTime - _prevTime;
+
+	_prevTime = curTime;
 
 	for (auto& cl : _objects) {
 		if (false == IsNear(cl.GetID(), id)) continue;
@@ -938,7 +932,8 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 			}
 		}
 	}
-	
+
+
 }
 
 void CServerFrame::Do_stop(const short& id, const bool& isMoving)
@@ -1026,10 +1021,10 @@ void CServerFrame::CreateMonster()
 {
 	cout << "Initializing Monster" << endl;
 
-	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_START + 1; ++monsterId) {
+	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_START + 39; ++monsterId) {
 		_objects[monsterId].SetID(monsterId);
 		_objects[monsterId]._status = ST_SLEEP;
-		_objects[monsterId].SetSpeed(100.f);
+		_objects[monsterId].SetSpeed(1200.f);
 
 
 		_objects[monsterId].SetCurrentHp(1200);
@@ -1049,58 +1044,58 @@ void CServerFrame::CreateMonster()
 
 
 	_objects[NPC_ID_START].SetPos(Vec3(10.f, 5000.f, 3600.f));
-	//_objects[NPC_ID_START + 1].SetPos(Vec3(200.f, 5000.f, 3400.f));
-	//_objects[NPC_ID_START + 2].SetPos(Vec3(400.f, 5000.f, 3400.f));
-	//_objects[NPC_ID_START + 3].SetPos(Vec3(-200.f, 5000.f, 3400.f));
-	//_objects[NPC_ID_START + 4].SetPos(Vec3(-400.f, 5000.f, 3400.f));
-	//
-	//// 중앙 홀 몬스터
-	//_objects[NPC_ID_START + 5].SetPos(Vec3(-400.f, 5000.f, 5400.f));
-	//_objects[NPC_ID_START + 6].SetPos(Vec3(-200.f, 5000.f, 5400.f));
-	//_objects[NPC_ID_START + 7].SetPos(Vec3(200.f, 5000.f, 5400.f));
-	//_objects[NPC_ID_START + 8].SetPos(Vec3(400.f, 5000.f, 5400.f));
-	//_objects[NPC_ID_START + 9].SetPos(Vec3(-600.f, 5000.f, 5400.f));
-	//_objects[NPC_ID_START + 10].SetPos(Vec3(600.f, 5000.f, 5400.f));
-	//_objects[NPC_ID_START + 11].SetPos(Vec3(800.f, 5000.f, 5400.f));
-	//_objects[NPC_ID_START + 12].SetPos(Vec3(-200.f, 5000.f, 5600.f));
-	//_objects[NPC_ID_START + 13].SetPos(Vec3(-400.f, 5000.f, 5600.f));
-	//_objects[NPC_ID_START + 14].SetPos(Vec3(200.f, 5000.f, 5600.f));
-	//_objects[NPC_ID_START + 15].SetPos(Vec3(400.f, 5000.f, 5600.f));
-	//
-	////오른쪽 미로 몬스터
-	////중앙 몬스터
-	//_objects[NPC_ID_START + 16].SetPos(Vec3(4000.f, 5000.f, 5400.f));
-	//_objects[NPC_ID_START + 17].SetPos(Vec3(3800.f, 5000.f, 5600.f));
-	//_objects[NPC_ID_START + 18].SetPos(Vec3(3800.f, 5000.f, 6800.f));
-	//_objects[NPC_ID_START + 19].SetPos(Vec3(3800.f, 5000.f, 5200.f));
-	//_objects[NPC_ID_START + 20].SetPos(Vec3(3800.f, 5000.f, 5000.f));
-	//
-	//
-	//// 북쪽 몬스터
-	//// 중앙 몬스터
-	//_objects[NPC_ID_START + 21].SetPos(Vec3(0.f, 5000.f, 11700.f));
-	//_objects[NPC_ID_START + 22].SetPos(Vec3(-200.f, 5000.f, 11400.f));
-	//_objects[NPC_ID_START + 23].SetPos(Vec3(-400.f, 5000.f, 11400.f));
-	//_objects[NPC_ID_START + 24].SetPos(Vec3(200.f, 5000.f, 11400.f));
-	//_objects[NPC_ID_START + 25].SetPos(Vec3(400.f, 5000.f, 11400.f));
-	//_objects[NPC_ID_START + 26].SetPos(Vec3(-600.f, 5000.f, 11400.f));
-	//_objects[NPC_ID_START + 27].SetPos(Vec3(600.f, 5000.f, 11400.f));
-	//
-	//// 북쪽 왼쪽 통로 몬스터
-	//_objects[NPC_ID_START + 28].SetPos(Vec3(-1500.f, 5000.f, 8500.f));
-	//_objects[NPC_ID_START + 29].SetPos(Vec3(-1300.f, 5000.f, 8300.f));
-	//_objects[NPC_ID_START + 30].SetPos(Vec3(-1300.f, 5000.f, 8100.f));
-	//_objects[NPC_ID_START + 31].SetPos(Vec3(-1300.f, 5000.f, 8700.f));
-	//_objects[NPC_ID_START + 32].SetPos(Vec3(-1300.f, 5000.f, 8900.f));
-	//
-	//// 좌측 끝 몬스터
-	//_objects[NPC_ID_START + 33].SetPos(Vec3(-6300.f, 5000.f, 8500.f));
-	//_objects[NPC_ID_START + 34].SetPos(Vec3(-6100.f, 5000.f, 8300.f));
-	//_objects[NPC_ID_START + 35].SetPos(Vec3(-6100.f, 5000.f, 8100.f));
-	//_objects[NPC_ID_START + 36].SetPos(Vec3(-6100.f, 5000.f, 8700.f));
-	//_objects[NPC_ID_START + 37].SetPos(Vec3(-6100.f, 5000.f, 8900.f));
-	//_objects[NPC_ID_START + 38].SetPos(Vec3(-6100.f, 5000.f, 9100.f));
-	//_objects[NPC_ID_START + 39].SetPos(Vec3(-6100.f, 5000.f, 7900.f));
+	_objects[NPC_ID_START + 1].SetPos(Vec3(200.f, 5000.f, 3400.f));
+	_objects[NPC_ID_START + 2].SetPos(Vec3(400.f, 5000.f, 3400.f));
+	_objects[NPC_ID_START + 3].SetPos(Vec3(-200.f, 5000.f, 3400.f));
+	_objects[NPC_ID_START + 4].SetPos(Vec3(-400.f, 5000.f, 3400.f));
+	
+	// 중앙 홀 몬스터
+	_objects[NPC_ID_START + 5].SetPos(Vec3(-400.f, 5000.f, 5400.f));
+	_objects[NPC_ID_START + 6].SetPos(Vec3(-200.f, 5000.f, 5400.f));
+	_objects[NPC_ID_START + 7].SetPos(Vec3(200.f, 5000.f, 5400.f));
+	_objects[NPC_ID_START + 8].SetPos(Vec3(400.f, 5000.f, 5400.f));
+	_objects[NPC_ID_START + 9].SetPos(Vec3(-600.f, 5000.f, 5400.f));
+	_objects[NPC_ID_START + 10].SetPos(Vec3(600.f, 5000.f, 5400.f));
+	_objects[NPC_ID_START + 11].SetPos(Vec3(800.f, 5000.f, 5400.f));
+	_objects[NPC_ID_START + 12].SetPos(Vec3(-200.f, 5000.f, 5600.f));
+	_objects[NPC_ID_START + 13].SetPos(Vec3(-400.f, 5000.f, 5600.f));
+	_objects[NPC_ID_START + 14].SetPos(Vec3(200.f, 5000.f, 5600.f));
+	_objects[NPC_ID_START + 15].SetPos(Vec3(400.f, 5000.f, 5600.f));
+	
+	//오른쪽 미로 몬스터
+	//중앙 몬스터
+	_objects[NPC_ID_START + 16].SetPos(Vec3(4000.f, 5000.f, 5400.f));
+	_objects[NPC_ID_START + 17].SetPos(Vec3(3800.f, 5000.f, 5600.f));
+	_objects[NPC_ID_START + 18].SetPos(Vec3(3800.f, 5000.f, 6800.f));
+	_objects[NPC_ID_START + 19].SetPos(Vec3(3800.f, 5000.f, 5200.f));
+	_objects[NPC_ID_START + 20].SetPos(Vec3(3800.f, 5000.f, 5000.f));
+	
+	
+	// 북쪽 몬스터
+	// 중앙 몬스터
+	_objects[NPC_ID_START + 21].SetPos(Vec3(0.f, 5000.f, 11700.f));
+	_objects[NPC_ID_START + 22].SetPos(Vec3(-200.f, 5000.f, 11400.f));
+	_objects[NPC_ID_START + 23].SetPos(Vec3(-400.f, 5000.f, 11400.f));
+	_objects[NPC_ID_START + 24].SetPos(Vec3(200.f, 5000.f, 11400.f));
+	_objects[NPC_ID_START + 25].SetPos(Vec3(400.f, 5000.f, 11400.f));
+	_objects[NPC_ID_START + 26].SetPos(Vec3(-600.f, 5000.f, 11400.f));
+	_objects[NPC_ID_START + 27].SetPos(Vec3(600.f, 5000.f, 11400.f));
+	
+	// 북쪽 왼쪽 통로 몬스터
+	_objects[NPC_ID_START + 28].SetPos(Vec3(-1500.f, 5000.f, 8500.f));
+	_objects[NPC_ID_START + 29].SetPos(Vec3(-1300.f, 5000.f, 8300.f));
+	_objects[NPC_ID_START + 30].SetPos(Vec3(-1300.f, 5000.f, 8100.f));
+	_objects[NPC_ID_START + 31].SetPos(Vec3(-1300.f, 5000.f, 8700.f));
+	_objects[NPC_ID_START + 32].SetPos(Vec3(-1300.f, 5000.f, 8900.f));
+	
+	// 좌측 끝 몬스터
+	_objects[NPC_ID_START + 33].SetPos(Vec3(-6300.f, 5000.f, 8500.f));
+	_objects[NPC_ID_START + 34].SetPos(Vec3(-6100.f, 5000.f, 8300.f));
+	_objects[NPC_ID_START + 35].SetPos(Vec3(-6100.f, 5000.f, 8100.f));
+	_objects[NPC_ID_START + 36].SetPos(Vec3(-6100.f, 5000.f, 8700.f));
+	_objects[NPC_ID_START + 37].SetPos(Vec3(-6100.f, 5000.f, 8900.f));
+	_objects[NPC_ID_START + 38].SetPos(Vec3(-6100.f, 5000.f, 9100.f));
+	_objects[NPC_ID_START + 39].SetPos(Vec3(-6100.f, 5000.f, 7900.f));
 
 
 
