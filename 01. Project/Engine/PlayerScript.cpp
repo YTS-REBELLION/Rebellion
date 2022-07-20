@@ -14,6 +14,7 @@ CPlayerScript::CPlayerScript()
 	, m_pCloneMtrl(nullptr)
 	, m_bAttack(false)
 	, m_iCulidx(0)
+	, m_isTarget(false)
 {	
 }
 
@@ -61,6 +62,7 @@ void CPlayerScript::awake()
 
 	int a = 1;
 	m_pCloneMtrl->SetData(SHADER_PARAM::INT_0, &a);
+	m_isTarget = false;
 }
 
 void CPlayerScript::update()

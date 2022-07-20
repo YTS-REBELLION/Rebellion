@@ -315,44 +315,35 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 				_sender->SendPlayerAttackPacket(_objects[user].GetSocket(), id, packet->isAttack);
 		}
 
-		// 충돌 했을 때
-		// 몬스터 체력 -= 플레이어 데미지
-		// 만약 몬스터가 죽으면 sendmonsterdiepacket
-		// 
-
-
-
-
-		break;
-	}
-	case CS_PACKET_MD: {
-		cout << "몬스터 다이!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-		cs_packet_monsterdie* packet = reinterpret_cast<cs_packet_monsterdie*>(buf);
-		cout << "몬스터 아이디 " << packet->id << endl;
-
-		if (packet->isDead) {
-			
-
-
-		}
-
-
 		break;
 	}
 	case CS_PACKET_P2MCOL: {
-		cout << "몬스터와 검 충돌" << endl;
 		cs_packet_player2monstercol* packet = reinterpret_cast<cs_packet_player2monstercol*>(buf);
-		int other_id = packet->id;
+		int monsterId = packet->id;
 		int pid = packet->playerId;
-		cout << "충돌된 몬스터 ID : " << packet->id << endl;
-		//_objects[id].GetCurrentHp() -= _objects[pid].GetDamage();
-		//_objects[other_id].SetCurrentHp(_objects[other_id].GetCurrentHp() - _objects[pid].GetDamage());
-
-		if (_objects[other_id].GetCurrentHp() <= 0) {
-			_objects[other_id]._status = ST_FREE;
-			//_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), other_id, _objects[other_id].GetMyType());
-			_sender->SendMonsterDiePacket(_objects[id].GetSocket(), other_id);
+		
+		if (_objects[monsterId].GetCurrentHp() <= 0) {
+			_objects[monsterId]._status = ST_FREE;
+			_sender->SendMonsterDiePacket(_objects[id].GetSocket(), monsterId);
 		}
+
+		break;
+	}
+	case CS_PACKET_MONSTERDIR: {
+		cs_packet_monsterdir* packet = reinterpret_cast<cs_packet_monsterdir*>(buf);
+		
+		int monsterId = packet->id;
+		int pId = packet->playerId;
+		unordered_set<int> old_viewList = _objects[id].GetViewList();
+
+		for (auto& users : old_viewList) {
+			if (_objects[users]._status != ST_ACTIVE) continue;
+			if (true == IsPlayer(users)) {
+				_sender->SendMonsterDirPacket(_objects[id].GetSocket(), pId, monsterId, packet->vRot);
+			}
+
+		}
+
 
 		break;
 	}
@@ -505,10 +496,6 @@ void CServerFrame::DoWorker()
 			}
 			delete exp_over;
 			break;
-		case EV_BROADCAST:
-			cout << "ev_broadcast" << endl;
-			MoveUpdate();
-			break;
 		case EV_MONSTER_MOVE:
 			AggroMove(id);
 
@@ -517,6 +504,7 @@ void CServerFrame::DoWorker()
 			break;
 		case EV_ATTACK:
 			cout << "EV_ATTACK" << endl;
+			_objects[id].SetIsAttack(false);
 			break;
 		default:
 			std::cout << "Unknown EVENT\n";
@@ -556,7 +544,12 @@ void CServerFrame::DoTimer()
 
 				break;
 			}
-
+			case EV_ATTACK: {
+				EXP_OVER* exp_over = new EXP_OVER;
+				exp_over->event_type = ev.event_type;
+				PostQueuedCompletionStatus(_iocp, 1, ev.obj_id, &exp_over->over);
+				break;
+			}
 			}
 
 		}
@@ -591,6 +584,7 @@ void CServerFrame::ActivateNPC(int id)
 	//	}
 
 	////}
+	_objects[id].SetMoveType(TARGET);
 
 	if (ST_SLEEP == _objects[id]._status) {
 		cout << "false == _objects[id]._status" << endl;
@@ -600,60 +594,31 @@ void CServerFrame::ActivateNPC(int id)
 
 }
 
-void CServerFrame::MoveUpdate()
-{
-	//cout << "moveupdate" << endl;
-	time_point<system_clock> curTime = system_clock::now();
-
-	for (auto& obj : _objects) {
-		if (ST_ACTIVE != obj._status) continue;
-		if (false == IsPlayer(obj.GetID())) {
-			if (false == obj.GetIsAttack()) {
-				if (obj.GetMoveType() == RANDOM)
-					DoRandomMove(obj.GetID());
-				else DoTargetMove(obj.GetID());
-			}
-		}
-		else UpdatePlayerPos(obj.GetID());
-	}
-	_elapsedTime = curTime - _prevTime;
-
-	_prevTime = curTime;
-
-	//EVENT ev{ MASTER, system_clock::now() + 200ms, EV_BROADCAST,0 };
-	AddTimer(MASTER, EV_BROADCAST, system_clock::now() + 200ms);
-
-}
 
 void CServerFrame::AggroMove(int npc_id)
 {
-	cout << "aggromove" << endl;
 	time_point<system_clock> curTime = system_clock::now();
 
 	Vec3 Pos;
 	int player_id = _objects[npc_id].GetTargetID();
-	cout << "TargetID : " << player_id << endl;
+	//cout << "TargetID : " << player_id << endl;
 	if (ST_ACTIVE != _objects[npc_id]._status) return;
 	if (ST_ACTIVE != _objects[player_id]._status) return;
 	if (RANDOM == _objects[npc_id].GetMoveType()) return;
+
+	/*for (int i = 0; i < NPC_ID_START; ++i) {
+		if (ST_ACTIVE != _objects[i]._status) continue;
+		if (true == IsNear(npc_id, i)) {
+			if (_objects[npc_id].GetTarget() == true) {
+				_sender->SendTargetPlayerPacket(_objects[i].GetSocket(), player_id, true, npc_id);
+			}
+		}
+	}*/
 
 	if (true == IsPlayer(npc_id)) {
 		std::cout << "ID :" << npc_id << " is not NPC!!\n";
 		while (true);
 	}
-
-	//if (false == IsNearNPC(player_id, npc_id)) {
-	//	_objects[npc_id].SetMoveType(RANDOM);
-	//	_objects[npc_id].SetTargetID(-1);
-	//	char type = _objects[npc_id].GetMyType();
-
-	//	/*switch (type) {
-	//	case O_BARGHEST: m_objects[npc_id].SetSpeed(BARGHEST_WALK_SPEED); break;
-	//	case O_GRIFFON: m_objects[npc_id].SetSpeed(GRIFFON_WALK_SPEED); break;
-	//	case O_DRAGON:m_objects[npc_id].SetSpeed(DRAGON_WALK_SPEED); break;
-	//	}*/
-	//	return;
-	//}
 
 	float speed = _objects[npc_id].GetSpeed();
 	Pos.x = _objects[npc_id].GetPos().x;
@@ -674,18 +639,21 @@ void CServerFrame::AggroMove(int npc_id)
 
 	float distance = Vec3::Distance(A_vPos, B_vPos);
 	bool closed;
-	if (distance < 130.f)
+	if (distance < 130.f) // 사거리에 들어옴
 		closed = true;
-	else
+	else {				// 사거리에 들어오지 않음 -> 몬스터가 움직여야겠지?
 		closed = false;
-	
-	if (true == closed) {
+		//_objects[npc_id].SetMonsterMove(true);
+	}
+
+	if (true == closed) {		// 몬스터 공격범위
 		if (false == _objects[npc_id].GetIsAttack()) {
 			_objects[npc_id].SetIsAttack(true);
+			//_objects[npc_id].SetMonsterMove(false);
 			cout << "몬스터 공격 범위" << endl;
 
-			//EVENT new_ev{ npc_id, std::chrono::system_clock::now() + 2s, EV_ATTACK, 0 };
-			AddTimer(npc_id, EV_ATTACK, system_clock::now());
+			AddTimer(npc_id, EV_ATTACK, system_clock::now() + 2s);
+			//AddTimer(npc_id, EV_MONSTER_MOVE, system_clock::now() + 200ms);
 
 			// 방어 넣으면 여기
 			if (false == _objects[player_id].GetIsDefence()) {
@@ -716,8 +684,6 @@ void CServerFrame::AggroMove(int npc_id)
 				}
 			}
 			//////////////////////
-
-
 			for (auto& cl : _objects) {
 				if (false == IsPlayer(cl.GetID())) continue;
 				if (false == IsNear(cl.GetID(), npc_id)) continue;
@@ -725,12 +691,11 @@ void CServerFrame::AggroMove(int npc_id)
 				if (ST_ACTIVE == cl._status) {
 					cout << "NPC Attack" << endl;
 					_sender->SendNPCAttackPacket(cl.GetSocket(), npc_id, Pos.x, Pos.z,true);
+					//_sender->Send_Stop_Packet(cl.GetSocket(), npc_id);
 				}
 				cl.ClientUnLock();
 			}
 		}
-
-		//return;
 	}
 
 	_elapsedTime = curTime - _prevTime;
@@ -748,34 +713,49 @@ void CServerFrame::AggroMove(int npc_id)
 	
 	if (false == closed) {
 		_objects[npc_id].SetPos(Pos);
+		//_objects[npc_id].SetMonsterMove(true);
 	}
 
 	_objects[npc_id].SetLook(nor);
 
 	char status{}; // 애니메이션 상태
 
+
+
+
 	for (int i = 0; i < NPC_ID_START; ++i) {
 		if (ST_ACTIVE != _objects[i]._status) continue;
-		cout << "플레이어 : " << _objects[i].GetPos().z << endl;
-		cout << "NPC : " << _objects[npc_id].GetPos().x <<", " << _objects[npc_id].GetPos().y << ", " <<  _objects[npc_id].GetPos().z << endl;
+		if (_objects[npc_id].GetTarget() == false) continue;
+		
+		/*_sender->SendTargetPlayerPacket(_objects[i].GetSocket(), _objects[npc_id].GetTargetID(), true , npc_id);
+		_objects[npc_id].SetTarget(false);*/
+		//if (_objects[npc_id].GetMonsterMove() == false) continue;
+		//cout << "플레이어 : " << _objects[i].GetPos().z << endl;
+		//cout << "NPC : " << _objects[npc_id].GetPos().x <<", " << _objects[npc_id].GetPos().y << ", " <<  _objects[npc_id].GetPos().z << endl;
 		if (true == IsNear(i, npc_id)) {
 			_objects[i].ClientLock();
 			if (0 != _objects[i].GetViewListCount(npc_id)) {
 				_objects[i].ClientUnLock();
-				if (false == closed) {
-					cout << "monster move packet function" << endl;
+				if (closed == false) {	// 사거리에 들어오지 않음
 					_sender->SendMovePacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos(),
-						_objects[npc_id].GetLook().x, _objects[npc_id].GetLook().y, _objects[npc_id].GetLook().z, true,
-						std::chrono::system_clock::now());
-				}
+						_objects[npc_id].GetLook().x, _objects[npc_id].GetLook().y, _objects[npc_id].GetLook().z, true // true
+						,std::chrono::system_clock::now());
+					cout << "Send_Move_Packet true " << endl;
+				}/*
 				else {
+					_objects[npc_id].SetMonsterMove(false);
+				}*/
+				else {
+					//_objects[npc_id].SetMonsterMove(false);
 					_sender->SendMovePacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos(),
-						_objects[npc_id].GetLook().x, _objects[npc_id].GetLook().y, _objects[npc_id].GetLook().z, false,
-						std::chrono::system_clock::now());
+						_objects[npc_id].GetLook().x, _objects[npc_id].GetLook().y, _objects[npc_id].GetLook().z, false // false
+						,std::chrono::system_clock::now());
+					cout << "Send_Move_Packet false " << endl;
 				}
 			}
 			else {
-				_objects[i].InsertViewList(npc_id);
+
+				_objects[i].InsertViewList(npc_id); 
 				_objects[i].ClientUnLock();
 				//cout << "sendputobject2" << endl;
 
@@ -797,6 +777,7 @@ void CServerFrame::AggroMove(int npc_id)
 			}
 		}
 	}
+
 
 	
 	for (int i = 0; i < NPC_ID_START; ++i) {
@@ -829,98 +810,19 @@ bool CServerFrame::IsNearNPC(int player, int npc)
 
 	float distance = Vec3::Distance(A_vPos, B_vPos);
 
-	if (distance > 500.f)
+	if (distance > 300.f) {
+		//_objects[player].SetNearNpc(false);
 		return false;
+
+	}
 	/*if (O_DRAKKEN == m_objects[player].GetMyType()) {
 		if (distance > 70.f) return false;
 	}
 	else if (O_PLAYER == m_objects[player].GetMyType()) {
 		if (distance > 500.f) return false;
 	}*/
-
+	//_objects[player].SetNearNpc(true);
 	return true;
-}
-
-void CServerFrame::DoRandomMove(int id)
-{
-	cout << "dorandommove" << endl;
-	Vec3 Pos;
-	Pos.x = _objects[id].GetPos().x;
-	Pos.y = _objects[id].GetPos().y;
-	Pos.z = _objects[id].GetPos().z;
-
-	float speed = _objects[id].GetSpeed();
-
-	int index = _objects[id].GetNextPosIndex();
-	Vec3 nextPos = _objects[id].GetNextPos(index);
-
-	Vec3 dir;
-	dir.x = nextPos.x - Pos.x;
-	dir.y = nextPos.y - Pos.y;
-	dir.z = nextPos.z - Pos.z;
-
-	Vec3 nor = dir.Normalize();
-
-	Pos.x += _elapsedTime.count() * speed * nor.x;
-	Pos.y += _elapsedTime.count() * speed * nor.y;
-	Pos.z += _elapsedTime.count() * speed * nor.z;
-
-
-	_objects[id].SetPos(Pos);
-	_objects[id].SetLook(nor);
-
-	float distance = Vec3::Distance(nextPos, _objects[id].GetPos());
-
-	if (distance < 50.f) {
-		index = index + 1;
-		if (index >= 3) index = 0;
-		_objects[id].SetNextPosIndex(index);
-	}
-
-
-	for (int i = 0; i < NPC_ID_START; ++i) {
-		if (ST_ACTIVE != _objects[i]._status) continue;
-		if (true == IsNear(i, id)) {
-			_objects[i].ClientLock();
-			if (0 != _objects[i].GetViewListCount(id)) {
-				_objects[i].ClientUnLock();
-				/*_sender->SendMovePacket(_objects[i].GetSocket(), id, _objects[id].GetPos().x, _objects[id].GetPos().y,
-					_objects[id].GetPos().z, _objects[id].GetLook().x, 
-					_objects[id].GetLook().y, _objects[id].GetLook().z, WALK,
-					std::chrono::system_clock::now());*/
-			}
-			else {
-				_objects[i].InsertViewList(id);
-				_objects[i].ClientUnLock();
-				//cout << "sendputobject1" << endl;
-				_sender->SendPutObjectPacket(_objects[i].GetSocket(), id, _objects[id].GetPos().x,
-					_objects[id].GetPos().y, _objects[id].GetPos().z,
-					_objects[id].GetMyType());
-			}
-		}
-		else {
-			_objects[i].ClientLock();
-			if (0 != _objects[i].GetViewListCount(id)) {
-				_objects[i].EraseViewList(id);
-				_objects[i].ClientUnLock();
-				_sender->SendLeaveObjectPacket(_objects[i].GetSocket(), id, _objects[id].GetMyType());
-			}
-			else {
-				_objects[i].ClientUnLock();
-			}
-		}
-		
-	}
-
-	for (int i = 0; i < NPC_ID_START; ++i) {
-		if (true == IsNear(id, i)) {
-			if (ST_ACTIVE == _objects[i]._status) {
-				return;
-			}
-		}
-	}
-	_objects[id]._status = ST_SLEEP;
-
 }
 
 bool CServerFrame::IsNear(int a, int b)
@@ -932,309 +834,23 @@ bool CServerFrame::IsNear(int a, int b)
 	return true;
 }
 
-void CServerFrame::DoTargetMove(int npc_id)
-{
-	cout << "dotargetmove" << endl;
-	Vec3 Pos;
-	int player_id = _objects[npc_id].GetTargetID();
-
-	if (ST_ACTIVE != _objects[npc_id]._status) return;
-	if (ST_ACTIVE != _objects[player_id]._status) return;
-	if (RANDOM == _objects[npc_id].GetMoveType()) return;
-
-	if (true == IsPlayer(npc_id)) {
-		std::cout << "ID :" << npc_id << " is not NPC!!\n";
-		while (true);
-	}
-
-	//if (false == IsNearNPC(player_id, npc_id)) {
-	//	_objects[npc_id].SetMoveType(RANDOM);
-	//	_objects[npc_id].SetTargetID(-1);
-	//	char type = _objects[npc_id].GetMyType();
-
-	//	/*switch (type) {
-	//	case O_BARGHEST: m_objects[npc_id].SetSpeed(BARGHEST_WALK_SPEED); break;
-	//	case O_GRIFFON: m_objects[npc_id].SetSpeed(GRIFFON_WALK_SPEED); break;
-	//	case O_DRAGON:m_objects[npc_id].SetSpeed(DRAGON_WALK_SPEED); break;
-	//	}*/
-	//	return;
-	//}
-
-	float speed = _objects[npc_id].GetSpeed();
-	Pos.x = _objects[npc_id].GetPos().x;
-	Pos.y = _objects[npc_id].GetPos().y;
-	Pos.z = _objects[npc_id].GetPos().z;
-	Vec3 dir;
-	dir.x = _objects[player_id].GetPos().x - Pos.x;
-	dir.y = _objects[player_id].GetPos().y - Pos.y;
-	dir.z = _objects[player_id].GetPos().z - Pos.z;
-	Vec3 nor = dir.Normalize();
-
-	//std::cout << nor.x << ", " << nor.y << ", " << nor.z << std::endl;
-	//std::cout << m_elapsedTime.count() << std::endl;
-
-	Vec3 A_vPos;
-	A_vPos = _objects[player_id].GetPos();
-
-	Vec3 B_vPos;
-	B_vPos = _objects[npc_id].GetPos();
-
-	float distance = Vec3::Distance(A_vPos, B_vPos);
-
-	bool closed = false;
-	/*switch (m_objects[npc_id].GetMyType()) {
-	case 몬스터 이름:
-		if (O_DRAKKEN == m_objects[player_id].GetMyType()) {
-			if (distance < 490.f) closed = true;
-		}
-		else if (O_PLAYER == m_objects[player_id].GetMyType()) {
-			if (distance < 310.f) closed = true;
-		}
-		break;
-	case 몬스터 이름:
-	case 몬스터 이름:
-		if (몬스터 이름 == m_objects[player_id].GetMyType()) {
-			if (distance < 310.f) closed = true;
-		}
-		else if (O_PLAYER == m_objects[player_id].GetMyType()) {
-			if (distance < 130.f) closed = true;
-		}
-		break;
-	}*/
-
-	if (true == closed) {
-		if (false == _objects[npc_id].GetIsAttack()) {
-			_objects[npc_id].SetIsAttack(true);
-
-			//EVENT new_ev{ npc_id, std::chrono::system_clock::now() + 2s, EV_ATTACK, 0 };
-			AddTimer(npc_id, EV_ATTACK,system_clock::now());
-
-			// 방어 넣으면 여기
-			if (false == _objects[player_id].GetIsDefence()) {
-				_objects[player_id].SetCurrentHp(_objects[player_id].GetCurrentHp() - _objects[npc_id].GetDamage());
-				_sender->SendHpPacket(_objects[player_id].GetSocket(), _objects[player_id].GetCurrentHp());
-				//printf("Hp: %d\n", m_objects[player_id].GetCurrentHp());
-
-				if (0 >= _objects[player_id].GetCurrentHp()) {
-					// 죽음
-					short level = _objects[player_id].GetLevel();
-					short hp = _objects[player_id].GetCurrentHp();
-					short changeHp = hp - (50 * level);
-					if (0 > changeHp) changeHp = 0;
-					_objects[player_id].SetCurrentExp(changeHp);
-					_objects[player_id].SetCurrentHp(50);
-					_objects[player_id].SetPos(VEC3_TOWN_ENTRANCE_POS);
-					_sender->SendPlayerDiePacket(_objects[player_id].GetSocket(), player_id);
-					std::unordered_set<int> vl = _objects[player_id].GetViewList();
-					for (const auto& id : vl) {
-						if (false == IsPlayer(id)) continue;
-						if (ST_ACTIVE != _objects[id]._status) continue;
-						_sender->SendPlayerDiePacket(_objects[id].GetSocket(), player_id);
-					}
-				}
-			}
-			//////////////////////
-
-			for (auto& cl : _objects) {
-				if (false == IsPlayer(cl.GetID())) continue;
-				if (false == IsNear(cl.GetID(), npc_id)) continue;
-				cl.ClientLock();
-				if (ST_ACTIVE == cl._status) {
-				//	_sender->SendNPCAttackPacket(cl.GetSocket(), npc_id, Pos.x, Pos.z);
-				}
-				cl.ClientUnLock();
-			}
-		}
-		return;
-	}
-
-	Pos.x += _elapsedTime.count() * speed * nor.x;
-	Pos.y += _elapsedTime.count() * speed * nor.y;
-	Pos.z += _elapsedTime.count() * speed * nor.z;
-
-	bool check = false;
-	for (int i = 0; i < NUM_OBSTACLES; ++i) {
-		if (-999 == _obstacles[i].xScale) break;
-
-		// 플레이어
-		Vec3 pPos;
-		pPos.x = Pos.x;
-		pPos.y = Pos.y;
-		pPos.z = Pos.z;
-		// obstacles
-		Vec3 oPos;
-		oPos.x = _obstacles[i].xPos;
-		oPos.y = _obstacles[i].yPos;
-		oPos.z = _obstacles[i].zPos;
-		float r = _obstacles[i].zScale;
-
-		float distance = Vec3::Distance(pPos, oPos);
-
-		if (distance <= r) {
-			check = true;
-			break;
-		}
-	}
-
-	if (false == check) {
-		_objects[npc_id].SetPos(Pos);
-	}
-
-	_objects[npc_id].SetLook(nor);
-
-	char status{}; // 애니메이션 상태
-	//if (O_BARGHEST == m_objects[npc_id].GetMyType()) status = RUN;
-	//else status = WALK;
-
-	for (int i = 0; i < NPC_ID_START; ++i) {
-		if (ST_ACTIVE != _objects[i]._status) continue;
-		if (true == IsNear(i, npc_id)) {
-			_objects[i].ClientLock();
-			if (0 != _objects[i].GetViewListCount(npc_id)) {
-				_objects[i].ClientUnLock();
-				/*_sender->SendMovePacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos().x,
-					_objects[npc_id].GetPos().y,  _objects[npc_id].GetPos().z, 
-					_objects[npc_id].GetLook().x, _objects[npc_id].GetLook().y,
-					_objects[npc_id].GetLook().z, status, std::chrono::system_clock::now());*/
-			}
-			else {
-				_objects[i].InsertViewList(npc_id);
-				_objects[i].ClientUnLock();
-				//cout << "sendputobject2" << endl;
-
-				_sender->SendPutObjectPacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos().x,
-					_objects[npc_id].GetPos().y, _objects[npc_id].GetPos().z, 
-					_objects[npc_id].GetMyType());
-			}
-		}
-		else {
-			_objects[i].ClientLock();
-			if (0 != _objects[i].GetViewListCount(npc_id)) {
-				_objects[i].EraseViewList(npc_id);
-				_objects[i].ClientUnLock();
-				_sender->SendLeaveObjectPacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetMyType());
-			}
-			else {
-				_objects[i].ClientUnLock();
-			}
-		}
-	}
-}
-
-
-void CServerFrame::UpdatePlayerPos(int id)
-{
-	cout << "updateplayerpos" << endl;
-	unordered_set<int> vl = _objects[id].GetViewList();
-	for (const int& npc : vl) {
-		if (true == IsPlayer(npc)) continue;
-		if (ST_ACTIVE != _objects[npc]._status) continue;
-		if (true == IsNearNPC(id, npc)) {
-			_objects[npc].SetMoveType(TARGET);
-			_objects[npc].SetTargetID(id);
-			char type = _objects[npc].GetMyType();
-			
-		}
-	}
-
-
-	Vec3 pos = _objects[id].GetPos();
-	Vec3 look = _objects[id].GetLook();
-
-	_objects[id].ClientLock();
-
-	std::unordered_set<int> oldViewList = _objects[id].GetViewList();
-	_objects[id].ClientUnLock();
-	std::unordered_set<int> newViewList;
-
-	/*for (auto& cl : _objects) {
-		if (false == IsNear(cl.GetID(), id)) continue;
-		if (ST_SLEEP == cl._status) ActivateNPC(cl.GetID());
-		if (ST_ACTIVE != cl._status) continue;
-		if (cl.GetID() == id) continue;
-		newViewList.insert(cl.GetID());
-	}*/
-
-	for (auto& np : newViewList) {
-		if (0 == oldViewList.count(np)) {	// Object가 시야에 새로 들어왔을 때.
-			_objects[id].ClientLock();
-			_objects[id].InsertViewList(np);
-			_objects[id].ClientUnLock();
-
-			_sender->SendPutObjectPacket(_objects[id].GetSocket(), np, _objects[np].GetPos().x, 
-				_objects[np].GetPos().y, _objects[np].GetPos().z,
-				_objects[np].GetMyType());
-
-			if (false == IsPlayer(np)) continue;
-			_objects[np].ClientLock();
-			if (0 == _objects[np].GetViewListCount(id)) {
-				_objects[np].InsertViewList(id);
-				_objects[np].ClientUnLock();
-
-				_sender->SendPutObjectPacket(_objects[np].GetSocket(), id, _objects[id].GetPos().x, 
-					_objects[id].GetPos().y, _objects[id].GetPos().z,
-					_objects[id].GetMyType());
-
-			}
-			else {
-				_objects[np].ClientUnLock();
-				
-			}
-		}
-		else {							// Object가 계속 시야에 존재하고 있을 떄.
-			if (false == IsPlayer(np)) continue;
-			_objects[np].ClientLock();
-			if (0 != _objects[np].GetViewListCount(id)) {
-				_objects[np].ClientUnLock();
-			}
-			else {
-				_objects[np].ClientUnLock();
-				_objects[np].InsertViewList(id);
-				//cout << "sendputobject5" << endl;
-
-				_sender->SendPutObjectPacket(_objects[np].GetSocket(), id, _objects[id].GetPos().x, _objects[id].GetPos().y, 
-					_objects[id].GetPos().z, _objects[id].GetMyType());
-			}
-		}
-	}
-
-	for (auto& op : oldViewList) {		// Object가 시야에서 벗어났을 때.
-		if (0 == newViewList.count(op)) {
-			_objects[id].ClientLock();
-			_objects[id].EraseViewList(op);
-			_objects[id].ClientUnLock();
-			_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), op, _objects[op].GetMyType());
-			if (false == IsPlayer(op)) continue;
-			_objects[op].ClientLock();
-			if (0 != _objects[op].GetViewListCount(id)) {
-				_objects[op].EraseViewList(id);
-				_objects[op].ClientUnLock();
-				_sender->SendLeaveObjectPacket(_objects[op].GetSocket(), id, _objects[id].GetMyType());
-			}
-			else {
-				_objects[op].ClientUnLock();
-			}
-		}
-	}
-}
 
 
 void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, const float& rotate)
 {
 	
 	unordered_set<int> vl = _objects[id].GetViewList();
+	// 몬스터 관련 패킷
 	for (const int& npc : vl) {
 		if (true == IsPlayer(npc)) continue;
 		if (ST_ACTIVE != _objects[npc]._status) continue;
-		if (true == IsNearNPC(id, npc)) {
+		if (true == IsNearNPC(id, npc) ) {
 			cout << "isnearnpc true" << endl;
-			//_objects[npc].SetMoveType(TARGET);
-			_objects[npc].SetMoveType(TARGET);
 			_objects[npc].SetTargetID(id);
-			//char type = _objects[npc].GetMyType();
-			//ActivateNPC(npc);
-
+			//_sender->SendTargetPlayerPacket(_objects[id].GetSocket(), _objects[npc].GetTargetID(), true , npc);
+			_objects[npc].SetTarget(true);
 		}
+		_sender->SendTargetPlayerPacket(_objects[id].GetSocket(), _objects[npc].GetTargetID(), true, npc);
 	}
 
 	_objects[id].ClientLock();
@@ -1410,7 +1026,7 @@ void CServerFrame::CreateMonster()
 {
 	cout << "Initializing Monster" << endl;
 
-	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_START + 39; ++monsterId) {
+	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_START + 1; ++monsterId) {
 		_objects[monsterId].SetID(monsterId);
 		_objects[monsterId]._status = ST_SLEEP;
 		_objects[monsterId].SetSpeed(100.f);
@@ -1421,10 +1037,10 @@ void CServerFrame::CreateMonster()
 
 		_objects[monsterId].SetLevel(1);
 
-		//_objects[monsterId].SetMoveType(RANDOM);
+		_objects[monsterId].SetMoveType(RANDOM);
 
 		_objects[monsterId].SetIsAttack(false);
-
+		
 		
 		//_objects[monsterId].SetNextPosIndex(0);
 
@@ -1433,58 +1049,58 @@ void CServerFrame::CreateMonster()
 
 
 	_objects[NPC_ID_START].SetPos(Vec3(10.f, 5000.f, 3600.f));
-	_objects[NPC_ID_START + 1].SetPos(Vec3(200.f, 5000.f, 3400.f));
-	_objects[NPC_ID_START + 2].SetPos(Vec3(400.f, 5000.f, 3400.f));
-	_objects[NPC_ID_START + 3].SetPos(Vec3(-200.f, 5000.f, 3400.f));
-	_objects[NPC_ID_START + 4].SetPos(Vec3(-400.f, 5000.f, 3400.f));
-	
-	// 중앙 홀 몬스터
-	_objects[NPC_ID_START + 5].SetPos(Vec3(-400.f, 5000.f, 5400.f));
-	_objects[NPC_ID_START + 6].SetPos(Vec3(-200.f, 5000.f, 5400.f));
-	_objects[NPC_ID_START + 7].SetPos(Vec3(200.f, 5000.f, 5400.f));
-	_objects[NPC_ID_START + 8].SetPos(Vec3(400.f, 5000.f, 5400.f));
-	_objects[NPC_ID_START + 9].SetPos(Vec3(-600.f, 5000.f, 5400.f));
-	_objects[NPC_ID_START + 10].SetPos(Vec3(600.f, 5000.f, 5400.f));
-	_objects[NPC_ID_START + 11].SetPos(Vec3(800.f, 5000.f, 5400.f));
-	_objects[NPC_ID_START + 12].SetPos(Vec3(-200.f, 5000.f, 5600.f));
-	_objects[NPC_ID_START + 13].SetPos(Vec3(-400.f, 5000.f, 5600.f));
-	_objects[NPC_ID_START + 14].SetPos(Vec3(200.f, 5000.f, 5600.f));
-	_objects[NPC_ID_START + 15].SetPos(Vec3(400.f, 5000.f, 5600.f));
-	
-	//오른쪽 미로 몬스터
-	//중앙 몬스터
-	_objects[NPC_ID_START + 16].SetPos(Vec3(4000.f, 5000.f, 5400.f));
-	_objects[NPC_ID_START + 17].SetPos(Vec3(3800.f, 5000.f, 5600.f));
-	_objects[NPC_ID_START + 18].SetPos(Vec3(3800.f, 5000.f, 6800.f));
-	_objects[NPC_ID_START + 19].SetPos(Vec3(3800.f, 5000.f, 5200.f));
-	_objects[NPC_ID_START + 20].SetPos(Vec3(3800.f, 5000.f, 5000.f));
-	
-	
-	// 북쪽 몬스터
-	// 중앙 몬스터
-	_objects[NPC_ID_START + 21].SetPos(Vec3(0.f, 5000.f, 11700.f));
-	_objects[NPC_ID_START + 22].SetPos(Vec3(-200.f, 5000.f, 11400.f));
-	_objects[NPC_ID_START + 23].SetPos(Vec3(-400.f, 5000.f, 11400.f));
-	_objects[NPC_ID_START + 24].SetPos(Vec3(200.f, 5000.f, 11400.f));
-	_objects[NPC_ID_START + 25].SetPos(Vec3(400.f, 5000.f, 11400.f));
-	_objects[NPC_ID_START + 26].SetPos(Vec3(-600.f, 5000.f, 11400.f));
-	_objects[NPC_ID_START + 27].SetPos(Vec3(600.f, 5000.f, 11400.f));
-	
-	// 북쪽 왼쪽 통로 몬스터
-	_objects[NPC_ID_START + 28].SetPos(Vec3(-1500.f, 5000.f, 8500.f));
-	_objects[NPC_ID_START + 29].SetPos(Vec3(-1300.f, 5000.f, 8300.f));
-	_objects[NPC_ID_START + 30].SetPos(Vec3(-1300.f, 5000.f, 8100.f));
-	_objects[NPC_ID_START + 31].SetPos(Vec3(-1300.f, 5000.f, 8700.f));
-	_objects[NPC_ID_START + 32].SetPos(Vec3(-1300.f, 5000.f, 8900.f));
-	
-	// 좌측 끝 몬스터
-	_objects[NPC_ID_START + 33].SetPos(Vec3(-6300.f, 5000.f, 8500.f));
-	_objects[NPC_ID_START + 34].SetPos(Vec3(-6100.f, 5000.f, 8300.f));
-	_objects[NPC_ID_START + 35].SetPos(Vec3(-6100.f, 5000.f, 8100.f));
-	_objects[NPC_ID_START + 36].SetPos(Vec3(-6100.f, 5000.f, 8700.f));
-	_objects[NPC_ID_START + 37].SetPos(Vec3(-6100.f, 5000.f, 8900.f));
-	_objects[NPC_ID_START + 38].SetPos(Vec3(-6100.f, 5000.f, 9100.f));
-	_objects[NPC_ID_START + 39].SetPos(Vec3(-6100.f, 5000.f, 7900.f));
+	//_objects[NPC_ID_START + 1].SetPos(Vec3(200.f, 5000.f, 3400.f));
+	//_objects[NPC_ID_START + 2].SetPos(Vec3(400.f, 5000.f, 3400.f));
+	//_objects[NPC_ID_START + 3].SetPos(Vec3(-200.f, 5000.f, 3400.f));
+	//_objects[NPC_ID_START + 4].SetPos(Vec3(-400.f, 5000.f, 3400.f));
+	//
+	//// 중앙 홀 몬스터
+	//_objects[NPC_ID_START + 5].SetPos(Vec3(-400.f, 5000.f, 5400.f));
+	//_objects[NPC_ID_START + 6].SetPos(Vec3(-200.f, 5000.f, 5400.f));
+	//_objects[NPC_ID_START + 7].SetPos(Vec3(200.f, 5000.f, 5400.f));
+	//_objects[NPC_ID_START + 8].SetPos(Vec3(400.f, 5000.f, 5400.f));
+	//_objects[NPC_ID_START + 9].SetPos(Vec3(-600.f, 5000.f, 5400.f));
+	//_objects[NPC_ID_START + 10].SetPos(Vec3(600.f, 5000.f, 5400.f));
+	//_objects[NPC_ID_START + 11].SetPos(Vec3(800.f, 5000.f, 5400.f));
+	//_objects[NPC_ID_START + 12].SetPos(Vec3(-200.f, 5000.f, 5600.f));
+	//_objects[NPC_ID_START + 13].SetPos(Vec3(-400.f, 5000.f, 5600.f));
+	//_objects[NPC_ID_START + 14].SetPos(Vec3(200.f, 5000.f, 5600.f));
+	//_objects[NPC_ID_START + 15].SetPos(Vec3(400.f, 5000.f, 5600.f));
+	//
+	////오른쪽 미로 몬스터
+	////중앙 몬스터
+	//_objects[NPC_ID_START + 16].SetPos(Vec3(4000.f, 5000.f, 5400.f));
+	//_objects[NPC_ID_START + 17].SetPos(Vec3(3800.f, 5000.f, 5600.f));
+	//_objects[NPC_ID_START + 18].SetPos(Vec3(3800.f, 5000.f, 6800.f));
+	//_objects[NPC_ID_START + 19].SetPos(Vec3(3800.f, 5000.f, 5200.f));
+	//_objects[NPC_ID_START + 20].SetPos(Vec3(3800.f, 5000.f, 5000.f));
+	//
+	//
+	//// 북쪽 몬스터
+	//// 중앙 몬스터
+	//_objects[NPC_ID_START + 21].SetPos(Vec3(0.f, 5000.f, 11700.f));
+	//_objects[NPC_ID_START + 22].SetPos(Vec3(-200.f, 5000.f, 11400.f));
+	//_objects[NPC_ID_START + 23].SetPos(Vec3(-400.f, 5000.f, 11400.f));
+	//_objects[NPC_ID_START + 24].SetPos(Vec3(200.f, 5000.f, 11400.f));
+	//_objects[NPC_ID_START + 25].SetPos(Vec3(400.f, 5000.f, 11400.f));
+	//_objects[NPC_ID_START + 26].SetPos(Vec3(-600.f, 5000.f, 11400.f));
+	//_objects[NPC_ID_START + 27].SetPos(Vec3(600.f, 5000.f, 11400.f));
+	//
+	//// 북쪽 왼쪽 통로 몬스터
+	//_objects[NPC_ID_START + 28].SetPos(Vec3(-1500.f, 5000.f, 8500.f));
+	//_objects[NPC_ID_START + 29].SetPos(Vec3(-1300.f, 5000.f, 8300.f));
+	//_objects[NPC_ID_START + 30].SetPos(Vec3(-1300.f, 5000.f, 8100.f));
+	//_objects[NPC_ID_START + 31].SetPos(Vec3(-1300.f, 5000.f, 8700.f));
+	//_objects[NPC_ID_START + 32].SetPos(Vec3(-1300.f, 5000.f, 8900.f));
+	//
+	//// 좌측 끝 몬스터
+	//_objects[NPC_ID_START + 33].SetPos(Vec3(-6300.f, 5000.f, 8500.f));
+	//_objects[NPC_ID_START + 34].SetPos(Vec3(-6100.f, 5000.f, 8300.f));
+	//_objects[NPC_ID_START + 35].SetPos(Vec3(-6100.f, 5000.f, 8100.f));
+	//_objects[NPC_ID_START + 36].SetPos(Vec3(-6100.f, 5000.f, 8700.f));
+	//_objects[NPC_ID_START + 37].SetPos(Vec3(-6100.f, 5000.f, 8900.f));
+	//_objects[NPC_ID_START + 38].SetPos(Vec3(-6100.f, 5000.f, 9100.f));
+	//_objects[NPC_ID_START + 39].SetPos(Vec3(-6100.f, 5000.f, 7900.f));
 
 
 

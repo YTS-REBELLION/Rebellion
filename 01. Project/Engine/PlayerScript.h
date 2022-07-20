@@ -30,10 +30,12 @@ private:
 	bool				m_bSkill;
 	bool				m_bCol;
 	sc_packet_move* m_movePacketTemp = nullptr;
+	
+	int					m_targetId;
+	bool				m_isTarget;
 
 	float				m_vecAniClipTime[5]{};
 	int					m_iCulidx;
-
 	bool				FirstPacket = false;
 	COL_DIR				m_eDir = COL_DIR::UP;
 
@@ -70,7 +72,10 @@ public:
 		if (m_movePacketTemp != nullptr)m_movePacketTemp->isMoving = isMoving;
 	}
 	void SwordStrike();
-
+	void SetTargetID(const int& targetID) { m_targetId = targetID; }
+	void SetTarget(const bool& isTarget) { m_isTarget = isTarget; }
+	int GetTargetId() const { return m_targetId; }
+	bool GetTarget() const {return m_isTarget;}
 	void SetAttack() { 
 		if (m_bAttack) {
 			m_bAttack = false;

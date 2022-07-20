@@ -49,7 +49,11 @@ class CObject
 
 	bool			_isDummy;
 
+	bool			_isNear;
 	//NPC
+	bool			_isMonsterMove;
+
+	bool			_isTarget;
 
 	MOVE_TYPE		_moveType;
 	int				_targetID;
@@ -58,14 +62,14 @@ class CObject
 	Vec3			_nextPos[3];
 	
 
-
+	
 
 
 public:
 	std::atomic<STATUS> _status = ST_FREE;
 	EXP_OVER _recvOver;
 	char _packetBuf[MAX_PACKET_SIZE];
-
+	
 
 public:
 	CObject();
@@ -89,6 +93,7 @@ public:
 
 	Vec3 GetLook() const { return _look; }
 	void SetLook(Vec3 l) { _look = l; }
+
 
 	//----------------
 
@@ -158,6 +163,14 @@ public:
 	int GetTargetID() const { return _targetID; }
 	void SetTargetID(int id) { _targetID = id; }
 
+	bool GetNearNpc() const { return _isNear; }
+	void SetNearNpc(bool isNear) { _isNear = isNear; }
+
+	bool GetMonsterMove() const { return _isMonsterMove; }
+	void SetMonsterMove(bool isMonsterMove) { _isMonsterMove = isMonsterMove; }
+
+	bool GetTarget() const { return _isTarget; }
+	void SetTarget(bool isTarget) { _isTarget = isTarget; }
 
 	int GetNextPosIndex() const { return _nextPosIndex; }
 	void SetNextPosIndex(int i) { _nextPosIndex = i; }

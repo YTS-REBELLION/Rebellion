@@ -22,7 +22,7 @@ class CServerFrame {
 	//class
 	CError*		_error;
 	CSender*	_sender;
-	CObject		_objects[141];
+	CObject		_objects[102];
 
 
 
@@ -70,7 +70,7 @@ public:
 	//
 	void AggroMove(int id);
 	//
-
+	bool abcd;
 	void DoRandomMove(int id);
 	void DoTargetMove(int id);
 	void UpdatePlayerPos(int id);

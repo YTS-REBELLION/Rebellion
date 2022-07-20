@@ -11,7 +11,7 @@ extern OBJ GameObject;
 
 extern CNetwork g_net;
 extern int g_myid;
-
+extern int targetId;
 // State Description
 extern D3D12_RASTERIZER_DESC g_arrRSDesc[(UINT)RS_TYPE::END];
 extern D3D12_BLEND_DESC g_arrBlendDesc[(UINT)BLEND_TYPE::END];
