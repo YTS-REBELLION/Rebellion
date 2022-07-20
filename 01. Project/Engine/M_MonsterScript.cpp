@@ -88,7 +88,7 @@ void CM_MonsterScript::update()
 
 	m_fAngle = atan2(localPos.x - m_pPlayer->Transform()->GetLocalPos().x, localPos.z - m_pPlayer->Transform()->GetLocalPos().z) * (180 / XM_PI) * 0.0174532925f;//acosf(Dot(vDirFront, Monster_Nor));
 
-	vRot = Vec3(m_fAngle, localRot.y, localRot.z);
+	vRot = Vec3((-m_fAngle + XMConvertToRadians(-90.f)), localRot.y, localRot.z);
 
 	Transform()->SetLocalRot(vRot);
 
@@ -100,8 +100,11 @@ void CM_MonsterScript::update()
 		AnimationPlay(MONSTER_ANI_TYPE::ATTACK);
 	}
 	else
+	{
+		//WorldDir = GetObj()->Transform()->GetWorldDir(DIR_TYPE::UP);
+		//localPos += WorldDir * m_fSpeed * DT;
 		AnimationPlay(MONSTER_ANI_TYPE::WALK);
-
+	}
 	if (m_bHit && m_vecAniClipTime[0] < GetObj()->Animator3D()->GetAnimClip(2).dTimeLength)
 	{
 		AnimationPlay(MONSTER_ANI_TYPE::HIT);
@@ -115,6 +118,7 @@ void CM_MonsterScript::update()
 
 	}
 	//UpdateLerpPos();
+	//Transform()->SetLocalPos(localPos);
 }
 void CM_MonsterScript::UpdateLerpPos()
 {

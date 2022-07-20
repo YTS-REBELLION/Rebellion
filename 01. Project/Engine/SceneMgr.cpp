@@ -165,9 +165,9 @@ void CSceneMgr::CreateMap()
 	}
 
 	CGameObject* pCastleObject = nullptr;
-	//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\MAP10.mdat", L"MeshData\\MAP10.mdat");
-	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Main_Map.fbx");
-	pMeshData->Save(pMeshData->GetPath());
+	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Main_Map.mdat", L"MeshData\\Main_Map.mdat");
+	//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Main_Map.fbx");
+	//pMeshData->Save(pMeshData->GetPath());
 
 	pCastleObject = pMeshData->Instantiate();
 	pCastleObject->SetName(L"Castle");
@@ -902,7 +902,7 @@ void CSceneMgr::init()
 
 	CGameObject* pObject = nullptr;
 	
-	CreateMap();
+	//CreateMap();
 	// ====================
 	// 3D Light Object 추가
 	// ====================
@@ -937,10 +937,10 @@ void CSceneMgr::init()
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), 0.f, 0.f));
 	pPlayer->AddComponent(new CCollider2D);
 	pPlayer->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pPlayer->Collider2D()->SetOffsetPos(Vec3(0.f, 100.f, 0.f));
+	pPlayer->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	pPlayer->Collider2D()->SetOffsetScale(Vec3(50.f, 50.f, 50.f));
 	pPlayer->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(-180.f), 0.f, 0.f));
-	//pPlayer->Collider2D()->SetOffsetRot(Vec3(0.f, XMConvertToRadians(180.f), 0.f));
+
 	// 플레이어 스크립트 붙여주기.
 	pPlayer->AddComponent(new CPlayerScript);
 
@@ -1048,8 +1048,8 @@ void CSceneMgr::init()
 	//pMonster->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
 	pMonster->AddComponent(new CCollider2D);
 	pMonster->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pMonster->Collider2D()->SetOffsetPos(Vec3(0.f, 100.f, 0.f));
-	pMonster->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
+	pMonster->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pMonster->Collider2D()->SetOffsetScale(Vec3(20.f, 20.f, 20.f));
 	pMonster->Collider2D()->SetOffsetRot(Vec3(0.f, XMConvertToRadians(-90.f), XMConvertToRadians(90.f)));
 
 	// 몬스터 스크립트 붙여주기.
@@ -1262,9 +1262,9 @@ void CSceneMgr::init()
 	CGameObject* GateHouseObject = nullptr;
 	GateHouseObject = new CGameObject;
 
-	pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Assembly_House_1.fbx");
-	pPMeshData->Save(pPMeshData->GetPath());
-	//pPMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Gatehouses.mdat", L"MeshData\\Gatehouses.mdat");
+	//pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Assembly_House_1.fbx");
+	//pPMeshData->Save(pPMeshData->GetPath());
+	pPMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Gatehouses.mdat", L"MeshData\\Gatehouses.mdat");
 	GateHouseObject = pPMeshData->Instantiate();
 	GateHouseObject->SetName(L"Gate_houses");
 	GateHouseObject->FrustumCheck(false);

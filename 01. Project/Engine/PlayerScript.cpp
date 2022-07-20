@@ -284,7 +284,7 @@ void CPlayerScript::update()
 	Vec3 vDirUp = Transform()->GetLocalDir(DIR_TYPE::UP);
 	Vec3 vDirFront = Transform()->GetLocalDir(DIR_TYPE::FRONT);
 
-	Vec3 WorldDir;
+	Vec3 WorldDir = GetObj()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
 	Vec3 localPos = GetObj()->Transform()->GetLocalPos();
 	Vec3 localRot = GetObj()->Transform()->GetLocalRot();
 	CTransform* playerTrans = Transform();
@@ -300,10 +300,12 @@ void CPlayerScript::update()
 		{
 			GetObj()->Animator3D()->SetClipTime(0, 0.f);
 		}
+		//WorldDir = //XMVector3Rotate(WorldDir, Vec3(XMConvertToRadians(180.f), 0.f, 0.f));
+		//localPos += WorldDir * m_fSpeed * DT;
 
 		if (KEY_HOLD(KEY_TYPE::KEY_W))
 		{
-			WorldDir = playerTrans->GetWorldDir(DIR_TYPE::FRONT);
+			//WorldDir = playerTrans->GetWorldDir(DIR_TYPE::FRONT);
 			localPos += WorldDir * m_fSpeed * DT;
 
 			system_clock::time_point start = system_clock::now();
@@ -611,45 +613,72 @@ void CPlayerScript::update()
 		}
 		else
 		{			
-			Vec3 dir_vec_x = m_pColObj->Transform()->GetLocalDir(DIR_TYPE::RIGHT);
-			Vec3 dir_vec_z = m_pColObj->Transform()->GetLocalDir(DIR_TYPE::FRONT);
-			Vec3 dir_p = GetObj()->Transform()->GetLocalDir(DIR_TYPE::FRONT);
+			/*if(m_eDir== COL_DIR::UP)
+				localPos -= WorldDir * m_fSpeed * 15 * DT;*/
+			Vec3 dir_vec_x;
+			Vec3 dir_vec_z;
+			if (m_pColObj->GetObj()->GetName() == L"M_Monster")
+			{
+				dir_vec_x = m_pColObj->Collider2D()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+				dir_vec_z = -m_pColObj->Collider2D()->Transform()->GetWorldDir(DIR_TYPE::UP);
+			}
+			else if (m_pColObj->GetObj()->GetName() == L"Monster1")
+			{
+				dir_vec_x = m_pColObj->Collider2D()->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+				dir_vec_z = m_pColObj->Collider2D()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+			}
+			else if (m_pColObj->GetObj()->GetName() == L"Map Object")
+			{
+				dir_vec_x = m_pColObj->Collider2D()->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+				dir_vec_z = m_pColObj->Collider2D()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+			}
+			////Vec3 dir_vec_x = m_pColObj->Collider2D()->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+			////Vec3 dir_vec_z = m_pColObj->Collider2D()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+			//Vec3 dir_vec_x = m_pColObj->Collider2D()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+			//Vec3 dir_vec_z = -m_pColObj->Collider2D()->Transform()->GetWorldDir(DIR_TYPE::UP);
+			Vec3 dir_p = GetObj()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
+			//cout << "dir_p 방향	   : " << dir_p.x << ",  " << dir_p.y << ",  " << dir_p.z << endl;
+			//cout << "dir_vec_x 방향: " << dir_vec_x.x << ",  " << dir_vec_x.y << ",  " << dir_vec_x.z << endl;
+			//cout << "dir_vec_z 방향: " << dir_vec_z.x << ",  " << dir_vec_z.y << ",  " << dir_vec_z.z << endl << endl;
 			Vec3 slide_vec_x = {};
 			Vec3 slide_vec_z = {};
-			Vec3 Col_pos = m_pColObj->Transform()->GetLocalPos();
+			Vec3 Col_pos = m_pColObj->Transform()->GetWorldPos();
+			Vec3 Col_PScale = m_pColObj->Transform()->GetWorldScale();
 			Vec3 Col_Scale = m_pColObj->Collider2D()->GetOffsetScale();
 
-			if (Col_pos.x + Col_Scale.x /2 > GetObj()->Transform()->GetLocalPos().x
-				&& Col_pos.x - Col_Scale.x / 2 < GetObj()->Transform()->GetLocalPos().x
-				&& Col_pos.z + Col_Scale.z / 2 < GetObj()->Transform()->GetLocalPos().z)
+			if (Col_pos.x + (Col_Scale.x * Col_PScale.x) / 2 > GetObj()->Transform()->GetLocalPos().x
+				&& Col_pos.x - (Col_Scale.x * Col_PScale.x) / 2 < GetObj()->Transform()->GetLocalPos().x
+				&& Col_pos.z + (Col_Scale.z * Col_PScale.z) / 2 < GetObj()->Transform()->GetLocalPos().z)
 			{
-				Dot(dir_p, dir_vec_z) > 0 ? dir_p *= -1 : dir_p *= 1;
+								Dot(dir_p, dir_vec_z) > 0 ? dir_p *= -1 : dir_p *= 1;
 				localPos.x += slide_vec_x.x * DT;
 				localPos.z -= dir_p.z * m_fSpeed * DT;
 			}
 
-			if (Col_pos.x + Col_Scale.x / 2 > GetObj()->Transform()->GetLocalPos().x
-				&& Col_pos.x - Col_Scale.x / 2 < GetObj()->Transform()->GetLocalPos().x
-				&& Col_pos.z - Col_Scale.z / 2 > GetObj()->Transform()->GetLocalPos().z)
+			if (Col_pos.x + (Col_Scale.x * Col_PScale.x) / 2 > GetObj()->Transform()->GetLocalPos().x
+				&& Col_pos.x - (Col_Scale.x * Col_PScale.x) / 2 < GetObj()->Transform()->GetLocalPos().x
+				&& (Col_pos.z - (Col_Scale.z * Col_PScale.z) / 2 > GetObj()->Transform()->GetLocalPos().z))
 			{
 				Dot(dir_p, dir_vec_z) > 0 ? dir_p *= 1 : dir_p *= -1;
 				localPos.x += slide_vec_x.x * DT;
 				localPos.z -= dir_p.z * m_fSpeed * DT;
 			}
 
-			if (Col_pos.z + Col_Scale.z / 2 > GetObj()->Transform()->GetLocalPos().z
-				&& Col_pos.z - Col_Scale.z / 2 < GetObj()->Transform()->GetLocalPos().z
-				&&Col_pos.x - Col_Scale.x / 2 > GetObj()->Transform()->GetLocalPos().x)
+			if (Col_pos.z + (Col_Scale.z * Col_PScale.z) / 2 > GetObj()->Transform()->GetLocalPos().z
+				&& Col_pos.z - (Col_Scale.z * Col_PScale.z) / 2 < GetObj()->Transform()->GetLocalPos().z
+				&& Col_pos.x - (Col_Scale.x * Col_PScale.x) / 2 > GetObj()->Transform()->GetLocalPos().x)
 			{
+				cout << "여기?" << endl;
 				Dot(dir_p, dir_vec_x) > 0 ? dir_p *= 1 : dir_p *= -1;
-				localPos.x -= dir_p.x *m_fSpeed * DT;
+				localPos.x -= dir_p.x * m_fSpeed * DT;
 				localPos.z += slide_vec_z.z * DT;
 			}
 
-			if (Col_pos.z + Col_Scale.z / 2 > GetObj()->Transform()->GetLocalPos().z
-				&& Col_pos.z - Col_Scale.z / 2 < GetObj()->Transform()->GetLocalPos().z
-				&& Col_pos.x + Col_Scale.x / 2 < GetObj()->Transform()->GetLocalPos().x)
+			if (Col_pos.z + (Col_Scale.z * Col_PScale.z) / 2 > GetObj()->Transform()->GetLocalPos().z
+				&& Col_pos.z - (Col_Scale.z * Col_PScale.z) / 2 < GetObj()->Transform()->GetLocalPos().z
+				&& (Col_pos.x + (Col_Scale.x * Col_PScale.x) / 2 < GetObj()->Transform()->GetLocalPos().x
+				|| Col_pos.x - (Col_Scale.x * Col_PScale.x) / 2 < GetObj()->Transform()->GetLocalPos().x))
 			{
 				Dot(dir_p, dir_vec_x) > 0 ? dir_p *= -1 : dir_p *= 1;
 				localPos.x -= dir_p.x * m_fSpeed * DT;
@@ -766,16 +795,20 @@ void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
 
 void CPlayerScript::OnCollision(CCollider2D* _pOther)
 {
-	//if (_pOther->GetObj()->GetName() == L"Map Object")
+	if (_pOther->GetObj()->GetName() == L"M_Monster" 
+		|| _pOther->GetObj()->GetName() == L"Map Object"
+		|| _pOther->GetObj()->GetName() == L"Monster1")
 	{
 		m_bColCheck = true;
-		SetColObj(_pOther->GetObj());
+		SetColObj(_pOther);
 	}
 }
 
 void CPlayerScript::OnCollisionExit(CCollider2D* _pOther)
 {
-	//if (_pOther->GetObj()->GetName() == L"Map Object") 
+	if (_pOther->GetObj()->GetName() == L"M_Monster"
+		|| _pOther->GetObj()->GetName() == L"Map Object"
+		|| _pOther->GetObj()->GetName() == L"Monster1")
 	{
 		m_bColCheck = false;
 	}
