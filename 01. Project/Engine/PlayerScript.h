@@ -21,6 +21,10 @@ public:
 	
 
 private:
+	CGameObject* m_pQuestBox1;
+	CGameObject* m_pQuestBox2;
+	CGameObject* m_pQuestBox3;
+	CGameObject* m_pQuestBox4;
 	Ptr<CMaterial>		m_pOriginMtrl;
 	Ptr<CMaterial>		m_pCloneMtrl;
 	vector<Ptr<CMesh>>	m_pAniData;
@@ -47,6 +51,29 @@ private:
 
 	vector<tMTAnimClip>			m_pVecAnimClip;
 
+
+	bool				m_bMeteor = false;
+	bool				m_bMeteor2 = false;
+	CGameObject* pMagicJinpp = nullptr;
+	float m_fcreate_time = 0.f;
+	int m_iClearCnt = 0;
+	int m_Q_Cnt = 0;
+
+
+	bool m_bQuest_01_clear = false;
+	bool m_bQuest_02_clear = false;
+	bool m_bQuest_03_clear = false;
+	bool m_bQuest_04_clear = false;
+	bool m_bQuest_05_clear = false;
+
+
+	Vec3	CharacterBoxScale = Vec3(100.f, 100.f, 1.f);
+	Vec3	FrameUiScale = Vec3(600.f, 100.f, 1.f);
+	Vec3	HpcoverUiScale = Vec3(500.f, 40.f, 1.f);
+	Vec3	HpUiScale = Vec3(500.f, 40.f, 1.f);
+	Vec3	MpUiScale = Vec3(500.f, 40.f, 1.f);
+
+
 	int					m_iID;
 public:
 	virtual void awake();	
@@ -71,7 +98,6 @@ public:
 	void SetOtherMovePacket__IsMoving(const bool& isMoving) {
 		if (m_movePacketTemp != nullptr)m_movePacketTemp->isMoving = isMoving;
 	}
-	void SwordStrike();
 	void SetTargetID(const int& targetID) { m_targetId = targetID; }
 	void SetTarget(const bool& isTarget) { m_isTarget = isTarget; }
 	int GetTargetId() const { return m_targetId; }
@@ -94,6 +120,18 @@ public:
 		}
 		else m_bCol = true;
 	}
+
+
+	void SwordStrike();
+	void MegaSlash();
+	void Swing();
+	void Sting();
+	void FireBall();
+	void UnleashedPower();
+	void Meteor();
+	void Delete_Meteor();
+	void Set_MagicJin(CGameObject* p) { pMagicJinpp = p; };
+
 	bool GetAttack() { return m_bAttack; }
 	bool GetSkill() { return m_bSkill; }
 	bool GetCol() { return m_bCol; }
@@ -104,6 +142,9 @@ public:
 
 	int GetID() { return m_iID; }
 	void SetID(const int& id) { m_iID = id; }
+
+	CCollider2D* m_pColObj;
+	void SetColObj(CCollider2D* _obj) { m_pColObj = _obj; }
 
 public:
 	CLONE(CPlayerScript);

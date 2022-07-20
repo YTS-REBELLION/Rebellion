@@ -13,7 +13,51 @@ CSwordScript::~CSwordScript()
 {
 }
 
+void CSwordScript::init(PERSON_OBJ_TYPE type, CGameObject* _target, int _boneIdx)
+{
+	m_eType = type;
+	m_pTargetObject = _target;
+	m_iTargetBoneIdx = _boneIdx;
+}
+
 void CSwordScript::update()
+{
+	Set_Sword_To_Fbx();
+}
+
+void CSwordScript::Set_Sword_To_Fbx()
+{
+	m_pTargetBone = const_cast<tMTBone*>(m_pTargetObject->MeshRender()->GetMesh()->GetBone(m_iTargetBoneIdx));
+
+	Vec3 vTrans = m_pTargetBone->vecKeyFrame[m_pTargetObject->Animator3D()->GetFrameIdx()].vTranslate;
+	Vec4 qRot = m_pTargetBone->vecKeyFrame[m_pTargetObject->Animator3D()->GetFrameIdx()].qRot;
+	Vec3 vRot;
+
+	switch (m_eType)
+	{
+	case PERSON_OBJ_TYPE::WARRIOR_PLAYER:
+		vRot = Vec3(XMConvertToRadians(180.f), XMConvertToRadians(90.f), 0.f);
+		break;
+	case PERSON_OBJ_TYPE::WIZARD_PLAYER:
+		break;
+	case PERSON_OBJ_TYPE::M_MONSTER:
+		//vRot = Vec3(0.f, 0.f, 0.f);
+		vRot = Vec3(0.f, 0.f, XMConvertToRadians(90.f));
+		break;
+	case PERSON_OBJ_TYPE::FM_MONSTER:
+		break;
+	case PERSON_OBJ_TYPE::BOSS:
+		break;
+	default:
+		break;
+	}
+
+	Transform()->SetLocalPos(vTrans);
+	Transform()->SetQuaternion(qRot);
+	Transform()->SetLocalRot(vRot);
+}
+
+void CSwordScript::Set_FM_Player()
 {
 	m_pTargetBone = const_cast<tMTBone*>(m_pTargetObject->MeshRender()->GetMesh()->GetBone(m_iTargetBoneIdx));
 	//tMTBone* m_pTargetBone2= const_cast<tMTBone*>(m_pTargetObject->MeshRender()->GetMesh()->GetBone(48));
@@ -34,4 +78,6 @@ void CSwordScript::update()
 	Transform()->SetQuaternion(qRot1);
 	Transform()->SetLocalRot(vRot);
 }
+
+
 

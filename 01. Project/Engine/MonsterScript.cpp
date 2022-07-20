@@ -208,7 +208,7 @@ void CMonsterScript::OnCollision(CCollider2D* _pOther)
 	//m_fHp -= 4.f;
 	if (_pOther->GetObj()->GetName() == L"Player1")
 	{
-		cout << "플레이어와 충돌" << endl;
+		//cout << "플레이어와 충돌" << endl;
 	}
 	else if (_pOther->GetObj()->GetName() == L"Player_Sword")
 	{

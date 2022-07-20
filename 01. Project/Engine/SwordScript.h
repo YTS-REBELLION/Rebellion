@@ -23,12 +23,16 @@ private:
     CGameObject* m_pTargetObject;
     int m_iTargetBoneIdx;
 
+	PERSON_OBJ_TYPE m_eType;
+
 public:
+	void init(PERSON_OBJ_TYPE type, CGameObject* _target, int _boneIdx);
 
 	void update();
 
-	void SetTarget(CGameObject* _target) { m_pTargetObject = _target; }
-	void SetBoneIdx(int _boneIdx) { m_iTargetBoneIdx = _boneIdx; }
+	void Set_Sword_To_Fbx();
+
+	void Set_FM_Player();
 
 	CSwordScript();
 	virtual ~CSwordScript();

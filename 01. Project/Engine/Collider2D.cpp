@@ -68,8 +68,12 @@ void CCollider2D::finalupdate()
 
 	Matrix matTranslation = XMMatrixTranslation(vFinalPos.x, vFinalPos.y, vFinalPos.z);
 	Matrix matScale = XMMatrixScaling(m_vOffsetScale.x, m_vOffsetScale.y, m_vOffsetScale.z);
+	Matrix matRotate = XMMatrixRotationX(m_vOffsetRot.x);
+	matRotate *= XMMatrixRotationY(m_vOffsetRot.y);
+	matRotate *= XMMatrixRotationZ(m_vOffsetRot.z);
 
-	m_matColWorld = matScale * matTranslation;
+	//m_matColWorld = matRotate;
+	m_matColWorld = matScale * matTranslation * matRotate;
 	m_matColWorld *= Transform()->GetWorldMat();
 
 	m_bBB.Center = Transform()->GetWorldPos();
@@ -196,6 +200,7 @@ void CCollider2D::SaveToScene(FILE * _pFile)
 
 	fwrite(&m_vOffsetPos, sizeof(Vec3), 1, _pFile);
 	fwrite(&m_vOffsetScale, sizeof(Vec3), 1, _pFile);
+	fwrite(&m_vOffsetRot, sizeof(Vec3), 1, _pFile);
 	fwrite(&m_eType, sizeof(UINT), 1, _pFile);
 }
 
@@ -203,6 +208,7 @@ void CCollider2D::LoadFromScene(FILE * _pFile)
 {
 	fread(&m_vOffsetPos, sizeof(Vec3), 1, _pFile);
 	fread(&m_vOffsetScale, sizeof(Vec3), 1, _pFile);
+	fwrite(&m_vOffsetRot, sizeof(Vec3), 1, _pFile);
 	fread(&m_eType, sizeof(UINT), 1, _pFile);
 	SetColliderType(m_eType);
 }
