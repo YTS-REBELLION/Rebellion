@@ -478,6 +478,10 @@ void CNetwork::ProcessPacket(char* ptr)
 		sc_packet_monsterdir* packet = reinterpret_cast<sc_packet_monsterdir*>(ptr);
 		int monsterId = packet->id;
 		GameObject.find(monsterId)->second->Transform()->SetLocalRot(packet->vRot);
+		
+		// 여기서 변수를 카운트 ++ 해야함
+	
+
 
 		break;
 	}
@@ -488,6 +492,24 @@ void CNetwork::ProcessPacket(char* ptr)
 
 		GameObject.find(packet->monster_id)->second->GetScript<CMonsterScript>()->SetTarget(packet->isTarget);
 		GameObject.find(packet->monster_id)->second->GetScript<CMonsterScript>()->SetTargetID(packet->id);
+		
+		break;
+	}
+	case SC_PACKET_QUESTDONE: {
+		sc_packet_questdone* packet = reinterpret_cast<sc_packet_questdone*>(ptr);
+		if (packet->isDone) {
+			cout << "퀘스트 완료!" << endl;
+			cout << "다음 퀘스트 고고 !" << endl;
+		}
+		break;
+
+	}
+	case SC_PACKET_QUESTSTART: {
+		sc_packet_queststart* packet = reinterpret_cast<sc_packet_queststart*>(ptr);
+			
+		cout << "클라이언트 퀘스트 시작하세요" << endl;
+		
+		GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestInit();
 		
 		break;
 	}

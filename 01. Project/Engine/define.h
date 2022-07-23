@@ -35,6 +35,8 @@ static type* GetInst()\
 
 #define MAX_LAYER 32
 #define PLAYER_SPEED 300.f
+#define MONSTER_SPEED 1200.f
+#define LV1_MONSTER_HP 2000.f
 
 typedef DirectX::SimpleMath::Vector2 Vec2;
 typedef DirectX::SimpleMath::Vector3 Vec3;

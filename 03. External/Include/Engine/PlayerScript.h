@@ -98,7 +98,7 @@ public:
 	void SetOtherMovePacket__IsMoving(const bool& isMoving) {
 		if (m_movePacketTemp != nullptr)m_movePacketTemp->isMoving = isMoving;
 	}
-
+	void QuestInit();
 	void SetTargetID(const int& targetID) { m_targetId = targetID; }
 	void SetTarget(const bool& isTarget) { m_isTarget = isTarget; }
 	int GetTargetId() const { return m_targetId; }
@@ -109,6 +109,7 @@ public:
 		}
 		else m_bAttack = true;
 	}
+	bool GetAttack() const { return m_bAttack; }
 	void SetSkill() {
 		if (m_bSkill) {
 			m_bSkill = false;
@@ -132,6 +133,7 @@ public:
 	void Meteor();
 	void Delete_Meteor();
 	void Set_MagicJin(CGameObject* p) { pMagicJinpp = p; };
+	
 
 	bool GetAttack() { return m_bAttack; }
 	bool GetSkill() { return m_bSkill; }

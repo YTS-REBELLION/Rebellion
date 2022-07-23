@@ -162,7 +162,7 @@ void CServerFrame::InitClients()
 		_objects[i].SetCurrentHp(200);
 		_objects[i].SetMaxHp(200);
 		_objects[i].SetPos(pos);
-		_objects[i].SetDamage(400);
+		_objects[i].SetDamage(25);
 		_objects[i].SetLevel(1);
 		_objects[i].SetIsAttack(false);
 		
@@ -295,7 +295,6 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		break;
 	}
 	case CS_PACKET_ATTACK: {
-		cout << "CS_PACKET_ATTACK" << endl;
 		cs_packet_attack* packet = reinterpret_cast<cs_packet_attack*>(buf);
 
 		unordered_set<int> new_viewlist = _objects[id].GetViewList();
@@ -312,12 +311,29 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		cs_packet_player2monstercol* packet = reinterpret_cast<cs_packet_player2monstercol*>(buf);
 		int monsterId = packet->id;
 		int pid = packet->playerId;
-		
+
+		_objects[monsterId].SetCurrentHp(_objects[monsterId].GetCurrentHp() - _objects[pid].GetDamage());
+
+		unordered_set<int> old_viewList = _objects[id].GetViewList();
+
 		if (_objects[monsterId].GetCurrentHp() <= 0) {
 			_objects[monsterId]._status = ST_FREE;
+			++monsterdieCnt;
 			_sender->SendMonsterDiePacket(_objects[id].GetSocket(), monsterId);
+			cout << "몬스터 잡기 : " << monsterdieCnt << endl;
+			
+				
 		}
-
+		if (monsterdieCnt == 5)
+		{
+			for(int i = 0; i<_acceptNumber;++i){
+				if (_objects[i]._status != ST_ACTIVE) continue;
+				if (true == IsPlayer(i)) {
+					cout << "퀘스트 완료 패킷 전송 " << endl;
+					_sender->SendQuestDonePacket(_objects[i].GetSocket(), true);
+				}
+			}
+		}
 		break;
 	}
 	case CS_PACKET_MONSTERDIR: {
@@ -390,6 +406,7 @@ void CServerFrame::DoWorker()
 					_objects[i]._status = ST_INGAME;
 					_objects[i].ClientUnLock();
 					user_id = i;
+					_acceptNumber++;
 					break;
 				}
 				_objects[i].ClientUnLock();
@@ -472,7 +489,7 @@ void CServerFrame::DoWorker()
 			delete exp_over;
 			break;
 		case EV_MONSTER_MOVE:
-			//AggroMove(id);
+			AggroMove(id);
 
 			
 			delete exp_over;
@@ -772,8 +789,12 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 	std::unordered_set<int> oldViewList = _objects[id].GetViewList();
 	_objects[id].ClientUnLock();
 	std::unordered_set<int> newViewList;
-
-
+	if (_objects[id].GetPos().z >= 5600.f && !queststart) {
+		cout << "퀘스트 시작 패킷" << endl;
+		queststart = true;
+		_sender->SendQuestStartPacket(_objects[id].GetSocket(), id, true);
+	}
+	
 
 	_elapsedTime = curTime - _prevTime;
 
@@ -941,6 +962,7 @@ bool CServerFrame::CAS(volatile atomic<STATUS>* addr, STATUS expected, STATUS ne
 	return atomic_compare_exchange_strong(reinterpret_cast<volatile atomic<STATUS>*>(addr), &expected, new_val);
 }
 
+
 void CServerFrame::CreateMonster()
 {
 	cout << "Initializing Monster" << endl;
@@ -948,11 +970,11 @@ void CServerFrame::CreateMonster()
 	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_START + 39; ++monsterId) {
 		_objects[monsterId].SetID(monsterId);
 		_objects[monsterId]._status = ST_SLEEP;
-		_objects[monsterId].SetSpeed(1200.f);
+		_objects[monsterId].SetSpeed(MONSTER_SPEED);
 
 
 		_objects[monsterId].SetCurrentHp(1200);
-		_objects[monsterId].SetMaxHp(2000);
+		_objects[monsterId].SetMaxHp(LV1_MONSTER_HP);
 
 		_objects[monsterId].SetLevel(1);
 

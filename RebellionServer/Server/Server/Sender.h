@@ -32,6 +32,10 @@ public:
 	void SendMonsterDiePacket(SOCKET s, const int& monsterid);
 	void SendMonsterDirPacket(SOCKET s, const int& targetId, const int& id, Vec3 vRot);
 	void SendTargetPlayerPacket(SOCKET s, const int& id, bool isTarget , const int& monster_id);
+
+	void SendQuestDonePacket(SOCKET s, bool isDone);
+	void SendQuestStartPacket(SOCKET s, int id, bool isStart);
+
 	void Activate_Player_Move_Event(int target, int player_id);
 private:
 	void SendPacket(SOCKET s, void* buff);

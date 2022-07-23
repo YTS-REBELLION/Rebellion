@@ -451,8 +451,10 @@ void CPlayerScript::update()
 
 		if (KEY_TAB(KEY_TYPE::KEY_Q))
 		{
+			
 			++m_Q_Cnt;
 
+			// 퀘스트 스타트
 			//첫번째 퀘스트고 q 를 한번눌렀을시
 			if (m_iClearCnt == 0 && m_Q_Cnt == 1)
 			{
@@ -518,11 +520,11 @@ void CPlayerScript::update()
 			}
 			if (m_iClearCnt == 0 && m_Q_Cnt == 3)
 			{
-
+				QuestInit();
 				m_pQuestBox2->SetDead();
 				m_Q_Cnt = 0;
 			}
-
+			// 퀘스트 끝 몬스터 셋 대드 카운트를 확인해야한다.
 
 
 			//두번째 퀘스트고 q 를 한번눌렀을시
@@ -1215,5 +1217,15 @@ void CPlayerScript::Delete_Meteor()
 	m_bMeteor = false;
 	m_fcreate_time = 0.f;
 	m_bMeteor2 = false;
+
+}
+void CPlayerScript::QuestInit()
+{
+
+	cout << "퀘스트 시작 !! " << endl;
+	cout << "몬스터 5마리를 사냥하라." << endl;
+	// 몬스터 사냥 카운트
+
+
 
 }

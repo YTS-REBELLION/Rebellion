@@ -267,6 +267,27 @@ void CSender::SendTargetPlayerPacket(SOCKET s, const int& id, bool isTarget , co
 
 }
 
+void CSender::SendQuestDonePacket(SOCKET s, bool isDone)
+{
+	sc_packet_questdone packet;
+	packet.size = sizeof(packet);
+	packet.type = SC_PACKET_QUESTDONE;
+	packet.isDone = isDone;
+
+	SendPacket(s, &packet);
+
+}
+
+void CSender::SendQuestStartPacket(SOCKET s, int id, bool isStart)
+{
+	sc_packet_queststart packet;
+	packet.size = sizeof(packet);
+	packet.type = SC_PACKET_QUESTSTART;
+	packet.isStart = isStart;
+	packet.id = id;
+	SendPacket(s, &packet);
+}
+
 
 
 //private function

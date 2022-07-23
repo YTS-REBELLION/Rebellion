@@ -43,41 +43,23 @@ void CMonsterScript::update()
 	CTransform* playerTrans = Transform();
 	Vec3 WorldPos = GetObj()->Transform()->GetWorldPos();
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
-	//CPlayerScript* player = GetObj()->GetScript<CPlayerScript>();
 	CSceneMgr::GetInst()->FindPlayerPos(L"Player");
 	float fDistanceP_M = Vec3::Distance(CSceneMgr::GetInst()->m_vSavePos, localPos);
-	int id;
 	CMonsterScript* Monster = GetObj()->GetScript<CMonsterScript>();
 	const vector<CGameObject*>& vecObject = CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetObjects();
 	Vec3 vDirTemp = GetObj()->Transform()->GetLocalDir(DIR_TYPE::UP);
 	Vec3 vDirFront = Vec3(vDirTemp.x, 0.f, vDirTemp.z);
-	//m_fAngle = acosf(Dot(vDirFront, Monster_Dir) / (Length(vDirFront) * Length(Monster_Dir)));
 	Vec3 vRot;
 
-	CGameObject* player = GameObject.find(g_myid)->second;
-
-	//CGameObject* m_pPlayer;
 	if (m_isTarget) {
 		for (auto& client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
 		{
 			if (client->GetScript<CPlayerScript>()->GetID() == m_targetId)
 			{
 				m_pPlayer = client;
-				cout<<"내 아이디 : " << client->GetScript<CPlayerScript>()->GetID() << endl;
-				cout<<"타겟 아이디 : " << m_targetId << endl;
 			}
 		}
 
-		/*for (auto client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
-		{
-			if (client->GetScript<CPlayerScript>()->GetMain())
-			{
-				player = GameObject.find(g_myid)->second;
-			}
-			else if (client->GetScript<CPlayerScript>()->GetTarget()) {
-				player = GameObject.find(targetId)->second;
-			}
-		}*/
 		m_fAngle = atan2(localPos.x - m_pPlayer->Transform()->GetLocalPos().x, localPos.z - m_pPlayer->Transform()->GetLocalPos().z) * (180 / XM_PI) * 0.0174532925f;//acosf(Dot(vDirFront, Monster_Nor));
 
 	}
@@ -85,9 +67,6 @@ void CMonsterScript::update()
 
 	vRot = Vec3(localRot.x, m_fAngle, localRot.z);
 	
-	//g_net.Send_MonsterRotate_Packet(GetID(), GetObj()->GetID(), vRot);
-
-
 	Monster->Transform()->SetLocalRot(vRot);
 
 	if (m_Is_Move) {
@@ -196,10 +175,14 @@ void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 {
 	if (_pOther->GetObj()->GetName() == L"Player_Sword")
 	{
-	//cout << "검과 충돌" << endl;
+		cout << "검과 충돌1" << endl;
 		m_bHit = true;
-	//g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
+		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
 
+	}
+	if (_pOther->GetObj()->GetName() == L"Player1")
+	{
+		cout << "플레이어와 충돌" << endl;
 	}
 }
 
@@ -208,11 +191,11 @@ void CMonsterScript::OnCollision(CCollider2D* _pOther)
 	//m_fHp -= 4.f;
 	if (_pOther->GetObj()->GetName() == L"Player1")
 	{
-		//cout << "플레이어와 충돌" << endl;
+		cout << "플레이어와 충돌" << endl;
 	}
 	else if (_pOther->GetObj()->GetName() == L"Player_Sword")
 	{
-		//cout << "검과 충돌" << endl;
+		cout << "검과 충돌2" << endl;
 		//m_bHit = true;
 		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
 

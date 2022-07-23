@@ -170,6 +170,7 @@
     <ClCompile Include="SimpleMath.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\01. Project\Engine\define.h" />
     <ClInclude Include="CObject.h" />
     <ClInclude Include="CServerFrame.h" />
     <ClInclude Include="DataBase.h" />

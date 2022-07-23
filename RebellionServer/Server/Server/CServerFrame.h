@@ -25,7 +25,6 @@ class CServerFrame {
 	CObject		_objects[141];
 
 
-
 	// timer
 	std::mutex											_timerLock;
 	std::priority_queue<EVENT>							_timerQueue;
@@ -37,7 +36,7 @@ class CServerFrame {
 	int _dummpyIndex;
 	
 	OBSTACLE _obstacles[NUM_OBSTACLES];
-
+	int _acceptNumber = 0;
 	
 
 public:
@@ -62,6 +61,7 @@ public:
 	bool CAS(volatile atomic<STATUS>* addr, STATUS expected, STATUS new_val);
 
 
+
 	void Disconnect(int);
 
 	void ActivateNPC(int id);
@@ -77,6 +77,10 @@ public:
 
 	void QuestDone(const short& id);
 
+
+
+	int			monsterdieCnt = 0;
+	bool		queststart = false;
 
 
 };

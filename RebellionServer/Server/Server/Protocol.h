@@ -48,6 +48,8 @@ const char	SC_PACKET_MONSTERDIR = 13;
 const char	SC_PACKET_ROTATE = 14;
 const char	SC_PACKET_NPC_ATTACK = 15;
 const char	SC_PACKET_TARGET = 16;
+const char	SC_PACKET_QUESTDONE = 17;
+const char	SC_PACKET_QUESTSTART = 18;
 
 const char	SC_PACKET_HP_CHANGE = 10;
 const char	SC_PACKET_PLAYER_DIE = 11;
@@ -238,6 +240,17 @@ struct sc_packet_targetplayer {
 	int id;
 	bool isTarget;
 	int monster_id;
+};
+struct sc_packet_questdone {
+	char size;
+	char type;
+	bool isDone;
+};
+struct sc_packet_queststart {
+	char size;
+	char type;
+	bool isStart;
+	int id;
 };
 //---------------------------------------
 
