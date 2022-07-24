@@ -36,7 +36,17 @@ static type* GetInst()\
 #define MAX_LAYER 32
 #define PLAYER_SPEED 300.f
 #define MONSTER_SPEED 1200.f
-#define LV1_MONSTER_HP 2000.f
+#define LV1_MONSTER_HP 1000.f
+#define LV2_MONSTER_HP 1200.f
+#define LV3_MONSTER_HP 1400.f
+#define LV4_MONSTER_HP 1600.f
+#define LV5_MONSTER_HP 1800.f
+#define LV6_MONSTER_HP 2000.f
+#define BOSS_MONSTER_HP 2500.f
+
+
+
+
 
 typedef DirectX::SimpleMath::Vector2 Vec2;
 typedef DirectX::SimpleMath::Vector3 Vec3;
@@ -350,4 +360,11 @@ enum class PERSON_OBJ_TYPE
 	M_MONSTER,
 	FM_MONSTER,
 	BOSS
+};
+
+enum class QUEST
+{
+	FIRST = 1,
+	SECOND,
+	THIRD
 };

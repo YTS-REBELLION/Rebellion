@@ -267,13 +267,14 @@ void CSender::SendTargetPlayerPacket(SOCKET s, const int& id, bool isTarget , co
 
 }
 
-void CSender::SendQuestDonePacket(SOCKET s, bool isDone)
+void CSender::SendQuestDonePacket(SOCKET s, int playerId, QUEST nextQuest, bool isDone)
 {
 	sc_packet_questdone packet;
 	packet.size = sizeof(packet);
 	packet.type = SC_PACKET_QUESTDONE;
 	packet.isDone = isDone;
-
+	packet.id = playerId;
+	packet.nextQuest = nextQuest;
 	SendPacket(s, &packet);
 
 }

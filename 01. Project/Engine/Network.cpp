@@ -501,6 +501,25 @@ void CNetwork::ProcessPacket(char* ptr)
 			cout << "퀘스트 완료!" << endl;
 			cout << "다음 퀘스트 고고 !" << endl;
 		}
+
+		switch (packet->nextQuest) {
+		case QUEST::SECOND: {
+			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestCnt(QUEST::SECOND);
+			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestView(packet->isDone);
+			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SecondQuestInit();
+			
+			break;
+		}
+		case QUEST::THIRD: {
+			cout << "세번째 퀘스트 시작!" << endl;
+			break;
+		}
+		default: {
+			cout << "하위" << endl;
+			break;
+		}
+		}
+
 		break;
 
 	}
@@ -508,7 +527,8 @@ void CNetwork::ProcessPacket(char* ptr)
 		sc_packet_queststart* packet = reinterpret_cast<sc_packet_queststart*>(ptr);
 			
 		cout << "클라이언트 퀘스트 시작하세요" << endl;
-		
+
+		GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestView(packet->isStart);
 		GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestInit();
 		
 		break;

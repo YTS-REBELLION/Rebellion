@@ -37,7 +37,9 @@ class CServerFrame {
 	
 	OBSTACLE _obstacles[NUM_OBSTACLES];
 	int _acceptNumber = 0;
-	
+	bool isQuestDone = false;
+	bool isSecondQuestDone = false;
+
 
 public:
 	CServerFrame();

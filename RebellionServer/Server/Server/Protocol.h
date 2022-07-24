@@ -10,6 +10,14 @@ const short SERVER_PORT = 9000;
 constexpr int MAX_BUFFER = 1024;
 constexpr int MAX_PACKET_SIZE = 255;
 constexpr short NPC_ID_START = 101;
+constexpr short MONSTER_LV1_ID = 106;
+constexpr short MONSTER_LV2_ID = 117;
+constexpr short MONSTER_LV3_ID = 122;
+constexpr short MONSTER_LV4_ID = 127;
+constexpr short MONSTER_LV5_ID = 134;
+constexpr short MONSTER_LV6_ID = 141;
+constexpr short NPC_ID_END = 140;
+
 constexpr int MAX_USER = 100;
 //#define NPC_ID_START 10000
 
@@ -245,6 +253,8 @@ struct sc_packet_questdone {
 	char size;
 	char type;
 	bool isDone;
+	int id;
+	QUEST nextQuest;
 };
 struct sc_packet_queststart {
 	char size;

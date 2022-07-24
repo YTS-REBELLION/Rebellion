@@ -324,16 +324,31 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 			
 				
 		}
-		if (monsterdieCnt == 5)
+
+		if (monsterdieCnt == 5 && !isQuestDone)
 		{
 			for(int i = 0; i<_acceptNumber;++i){
 				if (_objects[i]._status != ST_ACTIVE) continue;
 				if (true == IsPlayer(i)) {
 					cout << "퀘스트 완료 패킷 전송 " << endl;
-					_sender->SendQuestDonePacket(_objects[i].GetSocket(), true);
+					_sender->SendQuestDonePacket(_objects[i].GetSocket(), i, QUEST::SECOND, true);
+					isQuestDone = true;
 				}
 			}
 		}
+
+		if (monsterdieCnt == 16 && !isSecondQuestDone) {
+			for (int i = 0; i < _acceptNumber; ++i) {
+				if (_objects[i]._status != ST_ACTIVE) continue;
+				if (true == IsPlayer(i)) {
+					cout << "퀘스트 완료 패킷 전송 " << endl;
+					_sender->SendQuestDonePacket(_objects[i].GetSocket(), i, QUEST::THIRD, true);
+					isSecondQuestDone = true;
+				}
+			}
+		}
+
+
 		break;
 	}
 	case CS_PACKET_MONSTERDIR: {
@@ -967,28 +982,58 @@ void CServerFrame::CreateMonster()
 {
 	cout << "Initializing Monster" << endl;
 
-	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_START + 39; ++monsterId) {
+	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_END; ++monsterId) {
 		_objects[monsterId].SetID(monsterId);
 		_objects[monsterId]._status = ST_SLEEP;
 		_objects[monsterId].SetSpeed(MONSTER_SPEED);
-
-
-		_objects[monsterId].SetCurrentHp(1200);
-		_objects[monsterId].SetMaxHp(LV1_MONSTER_HP);
-
-		_objects[monsterId].SetLevel(1);
-
 		_objects[monsterId].SetMoveType(RANDOM);
-
 		_objects[monsterId].SetIsAttack(false);
-		
-		
 		//_objects[monsterId].SetNextPosIndex(0);
 
+	}
+	for (int monsterId = NPC_ID_START; monsterId < MONSTER_LV1_ID; ++monsterId) {
+
+		_objects[monsterId].SetCurrentHp(LV1_MONSTER_HP);
+		_objects[monsterId].SetMaxHp(LV1_MONSTER_HP);
+		_objects[monsterId].SetLevel(1);
+		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 10);
+
+	}
+
+	for (int monsterId = MONSTER_LV1_ID; monsterId < MONSTER_LV2_ID; ++monsterId) {
+
+		_objects[monsterId].SetCurrentHp(LV2_MONSTER_HP);
+		_objects[monsterId].SetMaxHp(LV2_MONSTER_HP);
+		_objects[monsterId].SetLevel(2);
+		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 10);
+
+	}
+	for (int monsterId = MONSTER_LV2_ID; monsterId < MONSTER_LV3_ID; ++monsterId) {
+		_objects[monsterId].SetCurrentHp(LV3_MONSTER_HP);
+		_objects[monsterId].SetMaxHp(LV3_MONSTER_HP);
+		_objects[monsterId].SetLevel(3);
+		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 10);
+	}
+	for (int monsterId = MONSTER_LV3_ID; monsterId < MONSTER_LV4_ID; ++monsterId) {
+		_objects[monsterId].SetCurrentHp(LV4_MONSTER_HP);
+		_objects[monsterId].SetMaxHp(LV4_MONSTER_HP);
+		_objects[monsterId].SetLevel(4);
+		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 10);
+	}
+	for (int monsterId = MONSTER_LV4_ID; monsterId < MONSTER_LV5_ID; ++monsterId) {
+		_objects[monsterId].SetCurrentHp(LV5_MONSTER_HP);
+		_objects[monsterId].SetMaxHp(LV5_MONSTER_HP);
+		_objects[monsterId].SetLevel(5);
+		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 10);
+	}
+	for (int monsterId = MONSTER_LV5_ID; monsterId < MONSTER_LV6_ID; ++monsterId) {
+		_objects[monsterId].SetCurrentHp(LV6_MONSTER_HP);
+		_objects[monsterId].SetMaxHp(LV6_MONSTER_HP);
+		_objects[monsterId].SetLevel(6);
 		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 10);
 	}
 
-
+	// LV1
 	_objects[NPC_ID_START].SetPos(Vec3(10.f, 0.f, 8400));
 	_objects[NPC_ID_START + 1].SetPos(Vec3(200.f, 0.f, 8200.f));
 	_objects[NPC_ID_START + 2].SetPos(Vec3(400.f, 0.f, 8200.f));
@@ -996,6 +1041,8 @@ void CServerFrame::CreateMonster()
 	_objects[NPC_ID_START + 4].SetPos(Vec3(-400.f, 0.f, 8200.f));
 	
 	// 중앙 홀 몬스터
+
+	// LV2
 	_objects[NPC_ID_START + 5].SetPos(Vec3(-400.f, 0.f, 10400.f));
 	_objects[NPC_ID_START + 6].SetPos(Vec3(-200.f, 0.f, 10400.f));
 	_objects[NPC_ID_START + 7].SetPos(Vec3(200.f, 0.f, 10400.f));
@@ -1010,6 +1057,7 @@ void CServerFrame::CreateMonster()
 	
 	//오른쪽 미로 몬스터
 	//중앙 몬스터
+	// LV3
 	_objects[NPC_ID_START + 16].SetPos(Vec3(4000.f, 0.f, 10800.f));
 	_objects[NPC_ID_START + 17].SetPos(Vec3(3800.f, 0.f, 11000.f));
 	_objects[NPC_ID_START + 18].SetPos(Vec3(3800.f, 0.f, 11200.f));
@@ -1019,6 +1067,7 @@ void CServerFrame::CreateMonster()
 	
 	// 북쪽 몬스터
 	// 중앙 몬스터
+	// LV5
 	_objects[NPC_ID_START + 21].SetPos(Vec3(0.f, 0.f, 16700.f));
 	_objects[NPC_ID_START + 22].SetPos(Vec3(-200.f, 0.f, 16400.f));
 	_objects[NPC_ID_START + 23].SetPos(Vec3(-400.f, 0.f, 16400.f));
@@ -1028,6 +1077,7 @@ void CServerFrame::CreateMonster()
 	_objects[NPC_ID_START + 27].SetPos(Vec3(600.f, 0.f, 16400.f));
 	
 	// 북쪽 왼쪽 통로 몬스터
+	// LV4
 	_objects[NPC_ID_START + 28].SetPos(Vec3(-1700.f, 0.f, 13600.f));
 	_objects[NPC_ID_START + 29].SetPos(Vec3(-1300.f, 0.f, 13400.f));
 	_objects[NPC_ID_START + 30].SetPos(Vec3(-1500.f, 0.f, 13400.f));
@@ -1035,6 +1085,7 @@ void CServerFrame::CreateMonster()
 	_objects[NPC_ID_START + 32].SetPos(Vec3(-1500.f, 0.f, 13800.f));
 	
 	// 좌측 끝 몬스터
+	// LV6
 	_objects[NPC_ID_START + 33].SetPos(Vec3(-6300.f, 0.f, 13500.f));
 	_objects[NPC_ID_START + 34].SetPos(Vec3(-6100.f, 0.f, 13300.f));
 	_objects[NPC_ID_START + 35].SetPos(Vec3(-6100.f, 0.f, 13100.f));

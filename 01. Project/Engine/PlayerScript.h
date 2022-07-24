@@ -56,9 +56,9 @@ private:
 	bool				m_bMeteor2 = false;
 	CGameObject* pMagicJinpp = nullptr;
 	float m_fcreate_time = 0.f;
-	int m_iClearCnt = 0;
+	QUEST m_iClearCnt = QUEST::FIRST;
 	int m_Q_Cnt = 0;
-
+	bool m_questView = true;
 
 	bool m_bQuest_01_clear = false;
 	bool m_bQuest_02_clear = false;
@@ -122,8 +122,9 @@ public:
 		}
 		else m_bCol = true;
 	}
-
-
+	void SetQuestCnt(QUEST questId) { m_iClearCnt = questId; }
+	void SecondQuestInit();
+	void SetQuestView(bool isQuest) { m_questView = isQuest; }
 	void SwordStrike();
 	void MegaSlash();
 	void Swing();
