@@ -44,7 +44,8 @@
 #include"Miro.h"
 #include"Castle.h"
 #include"NpcMon.h"
-
+#include"Fire.h"
+#include"ParticleSystem.h"
 #include "meshdata.h"
 
 #include "LoginScene.h"
@@ -1442,6 +1443,11 @@ void CSceneMgr::init()
 	Ptr<CTexture> pNormalTargetTex = CResMgr::GetInst()->FindRes<CTexture>(L"NormalTargetTex");
 	Ptr<CTexture> pPositionTargetTex = CResMgr::GetInst()->FindRes<CTexture>(L"PositionTargetTex");
 
+	Ptr<CTexture> pfFire01 = CResMgr::GetInst()->Load<CTexture>(L"Fire01", L"Texture\\Explosion\\fire01.dds");
+	Ptr<CTexture> pfNoise01 = CResMgr::GetInst()->Load<CTexture>(L"Noise01", L"Texture\\Explosion\\noise01.dds");
+	Ptr<CTexture> pfAlpha01 = CResMgr::GetInst()->Load<CTexture>(L"Alpha01", L"Texture\\Explosion\\alpha01.dds");
+
+
 	Ptr<CMaterial> pPM = CResMgr::GetInst()->FindRes<CMaterial>(L"MergeLightMtrl");
 	pPM->SetData(SHADER_PARAM::TEX_3, pSky01.GetPointer());
 
@@ -2031,9 +2037,45 @@ void CSceneMgr::init()
 
 	
 
+	//// ====================
+	//// Fire 오브젝트 생성
+	//// ====================
+	//pObject = new CGameObject;
+	//pObject->SetName(L"FireTest");
+	//pObject->FrustumCheck(false);
+	//pObject->AddComponent(new CTransform);
+	//pObject->AddComponent(new CMeshRender);
+	//pObject->AddComponent(new CFire);
+	//
+
+	//pObject->Transform()->SetLocalPos(Vec3(0,0,0));
+	//pObject->Transform()->SetLocalScale(Vec3(10000.f, 10000.f, 1.f));
+	//// MeshRender 설정
+	//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	//pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+	//pObject->GetScript<CFire>()->init();
+	//// AddGameObject
+	//m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);
 
 
 
+	//	비
+	pObject = new CGameObject;
+	pObject->SetName(L"Rain");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CParticleSystem);
+	//pObject->Particlesystem()->SetFrequency(2.f);
+	pObject->Particlesystem()->SetType(true);
+	//pObject->Particlesystem()->SetMaxParticle(10);
+	pObject->FrustumCheck(false);
+	
+	Vec3 particlePos = Vec3(10.f,200.f, 10.f);
+	
+	pObject->Transform()->SetLocalPos(particlePos);
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);
 
 
 

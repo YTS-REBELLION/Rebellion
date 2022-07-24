@@ -296,6 +296,12 @@
     <ClInclude Include="FireBall.h">
       <Filter>04. GameObject\Script\03.Skill</Filter>
     </ClInclude>
+    <ClInclude Include="Fire.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -509,6 +515,12 @@
     <ClCompile Include="FireBall.cpp">
       <Filter>04. GameObject\Script\03.Skill</Filter>
     </ClCompile>
+    <ClCompile Include="Fire.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>04. GameObject\Script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="std.fx">
@@ -536,6 +548,15 @@
       <Filter>ShaderCode</Filter>
     </FxCompile>
     <FxCompile Include="trail.fx">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="fire.fx">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="rain.fx">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="particle.fx">
       <Filter>ShaderCode</Filter>
     </FxCompile>
   </ItemGroup>

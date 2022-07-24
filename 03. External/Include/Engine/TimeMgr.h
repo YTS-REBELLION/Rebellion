@@ -18,6 +18,7 @@ public:
 	void update();	
 
 public:
+	float GetAccTime() { return m_fAccTime; }
 	float GetDeltaTime() { return m_fDeltaTime;}
 	void DTFreeze(){m_bFreeze = true;}
 	SINGLE(CTimeMgr);
