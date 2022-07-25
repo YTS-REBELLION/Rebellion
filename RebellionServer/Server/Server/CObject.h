@@ -69,7 +69,7 @@ public:
 	std::atomic<STATUS> _status = ST_FREE;
 	EXP_OVER _recvOver;
 	char _packetBuf[MAX_PACKET_SIZE];
-	
+	bool questStart = false;
 
 public:
 	CObject();
