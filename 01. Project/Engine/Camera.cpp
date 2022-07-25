@@ -24,8 +24,9 @@ CCamera::CCamera()
 	, m_fNear(1.f)
 	, m_fFOV(XM_PI / 4.f)
 	, m_fScale(1.f)
-	, m_eProjType(PROJ_TYPE::ORTHGRAPHIC)
+	, m_eProjType(PROJ_TYPE::PERSPECTIVE)
 	, m_iLayerCheck(0)
+	, m_bModule(false)
 {		
 }
 
@@ -70,7 +71,9 @@ void CCamera::finalupdate()
 
 	m_frustum.finalupdate();
 
-	CRenderMgr::GetInst()->RegisterCamera(this);
+	if (!m_bModule)
+		CRenderMgr::GetInst()->RegisterCamera(this);
+	
 }
 
 

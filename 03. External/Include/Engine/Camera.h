@@ -38,6 +38,8 @@ private:
 	vector<CGameObject*>	m_vecParticle;
 
 	vector<CGameObject*>	m_vecShadowObj;
+
+	bool		m_bModule;
 public:	
 	virtual void finalupdate();
 	void SortGameObject(); // 렌더링 시점 분류

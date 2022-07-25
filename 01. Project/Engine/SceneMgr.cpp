@@ -1470,28 +1470,15 @@ void CSceneMgr::init()
 	m_pCurScene->GetLayer(4)->SetName(L"Portal");
 	m_pCurScene->GetLayer(5)->SetName(L"Sword");
 	m_pCurScene->GetLayer(6)->SetName(L"Object"); 
+	m_pCurScene->GetLayer(7)->SetName(L"Test");
 	m_pCurScene->GetLayer(29)->SetName(L"UI");
+	m_pCurScene->GetLayer(30)->SetName(L"Test2");
 	m_pCurScene->GetLayer(31)->SetName(L"Tool");
 
 	CGameObject* pObject = nullptr;
 	
 	CreateMap();
-	// ====================
-	// 3D Light Object 추가
-	// ====================
-	pObject = new CGameObject;
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CLight3D);	   	
 	
-	pObject->Light3D()->SetLightPos(Vec3(0.f, 500.f, 0.f));
-	pObject->Light3D()->SetLightType(LIGHT_TYPE::DIR);
-	pObject->Light3D()->SetDiffuseColor(Vec3(1.f, 1.f, 1.f));
-	pObject->Light3D()->SetSpecular(Vec3(0.1f, 0.1f, 0.1f));
-	pObject->Light3D()->SetAmbient(Vec3(0.8f, 0.8f, 0.8f));
-	pObject->Light3D()->SetLightDir(Vec3(-1.f, -1.f, -1.f));
-	pObject->Light3D()->SetLightRange(1000.f);
-	   
-	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);
 
 	// ===================
 	// Player 파일 로드
@@ -1573,6 +1560,26 @@ void CSceneMgr::init()
 	
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pUICam);
 	
+
+
+
+	// ====================
+	// 3D Light Object 추가
+	// ====================
+	pObject = new CGameObject;
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CLight3D);
+
+	pObject->Light3D()->SetLightPos(Vec3(0.f, 500.f, 0.f));
+	pObject->Light3D()->SetLightType(LIGHT_TYPE::DIR);
+	pObject->Light3D()->SetDiffuseColor(Vec3(1.f, 1.f, 1.f));
+	pObject->Light3D()->SetSpecular(Vec3(0.1f, 0.1f, 0.1f));
+	pObject->Light3D()->SetAmbient(Vec3(0.8f, 0.8f, 0.8f));
+	pObject->Light3D()->SetLightDir(Vec3(-1.f, -1.f, -1.f));
+	pObject->Light3D()->SetLightRange(1000.f);
+	pObject->Transform()->SetLocalPos(Vec3(5000.f, 1000.f, 1000.f));
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);
+
 	//CreateTargetUI();
 
 	// ==================
