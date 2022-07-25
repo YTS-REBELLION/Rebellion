@@ -379,7 +379,6 @@ enum class COL_PLANE
 	X_PLANE,
 	Z_PLANE,
 };
-};
 
 enum class QUEST
 {
