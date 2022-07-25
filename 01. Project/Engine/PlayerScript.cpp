@@ -484,8 +484,6 @@ void CPlayerScript::update()
 			g_net.Send_Stop_Packet(false, GetObj()->GetID());
 		}
 
-
-
 		//퀘스트 png
 		Ptr<CTexture> pQuest = CResMgr::GetInst()->Load<CTexture>(L"Quest", L"Texture\\Quest\\npc1_quest1(1).png");
 		Ptr<CTexture> pQuest2 = CResMgr::GetInst()->Load<CTexture>(L"Quest2", L"Texture\\Quest\\npc1_quest1(2).png");
@@ -668,10 +666,12 @@ void CPlayerScript::update()
 
 				switch (m_pColObj->GetPlane())
 				{
-				case COL_PLANE::X_PLANE :
+				case COL_PLANE::Z_PLANE:
+					cout << "여기1 " << endl;
 					localPos.z -= dir_p_f.z * m_fSpeed * DT;
 					break;
-				case COL_PLANE::Z_PLANE:
+				case COL_PLANE::X_PLANE:
+					cout << "여기2 " << endl;
 					localPos.x -= dir_p_f.x * m_fSpeed * DT;
 					break;
 				default:
@@ -683,7 +683,6 @@ void CPlayerScript::update()
 				|| m_pColObj->GetObj()->GetName() == L"M_Monster2"
 				)
 			{
-				cout << m_pColObj->GetObj()->GetScript<CMonsterScript>()->GetID() << endl;
 				Vec3 Col_Pos_1 = localPos;
 				Vec3 Col_Pos_2 = m_pColObj->Transform()->GetLocalPos();
 				Vec3 CNormal_1 = Col_Pos_2 - Col_Pos_1;
