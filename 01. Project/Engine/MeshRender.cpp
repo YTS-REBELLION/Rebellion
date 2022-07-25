@@ -46,6 +46,33 @@ void CMeshRender::render()
 	}
 }
 
+void CMeshRender::render_shadowmap()
+{
+	int a = 1;
+	Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"ShadowMapMtrl");
+
+	for (UINT i = 0; i < m_pMesh->GetSubsetCount(); ++i)
+	{
+		if (Animator3D() && Animator3D()->GetAniUse() == true)
+		{
+			Animator3D()->UpdateData();
+			pMtrl->SetData(SHADER_PARAM::INT_0, &a); // Animation Mesh 알리기
+		}
+
+		Transform()->UpdateData();
+		pMtrl->UpdateData();
+		m_pMesh->render(i);
+	}
+
+	// 정리
+	if (Animator3D() && Animator3D()->GetAniUse() == true)
+	{
+		a = 0;
+		pMtrl->SetData(SHADER_PARAM::INT_0, &a);
+	}
+}
+
+
 Ptr<CMaterial> CMeshRender::GetCloneMaterial(UINT _iSubSet)
 {
 	if (nullptr == m_vecMtrl[_iSubSet])
