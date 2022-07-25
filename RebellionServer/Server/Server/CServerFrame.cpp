@@ -797,9 +797,9 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 	std::unordered_set<int> oldViewList = _objects[id].GetViewList();
 	_objects[id].ClientUnLock();
 	std::unordered_set<int> newViewList;
-	if (_objects[id].GetPos().z >= 5600.f && !queststart) {
+	if (_objects[id].GetPos().z >= 5600.f && !_objects[id]._questStart) {
 		cout << "퀘스트 시작 패킷" << endl;
-		queststart = true;
+		_objects[id]._questStart = true;
 		_sender->SendQuestStartPacket(_objects[id].GetSocket(), id, true);
 	}
 	
