@@ -27,6 +27,11 @@ CRenderMgr::~CRenderMgr()
 
 void CRenderMgr::render()
 {
+	for (int i = 0; i < m_vecCam.size(); ++i) {
+		if (m_vecCam[i]->GetObj()->GetName() == L"MainCam")
+			m_MainCamNum = i;
+	}
+
 	// 초기화
 	float arrColor[4] = { 0.f,0.f, 0.f, 1.f };
 	CDevice::GetInst()->render_start(arrColor);
@@ -56,6 +61,8 @@ void CRenderMgr::render()
 	m_vecCam[0]->render_deferred();
 	m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->TargetToResBarrier();
 
+	// shadowmap 만들기
+	render_shadowmap();
 	// Render Light
 	render_lights();
 		
@@ -68,11 +75,13 @@ void CRenderMgr::render()
 	//=================================
 	// 추가 카메라는 forward render 만
 	//=================================
-	for (int i = 1; i < m_vecCam.size(); ++i)
+	for (size_t i = 0; i < m_vecCam.size(); ++i)
 	{
-		m_vecCam[i]->SortGameObject();
-		m_vecCam[i]->render_forward();
-	}	
+		if (m_vecCam[i]->GetObj()->GetName() != L"MainCam") {
+			m_vecCam[i]->SortGameObject();
+			m_vecCam[i]->render_forward();
+		}
+	}
 
 	// 출력
 	CDevice::GetInst()->render_present();
@@ -122,6 +131,15 @@ void CRenderMgr::render_lights()
 	m_arrMRT[(UINT)MRT_TYPE::LIGHT]->OMSet();
 
 	// 광원을 그린다.
+	CCamera* pMainCam = CRenderMgr::GetInst()->GetMainCam();
+	if (nullptr == pMainCam)
+		return;
+
+	// 메인 카메라 시점 기준 View, Proj 행렬로 되돌린다.
+	g_transform.matView = pMainCam->GetViewMat();
+	g_transform.matProj = pMainCam->GetProjMat();
+	g_transform.matViewInv = pMainCam->GetViewMatInv();
+
 	for (size_t i = 0; i < m_vecLight3D.size(); ++i)
 	{
 		m_vecLight3D[i]->Light3D()->render();
@@ -145,4 +163,30 @@ void CRenderMgr::merge_light()
 
 	pMtrl->UpdateData();
 	pRectMesh->render();
+}
+
+void CRenderMgr::render_shadowmap()
+{
+	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SHADOWMAP)->Clear();
+	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SHADOWMAP)->OMSet();
+
+	// 광원 시점으로 깊이를 그림
+	for (UINT i = 0; i < m_vecLight3D.size(); ++i)
+	{
+		if (m_vecLight3D[i]->GetLight3DInfo().iLightType != (UINT)LIGHT_TYPE::DIR)
+			continue;
+
+		m_vecLight3D[i]->render_shadowmap();
+	}
+
+	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SHADOWMAP)->TargetToResBarrier();
+}
+
+
+CCamera* CRenderMgr::GetMainCam()
+{
+	for (int i = 0; i < m_vecCam.size(); ++i) {
+		if (m_vecCam[i]->GetObj()->GetName() == L"MainCam")
+			return m_vecCam[i];
+	}
 }
