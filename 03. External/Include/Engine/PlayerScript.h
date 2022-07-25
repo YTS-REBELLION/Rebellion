@@ -4,15 +4,6 @@
 #include "SwordStrike.h"
 #include "DeadReckoning.h"
 
-enum class COL_DIR
-{
-	RIGHT,
-	UP,
-	LEFT,
-	DOWN,
-	END,
-};
-
 class DeadReckoning;
 class CPlayerScript :
 	public CScript
@@ -39,7 +30,7 @@ private:
 	int					m_iCulidx;
 
 	bool				FirstPacket = false;
-	COL_DIR				m_eDir = COL_DIR::UP;
+	COL_DIR				m_eDir;
 
 	bool				m_isMain;
 
@@ -139,8 +130,8 @@ public:
 	int GetID() { return m_iID; }
 	void SetID(const int& id) { m_iID = id; }
 
-	CGameObject* m_pColObj;
-	void SetColObj(CGameObject* _obj) { m_pColObj = _obj; }
+	CCollider2D* m_pColObj;
+	void SetColObj(CCollider2D* _obj) { m_pColObj = _obj; }
 
 public:
 	CLONE(CPlayerScript);

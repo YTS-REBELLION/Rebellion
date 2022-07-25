@@ -349,3 +349,17 @@ enum class PERSON_OBJ_TYPE
 	FM_MONSTER,
 	BOSS
 };
+
+enum class COL_DIR
+{
+	FRONT,
+	BACK,
+	RIGHR,
+	LEFT,
+};
+
+enum class COL_PLANE
+{
+	X_PLANE,
+	Z_PLANE,
+};

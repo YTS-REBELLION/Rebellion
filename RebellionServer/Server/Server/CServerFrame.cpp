@@ -1392,7 +1392,7 @@ void CServerFrame::CreateMonster()
 {
 	cout << "Initializing Monster" << endl;
 
-	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_START + 1; ++monsterId) {
+	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_START + 4; ++monsterId) {
 		_objects[monsterId].SetID(monsterId);
 		_objects[monsterId]._status = ST_SLEEP;
 		_objects[monsterId].SetSpeed(100.f);
@@ -1415,9 +1415,9 @@ void CServerFrame::CreateMonster()
 
 
 	_objects[NPC_ID_START].SetPos(Vec3(10.f, 0.f, 8600.f));
-	//_objects[NPC_ID_START + 1].SetPos(Vec3(200.f, 5000.f, 3400.f));
-	//_objects[NPC_ID_START + 2].SetPos(Vec3(400.f, 5000.f, 3400.f));
-	//_objects[NPC_ID_START + 3].SetPos(Vec3(-200.f, 5000.f, 3400.f));
+	_objects[NPC_ID_START + 1].SetPos(Vec3(200.f, 0.f, 8400.f));
+	_objects[NPC_ID_START + 2].SetPos(Vec3(400.f, 0.f, 8400.f));
+	_objects[NPC_ID_START + 3].SetPos(Vec3(-200.f, 0.f, 8400.f));
 	//_objects[NPC_ID_START + 4].SetPos(Vec3(-400.f, 5000.f, 3400.f));
 	//
 	//// Áß¾Ó È¦ ¸ó½ºÅÍ

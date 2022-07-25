@@ -902,7 +902,7 @@ void CSceneMgr::init()
 
 	CGameObject* pObject = nullptr;
 	
-	//CreateMap();
+	CreateMap();
 	// ====================
 	// 3D Light Object 추가
 	// ====================
@@ -934,12 +934,12 @@ void CSceneMgr::init()
 	pPlayer->FrustumCheck(false);
 	//pPlayer->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 	pPlayer->Transform()->SetLocalScale(Vec3(1.0f, 1.0f, 1.0f));
-	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), 0.f, 0.f));
+	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), XMConvertToRadians(180.f) , 0.f));
 	pPlayer->AddComponent(new CCollider2D);
-	pPlayer->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pPlayer->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	pPlayer->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	pPlayer->Collider2D()->SetOffsetScale(Vec3(50.f, 50.f, 50.f));
-	pPlayer->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(-180.f), 0.f, 0.f));
+	pPlayer->Collider2D()->SetOffsetScale(Vec3(70.f, 70.f, 70.f));
+	pPlayer->Collider2D()->SetOffsetRot(Vec3(0.f, 0.f, XMConvertToRadians(-180.f)));
 
 	// 플레이어 스크립트 붙여주기.
 	pPlayer->AddComponent(new CPlayerScript);
@@ -1044,13 +1044,13 @@ void CSceneMgr::init()
 	pMonster->FrustumCheck(false);
 	pMonster->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 	pMonster->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
-	pMonster->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, XMConvertToRadians(-90.f)));
+	pMonster->Transform()->SetLocalRot(Vec3(XMConvertToRadians(90.f),0.f, XMConvertToRadians(-90.f)));
 	//pMonster->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
 	pMonster->AddComponent(new CCollider2D);
-	pMonster->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pMonster->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	pMonster->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	pMonster->Collider2D()->SetOffsetScale(Vec3(20.f, 20.f, 20.f));
-	pMonster->Collider2D()->SetOffsetRot(Vec3(0.f, XMConvertToRadians(-90.f), XMConvertToRadians(90.f)));
+	pMonster->Collider2D()->SetOffsetRot(Vec3(0.f, XMConvertToRadians(90.f), XMConvertToRadians(90.f)));
 
 	// 몬스터 스크립트 붙여주기.
 	pMonster->AddComponent(new CM_MonsterScript);
@@ -1071,6 +1071,44 @@ void CSceneMgr::init()
 	M_MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 3, 0, 53);								// AniData Index 3
 	
 	m_pCurScene->AddGameObject(L"Monster", pMonster, false);
+
+	CGameObject* pMonster2 = new CGameObject;
+	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Monster\\Monster_M_Idle.fbx");
+	//pMeshData->Save(pMeshData->GetPath());
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Idle.mdat", L"MeshData\\Monster_M_Idle.mdat");
+
+	pMonster2 = pMeshData->Instantiate();
+	pMonster2->SetName(L"M_Monster2");
+	pMonster2->FrustumCheck(false);
+	pMonster2->Transform()->SetLocalPos(Vec3(0.f, 0.f, 1000.f));
+	pMonster2->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	pMonster2->Transform()->SetLocalRot(Vec3(XMConvertToRadians(90.f), 0.f, XMConvertToRadians(-90.f)));
+	//pMonster->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
+	pMonster2->AddComponent(new CCollider2D);
+	pMonster2->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+	pMonster2->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pMonster2->Collider2D()->SetOffsetScale(Vec3(20.f, 20.f, 20.f));
+	pMonster2->Collider2D()->SetOffsetRot(Vec3(0.f, XMConvertToRadians(90.f), XMConvertToRadians(90.f)));
+
+	// 몬스터 스크립트 붙여주기.
+	pMonster2->AddComponent(new CM_MonsterScript);
+
+	CM_MonsterScript* M_MonsterScript2 = pMonster2->GetScript<CM_MonsterScript>();
+	pMonster2->GetScript<CM_MonsterScript>()->init();
+
+	////몬스터 애니메이션
+	M_MonsterScript2->SetMonsterAnimationData(pMeshData->GetMesh(), 0, 0, 55);								// AniData Index 0
+
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Walk.mdat", L"MeshData\\Monster_M_Walk.mdat");
+	M_MonsterScript2->SetMonsterAnimationData(pMeshData->GetMesh(), 1, 0, 41);								// AniData Index 1
+
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Hit.mdat", L"MeshData\\Monster_M_Hit.mdat");
+	M_MonsterScript2->SetMonsterAnimationData(pMeshData->GetMesh(), 2, 0, 53);								// AniData Index 2
+
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Attack.mdat", L"MeshData\\Monster_M_Attack.mdat");
+	M_MonsterScript2->SetMonsterAnimationData(pMeshData->GetMesh(), 3, 0, 53);								// AniData Index 3
+
+	m_pCurScene->AddGameObject(L"Monster", pMonster2, false);
 
 	//CGameObject* pMonster = new CGameObject;
 	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Idle.mdat", L"MeshData\\Monster_FM_Idle.mdat");
@@ -1161,7 +1199,7 @@ void CSceneMgr::init()
 	// AddGameObject
 	m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
 
-	m_pCurScene->FindLayer(L"Monster")->AddGameObject(pPotalObject);
+	//m_pCurScene->FindLayer(L"Monster")->AddGameObject(pPotalObject);
 
 	// ====================
 	// Skybox 오브젝트 생성
@@ -1213,6 +1251,7 @@ void CSceneMgr::init()
 	// =================================
 	// Player Layer 와 Monster Layer 는 충돌 검사 진행
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Monster");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Monster");
 	/*CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");*/
 	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Object", L"Player");
 
@@ -1298,184 +1337,174 @@ void CSceneMgr::init()
 	// AddGameObject
 	m_pCurScene->FindLayer(L"Monster")->AddGameObject(GateHouseObject);
 
-	// ===========================================================================================
-	CGameObject* GateHouseObject2 = nullptr;
-	GateHouseObject2 = new CGameObject;
-	pPMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Gatehouses.mdat", L"MeshData\\Gatehouses.mdat");
-	GateHouseObject2 = pPMeshData->Instantiate();
-	GateHouseObject2->SetName(L"Gate_houses2");
-	GateHouseObject2->FrustumCheck(false);
-	//SwordObject->AddComponent(new CTransform);
-	//SwordObject->AddComponent(new CMeshRender);
+	//// ===========================================================================================
+	//CGameObject* GateHouseObject2 = nullptr;
+	//GateHouseObject2 = new CGameObject;
+	//pPMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Gatehouses.mdat", L"MeshData\\Gatehouses.mdat");
+	//GateHouseObject2 = pPMeshData->Instantiate();
+	//GateHouseObject2->SetName(L"Gate_houses2");
+	//GateHouseObject2->FrustumCheck(false);
+	////SwordObject->AddComponent(new CTransform);
+	////SwordObject->AddComponent(new CMeshRender);
 
-	// Transform 설정
-	GateHouseObject2->Transform()->SetLocalPos(Vec3(1000.f, 200.f, 0.f));
-	GateHouseObject2->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
+	//// Transform 설정
+	//GateHouseObject2->Transform()->SetLocalPos(Vec3(1000.f, 200.f, 0.f));
+	//GateHouseObject2->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
 
-	// 더미
-	pObject = new CGameObject;
-	pObject->SetName(L"Map Object");
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CMeshRender);
-	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(1000.f, 200.f, 0.f));
-	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	pObject->AddComponent(new CCollider2D);
-	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	pObject->Collider2D()->SetOffsetScale(Vec3(600.f, 1000.f, 1600.f));
-	// MeshRender 설정
-	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
+	//// 더미
+	//pObject = new CGameObject;
+	//pObject->SetName(L"Map Object");
+	//pObject->AddComponent(new CTransform);
+	//pObject->AddComponent(new CMeshRender);
+	//// Transform 설정
+	//pObject->Transform()->SetLocalPos(Vec3(1000.f, 200.f, 0.f));
+	//pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	//pObject->AddComponent(new CCollider2D);
+	//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	//pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	//pObject->Collider2D()->SetOffsetScale(Vec3(600.f, 1000.f, 1600.f));
+	//// MeshRender 설정
+	//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	//pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
 
-	// AddGameObject
-	m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
+	//// AddGameObject
+	//m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
 
-	//Script 설정
-	GateHouseObject2->AddComponent(new CGateHouse);
-	// AddGameObject
-	m_pCurScene->AddGameObject(L"Monster", GateHouseObject2, false);
+	////Script 설정
+	//GateHouseObject2->AddComponent(new CGateHouse);
+	//// AddGameObject
+	//m_pCurScene->AddGameObject(L"Monster", GateHouseObject2, false);
 
-	// ===========================================================================================
-	CGameObject* GateHouseObject3 = nullptr;
-	GateHouseObject3 = new CGameObject;
-	pPMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Gatehouses.mdat", L"MeshData\\Gatehouses.mdat");
-	GateHouseObject3 = pPMeshData->Instantiate();
-	GateHouseObject3->SetName(L"Gate_houses3");
-	GateHouseObject3->FrustumCheck(false);
-	//SwordObject->AddComponent(new CTransform);
-	//SwordObject->AddComponent(new CMeshRender);
+	//// ===========================================================================================
+	//CGameObject* GateHouseObject3 = nullptr;
+	//GateHouseObject3 = new CGameObject;
+	//pPMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Gatehouses.mdat", L"MeshData\\Gatehouses.mdat");
+	//GateHouseObject3 = pPMeshData->Instantiate();
+	//GateHouseObject3->SetName(L"Gate_houses3");
+	//GateHouseObject3->FrustumCheck(false);
+	////SwordObject->AddComponent(new CTransform);
+	////SwordObject->AddComponent(new CMeshRender);
 
-	// Transform 설정
-	GateHouseObject3->Transform()->SetLocalPos(Vec3(-1400.f, 200.f, 2000.f));
-	GateHouseObject3->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
-
-
-	// 더미
-	pObject = new CGameObject;
-	pObject->SetName(L"Map Object");
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CMeshRender);
-	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(-1400.f, 200.f, 2000.f));
-	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	pObject->AddComponent(new CCollider2D);
-	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	pObject->Collider2D()->SetOffsetScale(Vec3(600.f, 1000.f, 1600.f));
-	// MeshRender 설정
-	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
-
-	// AddGameObject
-	m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
-
-	//Script 설정
-	GateHouseObject3->AddComponent(new CGateHouse);
-	// AddGameObject
-	m_pCurScene->AddGameObject(L"Monster", GateHouseObject3, false);
-
-	// 더미
-	pObject = new CGameObject;
-	pObject->SetName(L"Map Object");
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CMeshRender);
-	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(-94.f, 200.f, 3550.f));
-	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	pObject->AddComponent(new CCollider2D);
-	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	pObject->Collider2D()->SetOffsetScale(Vec3(5000.f, 600.f, 200.f));
-	// MeshRender 설정
-	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
-
-	// AddGameObject
-	m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
-
-	// 더미
-	pObject = new CGameObject;
-	pObject->SetName(L"Map Object");
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CMeshRender);
-	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(-94.f, 200.f, -1455.f));
-	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	pObject->AddComponent(new CCollider2D);
-	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	pObject->Collider2D()->SetOffsetScale(Vec3(5000.f, 600.f, 200.f));
-	// MeshRender 설정
-	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
-
-	// AddGameObject
-	m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
+	//// Transform 설정
+	//GateHouseObject3->Transform()->SetLocalPos(Vec3(-1400.f, 200.f, 2000.f));
+	//GateHouseObject3->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
 
 
+	//// 더미
+	//pObject = new CGameObject;
+	//pObject->SetName(L"Map Object");
+	//pObject->AddComponent(new CTransform);
+	//pObject->AddComponent(new CMeshRender);
+	//// Transform 설정
+	//pObject->Transform()->SetLocalPos(Vec3(-1400.f, 200.f, 2000.f));
+	//pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	//pObject->AddComponent(new CCollider2D);
+	//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	//pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	//pObject->Collider2D()->SetOffsetScale(Vec3(600.f, 1000.f, 1600.f));
+	//// MeshRender 설정
+	//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	//pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
 
-	// 더미
-	pObject = new CGameObject;
-	pObject->SetName(L"Map Object");
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CMeshRender);
-	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(-2465.f, 200.f, 774.f));
-	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	pObject->AddComponent(new CCollider2D);
-	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	pObject->Collider2D()->SetOffsetScale(Vec3(200.f, 600.f, 5000.f));
-	// MeshRender 설정
-	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
+	//// AddGameObject
+	//m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
 
-	// AddGameObject
-	m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
+	////Script 설정
+	//GateHouseObject3->AddComponent(new CGateHouse);
+	//// AddGameObject
+	//m_pCurScene->AddGameObject(L"Monster", GateHouseObject3, false);
+
+	//// 더미
+	//pObject = new CGameObject;
+	//pObject->SetName(L"Map Object");
+	//pObject->AddComponent(new CTransform);
+	//pObject->AddComponent(new CMeshRender);
+	//// Transform 설정
+	//pObject->Transform()->SetLocalPos(Vec3(-94.f, 200.f, 3550.f));
+	//pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	//pObject->AddComponent(new CCollider2D);
+	//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	//pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	//pObject->Collider2D()->SetOffsetScale(Vec3(5000.f, 600.f, 200.f));
+	//// MeshRender 설정
+	//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	//pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
+
+	//// AddGameObject
+	//m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
+
+	//// 더미
+	//pObject = new CGameObject;
+	//pObject->SetName(L"Map Object");
+	//pObject->AddComponent(new CTransform);
+	//pObject->AddComponent(new CMeshRender);
+	//// Transform 설정
+	//pObject->Transform()->SetLocalPos(Vec3(-94.f, 200.f, -1455.f));
+	//pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	//pObject->AddComponent(new CCollider2D);
+	//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	//pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	//pObject->Collider2D()->SetOffsetScale(Vec3(5000.f, 600.f, 200.f));
+	//// MeshRender 설정
+	//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	//pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
+
+	//// AddGameObject
+	//m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
 
 
 
-	// 더미
-	pObject = new CGameObject;
-	pObject->SetName(L"Map Object");
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CMeshRender);
-	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(2465.f, 200.f, 774.f));
-	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	pObject->AddComponent(new CCollider2D);
-	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	pObject->Collider2D()->SetOffsetScale(Vec3(200.f, 600.f, 5000.f));
-	// MeshRender 설정
-	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
+	//// 더미
+	//pObject = new CGameObject;
+	//pObject->SetName(L"Map Object");
+	//pObject->AddComponent(new CTransform);
+	//pObject->AddComponent(new CMeshRender);
+	//// Transform 설정
+	//pObject->Transform()->SetLocalPos(Vec3(-2465.f, 200.f, 774.f));
+	//pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	//pObject->AddComponent(new CCollider2D);
+	//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	//pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	//pObject->Collider2D()->SetOffsetScale(Vec3(200.f, 600.f, 5000.f));
+	//// MeshRender 설정
+	//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	//pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
 
-	// AddGameObject
-	m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
-
-
-	
+	//// AddGameObject
+	//m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
 
 
 
+	//// 더미
+	//pObject = new CGameObject;
+	//pObject->SetName(L"Map Object");
+	//pObject->AddComponent(new CTransform);
+	//pObject->AddComponent(new CMeshRender);
+	//// Transform 설정
+	//pObject->Transform()->SetLocalPos(Vec3(2465.f, 200.f, 774.f));
+	//pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	//pObject->AddComponent(new CCollider2D);
+	//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	//pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	//pObject->Collider2D()->SetOffsetScale(Vec3(200.f, 600.f, 5000.f));
+	//// MeshRender 설정
+	//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	//pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
 
-
-
-
+	//// AddGameObject
+	//m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
 
 
 	m_pCurScene->awake();

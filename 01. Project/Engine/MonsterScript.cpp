@@ -36,7 +36,17 @@ void CMonsterScript::awake()
 
 void CMonsterScript::update()
 {
-	Vec3 WorldDir;
+	Vec3 vDirFront = Transform()->GetLocalDir(DIR_TYPE::FRONT);
+	Vec3 vDirUp = Transform()->GetLocalDir(DIR_TYPE::UP);
+	Vec3 vDirRight = Transform()->GetLocalDir(DIR_TYPE::RIGHT);
+
+	Transform()->SetWorldDir(DIR_TYPE::FRONT, vDirUp);
+	Transform()->SetLocalDir(DIR_TYPE::FRONT, vDirUp);
+
+	Transform()->SetWorldDir(DIR_TYPE::UP, -vDirFront);
+	Transform()->SetLocalDir(DIR_TYPE::UP, -vDirFront);
+
+	Vec3 WorldDir = GetObj()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
 	Vec3 localPos = GetObj()->Transform()->GetLocalPos();
 	Vec3 localRot = GetObj()->Transform()->GetLocalRot();
 	CTransform* playerTrans = Transform();
@@ -49,8 +59,7 @@ void CMonsterScript::update()
 
 	CMonsterScript* Monster = GetObj()->GetScript<CMonsterScript>();
 	const vector<CGameObject*>& vecObject = CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetObjects();
-	Vec3 vDirTemp = GetObj()->Transform()->GetLocalDir(DIR_TYPE::UP);
-	Vec3 vDirFront = Vec3(vDirTemp.x, 0.f, vDirTemp.z);
+	
 	//m_fAngle = acosf(Dot(vDirFront, Monster_Dir) / (Length(vDirFront) * Length(Monster_Dir)));
 	Vec3 vRot;
 	
@@ -61,61 +70,83 @@ void CMonsterScript::update()
 			m_pPlayer = client;
 	}
 
-	//if (vecObject.size() > 0)
-	//{
-		//	메인 클라인가? 
-		//	id	
+	m_fAngle = atan2(localPos.x - m_pPlayer->Transform()->GetLocalPos().x, localPos.z - m_pPlayer->Transform()->GetLocalPos().z) * (180 / XM_PI) * 0.0174532925f;
 
-		//m_pPlayer = vecObject[0]->GetScript<CPlayerScript>();
-		//Monster_Dir.x = m_pPlayer->Transform()->GetLocalPos().x-localPos.x;
-		//Monster_Dir.y = m_pPlayer->Transform()->GetLocalPos().y-localPos.y;
-		//Monster_Dir.z = m_pPlayer->Transform()->GetLocalPos().z-localPos.z;
-		//Monster_Nor = Monster_Dir.Normalize();
-		m_fAngle = atan2(localPos.x - m_pPlayer->Transform()->GetLocalPos().x, localPos.z - m_pPlayer->Transform()->GetLocalPos().z) * (180 / XM_PI) * 0.0174532925f;//acosf(Dot(vDirFront, Monster_Nor));
+	vRot = Vec3(localRot.x, m_fAngle, localRot.z);
 
-		//cout << "몬스터 방향: " << Monster_Dir.x << ",  " << Monster_Dir.y << ",  " << Monster_Dir.z << endl;
-		//cout << "몬스터 방향: " << Monster_Nor.x << ",  " << Monster_Nor.y << ",  " << Monster_Nor.z << endl;
-		//cout << "몬스터 프론: " << vDirFront.x << ",  " << vDirFront.y << ",  " << vDirFront.z << endl<<endl;
-		//float angle = (Monster_Nor.x * vDirFront.y - Monster_Nor.y * vDirFront.x > 0.0f) ? m_fAngle : -m_fAngle;
-		//float angle = XMConvertToDegrees(m_fAngle);
+	Transform()->SetLocalRot(vRot);
+	if (m_Is_Move) {
+		AnimationPlay(MONSTER_ANI_TYPE::WALK);
+	}
+	else if (!m_Is_Move && m_Is_Attack) {
+		AnimationPlay(MONSTER_ANI_TYPE::ATTACK);
+	}
+	else
+		AnimationPlay(MONSTER_ANI_TYPE::IDLE);
 
-		//if (angle > 180.f)
-		//{
-		//	angle -= 360.f;
-		//}
-		//else if
-		//cout << XMConvertToDegrees(m_fAngle) << endl;
-
-		vRot = Vec3(localRot.x, m_fAngle, localRot.z);
-
-		//Transform()->SetLocalRot(vRot);
-		if (m_Is_Move) {
-			AnimationPlay(MONSTER_ANI_TYPE::WALK);
-		}
-		else if (!m_Is_Move && m_Is_Attack) {
-			AnimationPlay(MONSTER_ANI_TYPE::ATTACK);
-		}
-		else
-			AnimationPlay(MONSTER_ANI_TYPE::IDLE);
-
-		if (m_bHit && m_vecAniClipTime[0] < GetObj()->Animator3D()->GetAnimClip(2).dTimeLength)
+	if (m_bHit && m_vecAniClipTime[0] < GetObj()->Animator3D()->GetAnimClip(2).dTimeLength)
+	{
+		m_vecAniClipTime[0] += (DT * 1.5f);
+		AnimationPlay(MONSTER_ANI_TYPE::HIT);
+		if (m_vecAniClipTime[0] > GetObj()->Animator3D()->GetAnimClip(2).dTimeLength)
 		{
-			m_vecAniClipTime[0] += (DT * 1.5f);
-			AnimationPlay(MONSTER_ANI_TYPE::HIT);
-			if (m_vecAniClipTime[0] > GetObj()->Animator3D()->GetAnimClip(2).dTimeLength)
-			{
-				m_vecAniClipTime[0] = 0.0f;
-				GetObj()->Animator3D()->SetClipTime(0, 0.f);
-				m_bHit = false;
-			}
-
+			m_vecAniClipTime[0] = 0.0f;
+			GetObj()->Animator3D()->SetClipTime(0, 0.f);
+			m_bHit = false;
 		}
-	//}
-	UpdateLerpPos();
-	//cout << WorldPos.x << ",  " << WorldPos.y << ",  " << WorldPos.z << endl << endl;
-	//cout << "몬스터: " << localPos.x << ",  " << localPos.y << ",  " << localPos.z << endl;
-	//cout << localRot.x << ",  " << localRot.y << ",  " << localRot.z << endl;
-	//Transform()->SetLocalPos(localPos);
+
+	}
+	if (!m_bColCheck) {
+
+		//localPos += WorldDir * m_fSpeed * DT;
+		UpdateLerpPos();
+	}
+	else
+	{
+		if (m_pColObj->GetObj()->GetName() == L"FM_Monster")
+		{
+			if(GetObj()->GetScript<CMonsterScript>()->GetID() > m_pColObj->GetObj()->GetScript<CMonsterScript>()->GetID())
+			{
+				m_pColObj->GetObj()->GetScript<CMonsterScript>()->GetLerpPos() += WorldDir * m_fSpeed * DT;
+				//m_pColObj->GetObj()->GetScript<CMonsterScript>()->GetLerpPos() += WorldDir * 0.f * DT;
+				//Vec3 Col_Pos_1 = localPos;
+				//Vec3 Col_Pos_2 = m_pColObj->Transform()->GetLocalPos();
+				//Vec3 CNormal_1 = Col_Pos_2 - Col_Pos_1;
+				//CNormal_1.Normalize();
+				//Vec3 CNormal_2 = -CNormal_1;
+				//Vec3 Dir = WorldDir + CNormal_1;
+				//Dir.Normalize();
+
+				//Vec3 Reflect_vec = WorldDir + 2 * CNormal_2 * (Dot(-WorldDir, CNormal_2));
+				//Dot(-WorldDir, CNormal_2) >= 0 ?
+				//	localPos -= Reflect_vec * 50.f * DT :
+				//	localPos += WorldDir * 100.f * DT;
+
+				//LerpPos.y = 0.f;
+				//Transform()->SetLocalPos(LerpPos);
+				UpdateLerpPos();
+			}
+			//// R = P +  2n(-P·n)
+			////	cout << "??" << endl;
+			//Vec3 Col_Pos_1 = localPos;
+			//Vec3 Col_Pos_2 = m_pColObj->Transform()->GetLocalPos();
+			//Vec3 CNormal_1 = Col_Pos_2 - Col_Pos_1;
+			//CNormal_1.Normalize();
+			//Vec3 CNormal_2 = -CNormal_1;
+			//Vec3 Dir = WorldDir + CNormal_1;
+			//Dir.Normalize();
+			////Vec3 Silde_vec = Dir - CNormal_2 * (Dot(Dir, CNormal_2));
+			//int a = 0;
+			////cout << Dot(-WorldDir, CNormal_2) << endl;
+
+			//Vec3 Reflect_vec = WorldDir + 2 * CNormal_2 * (Dot(-WorldDir, CNormal_2));
+			//Dot(-WorldDir, CNormal_2) >= 0 ?
+			//	localPos += Reflect_vec * m_fSpeed * DT :
+			//	localPos += WorldDir * m_fSpeed * DT;
+			////localPos -= Reflect_vec * m_fSpeed * DT;
+			//localPos.y = 0.f;
+		}
+	}
 }
 void CMonsterScript::UpdateLerpPos()
 {
@@ -219,6 +250,11 @@ void CMonsterScript::OnCollision(CCollider2D* _pOther)
 		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
 
 	}
+	else if (_pOther->GetObj()->GetName() == L"FM_Monster")
+	{
+		m_bColCheck = true;
+		SetColObj(_pOther);
+	}
 
 	if (m_fHp < 0.f)
 	{
@@ -233,5 +269,9 @@ void CMonsterScript::OnCollisionExit(CCollider2D* _pOther)
 	if (_pOther->GetObj()->GetName() == L"Player_Sword")
 	{
 		//cout << "검과 충돌 해제" << endl;
+	}
+	else if (_pOther->GetObj()->GetName() == L"FM_Monster")
+	{
+		m_bColCheck = false;
 	}
 }

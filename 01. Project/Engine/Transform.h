@@ -35,6 +35,8 @@ public:
 	const Vec3& GetWorldDir(DIR_TYPE _eType) { return m_vWorldDir[(UINT)_eType]; }
 
 	void SetWorldDir(DIR_TYPE _eType, Vec3 _vDir) { m_vWorldDir[(UINT)_eType] = _vDir; }
+	void SetLocalDir(DIR_TYPE _eType, Vec3 _vDir) { m_vLocalDir[(UINT)_eType] = _vDir; }
+
 	void SetLocalPos(const Vec3& _vPos) { if (m_vLocalPos != _vPos) { m_vLocalPos = _vPos; Changed(); } }
 	void SetLocalScale(const Vec3& _vScale) { if (m_vLocalScale != _vScale) { m_vLocalScale = _vScale; Changed(); } }
 	void SetLocalRot(const Vec3& _vRot) { if (m_vLocalRot != _vRot) { m_vLocalRot = _vRot; Changed(); } }

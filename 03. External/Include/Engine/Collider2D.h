@@ -27,7 +27,9 @@ private:
 	UINT			m_iColID;			// 충돌체 고유 ID 값
 	
 	BoundingBox		m_bBB;
+	COL_PLANE		m_ePlane;
 	//BoundingSphere	m_bBS;
+
 
 public:
 	virtual void update();
@@ -52,6 +54,8 @@ public:
 	void SetFBXColliderType(wstring _str);
 
 	UINT GetColID() { return m_iColID; }
+	COL_PLANE GetPlane() { return m_ePlane; }
+	void SetPlane(COL_PLANE _eType) { m_ePlane = _eType; }
 	const Matrix& GetColliderWorldMat() { return m_matColWorld; }
 
 public:

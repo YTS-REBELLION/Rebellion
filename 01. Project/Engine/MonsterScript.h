@@ -10,7 +10,7 @@ private:
 	Ptr<CMaterial>		m_pCloneMtrl;
 	vector<Ptr<CMesh>>	m_pAniData;
 	Vec3				m_vecPlayerDir;
-	float				m_fSpeed = 200.f;
+	float				m_fSpeed = 100.f;
 	
 	bool				m_Is_Move;
 	bool				m_Is_Attack;
@@ -39,6 +39,10 @@ private:
 	float m_fAngle;
 
 	Vec3 LerpPos;
+
+	CCollider2D* m_pColObj;
+	bool		m_bColCheck = false;
+
 public:
 	virtual void awake();
 	virtual void update();
@@ -75,7 +79,10 @@ public:
 	CGameObject* m_pPlayer;
 	
 	void SetLerpPos(Vec3 Pos) { LerpPos = Pos; }
+	Vec3 GetLerpPos() { return LerpPos; }
 	void UpdateLerpPos();
+
+	void SetColObj(CCollider2D* _obj) { m_pColObj = _obj; }
 public:
 	CLONE(CMonsterScript);
 
