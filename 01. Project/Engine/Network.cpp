@@ -29,9 +29,10 @@ OBJECT_TYPE CheckType(const short& id)
 
 
 CNetwork g_net;
-const char* SERVER_IP = "127.0.0.1";
+//const char* SERVER_IP = "127.0.0.1";
 //const char* SERVER_IP = "192.168.63.11";
 //const char* SERVER_IP = "121.190.132.161";
+const char* SERVER_IP = "172.20.10.2";
 OBJ GameObject;
 
 SOCKET g_socket;

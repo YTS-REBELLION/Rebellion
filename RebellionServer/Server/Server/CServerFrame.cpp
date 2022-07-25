@@ -386,6 +386,8 @@ void CServerFrame::Disconnect(int id)
 
 
 	}
+
+	_acceptNumber -= 1;
 	_objects[id]._status = ST_FREE;
 	_objects[id].ClientUnLock();
 
