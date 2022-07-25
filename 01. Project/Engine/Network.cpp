@@ -490,17 +490,19 @@ void CNetwork::ProcessPacket(char* ptr)
 			cout << "퀘스트 완료!" << endl;
 			cout << "다음 퀘스트 고고 !" << endl;
 		}
-
+		//GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestDone(QUEST::FIRST);
 		switch (packet->nextQuest) {
 		case QUEST::SECOND: {
 			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestCnt(QUEST::SECOND);
-			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestView(packet->isDone);
+			//GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestView(packet->isDone);
 			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestInit(QUEST::SECOND);
 			
 			break;
 		}
 		case QUEST::THIRD: {
 			cout << "세번째 퀘스트 시작!" << endl;
+			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestCnt(QUEST::THIRD);
+			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestInit(QUEST::THIRD);
 			break;
 		}
 		default: {
@@ -517,7 +519,7 @@ void CNetwork::ProcessPacket(char* ptr)
 			
 		cout << "클라이언트 퀘스트 시작하세요" << endl;
 		GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestCnt(QUEST::FIRST);
-		GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestView(packet->isStart);
+		//GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestView(packet->isStart);
 		GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestInit(QUEST::FIRST);
 		
 		break;

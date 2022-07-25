@@ -151,6 +151,8 @@ public:
 	void SetQuestCnt(QUEST questId) { m_iClearCnt = questId; }
 	void SecondQuestInit();
 	void SetQuestView(bool isQuest) { m_questView = isQuest; }
+	void QuestDone(QUEST questNum);
+
 	void SwordStrike();
 	void MegaSlash();
 	void Swing();
