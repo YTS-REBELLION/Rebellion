@@ -132,24 +132,12 @@ void CServerFrame::InitClients()
 			z = 100.f;
 			break;
 		case 1:
-			x = -100.f;
-			z = 100.f;
+			x = -150.f;
+			z = 150.f;
 			break;
 		case 2:
-			x = 200.f;
-			z = -200.f;
-			break;
-		case 3:
 			x = -140.f;
 			z = 400.f;
-			break;
-		case 4:
-			x = -2500.f;
-			z = 5000.f;
-			break;
-		case 5:
-			x = -2800.f;
-			z = 4000.f;
 			break;
 		}
 		Vec3 pos;
@@ -402,6 +390,7 @@ void CServerFrame::DoWorker()
 		WSAOVERLAPPED* over;
 
 		int ret = GetQueuedCompletionStatus(_iocp, &ioBytes, &key, &over, INFINITE);
+		time_point<system_clock> curTime = system_clock::now();
 
 		EXP_OVER* exp_over = reinterpret_cast<EXP_OVER*>(over);
 		int id = static_cast<int>(key);
@@ -512,6 +501,10 @@ void CServerFrame::DoWorker()
 			std::cout << "Unknown EVENT\n";
 			while (true);
 		}
+
+		_elapsedTime = curTime - _prevTime;
+
+		_prevTime = curTime;
 	}
 }
 
@@ -614,6 +607,8 @@ void CServerFrame::AggroMove(int npc_id)
 	Vec3 B_vPos;
 	B_vPos = _objects[npc_id].GetPos();
 
+	
+
 	float distance = Vec3::Distance(A_vPos, B_vPos);
 	bool closed;
 	if (distance < 130.f) // 사거리에 들어옴
@@ -677,6 +672,14 @@ void CServerFrame::AggroMove(int npc_id)
 	Pos.y += _elapsedTime.count() * speed * nor.y;
 	Pos.z += _elapsedTime.count() * speed * nor.z;
 	
+
+	//for (int i = NPC_ID_START; i < NPC_ID_END; ++i) {
+	//	if (_objects[i]._status != ST_ACTIVE) continue;
+	//	if (CollisionMonster(_objects[i].GetPos(), _objects[npc_id].GetPos())) {
+	//		_objects[npc_id].SetPos(Vec3(_objects[npc_id].GetPos().x + 100.f, 0.f, _objects[npc_id].GetPos().z + 100.f));
+	//	}
+	//}
+
 	if (false == closed) {
 		_objects[npc_id].SetPos(Pos);
 		_objects[npc_id].SetMonsterMove(true);
@@ -781,7 +784,6 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 {
 	
 	unordered_set<int> vl = _objects[id].GetViewList();
-	time_point<system_clock> curTime = system_clock::now();
 
 	// 몬스터 관련 패킷
 	for (const int& npc : vl) {
@@ -800,15 +802,14 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 	_objects[id].ClientUnLock();
 	std::unordered_set<int> newViewList;
 	if (_objects[id].GetPos().z >= 5600.f && !_objects[id]._questStart) {
+
 		cout << "퀘스트 시작 패킷" << endl;
 		_objects[id]._questStart = true;
 		_sender->SendQuestStartPacket(_objects[id].GetSocket(), id, true);
 	}
 	
 
-	_elapsedTime = curTime - _prevTime;
-
-	_prevTime = curTime;
+	
 
 	for (auto& cl : _objects) {
 		if (false == IsNear(cl.GetID(), id)) continue;
@@ -920,7 +921,7 @@ void CServerFrame::EnterGame(int id, const char* name)
 	
 
 	_sender->SendLoginOkPacket(_objects[id].GetSocket(), _objects[id].GetID(),
-		200.f, 0.f, 200.f,
+		_objects[id].GetPos().x,_objects[id].GetPos().y,_objects[id].GetPos().z,
 		_objects[id].GetDamage(), _objects[id].GetCurrentHp(),
 		_objects[id].GetMaxHp(), _objects[id].GetLevel(),
 		_objects[id].GetCurrentExp(), _objects[id].GetMaxExp());
@@ -931,13 +932,19 @@ void CServerFrame::EnterGame(int id, const char* name)
 
 	for (auto& cl : _objects) {
 		int i = cl.GetID();
-		if(id == i)continue;
+		if (cl._status == ST_ACTIVE){
+			cout << i << "이 친구 차례" << endl;
+			cout << "다 액티브인데?" << endl;
+		}
+		if (id == i) {
+			cout << id << "==" << i << endl;
+			break;
+		}
 		if (true == IsNear(id, i)) {
 
-
-			if (ST_SLEEP == _objects[i]._status) {
-				ActivateNPC(i);
-			}
+			//if (ST_SLEEP == _objects[i]._status) {
+			//	ActivateNPC(i);
+			//}
 
 			if (ST_ACTIVE == _objects[i]._status) {
 				_objects[id].ClientLock();
@@ -953,6 +960,7 @@ void CServerFrame::EnterGame(int id, const char* name)
 
 					_sender->SendPutObjectPacket(_objects[i].GetSocket(), id, _objects[id].GetPos().x,
 						_objects[id].GetPos().y, _objects[id].GetPos().z, _objects[id].GetMyType());
+
 				}
 			}
 		}
@@ -971,7 +979,17 @@ bool CServerFrame::CAS(volatile atomic<STATUS>* addr, STATUS expected, STATUS ne
 	cout << "CAS" << endl;
 	return atomic_compare_exchange_strong(reinterpret_cast<volatile atomic<STATUS>*>(addr), &expected, new_val);
 }
+bool CServerFrame::CollisionMonster(Vec3 A_vPos, Vec3 B_vPos)
+{
+	float distance = Vec3::Distance(A_vPos, B_vPos);
 
+	if (distance < 50.f)
+		return true;
+	else
+		return false;
+
+
+}
 
 void CServerFrame::CreateMonster()
 {

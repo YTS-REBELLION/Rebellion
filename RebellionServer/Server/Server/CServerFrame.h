@@ -23,7 +23,7 @@ class CServerFrame {
 	CError*		_error;
 	CSender*	_sender;
 	CObject		_objects[141];
-
+	
 
 	// timer
 	std::mutex											_timerLock;
@@ -76,6 +76,8 @@ public:
 	bool IsPlayer(int id);
 	bool IsNearNPC(int player, int npc);
 	bool IsNear(int a, int b);
+	bool CollisionMonster(Vec3 A_vPos, Vec3 B_vPos);
+
 
 	void QuestDone(const short& id);
 
