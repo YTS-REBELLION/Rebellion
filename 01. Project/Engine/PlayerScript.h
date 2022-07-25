@@ -21,10 +21,34 @@ public:
 	
 
 private:
+
+	
+
+	CGameObject* m_pQuestComplete;
+	CGameObject* m_pQuestBoxExplane1;
+	CGameObject* m_pQuestBoxExplane2;
+	CGameObject* m_pQuestBoxExplane3;
+	CGameObject* m_pQuestBoxExplane4;
+	CGameObject* m_pQuestBoxExplane5;
+	CGameObject* m_pQuestBoxExplane6;
+	CGameObject* m_pQuestBoxExplane7;
+	CGameObject* m_pQuestBoxExplane8;
+
 	CGameObject* m_pQuestBox1;
 	CGameObject* m_pQuestBox2;
 	CGameObject* m_pQuestBox3;
-	CGameObject* m_pQuestBox4;
+
+	CGameObject* m_pQuestBox2_1;
+	CGameObject* m_pQuestBox2_2;
+	CGameObject* m_pQuestBox2_3;
+
+	CGameObject* m_pQuestBox3_1;
+	CGameObject* m_pQuestBox3_2;
+	CGameObject* m_pQuestBox3_3;
+
+	int m_iKillMonCnt = 0;
+
+
 	Ptr<CMaterial>		m_pOriginMtrl;
 	Ptr<CMaterial>		m_pCloneMtrl;
 	vector<Ptr<CMesh>>	m_pAniData;
@@ -66,12 +90,14 @@ private:
 	bool m_bQuest_04_clear = false;
 	bool m_bQuest_05_clear = false;
 
+	CGameObject* pManaobj;
 
 	Vec3	CharacterBoxScale = Vec3(100.f, 100.f, 1.f);
 	Vec3	FrameUiScale = Vec3(600.f, 100.f, 1.f);
 	Vec3	HpcoverUiScale = Vec3(500.f, 40.f, 1.f);
 	Vec3	HpUiScale = Vec3(500.f, 40.f, 1.f);
-	Vec3	MpUiScale = Vec3(500.f, 40.f, 1.f);
+	float m_fmana = 500.f;
+	Vec3	MpUiScale = Vec3(m_fmana, 40.f, 1.f);
 
 
 	int					m_iID;

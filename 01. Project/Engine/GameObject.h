@@ -14,6 +14,8 @@ class CLight3D;
 class CCamera;
 class CAnimator3D;
 
+class CParticleSystem;
+
 class CGameObject :
 	public CEntity
 {
@@ -42,7 +44,7 @@ public:
 public:
 	void SetActive(bool _bTrue);
 	bool IsActive() { return m_bActive; }
-
+	CParticleSystem* Particlesystem() { return (CParticleSystem*)m_arrCom[(UINT)COMPONENT_TYPE::PARTICLESYSTEM]; }
 	void FrustumCheck(bool _bCheck) { m_bFrustumCheck = _bCheck; }
 	bool GetFrustumCheck() { return m_bFrustumCheck; }
 public:
