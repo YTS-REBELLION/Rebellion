@@ -25,9 +25,12 @@ private:
 
 	bool				FirstPacket = false;
 	
-
+	bool				isDir = false;
 	int					m_id;
 	bool				m_isMain;
+
+	int					m_targetId;
+	bool				m_isTarget;
 
 	float				m_fMaxHp=1200.f;
 	float				m_fHp=0.f;
@@ -61,7 +64,7 @@ public:
 	void SetOtherMovePacket__IsMoving(const bool& isMoving) {
 		if (m_movePacketTemp != nullptr) m_movePacketTemp->isMoving = isMoving;
 	}
-
+	void SetDirChange(const bool& bis) { isDir = bis; }
 	void SetHP(const int& hp) { m_fHp = hp; }
 	void SetMonsterPacket(sc_packet_npc_attack* p);
 	void SetMonsterAttackPacket(const bool& isAttack) {
@@ -71,6 +74,8 @@ public:
 	void SetMove(bool _Is_Move) { m_Is_Move = _Is_Move; }
 	void SetAttack(bool _Is_Attack) { m_Is_Attack = _Is_Attack; }
 
+	void SetTargetID(const int& targetID) { m_targetId = targetID; }
+	void SetTarget(const bool& isTarget) { m_isTarget = isTarget; }
 	void SetNor(Vec3 nor) { Monster_Dir = nor; }
 	
 	int GetID() { return m_id; }

@@ -33,6 +33,9 @@ private:
 	vector<CGameObject*>	m_vecDeferred;
 	vector<CGameObject*>	m_vecForward;
 
+	vector<CGameObject*>	m_vecParticle;
+
+
 public:	
 	virtual void finalupdate();
 	void SortGameObject(); // 렌더링 시점 분류

@@ -86,6 +86,9 @@
     <ClInclude Include="SimpleMath.h">
       <Filter>etc\DxMath</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\01. Project\Engine\define.h">
+      <Filter>etc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">

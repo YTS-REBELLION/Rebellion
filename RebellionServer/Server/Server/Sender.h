@@ -30,6 +30,14 @@ public:
 	void SendRotatePacket(SOCKET s, int mover, Vec3 rotate);
 	void SendRunPacket(SOCKET s, int id, Vec3 pos, bool isRun);
 	void SendMonsterDiePacket(SOCKET s, const int& monsterid);
+	void SendMonsterDirPacket(SOCKET s, const int& targetId, const int& id, Vec3 vRot);
+	void SendTargetPlayerPacket(SOCKET s, const int& id, bool isTarget , const int& monster_id);
+
+	void SendQuestDonePacket(SOCKET s, int playerId, QUEST nextQuest, bool isDone);
+
+
+
+	void SendQuestStartPacket(SOCKET s, int id, bool isStart);
 
 	void Activate_Player_Move_Event(int target, int player_id);
 private:

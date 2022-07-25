@@ -221,8 +221,82 @@ void CResMgr::CreateDefaultShader()
 	AddRes(L"TrailShader", pShader);
 
 
-
 	
+
+	//  // ShadowMap Shader
+	//pShader = new CShader;
+	//pShader->CreateVertexShader(L"Shader\\light.fx", "VS_ShadowMap", "vs_5_0");
+	//pShader->CreatePixelShader(L"Shader\\light.fx", "PS_ShadowMap", "ps_5_0");
+	//pShader->SetDepthStencilType(DEPTH_STENCIL_TYPE::LESS);
+	//pShader->Create(SHADER_POV::SHADOW);
+	//AddRes(L"ShadowMapShader", pShader);
+
+	// ===============
+	// Particle Shader
+	// ===============
+	pShader = new CShader;
+	pShader->CreateVertexShader(L"Shader\\particle.fx", "VS_Particle", "vs_5_0");
+	pShader->CreateGeometryShader(L"Shader\\particle.fx", "GS_Particle", "gs_5_0");
+	pShader->CreatePixelShader(L"Shader\\particle.fx", "PS_Particle", "ps_5_0");
+	pShader->SetBlendState(BLEND_TYPE::ALPHABLEND); // 알파 블랜드 사용
+	pShader->SetDepthStencilType(DEPTH_STENCIL_TYPE::LESS_NO_WRITE); // 깊이테스트 o, 깊이 기록 x
+	pShader->Create(SHADER_POV::PARTICLE, D3D_PRIMITIVE_TOPOLOGY_POINTLIST); // TOPOLOGY 가 점 형태(정점 1개)
+	pShader->AddShaderParam(tShaderParam{ L"Start Scale", SHADER_PARAM::FLOAT_0 });
+	pShader->AddShaderParam(tShaderParam{ L"End Scale", SHADER_PARAM::FLOAT_1 });
+	pShader->AddShaderParam(tShaderParam{ L"Start Color", SHADER_PARAM::VEC4_0 });
+	pShader->AddShaderParam(tShaderParam{ L"End Color", SHADER_PARAM::VEC4_1 });
+	pShader->AddShaderParam(tShaderParam{ L"Particle Texture", SHADER_PARAM::TEX_0 });
+	AddRes(L"ParticleShader", pShader);
+
+	// ===============
+	// Rain Shader
+	// ===============
+	pShader = new CShader;
+	pShader->CreateVertexShader(L"Shader\\Rain.fx", "VS_Rain", "vs_5_0");
+	pShader->CreateGeometryShader(L"Shader\\Rain.fx", "GS_Rain", "gs_5_0");
+	pShader->CreatePixelShader(L"Shader\\Rain.fx", "PS_Rain", "ps_5_0");
+
+	pShader->SetBlendState(BLEND_TYPE::ALPHABLEND); // 알파 블랜드 사용
+	pShader->SetDepthStencilType(DEPTH_STENCIL_TYPE::LESS_NO_WRITE); // 깊이테스트 o, 깊이 기록 x
+
+	pShader->Create(SHADER_POV::PARTICLE, D3D_PRIMITIVE_TOPOLOGY_POINTLIST); // TOPOLOGY 가 점 형태(정점 1개)
+
+	pShader->AddShaderParam(tShaderParam{ L"Start Scale", SHADER_PARAM::FLOAT_0 });
+	pShader->AddShaderParam(tShaderParam{ L"End Scale", SHADER_PARAM::FLOAT_1 });
+	pShader->AddShaderParam(tShaderParam{ L"Start Color", SHADER_PARAM::VEC4_0 });
+	pShader->AddShaderParam(tShaderParam{ L"End Color", SHADER_PARAM::VEC4_1 });
+	pShader->AddShaderParam(tShaderParam{ L"Particle Texture", SHADER_PARAM::TEX_0 });
+
+	AddRes(L"RainShader", pShader);
+
+
+
+	// ======================
+   // Particle Update Shader
+   // ======================
+	pShader = new CShader;
+	pShader->CreateComputeShader(L"Shader\\particle.fx", "CS_ParticleUpdate", "cs_5_0");
+	AddRes(L"ParticleUpdateShader", pShader);
+
+
+	// ======================
+  // Rain Update Shader
+  // ======================
+	pShader = new CShader;
+	pShader->CreateComputeShader(L"Shader\\rain.fx", "CS_RainUpdate", "cs_5_0");
+	AddRes(L"RainUpdateShader", pShader);
+
+
+	//// ======================
+ // // Fire Shader
+ // // ======================
+ //  pShader = new CShader;
+ //  pShader->CreateVertexShader(L"Shader\\fire.fx", "VS_Fire", "vs_5_0");
+ //  pShader->CreatePixelShader(L"Shader\\fire.fx", "PS_Fire", "ps_5_0");
+ //  pShader->SetBlendState(BLEND_TYPE::ALPHABLEND);
+ //  pShader->SetDepthStencilType(DEPTH_STENCIL_TYPE::LESS_NO_WRITE);
+ //  pShader->Create(SHADER_POV::FORWARD);
+ //  AddRes(L"FireShader", pShader);
 
 }
 
@@ -356,6 +430,50 @@ void CResMgr::CreateDefaultMaterial()
 	//pMtrl->SetShader(FindRes<CShader>(L"2DShadowShader"));
 	//pMtrl->SetPath(L"Material\\2DShadowMtrl.mtrl");
 	//AddRes(L"Material\\2DShadowMtrl.mtrl", pMtrl);
+
+
+	//  // ShadowMap Material
+	//pMtrl = new CMaterial;
+	//pMtrl->DisableFileSave();
+	//pMtrl->SetShader(FindRes<CShader>(L"ShadowMapShader"));
+	//AddRes(L"ShadowMapMtrl", pMtrl);
+
+	// Particle Mtrl
+	pMtrl = new CMaterial;
+	pMtrl->DisableFileSave();
+	pMtrl->SetShader(FindRes<CShader>(L"ParticleShader"));
+	AddRes(L"ParticleMtrl", pMtrl);
+
+	// Rain Mtrl
+	pMtrl = new CMaterial;
+	pMtrl->DisableFileSave();
+	pMtrl->SetShader(FindRes<CShader>(L"RainShader"));
+	AddRes(L"RainMtrl", pMtrl);
+
+	// Particle Update
+	pMtrl = new CMaterial;
+	pMtrl->DisableFileSave();
+	pMtrl->SetShader(FindRes<CShader>(L"ParticleUpdateShader"));
+	Ptr<CTexture> pNoiseTex = Load<CTexture>(L"Texture\\noise.png", L"Texture\\noise.png");
+	pMtrl->SetData(SHADER_PARAM::TEX_0, pNoiseTex.GetPointer());
+	pMtrl->SetData(SHADER_PARAM::VEC2_0, &Vec2(pNoiseTex->Width(), pNoiseTex->Height()));
+	AddRes(L"ParticleUpdateMtrl", pMtrl);
+
+	// Particle Update
+	pMtrl = new CMaterial;
+	pMtrl->DisableFileSave();
+	pMtrl->SetShader(FindRes<CShader>(L"RainUpdateShader"));
+	//Ptr<CTexture> pNoiseTex = Load<CTexture>(L"Texture\\noise.png", L"Texture\\noise.png");
+	pMtrl->SetData(SHADER_PARAM::TEX_0, pNoiseTex.GetPointer());
+	pMtrl->SetData(SHADER_PARAM::VEC2_0, &Vec2(pNoiseTex->Width(), pNoiseTex->Height()));
+	AddRes(L"RainUpdateMtrl", pMtrl);
+
+	  // fire
+	pMtrl = new CMaterial;
+	pMtrl->DisableFileSave();
+	pMtrl->SetShader(FindRes<CShader>(L"FireShader"));
+	AddRes(L"FireMtrl", pMtrl);
+
 }
 
 
@@ -365,6 +483,25 @@ void CResMgr::CreateDefaultMesh()
 	vector<UINT> vecIdx;
 
 	Ptr<CMesh> pMesh = nullptr;
+	VTX v;
+	// ==========
+ // Point Mesh
+ // ==========
+	pMesh = new CMesh;
+
+	v.vPos = Vec3(0.f, 0.f, 0.f);
+	v.vColor = Vec4(1.f, 0.f, 0.f, 1.f);
+	v.vUV = Vec2(0.5f, 0.5f);
+	v.vNormal = Vec3(0.f, 0.f, -1.f);
+	v.vTangent = Vec3(1.f, 0.f, 0.f);
+	v.vBinormal = Vec3(0.f, 1.f, 0.f);
+
+	UINT iIdx = 0;
+
+	pMesh->Create(sizeof(VTX), 1, (BYTE*)&v
+		, DXGI_FORMAT_R32_UINT, 1, (BYTE*)&iIdx);
+
+	AddRes(L"PointMesh", pMesh);
 
 
 	// =============	// 0 --- 1
@@ -373,7 +510,7 @@ void CResMgr::CreateDefaultMesh()
 	// =============	
 	pMesh = new CMesh;
 
-	VTX v;
+	
 	// 1. 입력 조립기 단계에 전달할, 정점 3개로 구성된 삼각형 1개
 	v.vPos = Vec3(-0.5f, 0.5f, 0.f);
 	v.vColor = Vec4(1.f, 0.f, 0.f, 1.f);

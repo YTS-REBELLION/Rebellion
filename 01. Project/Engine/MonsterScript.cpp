@@ -15,7 +15,7 @@ CMonsterScript::CMonsterScript()
 	, m_iCulidx(0)
 	, m_bAniOk(false)
 	, m_fAngle(0.0f)
-	,m_pPlayer(nullptr)
+	//,m_pPlayer(nullptr)
 {
 	m_fHp = m_fMaxHp;
 }
@@ -34,6 +34,7 @@ void CMonsterScript::awake()
 	m_pCloneMtrl->SetData(SHADER_PARAM::INT_0, &a);
 }
 
+
 void CMonsterScript::update()
 {
 	Vec3 vDirFront = Transform()->GetLocalDir(DIR_TYPE::FRONT);
@@ -50,33 +51,37 @@ void CMonsterScript::update()
 	Vec3 localPos = GetObj()->Transform()->GetLocalPos();
 	Vec3 localRot = GetObj()->Transform()->GetLocalRot();
 	CTransform* playerTrans = Transform();
-
 	Vec3 WorldPos = GetObj()->Transform()->GetWorldPos();
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
-	
 	CSceneMgr::GetInst()->FindPlayerPos(L"Player");
 	float fDistanceP_M = Vec3::Distance(CSceneMgr::GetInst()->m_vSavePos, localPos);
-
 	CMonsterScript* Monster = GetObj()->GetScript<CMonsterScript>();
 	const vector<CGameObject*>& vecObject = CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetObjects();
 	
 	//m_fAngle = acosf(Dot(vDirFront, Monster_Dir) / (Length(vDirFront) * Length(Monster_Dir)));
 	Vec3 vRot;
-	
-	//CGameObject* m_pPlayer;
-	for (auto client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
-	{
-		if(client->GetScript<CPlayerScript>()->GetMain() )
-			m_pPlayer = client;
+
+	if (m_isTarget) {
+		for (auto& client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
+		{
+			if (client->GetScript<CPlayerScript>()->GetID() == m_targetId)
+			{
+				m_pPlayer = client;
+			}
+		}
+
+		m_fAngle = atan2(localPos.x - m_pPlayer->Transform()->GetLocalPos().x, localPos.z - m_pPlayer->Transform()->GetLocalPos().z) * (180 / XM_PI) * 0.0174532925f;//acosf(Dot(vDirFront, Monster_Nor));
+
 	}
 
-	m_fAngle = atan2(localPos.x - m_pPlayer->Transform()->GetLocalPos().x, localPos.z - m_pPlayer->Transform()->GetLocalPos().z) * (180 / XM_PI) * 0.0174532925f;
 
 	vRot = Vec3(localRot.x, m_fAngle, localRot.z);
+	
+	Monster->Transform()->SetLocalRot(vRot);
 
-	Transform()->SetLocalRot(vRot);
 	if (m_Is_Move) {
 		AnimationPlay(MONSTER_ANI_TYPE::WALK);
+
 	}
 	else if (!m_Is_Move && m_Is_Attack) {
 		AnimationPlay(MONSTER_ANI_TYPE::ATTACK);
@@ -229,10 +234,14 @@ void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 {
 	if (_pOther->GetObj()->GetName() == L"Player_Sword")
 	{
-	//cout << "검과 충돌" << endl;
+		cout << "검과 충돌1" << endl;
 		m_bHit = true;
-	//g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
+		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
 
+	}
+	if (_pOther->GetObj()->GetName() == L"Player1")
+	{
+		cout << "플레이어와 충돌" << endl;
 	}
 }
 
@@ -241,11 +250,11 @@ void CMonsterScript::OnCollision(CCollider2D* _pOther)
 	//m_fHp -= 4.f;
 	if (_pOther->GetObj()->GetName() == L"Player1")
 	{
-		//cout << "플레이어와 충돌" << endl;
+		cout << "플레이어와 충돌" << endl;
 	}
 	else if (_pOther->GetObj()->GetName() == L"Player_Sword")
 	{
-		//cout << "검과 충돌" << endl;
+		cout << "검과 충돌2" << endl;
 		//m_bHit = true;
 		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
 

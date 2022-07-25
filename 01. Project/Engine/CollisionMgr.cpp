@@ -100,15 +100,11 @@ void CCollisionMgr::CollisionLayer(const CLayer * _pLayer1, const CLayer * _pLay
 			iter = m_mapCol.find(id.ID);
 			bool IsDead = false;
 			if (pCollider1->GetObj()->IsDead()) {
-				cout << "pCollider1" << endl;
 				IsDead = true;
-				//g_net.Send_MonsterDie_Packet(pCollider1->GetObj()->GetID(), IsDead);
 			}
 
 			if (pCollider2->GetObj()->IsDead()) {
-				cout << "pCollider2" << endl;
 				IsDead = true;
-				//g_net.Send_MonsterDie_Packet(pCollider1->GetObj()->GetID(), IsDead);
 			}
 				
 			// 충돌했다.

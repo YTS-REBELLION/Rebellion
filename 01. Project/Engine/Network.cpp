@@ -38,7 +38,7 @@ SOCKET g_socket;
 
 int packetTest;
 int g_myid = -1;
-
+int targetId = -1;
 
 void CNetwork::err_quit(const char* msg)
 {
@@ -164,6 +164,7 @@ void CNetwork::ProcessPacket(char* ptr)
 
 		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetMain();
 		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetID(g_myid);
+
 		//GameObject.find(g_myid)->second->//GetScript<CPlayerScript>()->SetMain();
 		/*GameObject.emplace(g_myid, m_pObj);
 
@@ -210,12 +211,14 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.find(id)->second->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
 			GameObject.find(id)->second->Collider2D()->SetOffsetPos(Vec3(0.f, -100.f, 0.f));
 			GameObject.find(id)->second->Collider2D()->SetOffsetScale(Vec3(100.f, 200.f, 100.f));
-			
+
 			// 플레이어 스크립트 붙여주기.
 			GameObject.find(id)->second->AddComponent(new CPlayerScript);
 			CPlayerScript* PlayerScript = GameObject.find(id)->second->GetScript<CPlayerScript>();
+
 			GameObject.find(id)->second->GetScript<CPlayerScript>()->init();
 			GameObject.find(id)->second->GetScript<CPlayerScript>()->SetID(id);
+			//GameObject.find(id)->second->GetScript<CPlayerScript>()->SetTarget(false);
 
 			PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 0, 0, 55);									// AniData Index 0
 
@@ -277,7 +280,6 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetID(id);
 			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetHP(100);
 			GameObject.find(id)->second->GetScript<CMonsterScript>()->SetLerpPos(Vec3(packet->x, packet->y, packet->z));
-
 
 			CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", GameObject.find(id)->second, false);
 		}
@@ -381,6 +383,8 @@ void CNetwork::ProcessPacket(char* ptr)
 			}
 			else if (CheckType(other_id) == OBJECT_TYPE::FM_MONSTER)
 			{
+
+				//GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetDirChange(true);
 				GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetLerpPos(packet->localPos);
 				GameObject.find(other_id)->second->GetScript<CMonsterScript>()->SetMove(packet->status);
 			}
@@ -397,6 +401,7 @@ void CNetwork::ProcessPacket(char* ptr)
 
 		sc_packet_stop* packet = reinterpret_cast<sc_packet_stop*>(ptr);
 		int other_id = packet->id;
+
 		if (CheckType(other_id) == OBJECT_TYPE::PLAYER) {
 			if (other_id == g_myid)
 			{
@@ -405,6 +410,7 @@ void CNetwork::ProcessPacket(char* ptr)
 			}
 			else
 			{
+
 				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->AnimationPlay(other_id, PLAYER_ANI_TYPE::IDLE);
 			}
 		}
@@ -412,8 +418,6 @@ void CNetwork::ProcessPacket(char* ptr)
 	break;
 	case SC_PACKET_ROTATE: {
 		sc_packet_rotate* packet = reinterpret_cast<sc_packet_rotate*>(ptr);
-
-
 
 		GameObject.find(packet->id)->second->Transform()->SetLocalRot(packet->rotate);
 		break;
@@ -450,7 +454,6 @@ void CNetwork::ProcessPacket(char* ptr)
 				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::RUN);
 			}
 			else {
-
 				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::IDLE);
 			}
 		}
@@ -462,9 +465,63 @@ void CNetwork::ProcessPacket(char* ptr)
 		int monsterId = packet->id;
 
 		CMonsterScript* monsterScr = GameObject.find(monsterId)->second->GetScript<CMonsterScript>();
-
+	
+		//GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->SetDirChange(false);
+	
+		GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->SetMove(false);
 		GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->SetAttack(packet->isAttack);
+		GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->AnimationPlay(MONSTER_ANI_TYPE::ATTACK);
 
+		break;
+	}
+	case SC_PACKET_TARGET: {
+		sc_packet_targetplayer* packet = reinterpret_cast<sc_packet_targetplayer*>(ptr);
+		// packet -> int targetId, bool isTarget
+
+
+		GameObject.find(packet->monster_id)->second->GetScript<CMonsterScript>()->SetTarget(packet->isTarget);
+		GameObject.find(packet->monster_id)->second->GetScript<CMonsterScript>()->SetTargetID(packet->id);
+		
+		break;
+	}
+	case SC_PACKET_QUESTDONE: {
+		sc_packet_questdone* packet = reinterpret_cast<sc_packet_questdone*>(ptr);
+		if (packet->isDone) {
+			cout << "퀘스트 완료!" << endl;
+			cout << "다음 퀘스트 고고 !" << endl;
+		}
+		//GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestDone(QUEST::FIRST);
+		switch (packet->nextQuest) {
+		case QUEST::SECOND: {
+			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestCnt(QUEST::SECOND);
+			//GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestView(packet->isDone);
+			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestInit(QUEST::SECOND);
+			
+			break;
+		}
+		case QUEST::THIRD: {
+			cout << "세번째 퀘스트 시작!" << endl;
+			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestCnt(QUEST::THIRD);
+			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestInit(QUEST::THIRD);
+			break;
+		}
+		default: {
+			cout << "하위" << endl;
+			break;
+		}
+		}
+
+		break;
+
+	}
+	case SC_PACKET_QUESTSTART: {
+		sc_packet_queststart* packet = reinterpret_cast<sc_packet_queststart*>(ptr);
+			
+		cout << "클라이언트 퀘스트 시작하세요" << endl;
+		GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestCnt(QUEST::FIRST);
+		//GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestView(packet->isStart);
+		GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestInit(QUEST::FIRST);
+		
 		break;
 	}
 	default:
@@ -672,6 +729,19 @@ void CNetwork::Send_Player2MonsterCol_Packet(const int& id, const int& playerid,
 	packet.playerId = playerid;
 	packet.size = sizeof(packet);
 	packet.iscol = iscol;
+
+	Send_Packet(&packet);
+
+}
+
+void CNetwork::Send_MonsterRotate_Packet(const int& id, const int& other_id, Vec3 vRot)
+{
+	cs_packet_monsterdir packet;
+	packet.id = id;
+	packet.size = sizeof(packet);
+	packet.vRot = vRot;
+	packet.playerId = other_id;
+	packet.type = CS_PACKET_MONSTERDIR;
 
 	Send_Packet(&packet);
 

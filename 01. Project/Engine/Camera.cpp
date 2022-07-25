@@ -13,6 +13,7 @@
 
 #include "MeshRender.h"
 #include "Collider2D.h"
+#include "ParticleSystem.h"
 
 #define COLLIDER_RENDERER 0
 
@@ -77,7 +78,7 @@ void CCamera::SortGameObject()
 {
 	m_vecDeferred.clear();
 	m_vecForward.clear();
-
+	m_vecParticle.clear();
 	CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
 
 	for (UINT i = 0; i < MAX_LAYER; ++i)
@@ -100,6 +101,11 @@ void CCamera::SortGameObject()
 							m_vecDeferred.push_back(vecObj[i]);
 						else if (SHADER_POV::FORWARD == vecObj[i]->MeshRender()->GetSharedMaterial()->GetShader()->GetShaderPOV())
 							m_vecForward.push_back(vecObj[i]);
+
+						else if (vecObj[i]->Particlesystem())
+						{
+							m_vecParticle.push_back(vecObj[i]);
+						}
 					}
 				}
 			}
@@ -144,6 +150,12 @@ void CCamera::render_forward()
 		if (m_vecDeferred[i]->Collider2D())
 			m_vecDeferred[i]->Collider2D()->render();
 	}
+
+	for (size_t i = 0; i < m_vecParticle.size(); ++i)
+	{
+		m_vecParticle[i]->Particlesystem()->render();
+	}
+
 }
 
 

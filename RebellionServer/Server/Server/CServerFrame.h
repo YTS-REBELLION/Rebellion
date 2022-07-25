@@ -22,8 +22,7 @@ class CServerFrame {
 	//class
 	CError*		_error;
 	CSender*	_sender;
-	CObject		_objects[141-35];
-
+	CObject		_objects[141];
 
 
 	// timer
@@ -37,8 +36,10 @@ class CServerFrame {
 	int _dummpyIndex;
 	
 	OBSTACLE _obstacles[NUM_OBSTACLES];
+	int _acceptNumber = 0;
+	bool isQuestDone = false;
+	bool isSecondQuestDone = false;
 
-	
 
 public:
 	CServerFrame();
@@ -59,25 +60,30 @@ public:
 	void RecvPacketProcess(int, int);
 	void ProcessPacket(int , char*);
 	void EnterGame(int id, const char* name);
+	bool CAS(volatile atomic<STATUS>* addr, STATUS expected, STATUS new_val);
+
 
 
 	void Disconnect(int);
 
 	void ActivateNPC(int id);
-	void MoveUpdate();
 	
 	//
 	void AggroMove(int id);
 	//
-
-	void DoRandomMove(int id);
-	void DoTargetMove(int id);
-	void UpdatePlayerPos(int id);
-	void SetMoveDirection(int id, char direction, bool b);
 	void Do_move(const short& id, const char& dir, Vec3& localPos, const float& rotate);
 	void Do_stop(const short& id, const bool& isMoving);
 	bool IsPlayer(int id);
 	bool IsNearNPC(int player, int npc);
 	bool IsNear(int a, int b);
+
+	void QuestDone(const short& id);
+
+
+
+	int			monsterdieCnt = 0;
+	bool		queststart = false;
+
+
 };
 

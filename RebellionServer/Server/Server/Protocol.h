@@ -10,6 +10,14 @@ const short SERVER_PORT = 9000;
 constexpr int MAX_BUFFER = 1024;
 constexpr int MAX_PACKET_SIZE = 255;
 constexpr short NPC_ID_START = 101;
+constexpr short MONSTER_LV1_ID = 106;
+constexpr short MONSTER_LV2_ID = 117;
+constexpr short MONSTER_LV3_ID = 122;
+constexpr short MONSTER_LV4_ID = 127;
+constexpr short MONSTER_LV5_ID = 134;
+constexpr short MONSTER_LV6_ID = 141;
+constexpr short NPC_ID_END = 140;
+
 constexpr int MAX_USER = 100;
 //#define NPC_ID_START 10000
 
@@ -30,7 +38,7 @@ const char	CS_PACKET_ROTATE = 12;
 const char	CS_PACKET_RUN = 13;
 const char	CS_PACKET_MD = 14;
 const char	CS_PACKET_P2MCOL = 15;
-
+const char	CS_PACKET_MONSTERDIR = 16;
 
 const char  SC_PACKET_LOGIN_OK = 1;
 const char  SC_PACKET_LOGIN_FAIL = 2;
@@ -44,13 +52,17 @@ const char	SC_PACKET_STOP = 9;
 const char	SC_PACKET_PLAYER_ATTACK = 10;
 const char	SC_PACKET_RUN = 11;
 const char	SC_PACKET_MONSTERDIE = 12;
+const char	SC_PACKET_MONSTERDIR = 13;
+const char	SC_PACKET_ROTATE = 14;
+const char	SC_PACKET_NPC_ATTACK = 15;
+const char	SC_PACKET_TARGET = 16;
+const char	SC_PACKET_QUESTDONE = 17;
+const char	SC_PACKET_QUESTSTART = 18;
 
-const char	SC_PACKET_NPC_ATTACK = 13;
 const char	SC_PACKET_HP_CHANGE = 10;
 const char	SC_PACKET_PLAYER_DIE = 11;
 const char	SC_PACKET_DEFENCE = 15;
 const char	SC_PACKET_RETURN = 13;
-const char	SC_PACKET_ROTATE = 14;
 
 constexpr int MAX_PW_LEN = 12;
 constexpr int MAX_ID_LEN = 50;
@@ -223,6 +235,33 @@ struct sc_packet_monsterdie {
 	int id;
 	
 };
+struct sc_packet_monsterdir {
+	char size;
+	char type;
+	int id;
+	int targetId;
+	Vec3 vRot;
+};
+struct sc_packet_targetplayer {
+	char size;
+	char type;
+	int id;
+	bool isTarget;
+	int monster_id;
+};
+struct sc_packet_questdone {
+	char size;
+	char type;
+	bool isDone;
+	int id;
+	QUEST nextQuest;
+};
+struct sc_packet_queststart {
+	char size;
+	char type;
+	bool isStart;
+	int id;
+};
 //---------------------------------------
 
 
@@ -320,5 +359,13 @@ struct cs_packet_player2monstercol {
 	int id;
 	int playerId;
 	bool iscol;
+};
+struct cs_packet_monsterdir {
+	char size;
+	char type;
+	int id;		// 몬스터 아이디
+	int playerId; // 플레이어 아이디 
+	Vec3 vRot;
+
 };
 #pragma pack(pop)

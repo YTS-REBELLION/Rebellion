@@ -12,10 +12,34 @@ public:
 	
 
 private:
+
+	
+
+	CGameObject* m_pQuestComplete;
+	CGameObject* m_pQuestBoxExplane1;
+	CGameObject* m_pQuestBoxExplane2;
+	CGameObject* m_pQuestBoxExplane3;
+	CGameObject* m_pQuestBoxExplane4;
+	CGameObject* m_pQuestBoxExplane5;
+	CGameObject* m_pQuestBoxExplane6;
+	CGameObject* m_pQuestBoxExplane7;
+	CGameObject* m_pQuestBoxExplane8;
+
 	CGameObject* m_pQuestBox1;
 	CGameObject* m_pQuestBox2;
 	CGameObject* m_pQuestBox3;
-	CGameObject* m_pQuestBox4;
+
+	CGameObject* m_pQuestBox2_1;
+	CGameObject* m_pQuestBox2_2;
+	CGameObject* m_pQuestBox2_3;
+
+	CGameObject* m_pQuestBox3_1;
+	CGameObject* m_pQuestBox3_2;
+	CGameObject* m_pQuestBox3_3;
+
+	int m_iKillMonCnt = 0;
+
+
 	Ptr<CMaterial>		m_pOriginMtrl;
 	Ptr<CMaterial>		m_pCloneMtrl;
 	vector<Ptr<CMesh>>	m_pAniData;
@@ -25,10 +49,12 @@ private:
 	bool				m_bSkill;
 	bool				m_bCol;
 	sc_packet_move* m_movePacketTemp = nullptr;
+	
+	int					m_targetId;
+	bool				m_isTarget;
 
 	float				m_vecAniClipTime[5]{};
 	int					m_iCulidx;
-
 	bool				FirstPacket = false;
 	COL_DIR				m_eDir;
 
@@ -45,9 +71,9 @@ private:
 	bool				m_bMeteor2 = false;
 	CGameObject* pMagicJinpp = nullptr;
 	float m_fcreate_time = 0.f;
-	int m_iClearCnt = 0;
+	QUEST m_iClearCnt = QUEST::FIRST;
 	int m_Q_Cnt = 0;
-
+	bool m_questView = false;
 
 	bool m_bQuest_01_clear = false;
 	bool m_bQuest_02_clear = false;
@@ -55,12 +81,14 @@ private:
 	bool m_bQuest_04_clear = false;
 	bool m_bQuest_05_clear = false;
 
+	CGameObject* pManaobj;
 
 	Vec3	CharacterBoxScale = Vec3(100.f, 100.f, 1.f);
 	Vec3	FrameUiScale = Vec3(600.f, 100.f, 1.f);
 	Vec3	HpcoverUiScale = Vec3(500.f, 40.f, 1.f);
 	Vec3	HpUiScale = Vec3(500.f, 40.f, 1.f);
-	Vec3	MpUiScale = Vec3(500.f, 40.f, 1.f);
+	float m_fmana = 500.f;
+	Vec3	MpUiScale = Vec3(m_fmana, 40.f, 1.f);
 
 
 	int					m_iID;
@@ -87,14 +115,18 @@ public:
 	void SetOtherMovePacket__IsMoving(const bool& isMoving) {
 		if (m_movePacketTemp != nullptr)m_movePacketTemp->isMoving = isMoving;
 	}
-	
-
+	void QuestInit(QUEST questNum);
+	void SetTargetID(const int& targetID) { m_targetId = targetID; }
+	void SetTarget(const bool& isTarget) { m_isTarget = isTarget; }
+	int GetTargetId() const { return m_targetId; }
+	bool GetTarget() const {return m_isTarget;}
 	void SetAttack() { 
 		if (m_bAttack) {
 			m_bAttack = false;
 		}
 		else m_bAttack = true;
 	}
+	bool GetAttack() const { return m_bAttack; }
 	void SetSkill() {
 		if (m_bSkill) {
 			m_bSkill = false;
@@ -107,7 +139,10 @@ public:
 		}
 		else m_bCol = true;
 	}
-
+	void SetQuestCnt(QUEST questId) { m_iClearCnt = questId; }
+	void SecondQuestInit();
+	void SetQuestView(bool isQuest) { m_questView = isQuest; }
+	void QuestDone(QUEST questNum);
 
 	void SwordStrike();
 	void MegaSlash();
@@ -118,6 +153,7 @@ public:
 	void Meteor();
 	void Delete_Meteor();
 	void Set_MagicJin(CGameObject* p) { pMagicJinpp = p; };
+	
 
 	bool GetAttack() { return m_bAttack; }
 	bool GetSkill() { return m_bSkill; }
