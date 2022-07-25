@@ -246,7 +246,7 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.emplace(id, pMonster);
 			GameObject.find(id)->second->SetID(id);
 			GameObject.find(id)->second = pMeshData->Instantiate();
-			GameObject.find(id)->second->SetName(L"Monster1");
+			GameObject.find(id)->second->SetName(L"FM_Monster");
 			GameObject.find(id)->second->FrustumCheck(false);
 
 			GameObject.find(id)->second->Transform()->SetLocalPos(Vec3(packet->x, packet->y, packet->z));
@@ -254,9 +254,9 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.find(id)->second->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 			
 			GameObject.find(id)->second->AddComponent(new CCollider2D);
-			GameObject.find(id)->second->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-			GameObject.find(id)->second->Collider2D()->SetOffsetPos(Vec3(0.f, 100.f, 0.f));
-			GameObject.find(id)->second->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
+			GameObject.find(id)->second->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+			GameObject.find(id)->second->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+			GameObject.find(id)->second->Collider2D()->SetOffsetScale(Vec3(20.f, 20.f, 20.f));
 			GameObject.find(id)->second->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(90.f), 0.f, 0.f));
 
 			// 몬스터 스크립트 붙여주기.

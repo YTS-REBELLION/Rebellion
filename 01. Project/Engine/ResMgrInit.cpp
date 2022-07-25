@@ -855,8 +855,8 @@ void CResMgr::CreateDefaultMesh()
 	vecVTX.push_back(v);
 
 	// Body
-	UINT iStackCount = 40; // 가로 분할 개수
-	iSliceCount = 40; // 세로 분할 개수
+	UINT iStackCount = 20; // 가로 분할 개수
+	iSliceCount = 20; // 세로 분할 개수
 
 	float fStackAngle = XM_PI / iStackCount;
 	float fSliceAngle = XM_2PI / iSliceCount;

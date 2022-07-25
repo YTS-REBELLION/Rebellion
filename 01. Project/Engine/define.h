@@ -366,6 +366,21 @@ enum class PERSON_OBJ_TYPE
 	BOSS
 };
 
+enum class COL_DIR
+{
+	FRONT,
+	BACK,
+	RIGHR,
+	LEFT,
+};
+
+enum class COL_PLANE
+{
+	X_PLANE,
+	Z_PLANE,
+};
+};
+
 enum class QUEST
 {
 	FIRST = 1,

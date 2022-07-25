@@ -176,15 +176,15 @@ bool CCollisionMgr::IsCollision(CCollider2D * _pCollider1, CCollider2D * _pColli
 	}
 	else if (COLLIDER2D_TYPE::SPHERE == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::SPHERE == _pCollider2->GetColliderType())
 	{
-
+		return CollisionSphere(_pCollider1, _pCollider2);
 	}
 	else if (COLLIDER2D_TYPE::BOX == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::SPHERE == _pCollider2->GetColliderType())
 	{
-
+		
 	}
 	else if (COLLIDER2D_TYPE::SPHERE == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::BOX == _pCollider2->GetColliderType())
 	{
-
+		return CollisionRectCircle(_pCollider1, _pCollider2);
 	}
 	else if (COLLIDER2D_TYPE::MESH == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::MESH == _pCollider2->GetColliderType())
 	{
@@ -206,24 +206,6 @@ bool CCollisionMgr::IsCollision(CCollider2D * _pCollider1, CCollider2D * _pColli
 
 	return false;
 }
-
-bool CCollisionMgr::CollisionSphere(CCollider2D* _pCollider1, CCollider2D* _pCollider2)
-{
-	//cout << "여기들어오냐?" << endl;
-	//BoundingSphere bBX1 = _pCollider1->GetBS();
-	//BoundingSphere bBX2 = _pCollider2->GetBS();
-
-	//if (bBX1.Contains(bBX2) == 1)
-	//{
-	//	//cout << "물체와 충돌?" << endl;
-	//	//	바운딩 구 중점, 크기 check용 cout.
-	//	wstring a = _pCollider1->GetObj()->GetName();
-	//	wstring b = _pCollider2->GetObj()->GetName();
-	//	return true;
-	//}
-	return false;
-}
-
 
 bool CCollisionMgr::CollisionRect(CCollider2D * _pCollider1, CCollider2D * _pCollider2)
 {
@@ -295,11 +277,7 @@ bool CCollisionMgr::CollisionRect(CCollider2D * _pCollider1, CCollider2D * _pCol
 
 bool CCollisionMgr::CollisionCircle(CCollider2D * _pCollider1, CCollider2D * _pCollider2)
 {
-	return false;
-}
-
-bool CCollisionMgr::CollisionRectCircle(CCollider2D * _pCollider1, CCollider2D * _pCollider2)
-{
+	
 	return false;
 }
 
@@ -375,73 +353,70 @@ bool CCollisionMgr::CollisionRectCircle(CCollider2D * _pCollider1, CCollider2D *
 //	
 //}
 
+bool CCollisionMgr::CollisionRectCircle(CCollider2D* _pCollider1, CCollider2D* _pCollider2)
+{
+	float pos[4] = 
+	{   
+		(_pCollider2->Transform()->GetLocalPos().x + (_pCollider2->Transform()->GetLocalScale().x * _pCollider2->Collider2D()->GetOffsetScale().x) / 2),		// max_x
+		(_pCollider2->Transform()->GetLocalPos().x - (_pCollider2->Transform()->GetLocalScale().x * _pCollider2->Collider2D()->GetOffsetScale().x) / 2),		// min_x
+		(_pCollider2->Transform()->GetLocalPos().z + (_pCollider2->Transform()->GetLocalScale().z * _pCollider2->Collider2D()->GetOffsetScale().z) / 2),		// max_z	
+		(_pCollider2->Transform()->GetLocalPos().z - (_pCollider2->Transform()->GetLocalScale().z * _pCollider2->Collider2D()->GetOffsetScale().z) / 2),		// min_z
+	};
+	int X_Zone = (_pCollider1->Transform()->GetLocalPos().x < pos[1]) ? 0 :
+		(_pCollider1->Transform()->GetLocalPos().x > pos[0]) ? 2 : 1;
+
+	int Z_Zone = (_pCollider1->Transform()->GetLocalPos().z < pos[3]) ? 0 :
+		(_pCollider1->Transform()->GetLocalPos().z > pos[2]) ? 2 : 1;
+
+	int N_Zone = X_Zone + 3 * Z_Zone;
+
+	switch (N_Zone)
+	{
+	case 1:
+	case 7:
+	{
+		float disZ = fabsf(_pCollider1->Transform()->GetLocalPos().z - _pCollider2->Transform()->GetLocalPos().z);
+		_pCollider2->SetPlane(COL_PLANE::X_PLANE);
+		if (disZ <= (_pCollider1->Transform()->GetLocalScale().z * _pCollider1->Collider2D()->GetOffsetScale().z) +
+			(_pCollider2->Transform()->GetLocalScale().z * _pCollider2->Collider2D()->GetOffsetScale().z) / 2)
+			return true;
+	}
+		break;
+	case 3:
+	case 5:
+	{
+		float disX = fabsf(_pCollider1->Transform()->GetLocalPos().x - _pCollider2->Transform()->GetLocalPos().x);
+		_pCollider2->SetPlane(COL_PLANE::Z_PLANE);
+		if (disX <= (_pCollider1->Transform()->GetLocalScale().x * _pCollider1->Collider2D()->GetOffsetScale().x) +
+			(_pCollider2->Transform()->GetLocalScale().x * _pCollider2->Collider2D()->GetOffsetScale().x) / 2)
+			return true;
+	}
+		break;
+	case 4:
+		return true;
+	default:
+		break;
+	}
+	return false;
+}
+
+bool CCollisionMgr::CollisionSphere(CCollider2D* _pCollider1, CCollider2D* _pCollider2)
+{
+	Vec3 Center1 = _pCollider1->Transform()->GetLocalPos();
+	Vec3 Center2 = _pCollider2->Transform()->GetLocalPos();
+
+	float Radius1 = (_pCollider1->Transform()->GetLocalScale().x * _pCollider1->Collider2D()->GetOffsetScale().x);
+	float Radius2 = (_pCollider2->Transform()->GetLocalScale().x * _pCollider2->Collider2D()->GetOffsetScale().x);
+
+	if ((Radius1 + Radius2) >= Length(Center2 - Center1))
+		return true;
+	else
+		return false;
+}
+
 bool CCollisionMgr::CollisionCube(CCollider2D* _pCollider1, CCollider2D* _pCollider2)
 {
-	//{
-	//	static Vec3 arrLocal[4] = {               // 0 -- 1
-	//	  Vec3(-0.5f, 0.5f, 0.f)            // |   |
-	//	, Vec3(0.5f, 0.5f, 0.f)               // 3 -- 2
-	//	, Vec3(0.5f, -0.5f, 0.f)
-	//	, Vec3(-0.5f, -0.5f, 0.f) };
-
-
-	//	const Matrix& matCol1 = _pCollider1->GetColliderWorldMat();
-	//	const Matrix& matCol2 = _pCollider2->GetColliderWorldMat();
-
-	//	Vec3 arrCol1[4] = {};
-	//	Vec3 arrCol2[4] = {};
-	//	Vec3 arrCenter[2] = {};
-
-	//	for (UINT i = 0; i < 4; ++i)
-	//	{
-	//		arrCol1[i] = XMVector3TransformCoord(arrLocal[i], matCol1);
-	//		arrCol2[i] = XMVector3TransformCoord(arrLocal[i], matCol2);
-
-	//		// 2D 충돌이기 때문에 같은 Z 좌표상에서 충돌을 계산한다.
-	//		arrCol1[i].z = 0.f;
-	//		arrCol2[i].z = 0.f;
-	//	}
-
-	//	arrCenter[0] = XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matCol1);
-	//	arrCenter[1] = XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matCol2);
-	//	arrCenter[0].z = 0.f;
-	//	arrCenter[1].z = 0.f;
-
-	//	Vec3 vCenter = arrCenter[1] - arrCenter[0];
-
-	//	Vec3 arrOriginVec[4] = { arrCol1[3] - arrCol1[0]
-	//	   , arrCol1[1] - arrCol1[0]
-	//	   , arrCol2[3] - arrCol2[0]
-	//	   , arrCol2[1] - arrCol2[0]
-	//	};
-
-	//	Vec3 arrProjVec[4] = {};
-	//	for (UINT i = 0; i < 4; ++i)
-	//	{
-	//		arrOriginVec[i].Normalize(arrProjVec[i]);
-	//	}
-
-
-	//	// 투영을 통해서 분리축 테스트
-	//	// vCenter       두 사각형의 중심을 잇는 벡터
-	//	// arrOriginVec  각 사각형의 표면 벡터
-	//	// arrProjVec    사각형의 표면과 평행한 투영축 벡터(단위벡터)
-
-	//	for (UINT i = 0; i < 4; ++i)
-	//	{
-	//		float fCenter = abs(vCenter.Dot(arrProjVec[i])); // 중심 거리 벡터를 해당 투영축으로 투영시킨 길이
-
-	//		float fAcc = 0.f;
-	//		for (UINT j = 0; j < 4; ++j)
-	//			fAcc += abs(arrOriginVec[j].Dot(arrProjVec[i]));
-
-	//		fAcc /= 2.f;
-
-	//		if (fCenter > fAcc)
-	//			return false;
-	//	}
-	//}
-	{
+		{
 		static Vec3 arrLocal[4] = {               // 0 -- 1
 			 Vec3(-0.5f, 0.0f, 0.5f)			  // |    |
 		   , Vec3(0.5f, 0.0f, 0.5f)               // 3 -- 2

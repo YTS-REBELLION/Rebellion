@@ -32,6 +32,10 @@ private:
 
 	float				m_fMaxHp = 1200.f;
 	float				m_fHp = 0.f;
+	float	test = 0.f;
+
+	bool				m_bColCheck = false;
+	CCollider2D* m_pColObj;
 
 	vector<tMTAnimClip>			m_pVecAnimClip;
 
@@ -79,6 +83,8 @@ public:
 
 	void SetLerpPos(Vec3 Pos) { LerpPos = Pos; }
 	void UpdateLerpPos();
+
+	void SetColObj(CCollider2D* _obj) { m_pColObj = _obj; }
 public:
 	CLONE(CM_MonsterScript);
 
