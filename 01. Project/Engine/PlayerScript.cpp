@@ -1008,7 +1008,6 @@ void CPlayerScript::update()
 				|| m_pColObj->GetObj()->GetName() == L"M_Monster2"
 				)
 			{
-				cout << m_pColObj->GetObj()->GetScript<CMonsterScript>()->GetID() << endl;
 				Vec3 Col_Pos_1 = localPos;
 				Vec3 Col_Pos_2 = m_pColObj->Transform()->GetLocalPos();
 				Vec3 CNormal_1 = Col_Pos_2 - Col_Pos_1;
