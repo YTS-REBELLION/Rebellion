@@ -298,145 +298,146 @@ void CPlayerScript::update()
 
 
 	if (m_isMain) {
-		if ((KEY_TAB(KEY_TYPE::KEY_W) || KEY_TAB(KEY_TYPE::KEY_A) || KEY_TAB(KEY_TYPE::KEY_S) || KEY_TAB(KEY_TYPE::KEY_D)) )
-		{
-			GetObj()->Animator3D()->SetClipTime(0, 0.f);
-		}
-		//WorldDir = //XMVector3Rotate(WorldDir, Vec3(XMConvertToRadians(180.f), 0.f, 0.f));
-		//localPos += WorldDir * m_fSpeed * DT;
-
-		if (KEY_HOLD(KEY_TYPE::KEY_W))
-		{
-			//WorldDir = playerTrans->GetWorldDir(DIR_TYPE::FRONT);
-			localPos += WorldDir * m_fSpeed * DT;
-
-			system_clock::time_point start = system_clock::now();
-			m_eDir == COL_DIR::UP;
-
-			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+		if (!m_questView) {
+			if ((KEY_TAB(KEY_TYPE::KEY_W) || KEY_TAB(KEY_TYPE::KEY_A) || KEY_TAB(KEY_TYPE::KEY_S) || KEY_TAB(KEY_TYPE::KEY_D)))
 			{
+				GetObj()->Animator3D()->SetClipTime(0, 0.f);
+			}
+			//WorldDir = //XMVector3Rotate(WorldDir, Vec3(XMConvertToRadians(180.f), 0.f, 0.f));
+			//localPos += WorldDir * m_fSpeed * DT;
+
+			if (KEY_HOLD(KEY_TYPE::KEY_W))
+			{
+				//WorldDir = playerTrans->GetWorldDir(DIR_TYPE::FRONT);
 				localPos += WorldDir * m_fSpeed * DT;
-				AnimationPlay(PLAYER_ANI_TYPE::RUN);
-				g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
+
+				system_clock::time_point start = system_clock::now();
+				m_eDir == COL_DIR::UP;
+
+				if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
+				{
+					localPos += WorldDir * m_fSpeed * DT;
+					AnimationPlay(PLAYER_ANI_TYPE::RUN);
+					g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
 
 
+				}
+				else {
+					AnimationPlay(PLAYER_ANI_TYPE::WALK);
+					g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+
+				};
 			}
-			else {
-				AnimationPlay(PLAYER_ANI_TYPE::WALK);
-				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
-
-			};
-		}
-		else
-		{
-			AnimationPlay(PLAYER_ANI_TYPE::IDLE);
-		}
-		if (KEY_TAB(KEY_TYPE::KEY_SPACE))
-		{
-			GetObj()->Animator3D()->SetClipTime(0, 0.f);
-			SetAttack();
-		}
-		else if (GetAttack()&& m_vecAniClipTime[0] <GetObj()->Animator3D()->GetAnimClip(3).dTimeLength)
-		{
-			m_vecAniClipTime[0] += (DT*1.5f);
-			AnimationPlay(PLAYER_ANI_TYPE::ATTACK);
-			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
-
-			if (m_vecAniClipTime[0] > GetObj()->Animator3D()->GetAnimClip(3).dTimeLength)
+			else
 			{
-				m_vecAniClipTime[0] = 0.0f;
+				AnimationPlay(PLAYER_ANI_TYPE::IDLE);
+			}
+			if (KEY_TAB(KEY_TYPE::KEY_SPACE))
+			{
+				GetObj()->Animator3D()->SetClipTime(0, 0.f);
 				SetAttack();
-				g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
 			}
-		}
-
-		if (KEY_TAB(KEY_TYPE::KEY_2))
-		{
-			GetObj()->Animator3D()->SetClipTime(0, 0.f);
-			SetSkill();
-			SwordStrike();
-		}
-		else if (GetSkill()&&m_vecAniClipTime[1] < GetObj()->Animator3D()->GetAnimClip(4).dTimeLength)
-		{
-			m_vecAniClipTime[1] += (DT * 1.5f);
-			AnimationPlay(PLAYER_ANI_TYPE::SKILL_1);
-
-			if (m_vecAniClipTime[1] > GetObj()->Animator3D()->GetAnimClip(4).dTimeLength)
+			else if (GetAttack() && m_vecAniClipTime[0] < GetObj()->Animator3D()->GetAnimClip(3).dTimeLength)
 			{
-				m_vecAniClipTime[1] = 0.0f;
-				SetSkill();
+				m_vecAniClipTime[0] += (DT * 1.5f);
+				AnimationPlay(PLAYER_ANI_TYPE::ATTACK);
+				g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
+
+				if (m_vecAniClipTime[0] > GetObj()->Animator3D()->GetAnimClip(3).dTimeLength)
+				{
+					m_vecAniClipTime[0] = 0.0f;
+					SetAttack();
+					g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
+				}
 			}
+
+			if (KEY_TAB(KEY_TYPE::KEY_2))
+			{
+				GetObj()->Animator3D()->SetClipTime(0, 0.f);
+				SetSkill();
+				SwordStrike();
+			}
+			else if (GetSkill() && m_vecAniClipTime[1] < GetObj()->Animator3D()->GetAnimClip(4).dTimeLength)
+			{
+				m_vecAniClipTime[1] += (DT * 1.5f);
+				AnimationPlay(PLAYER_ANI_TYPE::SKILL_1);
+
+				if (m_vecAniClipTime[1] > GetObj()->Animator3D()->GetAnimClip(4).dTimeLength)
+				{
+					m_vecAniClipTime[1] = 0.0f;
+					SetSkill();
+				}
+			}
+
+			if (KEY_AWAY(KEY_TYPE::KEY_3))
+			{
+				cout << "메가슬레시!" << endl;
+				MegaSlash();
+
+
+			}
+			if (KEY_AWAY(KEY_TYPE::KEY_4))
+			{
+				cout << "가세연!" << endl;
+				Swing();
+
+
+			}
+			if (KEY_AWAY(KEY_TYPE::KEY_5))
+			{
+				cout << "찌르기!" << endl;
+				Sting();
+
+
+			}
+			if (KEY_AWAY(KEY_TYPE::KEY_6))
+			{
+				cout << "파이어볼!" << endl;
+				FireBall();
+
+
+			}
+			if (KEY_AWAY(KEY_TYPE::KEY_7))
+			{
+				cout << "메테오!" << endl;
+				Meteor();
+				m_bMeteor2 = true;
+
+			}
+			if (KEY_AWAY(KEY_TYPE::KEY_8))
+			{
+				UnleashedPower();
+
+
+			}
+
+
+
+			if (KEY_HOLD(KEY_TYPE::KEY_LBTN))
+			{
+				vRot.y += vDrag.x * DT * 0.5f;
+				g_net.Send_Rotate_Packet(g_myid, vRot);
+				player->Transform()->SetLocalRot(vRot);
+			}
+
+			if (KEY_HOLD(KEY_TYPE::KEY_ENTER))
+			{
+				localPos.x = 0.f;
+
+				localPos.y = 0.f;
+				vRot.y = XM_PI;
+
+				localPos.z = 5600.f;
+				player->Transform()->SetLocalRot(vRot);
+			}
+
+			if ((KEY_AWAY(KEY_TYPE::KEY_W) || KEY_AWAY(KEY_TYPE::KEY_A) || KEY_AWAY(KEY_TYPE::KEY_S) || KEY_AWAY(KEY_TYPE::KEY_D)))
+			{
+				cout << "KET_AWAY" << endl;
+				g_net.Send_Stop_Packet(false, GetObj()->GetID());
+			}
+
 		}
-		
-		if (KEY_AWAY(KEY_TYPE::KEY_3))
-		{
-			cout << "메가슬레시!" << endl;
-			MegaSlash();
-
-
-		}
-		if (KEY_AWAY(KEY_TYPE::KEY_4))
-		{
-			cout << "가세연!" << endl;
-			Swing();
-
-
-		}
-		if (KEY_AWAY(KEY_TYPE::KEY_5))
-		{
-			cout << "찌르기!" << endl;
-			Sting();
-
-
-		}
-		if (KEY_AWAY(KEY_TYPE::KEY_6))
-		{
-			cout << "파이어볼!" << endl;
-			FireBall();
-
-
-		}
-		if (KEY_AWAY(KEY_TYPE::KEY_7))
-		{
-			cout << "메테오!" << endl;
-			Meteor();
-			m_bMeteor2 = true;
-
-		}
-		if (KEY_AWAY(KEY_TYPE::KEY_8))
-		{
-			UnleashedPower();
-
-
-		}
-
-
-
-		if (KEY_HOLD(KEY_TYPE::KEY_LBTN))
-		{
-			vRot.y += vDrag.x * DT * 0.5f;
-			g_net.Send_Rotate_Packet(g_myid, vRot);
-			player->Transform()->SetLocalRot(vRot);
-		}
-
-		if (KEY_HOLD(KEY_TYPE::KEY_ENTER))
-		{
-			localPos.x = 0.f;
-
-			localPos.y = 0.f;
-			vRot.y = XM_PI;
-
-			localPos.z = 5600.f;
-			player->Transform()->SetLocalRot(vRot);
-		}
-
-		if ((KEY_AWAY(KEY_TYPE::KEY_W) || KEY_AWAY(KEY_TYPE::KEY_A) || KEY_AWAY(KEY_TYPE::KEY_S) || KEY_AWAY(KEY_TYPE::KEY_D)))
-		{
-			cout << "KET_AWAY" << endl;
-			g_net.Send_Stop_Packet(false, GetObj()->GetID());
-		}
-
-
 
 		//퀘스트 png
 		Ptr<CTexture> pQuest1 = CResMgr::GetInst()->Load<CTexture>(L"Quest2", L"Texture\\Quest\\npc1_quest1(2).png");
@@ -533,6 +534,7 @@ void CPlayerScript::update()
 				{
 
 					m_bQuest_02_clear = true;
+					m_questView = false;
 					m_pQuestBox4->SetDead();
 					m_Q_Cnt = 0;
 
@@ -1164,81 +1166,95 @@ void CPlayerScript::Delete_Meteor()
 	m_bMeteor2 = false;
 
 }
-void CPlayerScript::QuestInit()
+void CPlayerScript::QuestInit(QUEST questNum)
 {
-
-	cout << "-------------------------------------------------" << endl;
-	cout << "		첫번째 퀘스트" << endl;
-	cout << "	문 앞에 있는 병사를 처치하라!" << endl;
-	cout << "-------------------------------------------------" << endl;
-
-	// 몬스터 사냥 카운트
-	//퀘스트 png
 	Ptr<CTexture> pQuest = CResMgr::GetInst()->Load<CTexture>(L"Quest", L"Texture\\Quest\\npc1_quest1(1).png");
+	Ptr<CTexture> pQuest2 = CResMgr::GetInst()->Load<CTexture>(L"Quest3", L"Texture\\Quest\\UIboard.png");
 
-	tResolution res = CRenderMgr::GetInst()->GetResolution();
+	switch (questNum) {
+	case QUEST::FIRST: {
+		g_net.Send_Stop_Packet(false, GetObj()->GetID());
 
-	Vec3	QuestBoxinScale = Vec3(800.f, 200.f, 1.f);
-	CGameObject* pObject = new CGameObject;
+		cout << "-------------------------------------------------" << endl;
+		cout << "		첫번째 퀘스트" << endl;
+		cout << "	문 앞에 있는 병사를 처치하라!" << endl;
+		cout << "-------------------------------------------------" << endl;
 
-	pObject = new CGameObject;
-	pObject->SetName(L"QuestBox");
-	pObject->FrustumCheck(false);
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CMeshRender);
+		// 몬스터 사냥 카운트
+		//퀘스트 png
 
-	pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 5.f), 0.f - (res.fHeight / 8.f), 1.f));
-	pObject->Transform()->SetLocalScale(QuestBoxinScale);
+		tResolution res = CRenderMgr::GetInst()->GetResolution();
 
-	//MeshRender 설정
+		Vec3	QuestBoxinScale = Vec3(800.f, 200.f, 1.f);
+		CGameObject* pObject = new CGameObject;
 
-	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		pObject = new CGameObject;
+		pObject->SetName(L"QuestBox");
+		pObject->FrustumCheck(false);
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
 
-	Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
-	pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuest.GetPointer());
+		pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 5.f), 0.f - (res.fHeight / 8.f), 1.f));
+		pObject->Transform()->SetLocalScale(QuestBoxinScale);
 
-	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
-	m_pQuestBox1 = pObject;
+		//MeshRender 설정
+
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+		Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+		pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuest.GetPointer());
+
+		// AddGameObject
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+		m_pQuestBox1 = pObject;
+
+		break;
+	}
+	case QUEST::SECOND: {
+		g_net.Send_Stop_Packet(false, GetObj()->GetID());
+
+		cout << "-------------------------------------------------" << endl;
+		cout << "		두번째 퀘스트" << endl;
+		cout << "	중앙 홀에 있는 병사를 처치하라!" << endl;
+		cout << "-------------------------------------------------" << endl;
+
+
+		tResolution res = CRenderMgr::GetInst()->GetResolution();
+
+		Vec3	QuestBoxinScale = Vec3(800.f, 200.f, 1.f);
+		CGameObject* pObject = new CGameObject;
+
+		pObject = new CGameObject;
+		pObject->SetName(L"QuestBox");
+		pObject->FrustumCheck(false);
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
+
+		pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 5.f), 0.f - (res.fHeight / 8.f), 1.f));
+		pObject->Transform()->SetLocalScale(QuestBoxinScale);
+
+		//MeshRender 설정
+
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+		Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+		pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuest2.GetPointer());
+
+		// AddGameObject
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+
+
+		m_pQuestBox3 = pObject;
+		break;
+	}
+	case QUEST::THIRD: {
+		cout << "세번째 퀘스트" << endl;
+		break;
+	}
+	}
+	
 
 	
-}
-
-void CPlayerScript::SecondQuestInit()
-{
-	cout << "-------------------------------------------------" << endl;
-	cout << "		두번째 퀘스트" << endl;
-	cout << "	중앙 홀에 있는 병사를 처치하라!" << endl;
-	cout << "-------------------------------------------------" << endl;
-
-	Ptr<CTexture> pQuest3 = CResMgr::GetInst()->Load<CTexture>(L"Quest3", L"Texture\\Quest\\UIboard.png");
-
-	tResolution res = CRenderMgr::GetInst()->GetResolution();
-
-	Vec3	QuestBoxinScale = Vec3(800.f, 200.f, 1.f);
-	CGameObject* pObject = new CGameObject;
-
-	pObject = new CGameObject;
-	pObject->SetName(L"QuestBox");
-	pObject->FrustumCheck(false);
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CMeshRender);
-
-	pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 5.f), 0.f - (res.fHeight / 8.f), 1.f));
-	pObject->Transform()->SetLocalScale(QuestBoxinScale);
-
-	//MeshRender 설정
-
-	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-
-	Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
-	pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuest3.GetPointer());
-
-	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
-
-
-	m_pQuestBox3 = pObject;
 }

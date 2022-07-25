@@ -58,7 +58,7 @@ private:
 	float m_fcreate_time = 0.f;
 	QUEST m_iClearCnt = QUEST::FIRST;
 	int m_Q_Cnt = 0;
-	bool m_questView = true;
+	bool m_questView = false;
 
 	bool m_bQuest_01_clear = false;
 	bool m_bQuest_02_clear = false;
@@ -98,7 +98,7 @@ public:
 	void SetOtherMovePacket__IsMoving(const bool& isMoving) {
 		if (m_movePacketTemp != nullptr)m_movePacketTemp->isMoving = isMoving;
 	}
-	void QuestInit();
+	void QuestInit(QUEST questNum);
 	void SetTargetID(const int& targetID) { m_targetId = targetID; }
 	void SetTarget(const bool& isTarget) { m_isTarget = isTarget; }
 	int GetTargetId() const { return m_targetId; }

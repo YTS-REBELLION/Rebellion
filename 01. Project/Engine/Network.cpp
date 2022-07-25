@@ -474,17 +474,6 @@ void CNetwork::ProcessPacket(char* ptr)
 
 		break;
 	}
-	case SC_PACKET_MONSTERDIR: {
-		sc_packet_monsterdir* packet = reinterpret_cast<sc_packet_monsterdir*>(ptr);
-		int monsterId = packet->id;
-		GameObject.find(monsterId)->second->Transform()->SetLocalRot(packet->vRot);
-		
-		// 여기서 변수를 카운트 ++ 해야함
-	
-
-
-		break;
-	}
 	case SC_PACKET_TARGET: {
 		sc_packet_targetplayer* packet = reinterpret_cast<sc_packet_targetplayer*>(ptr);
 		// packet -> int targetId, bool isTarget
@@ -506,7 +495,7 @@ void CNetwork::ProcessPacket(char* ptr)
 		case QUEST::SECOND: {
 			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestCnt(QUEST::SECOND);
 			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestView(packet->isDone);
-			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SecondQuestInit();
+			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestInit(QUEST::SECOND);
 			
 			break;
 		}
@@ -527,9 +516,9 @@ void CNetwork::ProcessPacket(char* ptr)
 		sc_packet_queststart* packet = reinterpret_cast<sc_packet_queststart*>(ptr);
 			
 		cout << "클라이언트 퀘스트 시작하세요" << endl;
-
+		GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestCnt(QUEST::FIRST);
 		GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestView(packet->isStart);
-		GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestInit();
+		GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestInit(QUEST::FIRST);
 		
 		break;
 	}

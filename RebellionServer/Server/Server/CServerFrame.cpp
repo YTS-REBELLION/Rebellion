@@ -321,30 +321,23 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 			++monsterdieCnt;
 			_sender->SendMonsterDiePacket(_objects[id].GetSocket(), monsterId);
 			cout << "몬스터 잡기 : " << monsterdieCnt << endl;
-			
-				
 		}
 
 		if (monsterdieCnt == 5 && !isQuestDone)
 		{
 			for(int i = 0; i<_acceptNumber;++i){
-				if (_objects[i]._status != ST_ACTIVE) continue;
-				if (true == IsPlayer(i)) {
-					cout << "퀘스트 완료 패킷 전송 " << endl;
-					_sender->SendQuestDonePacket(_objects[i].GetSocket(), i, QUEST::SECOND, true);
-					isQuestDone = true;
-				}
+				cout << "첫번째 퀘스트 완료 패킷 전송 " << endl;
+				_sender->SendQuestDonePacket(_objects[i].GetSocket(), i, QUEST::SECOND, true);
+				isQuestDone = true;
 			}
 		}
 
 		if (monsterdieCnt == 16 && !isSecondQuestDone) {
 			for (int i = 0; i < _acceptNumber; ++i) {
-				if (_objects[i]._status != ST_ACTIVE) continue;
-				if (true == IsPlayer(i)) {
-					cout << "퀘스트 완료 패킷 전송 " << endl;
-					_sender->SendQuestDonePacket(_objects[i].GetSocket(), i, QUEST::THIRD, true);
-					isSecondQuestDone = true;
-				}
+				cout << "두번째 퀘스트 완료 패킷 전송 " << endl;
+				_sender->SendQuestDonePacket(_objects[i].GetSocket(), i, QUEST::THIRD, true);
+				isSecondQuestDone = true;
+				
 			}
 		}
 
