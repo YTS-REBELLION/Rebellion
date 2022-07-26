@@ -147,8 +147,8 @@ void CServerFrame::InitClients()
 		
 		_objects[i].SetCurrentExp(0);
 		_objects[i].SetMaxExp(100);
-		_objects[i].SetCurrentHp(200);
-		_objects[i].SetMaxHp(200);
+		_objects[i].SetCurrentHp(1500);
+		_objects[i].SetMaxHp(2000);
 		_objects[i].SetPos(pos);
 		_objects[i].SetDamage(25);
 		_objects[i].SetLevel(1);
@@ -350,6 +350,15 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 
 		break;
 	}
+	case CS_PACKET_M2MCOL: {  
+		cs_packet_m2mcol* packet = reinterpret_cast<cs_packet_m2mcol*>(buf);
+		cout << "몬스터끼리 충돌을 서버에 전달 완료" << endl;
+
+		_objects[packet->monsterId].SetMonsterCol(packet->isCol);
+		_objects[packet->monsterId].SetMonsterMove(packet->moveType);
+
+		break;
+	}
 	}
 
 
@@ -390,8 +399,7 @@ void CServerFrame::DoWorker()
 		WSAOVERLAPPED* over;
 
 		int ret = GetQueuedCompletionStatus(_iocp, &ioBytes, &key, &over, INFINITE);
-		time_point<system_clock> curTime = system_clock::now();
-
+		
 		EXP_OVER* exp_over = reinterpret_cast<EXP_OVER*>(over);
 		int id = static_cast<int>(key);
 
@@ -490,7 +498,6 @@ void CServerFrame::DoWorker()
 		case EV_MONSTER_MOVE:
 			AggroMove(id);
 
-			
 			delete exp_over;
 			break;
 		case EV_ATTACK:
@@ -502,9 +509,7 @@ void CServerFrame::DoWorker()
 			while (true);
 		}
 
-		_elapsedTime = curTime - _prevTime;
-
-		_prevTime = curTime;
+		
 	}
 }
 
@@ -576,7 +581,6 @@ void CServerFrame::ActivateNPC(int id)
 
 void CServerFrame::AggroMove(int npc_id)
 {
-
 	Vec3 Pos;
 	int player_id = _objects[npc_id].GetTargetID();
 	//cout << "TargetID : " << player_id << endl;
@@ -667,11 +671,34 @@ void CServerFrame::AggroMove(int npc_id)
 			}
 		}
 	}
+	if (_objects[npc_id].GetMonsterMove() == MONSTER_MOVE::START) {
+		Pos.x += _elapsedTime.count() * speed * nor.x;
+		Pos.y += _elapsedTime.count() * speed * nor.y;
+		Pos.z += _elapsedTime.count() * speed * nor.z;
+		
+	}
+	else {
+		Pos.z -= _elapsedTime.count() * speed * nor.z * 1.5f;
+		Pos.x -= _elapsedTime.count() * speed * nor.x * 1.5f;
+		/*
+	_objects[npc_id].GetMonsterCol() ?
+		Pos.x += _elapsedTime.count() * speed * nor.x,
+		Pos.y += _elapsedTime.count() * speed * nor.y,
+		Pos.z -= _elapsedTime.count() * speed * nor.z :
+		Pos.x -= _elapsedTime.count() * speed * nor.x,
+		Pos.y += _elapsedTime.count() * speed * nor.y,
+		Pos.z += _elapsedTime.count() * speed * nor.z;*/
 
-	Pos.x += _elapsedTime.count() * speed * nor.x;
-	Pos.y += _elapsedTime.count() * speed * nor.y;
-	Pos.z += _elapsedTime.count() * speed * nor.z;
-	
+	}/*
+	if (_objects[npc_id].GetMonsterMove() == MONSTER_MOVE::START) {
+		Pos.x += _elapsedTime.count() * speed * nor.x;
+		Pos.y += _elapsedTime.count() * speed * nor.y;
+		Pos.z += _elapsedTime.count() * speed * nor.z;
+	}
+	else {
+
+		return;
+	}*/
 
 	//for (int i = NPC_ID_START; i < NPC_ID_END; ++i) {
 	//	if (_objects[i]._status != ST_ACTIVE) continue;
@@ -682,14 +709,14 @@ void CServerFrame::AggroMove(int npc_id)
 
 	if (false == closed) {
 		_objects[npc_id].SetPos(Pos);
-		_objects[npc_id].SetMonsterMove(true);
+		_objects[npc_id].SetMonsterMove(MONSTER_MOVE::START);
 	}
 
 	_objects[npc_id].SetLook(nor);
 
 	for (int i = 0; i < NPC_ID_START; ++i) {
 		if (ST_ACTIVE != _objects[i]._status) continue;
-		if (_objects[npc_id].GetMonsterMove() == false) continue;
+		if (_objects[npc_id].GetMonsterMove() == MONSTER_MOVE::STOP) continue;
 		if (true == IsNear(i, npc_id)) {
 			_objects[i].ClientLock();
 			if (0 != _objects[i].GetViewListCount(npc_id)) {
@@ -700,7 +727,7 @@ void CServerFrame::AggroMove(int npc_id)
 						,std::chrono::system_clock::now());
 				}
 				else {
-					_objects[npc_id].SetMonsterMove(false);
+					_objects[npc_id].SetMonsterMove(MONSTER_MOVE::STOP);
 					_sender->SendMovePacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos(),
 						_objects[npc_id].GetLook().x, _objects[npc_id].GetLook().y, _objects[npc_id].GetLook().z, false // false
 						,std::chrono::system_clock::now());
@@ -784,6 +811,7 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 {
 	
 	unordered_set<int> vl = _objects[id].GetViewList();
+	time_point<system_clock> curTime = system_clock::now();
 
 	// 몬스터 관련 패킷
 	for (const int& npc : vl) {
@@ -889,7 +917,9 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 			}
 		}
 	}
+	_elapsedTime = curTime - _prevTime;
 
+	_prevTime = curTime;
 
 }
 
@@ -1001,6 +1031,7 @@ void CServerFrame::CreateMonster()
 		_objects[monsterId].SetSpeed(MONSTER_SPEED);
 		_objects[monsterId].SetMoveType(RANDOM);
 		_objects[monsterId].SetIsAttack(false);
+		_objects[monsterId].SetMonsterMove(MONSTER_MOVE::START);
 		//_objects[monsterId].SetNextPosIndex(0);
 
 	}

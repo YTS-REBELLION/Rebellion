@@ -51,7 +51,7 @@ class CObject
 
 	bool			_isNear;
 	//NPC
-	bool			_isMonsterMove;
+	MONSTER_MOVE	_isMonsterMove;
 
 	bool			_isTarget;
 
@@ -61,7 +61,7 @@ class CObject
 
 	Vec3			_nextPos[3];
 	
-
+	bool			_m2mCol;
 	
 
 
@@ -167,8 +167,8 @@ public:
 	bool GetNearNpc() const { return _isNear; }
 	void SetNearNpc(bool isNear) { _isNear = isNear; }
 
-	bool GetMonsterMove() const { return _isMonsterMove; }
-	void SetMonsterMove(bool isMonsterMove) { _isMonsterMove = isMonsterMove; }
+	MONSTER_MOVE GetMonsterMove() const { return _isMonsterMove; }
+	void SetMonsterMove(MONSTER_MOVE isMonsterMove) { _isMonsterMove = isMonsterMove; }
 
 	bool GetTarget() const { return _isTarget; }
 	void SetTarget(bool isTarget) { _isTarget = isTarget; }
@@ -183,7 +183,7 @@ public:
 
 	}
 
-
-
+	void SetMonsterCol(bool isCol) { _m2mCol = isCol; }
+	bool GetMonsterCol() const { return _m2mCol; }
 };
 

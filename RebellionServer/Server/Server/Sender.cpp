@@ -154,10 +154,6 @@ void CSender::SendPlayerAttackPacket(SOCKET s, int attacker, bool isAttack)
 	SendPacket(s, &packet);
 }
 
-void CSender::SendTransformPacket(SOCKET s, int id, bool b)
-{
-}
-
 
 
 void CSender::SendStatChangePacket(SOCKET s, short level, short currentHp, short maxHp, short currentExp, short maxExp)

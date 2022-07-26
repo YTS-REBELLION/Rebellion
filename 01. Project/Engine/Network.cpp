@@ -747,3 +747,16 @@ void CNetwork::Send_MonsterRotate_Packet(const int& id, const int& other_id, Vec
 
 }
 
+void CNetwork::Send_MobToMobCol_Packet(const int& monsterId, const int& other_monsterId,bool isCol, MONSTER_MOVE moveType)
+{
+	cs_packet_m2mcol packet;
+	packet.size = sizeof(packet);
+	packet.type = CS_PACKET_M2MCOL;
+	packet.monsterId = monsterId;
+	packet.other_monsterId = other_monsterId;
+	packet.isCol = isCol;
+
+	Send_Packet(&packet);
+
+}
+

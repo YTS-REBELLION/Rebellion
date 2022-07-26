@@ -58,6 +58,7 @@ public:
 	void Send_Player2MonsterCol_Packet(const int& id, const int& playerid, const bool& iscol);
 	void SetAnimation(int id, int i);
 	void Send_MonsterRotate_Packet(const int& id, const int& other_id, Vec3 vRot);
+	void Send_MobToMobCol_Packet(const int& monsterId, const int& other_monsterId, bool isCol, MONSTER_MOVE moveType);
 public:
 	void err_quit(const char* msg);
 

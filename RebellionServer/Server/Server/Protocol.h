@@ -39,6 +39,7 @@ const char	CS_PACKET_RUN = 13;
 const char	CS_PACKET_MD = 14;
 const char	CS_PACKET_P2MCOL = 15;
 const char	CS_PACKET_MONSTERDIR = 16;
+const char	CS_PACKET_M2MCOL = 17;
 
 const char  SC_PACKET_LOGIN_OK = 1;
 const char  SC_PACKET_LOGIN_FAIL = 2;
@@ -366,6 +367,15 @@ struct cs_packet_monsterdir {
 	int id;		// 몬스터 아이디
 	int playerId; // 플레이어 아이디 
 	Vec3 vRot;
+
+};
+struct cs_packet_m2mcol {
+	char size;
+	char type;
+	int monsterId;
+	int other_monsterId;
+	bool isCol;
+	MONSTER_MOVE moveType;
 
 };
 #pragma pack(pop)

@@ -21,7 +21,6 @@ public:
 	void SendPlayerDiePacket(SOCKET s, int id);
 	void SendNPCDiePacket(SOCKET s, int id, int type);
 	void SendPlayerAttackPacket(SOCKET s, int id, bool attacker);
-	void SendTransformPacket(SOCKET s, int id, bool b);
 	void SendStatChangePacket(SOCKET s, short level, short currentHp, short maxHp, short currentExp, short maxExp);
 	void SendHpPacket(SOCKET s, short currentHp);
 	void SendDefencePacket(SOCKET s, int id, bool kind);

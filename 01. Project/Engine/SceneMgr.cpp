@@ -1653,7 +1653,7 @@ void CSceneMgr::init()
 	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Idle.mdat", L"MeshData\\Monster_M_Idle.mdat");
 
 	pMonster2 = pMeshData->Instantiate();
-	pMonster2->SetName(L"M_Monster2");
+	pMonster2->SetName(L"w");
 	pMonster2->FrustumCheck(false);
 	pMonster2->Transform()->SetLocalPos(Vec3(0.f, 0.f, 1000.f));
 	pMonster2->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));

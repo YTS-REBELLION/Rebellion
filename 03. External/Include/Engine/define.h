@@ -386,3 +386,9 @@ enum class QUEST
 	SECOND,
 	THIRD
 };
+enum class MONSTER_MOVE
+{
+	START,
+	STOP,
+	RESTART
+};

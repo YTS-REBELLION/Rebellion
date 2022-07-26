@@ -256,6 +256,10 @@ void CM_MonsterScript::OnCollision(CCollider2D* _pOther)
 	//	//cout << "벽 몬스터 충돌" << endl;
 	//	//m_bColCheck = true;
 	//	//SetColObj(_pOther);
+	////}
+	//else if (_pOther->GetObj()->GetName() == L"FM_MONSTER") {
+	//	cout << "몬스터와 몬스터 충돌" << endl;
+
 	//}
 	else if (_pOther->GetObj()->GetName() == L"M_Monster2")
 	{
