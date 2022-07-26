@@ -678,8 +678,14 @@ void CServerFrame::AggroMove(int npc_id)
 		
 	}
 	else {
-		Pos.z -= _elapsedTime.count() * speed * nor.z * 1.5f;
-		Pos.x -= _elapsedTime.count() * speed * nor.x * 1.5f;
+		if (npc_id % 2 == 0) {
+			Pos.z += _elapsedTime.count() * speed * nor.z;
+			Pos.x -= _elapsedTime.count() * speed * nor.x;
+		}
+		else {
+			Pos.z += _elapsedTime.count() * speed * nor.z ;
+			Pos.x += _elapsedTime.count() * speed * nor.x ;
+		}
 		/*
 	_objects[npc_id].GetMonsterCol() ?
 		Pos.x += _elapsedTime.count() * speed * nor.x,
