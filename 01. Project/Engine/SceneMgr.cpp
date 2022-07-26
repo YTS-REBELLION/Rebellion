@@ -1572,7 +1572,7 @@ void CSceneMgr::init()
 	
 	pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHGRAPHIC);
 	pUICam->Camera()->SetFar(100.f);	
-	pUICam->Camera()->SetLayerCheck(29, true);	
+	//pUICam->Camera()->SetLayerCheck(29, true);	
 	
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pUICam);
 	
@@ -1826,8 +1826,8 @@ void CSceneMgr::init()
 	// CollisionMgr 충돌 그룹(Layer) 지정
 	// =================================
 	// Player Layer 와 Monster Layer 는 충돌 검사 진행
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Monster");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Monster");
+	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Monster");
+	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Monster");
 	/*CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");*/
 	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Object", L"Player");
 
