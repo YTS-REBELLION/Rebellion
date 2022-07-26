@@ -7,6 +7,7 @@
 
 CMeshRender::CMeshRender()
 	: CComponent(COMPONENT_TYPE::MESHRENDER)
+	, m_bDynamicShadow(false)
 {
 	m_vecMtrl.resize(1);
 }
@@ -31,7 +32,7 @@ void CMeshRender::render()
 		Transform()->UpdateData();
 
 		// Animator3D 컴포넌트가 있는 경우...
-		if (Animator3D())
+		if (Animator3D() /*&& Animator3D()->GetAniUse() == true*/)
 		{
 			Animator3D()->UpdateData();
 			a = 1;
@@ -53,7 +54,7 @@ void CMeshRender::render_shadowmap()
 
 	for (UINT i = 0; i < m_pMesh->GetSubsetCount(); ++i)
 	{
-		if (Animator3D() && Animator3D()->GetAniUse() == true)
+		if (Animator3D()/* && Animator3D()->GetAniUse() == true*/)
 		{
 			Animator3D()->UpdateData();
 			pMtrl->SetData(SHADER_PARAM::INT_0, &a); // Animation Mesh 알리기
@@ -65,7 +66,7 @@ void CMeshRender::render_shadowmap()
 	}
 
 	// 정리
-	if (Animator3D() && Animator3D()->GetAniUse() == true)
+	if (Animator3D() /*&& Animator3D()->GetAniUse() == true*/)
 	{
 		a = 0;
 		pMtrl->SetData(SHADER_PARAM::INT_0, &a);

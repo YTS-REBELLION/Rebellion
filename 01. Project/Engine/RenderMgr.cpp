@@ -36,6 +36,10 @@ void CRenderMgr::render()
 	float arrColor[4] = { 0.f,0.f, 0.f, 1.f };
 	CDevice::GetInst()->render_start(arrColor);
 
+	// 전역버퍼 데이터 업데이트
+	static CConstantBuffer* pGlobalBuffer = CDevice::GetInst()->GetCB(CONST_REGISTER::b5);
+	CDevice::GetInst()->SetConstBufferToRegister(pGlobalBuffer, pGlobalBuffer->AddData(&g_global));
+
 	// 광원 정보 업데이트
 	UpdateLight2D();
 	UpdateLight3D();
@@ -54,15 +58,15 @@ void CRenderMgr::render()
 	// ==================================
 	// Main Camera 로 Deferred 렌더링 진행
 	// ==================================
-	m_vecCam[0]->SortGameObject();
+	m_vecCam[m_MainCamNum]->SortGameObject();
 		
 	// Deferred MRT 셋팅
 	m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->OMSet();
-	m_vecCam[0]->render_deferred();
+	m_vecCam[m_MainCamNum]->render_deferred();
 	m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->TargetToResBarrier();
 
 	// shadowmap 만들기
-	render_shadowmap();
+	//render_shadowmap();
 	// Render Light
 	render_lights();
 		
@@ -70,7 +74,7 @@ void CRenderMgr::render()
 	merge_light();
 
 	// Forward Render
-	m_vecCam[0]->render_forward(); // skybox, grid, ui
+	m_vecCam[m_MainCamNum]->render_forward(); // skybox, grid, ui
 
 	//=================================
 	// 추가 카메라는 forward render 만
@@ -94,7 +98,7 @@ void CRenderMgr::render_tool()
 	//Clear(arrColor);
 
 	// 광원 정보 업데이트
-	UpdateLight2D();
+	//UpdateLight2D();
 	UpdateLight3D();
 }
 

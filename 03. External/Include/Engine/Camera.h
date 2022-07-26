@@ -74,7 +74,7 @@ public:
 	void SetLayerAllCheck(){m_iLayerCheck = 0xffffffff;}
 	void SetLayerAllRelease() { m_iLayerCheck = 0; }
 
-
+	void SetModule(bool _bModule) { m_bModule = _bModule; }
 	const Matrix& GetViewMat() { return m_matView; }
 	const Matrix& GetViewMatInv() { return m_matViewInv; }
 	const Matrix& GetProjMat() { return m_matProj; }

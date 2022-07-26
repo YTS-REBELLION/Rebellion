@@ -1426,8 +1426,7 @@ void CSceneMgr::init()
 	// =================
 	// Texture 로드
 	Ptr<CTexture> pMonsterTex = CResMgr::GetInst()->Load<CTexture>(L"Monster01", L"Texture\\Monster.png");
-	Ptr<CTexture> pTrail01 = CResMgr::GetInst()->Load<CTexture>(L"Trail01", L"Texture\\trail\\SwordTrail_0.png");
-	Ptr<CTexture> pTrail02 = CResMgr::GetInst()->Load<CTexture>(L"Trail02", L"Texture\\trail\\SwordTrail_1.png");
+	
 
 	Ptr<CTexture> pTex = CResMgr::GetInst()->Load<CTexture>(L"TestTex", L"Texture\\Health.png");
 	Ptr<CTexture> pExplosionTex = CResMgr::GetInst()->Load<CTexture>(L"Explosion", L"Texture\\Explosion\\Explosion80.png");	
@@ -1502,6 +1501,8 @@ void CSceneMgr::init()
 	pPlayer->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(-180.f), 0.f, 0.f));
 	//pPlayer->Collider2D()->SetOffsetRot(Vec3(0.f, XMConvertToRadians(180.f), 0.f));
 	// 플레이어 스크립트 붙여주기.
+	pPlayer->MeshRender()->SetDynamicShadow(true);
+
 	pPlayer->AddComponent(new CPlayerScript);
 
 	CPlayerScript* PlayerScript = pPlayer->GetScript<CPlayerScript>();
@@ -1842,7 +1843,7 @@ void CSceneMgr::init()
 	GateHouseObject = pPMeshData->Instantiate();
 	GateHouseObject->SetName(L"Gate_houses");
 	GateHouseObject->FrustumCheck(false);
-
+	GateHouseObject->MeshRender()->SetDynamicShadow(true);
 	// Transform 설정
 	GateHouseObject->Transform()->SetLocalPos(Vec3(-1400.f, 200.f, 0.f));
 	GateHouseObject->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
@@ -1879,6 +1880,7 @@ void CSceneMgr::init()
 	GateHouseObject2 = pPMeshData->Instantiate();
 	GateHouseObject2->SetName(L"Gate_houses2");
 	GateHouseObject2->FrustumCheck(false);
+	GateHouseObject2->MeshRender()->SetDynamicShadow(true);
 	//SwordObject->AddComponent(new CTransform);
 	//SwordObject->AddComponent(new CMeshRender);
 
@@ -2044,28 +2046,28 @@ void CSceneMgr::init()
 
 	
 
-	//// ====================
-	//// Fire 오브젝트 생성
-	//// ====================
-	//pObject = new CGameObject;
-	//pObject->SetName(L"FireTest");
-	//pObject->FrustumCheck(false);
-	//pObject->AddComponent(new CTransform);
-	//pObject->AddComponent(new CMeshRender);
-	//pObject->AddComponent(new CFire);
-	//
+	// ====================
+	// Fire 오브젝트 생성
+	// ====================
+	pObject = new CGameObject;
+	pObject->SetName(L"FireTest");
+	pObject->FrustumCheck(false);
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->AddComponent(new CFire);
+	
 
-	//pObject->Transform()->SetLocalPos(Vec3(0,0,0));
-	//pObject->Transform()->SetLocalScale(Vec3(10000.f, 10000.f, 1.f));
-	//// MeshRender 설정
-	//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	//pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
-	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
-	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
-	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
-	//pObject->GetScript<CFire>()->init();
-	//// AddGameObject
-	//m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);
+	pObject->Transform()->SetLocalPos(Vec3(0,200,0));
+	pObject->Transform()->SetLocalScale(Vec3(10000.f, 10000.f, 1.f));
+	// MeshRender 설정
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+	pObject->GetScript<CFire>()->init();
+	// AddGameObject
+	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);
 
 
 

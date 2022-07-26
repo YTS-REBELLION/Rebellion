@@ -432,6 +432,16 @@ void CResMgr::CreateDefaultMaterial()
 	//AddRes(L"Material\\2DShadowMtrl.mtrl", pMtrl);
 
 
+	// ==================
+	// trail Material
+	// ==================
+	pMtrl = new CMaterial;
+	pMtrl->DisableFileSave();
+	pMtrl->SetShader(FindRes<CShader>(L"TrailShader"));
+	AddRes(L"TrailMtrl", pMtrl);
+
+	
+
 	  // ShadowMap Material
 	pMtrl = new CMaterial;
 	pMtrl->DisableFileSave();

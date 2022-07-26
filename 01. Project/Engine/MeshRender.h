@@ -23,7 +23,7 @@ public:
 	UINT GetMaterialCount() { return (UINT)m_vecMtrl.size(); }
 	void SetMaterial(Ptr<CMaterial> _pMtrl, UINT _iSubset = 0);
 	bool GetDynamicShadow() { return m_bDynamicShadow; }
-
+	void SetDynamicShadow(bool _bTrue) { m_bDynamicShadow = _bTrue; }
 public:
 	void render();
 	void render_shadowmap();

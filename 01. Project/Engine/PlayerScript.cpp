@@ -13,6 +13,7 @@
 #include"Meteor.h"
 #include"UnleashedPower.h"
 
+
 bool isReckoning = false;
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
@@ -36,6 +37,9 @@ void CPlayerScript::init()
 
 	Ptr<CMeshData>pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Sword.mdat", L"MeshData\\Player_Sword.mdat");
 	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
+	Ptr<CTexture> pTrail01 = CResMgr::GetInst()->Load<CTexture>(L"Trail01", L"Texture\\trail\\SwordTrail_0.png");
+	Ptr<CTexture> pTrail02 = CResMgr::GetInst()->Load<CTexture>(L"Trail02", L"Texture\\trail\\SwordTrail_1.png");
+
 
 	pSwordObject = pMeshData->Instantiate();
 	pSwordObject->SetName(L"Player_Sword");
@@ -55,8 +59,35 @@ void CPlayerScript::init()
 	CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
 	pSwordObject->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, GetObj(), 25);
 
+	TRIALVTX vertex[100];
+	for (int i = 0; i < m_iTrailIdxCount; ++i)
+		//vertex[i].dwColor;
+	for (int i = 0; i < m_iTrailIdxCount / 2; ++i)
+	{
+		vertex[2 * i].vTexUV = { ((m_iTrailIdxCount / 2.f - i) / (m_iTrailIdxCount / 2 - 1.f)), 0.f };
+		vertex[(2 * i) + 1].vTexUV = { ((m_iTrailIdxCount / 2.f - i) / (m_iTrailIdxCount / 2 - 1.f)), 1.f };
+	}
+
+	int iIdx = 0;
+	for (auto& iter = m_lstTrailVtx.rbegin(); iter != m_lstTrailVtx.rend(); ++iter)
+	{
+		vertex[iIdx].vPosition = iter->vPosition;
+		++iIdx;
+		if (iIdx >= m_iTrailIdxCount)
+			break;
+	}
+
+	//트레일 적용하는곳
+	////// MeshRender 설정
+	//SwordScript->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	//SwordScript->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TrailMtrl"));
+	//SwordScript->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pTrail01.GetPointer());
+
 	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pSwordObject, false);
 	GetObj()->AddChild(pSwordObject);
+
+
+
 	Ptr<CTexture> pS_astrostone = CResMgr::GetInst()->Load<CTexture>(L"Astrostone", L"Texture\\Icon\\S_astrostone.png");
 	Ptr<CTexture> pS_Blood_splash = CResMgr::GetInst()->Load<CTexture>(L"Bloodsplash", L"Texture\\Icon\\S_Blood_splash.png");
 	Ptr<CTexture> pS_Blue_firework = CResMgr::GetInst()->Load<CTexture>(L"Blue_firework", L"Texture\\Icon\\S_Blue_firework.png");
@@ -442,35 +473,7 @@ void CPlayerScript::update()
 
 
 
-		//퀘스트1 png
-		Ptr<CTexture> pQuestexplane1 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane", L"Texture\\Quest\\quest01.png");
-
-		Ptr<CTexture> pQuest0 = CResMgr::GetInst()->Load<CTexture>(L"Quest", L"Texture\\Quest\\npc1_quest00.png");
-		Ptr<CTexture> pQuest1 = CResMgr::GetInst()->Load<CTexture>(L"Quest2", L"Texture\\Quest\\npc1_quest01.png");
-		Ptr<CTexture> pQuest2 = CResMgr::GetInst()->Load<CTexture>(L"Quest3", L"Texture\\Quest\\npc1_quest02.png");
-		//퀘스트2 png
-		Ptr<CTexture> pQuestexplane2_0 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane2_0", L"Texture\\Quest\\quest02_0.png");
-		Ptr<CTexture> pQuestexplane2_1 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane2_1", L"Texture\\Quest\\quest02_1.png");
-		Ptr<CTexture> pQuestexplane2_2 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane2_2", L"Texture\\Quest\\quest02_2.png");
-		Ptr<CTexture> pQuestexplane2_3 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane2_3", L"Texture\\Quest\\quest02_3.png");
-
-		Ptr<CTexture> pQuest2_0 = CResMgr::GetInst()->Load<CTexture>(L"Quest2_1", L"Texture\\Quest\\npc2_quest00.png");
-		Ptr<CTexture> pQuest2_1 = CResMgr::GetInst()->Load<CTexture>(L"Quest2_2", L"Texture\\Quest\\npc2_quest01.png");
-		Ptr<CTexture> pQuest2_2 = CResMgr::GetInst()->Load<CTexture>(L"Quest2_3", L"Texture\\Quest\\npc2_quest02.png");
-
-		//퀘스트3 png
-
-		Ptr<CTexture> pQuestexplane3_0 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_0", L"Texture\\Quest\\quest03_0.png");
-		Ptr<CTexture> pQuestexplane3_1 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_1", L"Texture\\Quest\\quest03_1.png");
-		Ptr<CTexture> pQuestexplane3_2 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_2", L"Texture\\Quest\\quest03_2.png");
-		Ptr<CTexture> pQuestexplane3_3 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_3", L"Texture\\Quest\\quest03_3.png");
-
-		Ptr<CTexture> pQuest3_0 = CResMgr::GetInst()->Load<CTexture>(L"Quest3_1", L"Texture\\Quest\\npc3_quest00.png");
-		Ptr<CTexture> pQuest3_1 = CResMgr::GetInst()->Load<CTexture>(L"Quest3_2", L"Texture\\Quest\\npc3_quest01.png");
-		Ptr<CTexture> pQuest3_2 = CResMgr::GetInst()->Load<CTexture>(L"Quest3_3", L"Texture\\Quest\\npc3_quest02.png");
-
-
-		Ptr<CTexture> pQuestComplete = CResMgr::GetInst()->Load<CTexture>(L"QuestComplete", L"Texture\\Quest\\QuestComplete.png"); 
+		
 
 		
 		if (KEY_TAB(KEY_TYPE::KEY_0))

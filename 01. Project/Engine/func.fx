@@ -45,13 +45,27 @@ tLightColor CalLight(int _iLightIdx, float3 _vViewNormal, float3 _vViewPos)
     float3 vReflect = normalize(vViewLightDir + 2 * (dot(-vViewLightDir, _vViewNormal) * _vViewNormal));    
     float3 vEye = normalize(_vViewPos);
     fSpecPow = saturate(dot(-vEye, vReflect));    
-    fSpecPow = pow(fSpecPow, 10);
+    fSpecPow = pow(fSpecPow, 20);
  
     tCol.vDiff = fDiffPow * g_Light3D[_iLightIdx].tCol.vDiff * fRatio;
     tCol.vSpec = fSpecPow * g_Light3D[_iLightIdx].tCol.vSpec * fRatio;
     tCol.vAmb = g_Light3D[_iLightIdx].tCol.vAmb;
     
     return tCol;
+}
+
+float CalTessLevel(in float3 _vWorldCamPos, float3 _vPatchPos, float _fMin, float _fMax, float _fMaxLv) {
+    float fLen = length(_vPatchPos - _vWorldCamPos);
+
+    float fLevel = (_fMaxLv - 1.f) * ((1.f - saturate((fLen - _fMin) / (_fMax - _fMin))));
+    if (fLevel == _fMaxLv - 1.f)
+    {
+        fLevel += 1.f;
+    }
+
+    fLevel = pow(2, fLevel);
+
+    return fLevel;
 }
 
 static float gaussian5x5[25] =
