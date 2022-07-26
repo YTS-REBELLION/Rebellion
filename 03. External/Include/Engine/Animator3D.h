@@ -30,6 +30,7 @@ public:
 	void SetAnimClip(const vector<tMTAnimClip>* _vecAnimClip);
 	void UpdateData();
 	void SetClipTime(int _iClipIdx, float _fTime) { m_vecClipUpdateTime[_iClipIdx] = _fTime; }
+	float GetCliTime(int _iClipIdx) { return  m_vecClipUpdateTime[_iClipIdx]; }
 	//vector<float> Getab() { return m_vecClipUpdateTime }
 	tMTAnimClip GetAnimClip(int _idx) { return m_pVecClip->at(_idx); }
 	//double GetCurTime() { return m_dCurTime; }

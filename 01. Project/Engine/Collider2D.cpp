@@ -9,7 +9,6 @@
 #include "ConstantBuffer.h"
 
 #include "Script.h"
-#include "PlayerScript.h"
 
 UINT CCollider2D::g_iColID = 0;
 
@@ -83,8 +82,10 @@ void CCollider2D::render()
 {
 	//if (KEY_HOLD(KEY_TYPE::KEY_D))
 	//{
-		return;
+	//	return;
 	//}
+
+	return;
 	
 	if (!IsActive())
 		return;

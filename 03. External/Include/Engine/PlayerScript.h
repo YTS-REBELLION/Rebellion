@@ -90,8 +90,38 @@ private:
 	float m_fmana = 500.f;
 	Vec3	MpUiScale = Vec3(m_fmana, 40.f, 1.f);
 
+	Ptr<CMeshData> pPMeshData;
 
 	int					m_iID;
+	bool				m_bSkill_Start[4] = { false, };
+	//Äù½ºÆ®1 png
+	Ptr<CTexture> pQuestexplane1 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane", L"Texture\\Quest\\quest01.png");
+
+	Ptr<CTexture> pQuest0 = CResMgr::GetInst()->Load<CTexture>(L"Quest", L"Texture\\Quest\\npc1_quest00.png");
+	Ptr<CTexture> pQuest1 = CResMgr::GetInst()->Load<CTexture>(L"Quest2", L"Texture\\Quest\\npc1_quest01.png");
+	Ptr<CTexture> pQuest2 = CResMgr::GetInst()->Load<CTexture>(L"Quest3", L"Texture\\Quest\\npc1_quest02.png");
+	//Äù½ºÆ®2 png
+	Ptr<CTexture> pQuestexplane2_0 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane2_0", L"Texture\\Quest\\quest02_0.png");
+	Ptr<CTexture> pQuestexplane2_1 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane2_1", L"Texture\\Quest\\quest02_1.png");
+	Ptr<CTexture> pQuestexplane2_2 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane2_2", L"Texture\\Quest\\quest02_2.png");
+	Ptr<CTexture> pQuestexplane2_3 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane2_3", L"Texture\\Quest\\quest02_3.png");
+
+	Ptr<CTexture> pQuest2_1 = CResMgr::GetInst()->Load<CTexture>(L"Quest2_2", L"Texture\\Quest\\npc2_quest01.png");
+	Ptr<CTexture> pQuest2_2 = CResMgr::GetInst()->Load<CTexture>(L"Quest2_3", L"Texture\\Quest\\npc2_quest02.png");
+
+	//Äù½ºÆ®3 png
+
+	Ptr<CTexture> pQuestexplane3_0 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_0", L"Texture\\Quest\\quest03_0.png");
+	Ptr<CTexture> pQuestexplane3_1 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_1", L"Texture\\Quest\\quest03_1.png");
+	Ptr<CTexture> pQuestexplane3_2 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_2", L"Texture\\Quest\\quest03_2.png");
+	Ptr<CTexture> pQuestexplane3_3 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_3", L"Texture\\Quest\\quest03_3.png");
+
+	Ptr<CTexture> pQuest3_0 = CResMgr::GetInst()->Load<CTexture>(L"Quest3_1", L"Texture\\Quest\\npc3_quest00.png");
+	Ptr<CTexture> pQuest3_1 = CResMgr::GetInst()->Load<CTexture>(L"Quest3_2", L"Texture\\Quest\\npc3_quest01.png");
+	Ptr<CTexture> pQuest3_2 = CResMgr::GetInst()->Load<CTexture>(L"Quest3_3", L"Texture\\Quest\\npc3_quest02.png");
+
+
+	Ptr<CTexture> pQuestComplete = CResMgr::GetInst()->Load<CTexture>(L"QuestComplete", L"Texture\\Quest\\QuestComplete.png");
 public:
 	virtual void awake();	
 	virtual void update();
@@ -168,6 +198,8 @@ public:
 
 	CCollider2D* m_pColObj;
 	void SetColObj(CCollider2D* _obj) { m_pColObj = _obj; }
+
+	bool GetSkillStrat(int _index) { return m_bSkill_Start[_index]; }
 
 public:
 	CLONE(CPlayerScript);

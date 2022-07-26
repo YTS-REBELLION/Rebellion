@@ -1,13 +1,12 @@
 #include "stdafx.h"
 #include "SwordStrike.h"
+#include "PlayerScript.h"
+
 CSwordStrike::CSwordStrike()
 	: CScript((UINT)SCRIPT_TYPE::SWORDSCRIPT)
 	, m_pOriginMtrl(nullptr)
 	, m_pCloneMtrl(nullptr)
 {
-
-
-
 }
 
 CSwordStrike::~CSwordStrike()
@@ -23,42 +22,26 @@ void CSwordStrike::awake()
 
 void CSwordStrike::update()
 {
-	m_fcreate_time += DT;
-	if (m_fcreate_time >= 3.f)
-	{
-		GetObj()->SetDead();
-	}
+	//if (m_fcreate_time >= 3.f)
+	//{
+	//	GetObj()->SetDead();
+	//}
 
-
-	Vec3 WorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	Vec3 WorldDir = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
 	Vec3 localPos = Transform()->GetLocalPos();
 
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
 	Vec3 vRot = Transform()->GetLocalRot();
 
-	localPos.y += 50 * DT;
+	m_fcreate_time += DT;
 
-
-	float Temp = 75 * DT;
-
-
-	/*if (this->Transform()->GetLocalDir(DIR_TYPE::FRONT).x >= 1.f)
+	if (m_pPlayer->GetScript<CPlayerScript>()->GetSkillStrat(0))
 	{
-		WorldDir *= -1;
-	}*/
-
-	localPos += WorldDir * Temp;
-
-
-
-
-
-
-
-
-	Transform()->SetLocalPos(localPos);
-	Transform()->SetLocalRot(vRot);
-
-
+		localPos -= WorldDir * m_fspeed * DT;
+		Transform()->SetLocalPos(localPos);
+		Transform()->SetLocalRot(Vec3(vRot.x, vRot.y, vRot.z));
+	}
+	else if(!m_pPlayer->GetScript<CPlayerScript>()->GetSkillStrat(0) && m_fcreate_time >= 1.f)
+		GetObj()->SetDead();
 
 }

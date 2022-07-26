@@ -238,34 +238,34 @@ void CFBXLoader::GetTangent(FbxMesh * _pMesh
 	, int _iIdx		 /*해당 정점의 인덱스*/
 	, int _iVtxOrder /*폴리곤 단위로 접근하는 순서*/)
 {
-	int iTangentCnt = _pMesh->GetElementTangentCount();
-	if (1 > iTangentCnt)
-		assert(NULL); // 정점 1개가 포함하는 탄젠트 정보가 2개 이상이다.
+	//int iTangentCnt = _pMesh->GetElementTangentCount();
+	//if (1 > iTangentCnt)
+	//	assert(NULL); // 정점 1개가 포함하는 탄젠트 정보가 2개 이상이다.
 
-	// 탄젠트 data 의 시작 주소
-	FbxGeometryElementTangent* pTangent = _pMesh->GetElementTangent();
-	UINT iTangentIdx = 0;
-	
-	if (pTangent->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
-	{
-		if (pTangent->GetReferenceMode() == FbxGeometryElement::eDirect)
-			iTangentIdx = _iVtxOrder;
-		else
-			iTangentIdx = pTangent->GetIndexArray().GetAt(_iVtxOrder);
-	}
-	else if (pTangent->GetMappingMode() == FbxGeometryElement::eByControlPoint)
-	{
-		if (pTangent->GetReferenceMode() == FbxGeometryElement::eDirect)
-			iTangentIdx = _iIdx;
-		else
-			iTangentIdx = pTangent->GetIndexArray().GetAt(_iIdx);
-	}
+	//// 탄젠트 data 의 시작 주소
+	//FbxGeometryElementTangent* pTangent = _pMesh->GetElementTangent();
+	//UINT iTangentIdx = 0;
+	//
+	//if (pTangent->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
+	//{
+	//	if (pTangent->GetReferenceMode() == FbxGeometryElement::eDirect)
+	//		iTangentIdx = _iVtxOrder;
+	//	else
+	//		iTangentIdx = pTangent->GetIndexArray().GetAt(_iVtxOrder);
+	//}
+	//else if (pTangent->GetMappingMode() == FbxGeometryElement::eByControlPoint)
+	//{
+	//	if (pTangent->GetReferenceMode() == FbxGeometryElement::eDirect)
+	//		iTangentIdx = _iIdx;
+	//	else
+	//		iTangentIdx = pTangent->GetIndexArray().GetAt(_iIdx);
+	//}
 
-	FbxVector4 vTangent = pTangent->GetDirectArray().GetAt(iTangentIdx);
+	//FbxVector4 vTangent = pTangent->GetDirectArray().GetAt(iTangentIdx);
 	
-	_pContainer->vecTangent[_iIdx].x = (float)vTangent.mData[0];
-	_pContainer->vecTangent[_iIdx].y = (float)vTangent.mData[2];
-	_pContainer->vecTangent[_iIdx].z = (float)vTangent.mData[1];
+	_pContainer->vecTangent[_iIdx].x = 0.f;//(float)vTangent.mData[0];
+	_pContainer->vecTangent[_iIdx].y = 0.f;//(float)vTangent.mData[2];
+	_pContainer->vecTangent[_iIdx].z = 0.f;//(float)vTangent.mData[1];
 }
 
 void CFBXLoader::GetBinormal(FbxMesh * _pMesh, tContainer * _pContainer, int _iIdx, int _iVtxOrder)
