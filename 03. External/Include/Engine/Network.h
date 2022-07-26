@@ -64,7 +64,7 @@ public:
 
 private:
 	OVERLAPPED		_overlapped;
-	CGameObject* m_pObj;
+	CGameObject*	m_pObj;
 
 	vector<Ptr<CMesh>>	m_aniData;
 

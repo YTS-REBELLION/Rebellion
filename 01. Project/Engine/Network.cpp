@@ -601,12 +601,8 @@ void CNetwork::Send_LogIn_Packet()
 	//cout << name << endl;
 	//strcpy_s(name, packet.name);
 
-
-
 	std::cout << "name : ";
 	std::cin >> name;
-
-	
 
 	sprintf_s(packet.name, name);
 	strcpy_s(name, packet.name);
