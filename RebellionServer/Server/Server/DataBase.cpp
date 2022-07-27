@@ -36,14 +36,15 @@ void CDataBase::HandleDiagnosticRecord(SQLHANDLE hHandle, SQLSMALLINT hType, RET
 	//while (true);
 }
 
-int CDataBase::CheckID(int id, int pw)
+int CDataBase::CheckID(char* id, int pw)
 {
 	setlocale(LC_ALL, "korean");
 	SQLHENV henv;
 	SQLHDBC hdbc;
 	SQLHSTMT hstmt = 0;
 
-	SQLINTEGER nCheck;
+	//SQLINTEGER nCheck;
+	SQLWCHAR nCheck;
 	SQLLEN cbCheck;
 
 	// Allocate environment handle  
@@ -70,7 +71,7 @@ int CDataBase::CheckID(int id, int pw)
 
 					SQLWCHAR query[1024];
 					//wsprintf(query, L"UPDATE player_table SET c_px = %d, c_py = %d WHERE c_key = %d", x, y, keyid);
-					wsprintf(query, L"EXEC check_id %d", id);
+					wsprintf(query, L"EXEC check_id %s", id);
 					retcode = SQLExecDirect(hstmt, (SQLWCHAR*)query, SQL_NTS);
 					if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
@@ -115,7 +116,7 @@ int CDataBase::CheckID(int id, int pw)
 }
 
 
-int CDataBase::CheckPW(int id, int pw)
+int CDataBase::CheckPW(char* id, int pw)
 {
 	setlocale(LC_ALL, "korean");
 	SQLHENV henv;
@@ -141,7 +142,7 @@ int CDataBase::CheckPW(int id, int pw)
 				SQLSetConnectAttr(hdbc, SQL_LOGIN_TIMEOUT, (SQLPOINTER)5, 0);
 
 				// Connect to data source  
-				retcode = SQLConnect(hdbc, (SQLWCHAR*)L"drakken_master", SQL_NTS, (SQLWCHAR*)NULL, SQL_NTS, NULL, SQL_NTS);
+				retcode = SQLConnect(hdbc, (SQLWCHAR*)L"RebellionDB", SQL_NTS, (SQLWCHAR*)NULL, SQL_NTS, NULL, SQL_NTS);
 
 				// Allocate statement handle  
 				if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
@@ -149,7 +150,7 @@ int CDataBase::CheckPW(int id, int pw)
 
 					SQLWCHAR query[1024];
 					//wsprintf(query, L"UPDATE player_table SET c_px = %d, c_py = %d WHERE c_key = %d", x, y, keyid);
-					wsprintf(query, L"EXEC Check_pw %d", id);
+					wsprintf(query, L"EXEC Check_PW %d", pw);
 					retcode = SQLExecDirect(hstmt, (SQLWCHAR*)query, SQL_NTS);
 					if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
@@ -160,7 +161,7 @@ int CDataBase::CheckPW(int id, int pw)
 						retcode = SQLFetch(hstmt);
 						if (retcode == SQL_ERROR || retcode == SQL_SUCCESS_WITH_INFO) ShowError();
 						if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
-							//printf("DB 성공: %d\n", nLEVEL);
+							printf("DB 성공: %d\n", nCheck);
 						}
 						else {
 							HandleDiagnosticRecord(hstmt, SQL_HANDLE_STMT, retcode);
@@ -219,7 +220,7 @@ void CDataBase::SavePlayerData(char* name, short exp, short hp)
 					retcode = SQLAllocHandle(SQL_HANDLE_STMT, hdbc, &hstmt);		// 명령어 받을 핸들 할당. hstmt.
 
 					SQLWCHAR query[1024];
-					wsprintf(query, L"UPDATE User_Table SET user_level = %d, user_exp = %d, user_hp = %d WHERE c_id = %d", level, hp, exp, id);
+					wsprintf(query, L"UPDATE User_Table SET user_level = %d, user_exp = %d, user_hp = %d WHERE c_id = %d", hp, exp, id);
 					retcode = SQLExecDirect(hstmt, (SQLWCHAR*)query, SQL_NTS);
 					if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 						printf("DB 저장 성공, ID : %d\n", id);

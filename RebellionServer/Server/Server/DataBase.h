@@ -14,8 +14,8 @@ public:
 
 public:
 	void HandleDiagnosticRecord(SQLHANDLE hHandle, SQLSMALLINT hType, RETCODE RetCode);
-	int CheckID(int id, int pw);
-	int CheckPW(int id, int pw);
+	int CheckID(char* id, int pw);
+	int CheckPW(char* id, int pw);
 	void SavePlayerData(char* name, short exp, short hp);
 	
 };

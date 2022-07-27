@@ -3,6 +3,7 @@
 #include "Protocol.h"
 #include "Shared.h"
 #include "Sender.h"
+#include "DataBase.h"
 #include "CServerFrame.h"
 
 
@@ -15,7 +16,7 @@ CServerFrame::CServerFrame()
 	_prevTime = std::chrono::system_clock::now();
 	_error = new CError;
 	_sender = new CSender;
-
+	_DB = new CDataBase;
 
 }
 CServerFrame::~CServerFrame()
@@ -201,14 +202,27 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		cs_packet_login* packet = reinterpret_cast<cs_packet_login*>(buf);
 
 		char name[MAX_ID_LEN];
+		char pw[MAX_PW_LEN];
 		strcpy_s(name, packet->name);
+		strcpy_s(pw, packet->pw);
+
+		int i_to = atoi(packet->name);	
+		int p_to = atoi(packet->pw);
 
 		cout << "플레이어 이름 " << name << endl;
-
+		cout << "플레이어 패스워드 : " << pw << endl;
 		// DB 구현 예정
 
+		int ret = _DB->CheckPW(name, p_to);
+		if (ret == 0) {
+			cout << "플레이어 정보 없슴" << endl;
+			break;
+		}
+		else {
+			EnterGame(id, packet->name);
+
+		}
 		// DB에 정보가 있을 때
-		EnterGame(id, packet->name);
 
 		// 없을 때
 		//_sender->SendLoginFailPacket(_objects[id].GetSocket());
@@ -1018,6 +1032,9 @@ void CServerFrame::CreateMonster()
 		//_objects[monsterId].SetNextPosIndex(0);
 
 	}
+
+
+
 	for (int monsterId = NPC_ID_START; monsterId < MONSTER_LV1_ID; ++monsterId) {
 
 		_objects[monsterId].SetCurrentHp(LV1_MONSTER_HP);

@@ -596,6 +596,7 @@ void CNetwork::Send_LogIn_Packet()
 	packet.type = CS_PACKET_LOGIN;
 	
 	char name[MAX_ID_LEN] = "Tester";
+	char pw[MAX_PW_LEN] = "Test";
 	string namestring;
 	
 	//cout << name << endl;
@@ -605,11 +606,15 @@ void CNetwork::Send_LogIn_Packet()
 
 	std::cout << "name : ";
 	std::cin >> name;
-
+	cout << "Password : ";
+	cin >> pw;
 	
-
+	
 	sprintf_s(packet.name, name);
+	sprintf_s(packet.pw, pw);
 	strcpy_s(name, packet.name);
+	strcpy_s(pw, packet.pw);
+
 	g_myid++;
 
 	std::cout << "CS_LOGIN PACKET : " << g_myid << std::endl;

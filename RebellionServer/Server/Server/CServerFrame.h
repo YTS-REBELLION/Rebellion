@@ -4,7 +4,7 @@
 
 class CError;
 class CSender;
-
+class CDataBase;
 
 class CServerFrame {
 	// socket 관련 구조체
@@ -23,7 +23,7 @@ class CServerFrame {
 	CError*		_error;
 	CSender*	_sender;
 	CObject		_objects[141];
-	
+	CDataBase*	_DB;
 
 	// timer
 	std::mutex											_timerLock;

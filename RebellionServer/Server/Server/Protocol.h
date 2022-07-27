@@ -274,7 +274,7 @@ struct cs_packet_login {
 	char	type;
 	char	name[MAX_ID_LEN];
 	char	pw[MAX_PW_LEN];
-	char	loginType;
+	char	loginType;		
 };
 
 constexpr unsigned char D_UP = 0;
