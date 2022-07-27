@@ -533,8 +533,9 @@ void CNetwork::ProcessPacket(char* ptr)
 		m_pObj->GetScript<CPlayerScript>()->SetMain();
 		//GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetMain();
 		//GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetID(g_myid);
-
-		
+		//m_pObj->Transform()->SetLocalPos(Vec3(45.f, 0.f, 876.f));
+		GameObject.find(g_myid)->second = m_pObj;
+		GameObject.find(g_myid)->second->Transform()->SetLocalPos(Vec3(45.f, 0.f, 876.f));
 
 		//m_pDObj->Transform()->SetLocalPos(Vec3(45.f, 0.f, 876.f));
 
