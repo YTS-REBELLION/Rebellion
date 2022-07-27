@@ -59,9 +59,34 @@ void CPlayerScript::init()
 	CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
 	pSwordObject->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, GetObj(), 25);
 
+
+	TRIALVTX tTrailTop, tTrailBottom;
+			
+		XMVECTOR v1 = XMLoadFloat3(&m_vTopPos);
+		XMMATRIX M = XMLoadFloat4x4(&pSwordObject->Transform()->GetWorldMat());
+		XMVECTOR X = XMVector3TransformCoord(v1, M);
+		tTrailTop.vPosition = X;
+
+		XMVECTOR v2 = XMLoadFloat3(&m_vBottomPos);
+		XMMATRIX M2 = XMLoadFloat4x4(&pSwordObject->Transform()->GetWorldMat());
+		XMVECTOR X2 = XMVector3TransformCoord(v2, M2);
+		tTrailBottom.vPosition = X2;
+
+		
+	m_lstTrailVtx.push_back(tTrailTop);
+	m_lstTrailVtx.push_back(tTrailBottom);
+	
+	while (true)
+	{
+		if (m_lstTrailVtx.size() <= 100)
+			break;
+		m_lstTrailVtx.pop_front();
+	}
+
 	TRIALVTX vertex[100];
 	for (int i = 0; i < m_iTrailIdxCount; ++i)
 		//vertex[i].dwColor;
+		
 	for (int i = 0; i < m_iTrailIdxCount / 2; ++i)
 	{
 		vertex[2 * i].vTexUV = { ((m_iTrailIdxCount / 2.f - i) / (m_iTrailIdxCount / 2 - 1.f)), 0.f };
@@ -77,11 +102,13 @@ void CPlayerScript::init()
 			break;
 	}
 
+
+
 	//트레일 적용하는곳
-	////// MeshRender 설정
-	//SwordScript->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	//SwordScript->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TrailMtrl"));
-	//SwordScript->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pTrail01.GetPointer());
+	// MeshRender 설정
+	/*SwordScript->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	SwordScript->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TrailMtrl"));
+	SwordScript->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pTrail01.GetPointer());*/
 
 	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pSwordObject, false);
 	GetObj()->AddChild(pSwordObject);

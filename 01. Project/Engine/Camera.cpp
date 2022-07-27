@@ -82,6 +82,8 @@ void CCamera::SortGameObject()
 	m_vecDeferred.clear();
 	m_vecForward.clear();
 	m_vecParticle.clear();
+	m_vecPostEffect.clear();
+
 	CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
 
 	for (UINT i = 0; i < MAX_LAYER; ++i)
@@ -104,11 +106,15 @@ void CCamera::SortGameObject()
 							m_vecDeferred.push_back(vecObj[i]);
 						else if (SHADER_POV::FORWARD == vecObj[i]->MeshRender()->GetSharedMaterial()->GetShader()->GetShaderPOV())
 							m_vecForward.push_back(vecObj[i]);
-
-						else if (vecObj[i]->Particlesystem())
+						else if (SHADER_POV::POSTEFFECT == vecObj[i]->MeshRender()->GetSharedMaterial()->GetShader()->GetShaderPOV())
 						{
-							m_vecParticle.push_back(vecObj[i]);
+							int bca = 0;
+							m_vecPostEffect.push_back(vecObj[i]);
 						}
+					}
+					else if (vecObj[i]->Particlesystem())
+					{
+						m_vecParticle.push_back(vecObj[i]);
 					}
 				}
 			}
@@ -160,6 +166,22 @@ void CCamera::render_forward()
 	}
 
 }
+void CCamera::render_posteffect()
+{
+	g_transform.matView = GetViewMat();
+	g_transform.matProj = GetProjMat();
+	g_transform.matViewInv = m_matViewInv;
+	g_transform.matProjInv = m_matProjInv;
+
+	CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
+
+	for (size_t i = 0; i < m_vecPostEffect.size(); ++i)
+	{
+		CRenderMgr::GetInst()->CopySwapToPosteffect();
+		m_vecPostEffect[i]->MeshRender()->render();
+	}
+}
+
 void CCamera::SortShadowObject()
 {
 	m_vecShadowObj.clear();

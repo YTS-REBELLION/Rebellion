@@ -559,6 +559,9 @@
     <FxCompile Include="particle.fx">
       <Filter>ShaderCode</Filter>
     </FxCompile>
+    <FxCompile Include="posteffect.fx">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">

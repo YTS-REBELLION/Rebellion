@@ -191,7 +191,7 @@ void CS_RainUpdate(int3 _iThreadIdx : SV_DispatchThreadID)
             vUV.y += sin(vUV.x * 2 * 3.141592);*/
 
             float2 vUV = float2(((float)_iThreadIdx.x / (float)g_int_0) + g_fAccTime, g_fAccTime);
-            vUV.y += (vUV.x * 2 * 3.141592);
+            vUV.y -= (vUV.x * 2 * 3.141592);
 
             if (vUV.x > 0)
                 vUV.x = frac(vUV.x);

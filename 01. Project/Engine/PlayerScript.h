@@ -27,7 +27,8 @@ public:
 
 
 private:
-
+	Vec3					m_vTopPos;
+	Vec3					m_vBottomPos;
 	int					m_iTrailIdxCount;
 	list<TRIALVTX>	m_lstTrailVtx;
 

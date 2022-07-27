@@ -80,6 +80,8 @@ public:
 	UINT GetRTVHeapSize() { return m_iRTVHeapSize; }
 
 	CMRT* GetMRT(MRT_TYPE _eType) { return m_arrMRT[(UINT)_eType]; }
+	void CopySwapToPosteffect();
+
 
 	friend class CSceneMgr;
 };

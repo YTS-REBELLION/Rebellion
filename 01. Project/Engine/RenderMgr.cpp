@@ -33,7 +33,7 @@ void CRenderMgr::render()
 	}
 
 	// 초기화
-	float arrColor[4] = { 0.f,0.f, 0.f, 1.f };
+	float arrColor[4] = { 0.6f, 0.6f, 0.6f, 1.f };
 	CDevice::GetInst()->render_start(arrColor);
 
 	// 전역버퍼 데이터 업데이트
@@ -41,7 +41,7 @@ void CRenderMgr::render()
 	CDevice::GetInst()->SetConstBufferToRegister(pGlobalBuffer, pGlobalBuffer->AddData(&g_global));
 
 	// 광원 정보 업데이트
-	UpdateLight2D();
+	//UpdateLight2D();
 	UpdateLight3D();
 
 	// SwapChain MRT 초기화
@@ -66,7 +66,7 @@ void CRenderMgr::render()
 	m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->TargetToResBarrier();
 
 	// shadowmap 만들기
-	//render_shadowmap();
+	render_shadowmap();
 	// Render Light
 	render_lights();
 		
@@ -76,6 +76,9 @@ void CRenderMgr::render()
 	// Forward Render
 	m_vecCam[m_MainCamNum]->render_forward(); // skybox, grid, ui
 
+
+	// PostEffectRender
+	m_vecCam[m_MainCamNum]->render_posteffect();
 	//=================================
 	// 추가 카메라는 forward render 만
 	//=================================
@@ -184,6 +187,27 @@ void CRenderMgr::render_shadowmap()
 	}
 
 	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SHADOWMAP)->TargetToResBarrier();
+}
+
+void CRenderMgr::CopySwapToPosteffect()
+{
+	static CTexture* pPostEffectTex = CResMgr::GetInst()->FindRes<CTexture>(L"PosteffectTargetTex").GetPointer();
+
+	UINT iIdx = CDevice::GetInst()->GetSwapchainIdx();
+
+	// SwapChain Target Texture 를 RenderTarget -> CopySource 상태로 변경
+	CMDLIST->ResourceBarrier(1
+		, &CD3DX12_RESOURCE_BARRIER::Transition(m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->GetRTTex(iIdx)->GetTex2D().Get()
+			, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_COPY_SOURCE));
+
+	// SwapChainTex -> PostEfectTex 로 복사
+	CMDLIST->CopyResource(pPostEffectTex->GetTex2D().Get()
+		, m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->GetRTTex(iIdx)->GetTex2D().Get());
+
+	// SwapChain Target Texture 를 CopySource -> RenderTarget 상태로 변경
+	CMDLIST->ResourceBarrier(1
+		, &CD3DX12_RESOURCE_BARRIER::Transition(m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->GetRTTex(iIdx)->GetTex2D().Get()
+			, D3D12_RESOURCE_STATE_COPY_SOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET));
 }
 
 

@@ -2057,8 +2057,8 @@ void CSceneMgr::init()
 	pObject->AddComponent(new CFire);
 	
 
-	pObject->Transform()->SetLocalPos(Vec3(0,200,0));
-	pObject->Transform()->SetLocalScale(Vec3(10000.f, 10000.f, 1.f));
+	pObject->Transform()->SetLocalPos(Vec3(200,200,200));
+	pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
 	// MeshRender ¼³Á¤
 	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
@@ -2081,7 +2081,7 @@ void CSceneMgr::init()
 	//pObject->Particlesystem()->SetMaxParticle(10);
 	pObject->FrustumCheck(false);
 	
-	Vec3 particlePos = Vec3(10.f,200.f, 10.f);
+	Vec3 particlePos = Vec3(100.f,300.f, 10.f);
 	
 	pObject->Transform()->SetLocalPos(particlePos);
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);

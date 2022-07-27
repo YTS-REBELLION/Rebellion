@@ -34,7 +34,7 @@ private:
 
 	vector<CGameObject*>	m_vecDeferred;
 	vector<CGameObject*>	m_vecForward;
-
+	vector<CGameObject*>    m_vecPostEffect;
 	vector<CGameObject*>	m_vecParticle;
 
 	vector<CGameObject*>	m_vecShadowObj;
@@ -46,10 +46,10 @@ public:
 	void SortShadowObject();
 	void render_deferred();
 	void render_forward();
-	void render();
-
+	
+	void render_posteffect();
 	void render_shadowmap();
-
+	void render();
 public:
 	void SetProjType(PROJ_TYPE _eType) { m_eProjType = _eType; Changed(); }
 	PROJ_TYPE GetProjType() { return m_eProjType; }
