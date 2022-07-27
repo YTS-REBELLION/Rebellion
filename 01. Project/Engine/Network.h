@@ -25,14 +25,19 @@ enum class OBJECT_TYPE {PLAYER, M_MONSTER, FM_MONSTER, NPC};
 
 class CNetwork
 {
+private:
+
 public:
 	CNetwork();
 	~CNetwork(){};
 public:
 	void SetObj(CGameObject* obj) { m_pObj = new CGameObject; m_pObj = obj; }
+	CGameObject* GetObj() { return m_pObj; }
+	void D_SetObj(CGameObject* obj) { m_pDObj = new CGameObject; m_pObj = obj; }
 	//void SetCamObj(CGameObject* obj) { m_pCamObj = new CGameObject; m_pCamObj = obj; }
 	void SetAniData(Ptr<CMesh> _aniData) { m_aniData.push_back(_aniData); }
-	CGameObject* GetObj() { return m_pObj; }
+	
+
 public:
 	void Connect();
 
@@ -41,7 +46,7 @@ public:
 	void ProcessPacket(char* ptr);
 	void Process_Data(char* net_buf, size_t& io_byte);
 	//void Enter_Player(const int& id);
-
+	
 public:
 	void Send_Packet(void* packet);
 	void Send_LogIn_Packet();
@@ -59,16 +64,16 @@ public:
 	void Send_Player2MonsterCol_Packet(const int& id, const int& playerid, const bool& iscol);
 	void SetAnimation(int id, int i);
 	void Send_MonsterRotate_Packet(const int& id, const int& other_id, Vec3 vRot);
+	void Send_Dungeon_Packet(bool isEnter);
 public:
 	void err_quit(const char* msg);
-
-
 private:
 	OVERLAPPED		_overlapped;
 	CGameObject*	m_pObj;
-
+	CGameObject*	 m_pDObj;
+	
 	vector<Ptr<CMesh>>	m_aniData;
-
+	int d_myid;
 	friend class CLayer;
 };
 

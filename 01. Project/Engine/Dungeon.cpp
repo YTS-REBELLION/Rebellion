@@ -29,10 +29,11 @@
 #include "PlayerScript.h"
 #include "SwordScript.h"
 #include "ToolCamScript.h"
-
+#include "Network.h"
 
 void CDungeonScene::init()
 {
+	cout << "ДјРќ РЬДж" << endl;
 	GetLayer(0)->SetName(L"Default");
 	GetLayer(1)->SetName(L"Player");
 	GetLayer(2)->SetName(L"House");
@@ -63,12 +64,17 @@ void CDungeonScene::init()
 
 	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Idle.mdat", L"MeshData\\Player_FM_Idle.mdat");
 
-	CGameObject* pPlayer = g_net.GetObj();
+	CGameObject* pPlayer = new CGameObject;
 
+
+	//pPlayer = g_net.GetObj();
+	//pPlayer->GetScript<CPlayerScript>()->SetMain();
+	//pPlayer->Transform()->SetLocalPos(Vec3(200.f, 0.f, 200.f));
 
 	pPlayer = pMeshData->Instantiate();
 	pPlayer->SetName(L"FM_Player");
 	pPlayer->FrustumCheck(false);
+
 
 	pPlayer->Transform()->SetLocalScale(Vec3(1.0f, 1.0f, 1.0f));
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), XMConvertToRadians(180.f), 0.f));
@@ -91,6 +97,7 @@ void CDungeonScene::init()
 
 	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Walk.mdat", L"MeshData\\Player_FM_Walk.mdat");
 	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 1, 0, 30);							// AniData Index 1
+	
 	g_net.SetAniData(pMeshData->GetMesh());
 
 	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Run.mdat", L"MeshData\\Player_FM_Run.mdat");
@@ -107,7 +114,9 @@ void CDungeonScene::init()
 
 	FindLayer(L"Player")->AddGameObject(pPlayer);
 
-	//g_net.SetObj(pPlayer);
+
+	g_net.D_SetObj(pPlayer);
+
 	
 	//Main Camera
 	CGameObject* pMainCam = new CGameObject;

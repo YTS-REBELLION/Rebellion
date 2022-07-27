@@ -279,6 +279,18 @@ void CSender::SendQuestDonePacket(SOCKET s, int playerId, QUEST nextQuest, bool 
 
 }
 
+void CSender::SendDungeonEnterPacket(SOCKET s, const int& playerId, bool isEnter)
+{
+	sc_packet_dungeon packet;
+	packet.size = sizeof(packet);
+	packet.id = playerId;
+	packet.type = SC_PACKET_DUNGEON_ENTER;
+	packet.isEnter = isEnter;
+
+	SendPacket(s, &packet);
+}
+
+
 void CSender::SendQuestStartPacket(SOCKET s, int id, bool isStart)
 {
 	sc_packet_queststart packet;

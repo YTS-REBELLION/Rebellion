@@ -58,6 +58,7 @@ void CNetwork::err_quit(const char* msg)
 CNetwork::CNetwork()
 {
 	m_pObj = nullptr;
+	m_pDObj = nullptr;
 }
 
 
@@ -144,7 +145,6 @@ void CNetwork::ProcessPacket(char* ptr)
 	//std::cout << "Process Packet" << std::endl;
 	switch (ptr[1]) {
 		//case 로그인 패킷:
-
 	case SC_PACKET_LOGIN_OK:
 	{
 
@@ -158,6 +158,7 @@ void CNetwork::ProcessPacket(char* ptr)
 
 		g_myid = p->id;
 		m_pObj->Transform()->SetLocalPos(Vec3(p->x, p->y, p->z));
+
 
 		GameObject.emplace(g_myid, m_pObj);
 		GameObject.find(g_myid)->second->SetID(g_myid);
@@ -524,6 +525,21 @@ void CNetwork::ProcessPacket(char* ptr)
 		
 		break;
 	}
+	case SC_PACKET_DUNGEON_ENTER: {
+		sc_packet_dungeon* p = reinterpret_cast<sc_packet_dungeon*>(ptr);
+		cout << "던전에 들어옴!!!!!!!!!!" << endl;
+		
+		g_myid = p->id;
+		m_pObj->GetScript<CPlayerScript>()->SetMain();
+		//GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetMain();
+		//GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetID(g_myid);
+
+		
+
+		//m_pDObj->Transform()->SetLocalPos(Vec3(45.f, 0.f, 876.f));
+
+		break;
+	}
 	default:
 		printf("Unknown PACKET type [%d]\n", ptr[1]);
 	}
@@ -739,6 +755,16 @@ void CNetwork::Send_MonsterRotate_Packet(const int& id, const int& other_id, Vec
 	packet.playerId = other_id;
 	packet.type = CS_PACKET_MONSTERDIR;
 
+	Send_Packet(&packet);
+
+}
+
+void CNetwork::Send_Dungeon_Packet(bool isEnter)
+{
+	cs_packet_dungeon packet;
+	packet.size = sizeof(packet);
+	packet.type = CS_PACKET_DUNGEON;
+	packet.isEnter = isEnter;
 	Send_Packet(&packet);
 
 }

@@ -48,6 +48,13 @@
 #include"ParticleSystem.h"
 #include "meshdata.h"
 
+#include "stdafx.h"
+#include "MonsterScript.h"
+#include "TestScript.h"
+#include "RenderMgr.h"
+#include "Animator3D.h"
+#include "PlayerScript.h"
+
 #include "LoginScene.h"
 #include "AssemblyAreaScene.h"
 #include "Dungeon.h"
@@ -55,6 +62,7 @@
 CScene* CSceneMgr::GetCurScene()
 {
 	return m_pCurScene;
+
 }
 
 void CSceneMgr::ChangeScene(CScene * _pNextScene)
@@ -1458,6 +1466,7 @@ void CSceneMgr::init()
 {
 	//m_arrScene[(UINT)SCENE_TYPE::LOGIN] = new CLogin;
 	m_arrScene[(UINT)SCENE_TYPE::ASSEMBLY] = new CAssemblyAreaScene;
+	//m_arrScene[(UINT)SCENE_TYPE::DUNGEON] = new CDungeonScene;
 
 	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::ASSEMBLY];
 	m_pCurScene->init();
@@ -2146,12 +2155,13 @@ void CSceneMgr::update()
 	if (KEY_TAB(KEY_TYPE::KEY_NUM7)) {
 		if (m_pCurScene->GetType() != SCENE_TYPE::ASSEMBLY) {
 			cout << "들어 오나 7?" << endl;
-			
+
 			tEvent evn = {};
 			evn.wParam = (DWORD_PTR)SCENE_TYPE::ASSEMBLY;
 			evn.eType = EVENT_TYPE::CHANGE_SCENE;
 			CEventMgr::GetInst()->AddEvent(evn);
-		
+			
+
 			//()->GetScript<CPlayerScript>()->SetMain();
 			//cout << "아이디 : " << GetObj()->GetScript<CPlayerScript>()->GetID() << endl;
 		}
@@ -2160,10 +2170,14 @@ void CSceneMgr::update()
 	if (KEY_TAB(KEY_TYPE::KEY_NUM8)) {
 		if (m_pCurScene->GetType() != SCENE_TYPE::DUNGEON) {
 			cout << "들어 오나 8?" << endl;
+			g_net.Send_Dungeon_Packet(true);
+
 			tEvent evn = {};
 			evn.wParam = (DWORD_PTR)SCENE_TYPE::DUNGEON;
 			evn.eType = EVENT_TYPE::CHANGE_SCENE;
 			CEventMgr::GetInst()->AddEvent(evn);
+
+
 			//GetObj()->GetScript<CPlayerScript>()->SetMain();
 			//cout << "아이디 : " << GetObj() << endl;
 

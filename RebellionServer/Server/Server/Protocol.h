@@ -39,6 +39,8 @@ const char	CS_PACKET_RUN = 13;
 const char	CS_PACKET_MD = 14;
 const char	CS_PACKET_P2MCOL = 15;
 const char	CS_PACKET_MONSTERDIR = 16;
+const char	CS_PACKET_DUNGEON = 17;
+
 
 const char  SC_PACKET_LOGIN_OK = 1;
 const char  SC_PACKET_LOGIN_FAIL = 2;
@@ -58,6 +60,8 @@ const char	SC_PACKET_NPC_ATTACK = 15;
 const char	SC_PACKET_TARGET = 16;
 const char	SC_PACKET_QUESTDONE = 17;
 const char	SC_PACKET_QUESTSTART = 18;
+const char	SC_PACKET_DUNGEON_ENTER = 19;
+
 
 const char	SC_PACKET_HP_CHANGE = 10;
 const char	SC_PACKET_PLAYER_DIE = 11;
@@ -262,6 +266,12 @@ struct sc_packet_queststart {
 	bool isStart;
 	int id;
 };
+struct sc_packet_dungeon {
+	char size;
+	char type;
+	bool isEnter;
+	int id;
+};
 //---------------------------------------
 
 
@@ -367,5 +377,10 @@ struct cs_packet_monsterdir {
 	int playerId; // 플레이어 아이디 
 	Vec3 vRot;
 
+};
+struct cs_packet_dungeon {
+	char size;
+	char type;
+	bool isEnter;
 };
 #pragma pack(pop)

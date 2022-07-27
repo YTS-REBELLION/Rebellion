@@ -362,6 +362,17 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 
 		break;
 	}
+	case CS_PACKET_DUNGEON: {
+		cs_packet_dungeon* packet = reinterpret_cast<cs_packet_dungeon*>(buf);
+		
+		cout << "던전 입장" << endl;
+
+
+		_sender->SendDungeonEnterPacket(_objects[id].GetSocket(), id, true);
+
+
+		break;
+	}
 	}
 
 
