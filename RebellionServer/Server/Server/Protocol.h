@@ -3,6 +3,7 @@
 
 
 
+
 //const char* SERVERIP = "127.0.0.1";
 
 const short SERVER_PORT = 9000;
@@ -10,13 +11,13 @@ const short SERVER_PORT = 9000;
 constexpr int MAX_BUFFER = 1024;
 constexpr int MAX_PACKET_SIZE = 255;
 constexpr short NPC_ID_START = 101;
-constexpr short MONSTER_LV1_ID = 106;
-constexpr short MONSTER_LV2_ID = 117;
-constexpr short MONSTER_LV3_ID = 122;
-constexpr short MONSTER_LV4_ID = 127;
-constexpr short MONSTER_LV5_ID = 134;
-constexpr short MONSTER_LV6_ID = 141;
-constexpr short NPC_ID_END = 140;
+constexpr short MONSTER_LV1_ID = 104;
+constexpr short MONSTER_LV2_ID = 115;
+constexpr short MONSTER_LV3_ID = 120;
+constexpr short MONSTER_LV4_ID = 125;
+constexpr short MONSTER_LV5_ID = 132;
+constexpr short MONSTER_LV6_ID = 139;
+constexpr short NPC_ID_END = 138;
 
 constexpr int MAX_USER = 100;
 //#define NPC_ID_START 10000
@@ -40,6 +41,8 @@ const char	CS_PACKET_MD = 14;
 const char	CS_PACKET_P2MCOL = 15;
 const char	CS_PACKET_MONSTERDIR = 16;
 const char	CS_PACKET_M2MCOL = 17;
+
+
 
 const char  SC_PACKET_LOGIN_OK = 1;
 const char  SC_PACKET_LOGIN_FAIL = 2;
@@ -376,6 +379,13 @@ struct cs_packet_m2mcol {
 	int other_monsterId;
 	bool isCol;
 	MONSTER_MOVE moveType;
+
+};
+struct cs_packet_teleport {
+	char size;
+	char type;
+	int playerId;
+	Vec3 localPos;
 
 };
 #pragma pack(pop)

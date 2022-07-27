@@ -57,12 +57,14 @@ class CObject
 
 	MOVE_TYPE		_moveType;
 	int				_targetID;
+
 	int				_nextPosIndex;
 
 	Vec3			_nextPos[3];
 	
 	bool			_m2mCol;
-	
+
+
 
 
 public:
@@ -70,8 +72,8 @@ public:
 	EXP_OVER _recvOver;
 	char _packetBuf[MAX_PACKET_SIZE];
 	bool			_questStart = false;
-
-
+	bool			_closed = false;
+	bool			_move = true;
 public:
 	CObject();
 	~CObject();

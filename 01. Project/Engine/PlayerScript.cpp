@@ -317,6 +317,18 @@ void CPlayerScript::update()
 
 	if (m_isMain) {
 
+		if (KEY_TAB(KEY_TYPE::KEY_3)) {
+			localPos = Vec3(3600.f, 0.f, 10800.f);
+			player->Transform()->SetLocalPos(localPos);
+			g_net.Send_Teleport_Packet(GetObj()->GetID(), Vec3(3600.f, 0.f, 10800.f));
+		}
+
+		if (KEY_TAB(KEY_TYPE::KEY_6)) {
+			localPos = Vec3(-5900.f, 0.f, 13500.f);
+			player->Transform()->SetLocalPos(localPos);
+			g_net.Send_Teleport_Packet(GetObj()->GetID(), Vec3(3600.f, 0.f, 10800.f));
+		}
+
 		if ((KEY_TAB(KEY_TYPE::KEY_W) || KEY_TAB(KEY_TYPE::KEY_A) || KEY_TAB(KEY_TYPE::KEY_S) || KEY_TAB(KEY_TYPE::KEY_D)))
 		{
 			GetObj()->Animator3D()->SetClipTime(0, 0.f);

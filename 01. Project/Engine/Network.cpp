@@ -760,3 +760,17 @@ void CNetwork::Send_MobToMobCol_Packet(const int& monsterId, const int& other_mo
 
 }
 
+void CNetwork::Send_Teleport_Packet(const int& playerId, Vec3 localPos)
+{
+	cs_packet_teleport packet;
+	packet.size = sizeof(packet);
+	packet.type = CS_PACKET_TELEPORT;
+	packet.playerId = playerId;
+	packet.localPos = localPos;
+
+	Send_Packet(&packet);
+
+
+
+}
+

@@ -243,10 +243,10 @@ void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 	{
 		cout << "플레이어와 충돌" << endl;
 	}
-	if (_pOther->GetObj()->GetName() == L"FM_Monster" && !m_colEnter)
+	if (_pOther->GetObj()->GetName() == L"FM_Monster")
 	{
 		m_colEnter = true;
-		cout << "몬스터 몬스터 충돌" << endl;
+		cout << "ENTER" << endl;
 		g_net.Send_MobToMobCol_Packet(GetID(), GetObj()->GetID(),true ,MONSTER_MOVE::STOP);
 	}
 }
@@ -267,7 +267,7 @@ void CMonsterScript::OnCollision(CCollider2D* _pOther)
 	}
 	else if (_pOther->GetObj()->GetName() == L"FM_Monster")
 	{
-		cout << "몬스터 몬스터 충돌?" << endl;
+		//cout << "몬스터 몬스터 충돌?" << endl;
 		m_bColCheck = true;
 		SetColObj(_pOther);
 	}
@@ -286,8 +286,9 @@ void CMonsterScript::OnCollisionExit(CCollider2D* _pOther)
 	{
 		//cout << "검과 충돌 해제" << endl;
 	}
-	else if (_pOther->GetObj()->GetName() == L"FM_Monster" && m_colEnter)
+	else if (_pOther->GetObj()->GetName() == L"FM_Monster")
 	{
+		cout << "EXIT" << endl;
 		g_net.Send_MobToMobCol_Packet(GetID(), GetObj()->GetID(),false ,MONSTER_MOVE::START);
 		m_colEnter = false;
 		m_bColCheck = false;
