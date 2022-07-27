@@ -13,6 +13,7 @@
 #include"FireBall.h"
 #include"Meteor.h"
 #include"UnleashedPower.h"
+#include "GameObject.h"
 
 bool isReckoning = false;
 CPlayerScript::CPlayerScript()
@@ -23,6 +24,7 @@ CPlayerScript::CPlayerScript()
 	, m_iCulidx(0)
 	, m_isTarget(false)
 {	
+	GetObj();
 }
 
 CPlayerScript::~CPlayerScript()
@@ -311,15 +313,17 @@ void CPlayerScript::update()
 	CPlayerScript* player = GetObj()->GetScript<CPlayerScript>();
 
 	cout << m_isMain << endl;
+	
 	if (m_isMain) {
 
 		if ((KEY_TAB(KEY_TYPE::KEY_W) || KEY_TAB(KEY_TYPE::KEY_A) || KEY_TAB(KEY_TYPE::KEY_S) || KEY_TAB(KEY_TYPE::KEY_D)))
 		{
 			GetObj()->Animator3D()->SetClipTime(0, 0.f);
 		}
-
+		
 		if (KEY_HOLD(KEY_TYPE::KEY_W))
 		{
+			
 			localPos += WorldDir * m_fSpeed * DT;
 			system_clock::time_point start = system_clock::now();
 			m_eDir = COL_DIR::FRONT;

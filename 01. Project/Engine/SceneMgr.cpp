@@ -2143,25 +2143,30 @@ void CSceneMgr::update()
 
 	// 충돌 처리
 	CCollisionMgr::GetInst()->update();
-
 	if (KEY_TAB(KEY_TYPE::KEY_NUM7)) {
 		if (m_pCurScene->GetType() != SCENE_TYPE::ASSEMBLY) {
-			cout << "들어 오나 1?" << endl;
+			cout << "들어 오나 7?" << endl;
+			
 			tEvent evn = {};
 			evn.wParam = (DWORD_PTR)SCENE_TYPE::ASSEMBLY;
 			evn.eType = EVENT_TYPE::CHANGE_SCENE;
 			CEventMgr::GetInst()->AddEvent(evn);
+		
+			//()->GetScript<CPlayerScript>()->SetMain();
+			//cout << "아이디 : " << GetObj()->GetScript<CPlayerScript>()->GetID() << endl;
 		}
 
 	}
-
 	if (KEY_TAB(KEY_TYPE::KEY_NUM8)) {
 		if (m_pCurScene->GetType() != SCENE_TYPE::DUNGEON) {
-			cout << "들어 오나 2?" << endl;
+			cout << "들어 오나 8?" << endl;
 			tEvent evn = {};
 			evn.wParam = (DWORD_PTR)SCENE_TYPE::DUNGEON;
 			evn.eType = EVENT_TYPE::CHANGE_SCENE;
 			CEventMgr::GetInst()->AddEvent(evn);
+			//GetObj()->GetScript<CPlayerScript>()->SetMain();
+			//cout << "아이디 : " << GetObj() << endl;
+
 		}
 
 	}

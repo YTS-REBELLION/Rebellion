@@ -11,6 +11,8 @@ class CSceneMgr
 private:
 	CScene*		m_pCurScene;	
 	CScene*		m_arrScene[(UINT)SCENE_TYPE::END];
+	CGameObject* m_pObject;
+
 public:
 	void init();
 
@@ -30,7 +32,6 @@ public:
 	Vec3 m_vSaveRot;
 	bool m_bfindcheck = false;
 	vector<CGameObject*> testvec;
-
 
 public:
 	void CreateTargetUI();

@@ -63,7 +63,8 @@ void CDungeonScene::init()
 
 	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Idle.mdat", L"MeshData\\Player_FM_Idle.mdat");
 
-	CGameObject* pPlayer = new CGameObject;
+	CGameObject* pPlayer = g_net.GetObj();
+
 
 	pPlayer = pMeshData->Instantiate();
 	pPlayer->SetName(L"FM_Player");
@@ -107,7 +108,7 @@ void CDungeonScene::init()
 	FindLayer(L"Player")->AddGameObject(pPlayer);
 
 	//g_net.SetObj(pPlayer);
-
+	
 	//Main Camera
 	CGameObject* pMainCam = new CGameObject;
 	pMainCam->SetName(L"MainCam");
