@@ -71,9 +71,8 @@ void CPlayerScript::init()
 
 	tResolution res = CRenderMgr::GetInst()->GetResolution();
 	CGameObject* pObject = new CGameObject;
+	
 	//체력 UI
-
-
 	pObject = new CGameObject;
 	pObject->SetName(L"HpUi");
 	pObject->FrustumCheck(false);
@@ -206,14 +205,10 @@ void CPlayerScript::init()
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
 
 
-
-
-
 	//스킬 UI
 
 
 	Vec3	SkillUiScale = Vec3(50.f, 50.f, 1.f);
-
 
 	pObject = new CGameObject;
 	pObject->SetName(L"SkillIcon");
@@ -315,7 +310,7 @@ void CPlayerScript::update()
 
 	CPlayerScript* player = GetObj()->GetScript<CPlayerScript>();
 
-
+	cout << m_isMain << endl;
 	if (m_isMain) {
 
 		if ((KEY_TAB(KEY_TYPE::KEY_W) || KEY_TAB(KEY_TYPE::KEY_A) || KEY_TAB(KEY_TYPE::KEY_S) || KEY_TAB(KEY_TYPE::KEY_D)))

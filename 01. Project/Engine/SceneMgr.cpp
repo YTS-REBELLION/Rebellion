@@ -50,6 +50,7 @@
 
 #include "LoginScene.h"
 #include "AssemblyAreaScene.h"
+#include "Dungeon.h"
 
 CScene* CSceneMgr::GetCurScene()
 {
@@ -71,11 +72,14 @@ void CSceneMgr::ChangeScene(SCENE_TYPE _Type)
 
 	switch (_Type)
 	{
-	//case SCENE_TYPE::LOGIN:
-	//	m_pCurScene = new CAssemblyAreaScene;
-	//	break;
+	case SCENE_TYPE::LOGIN:
+		m_pCurScene = new CAssemblyAreaScene;
+		break;
 	case SCENE_TYPE::ASSEMBLY:
 		m_pCurScene = new CAssemblyAreaScene;
+		break;
+	case SCENE_TYPE::DUNGEON:
+		m_pCurScene = new CDungeonScene;
 		break;
 	case SCENE_TYPE::END:
 		assert(false);
@@ -84,6 +88,7 @@ void CSceneMgr::ChangeScene(SCENE_TYPE _Type)
 		break;
 	}
 
+	m_pCurScene->SetType(_Type);
 	m_pCurScene->init();
 	m_pCurScene->awake();
 	m_pCurScene->start();
@@ -2138,6 +2143,28 @@ void CSceneMgr::update()
 
 	// 충돌 처리
 	CCollisionMgr::GetInst()->update();
+
+	if (KEY_TAB(KEY_TYPE::KEY_NUM7)) {
+		if (m_pCurScene->GetType() != SCENE_TYPE::ASSEMBLY) {
+			cout << "들어 오나 1?" << endl;
+			tEvent evn = {};
+			evn.wParam = (DWORD_PTR)SCENE_TYPE::ASSEMBLY;
+			evn.eType = EVENT_TYPE::CHANGE_SCENE;
+			CEventMgr::GetInst()->AddEvent(evn);
+		}
+
+	}
+
+	if (KEY_TAB(KEY_TYPE::KEY_NUM8)) {
+		if (m_pCurScene->GetType() != SCENE_TYPE::DUNGEON) {
+			cout << "들어 오나 2?" << endl;
+			tEvent evn = {};
+			evn.wParam = (DWORD_PTR)SCENE_TYPE::DUNGEON;
+			evn.eType = EVENT_TYPE::CHANGE_SCENE;
+			CEventMgr::GetInst()->AddEvent(evn);
+		}
+
+	}
 }
 
 void CSceneMgr::update_tool()

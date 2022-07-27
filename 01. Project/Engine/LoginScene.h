@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene.h"
+
 class CLoginScene :
     public CScene
 {

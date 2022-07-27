@@ -207,6 +207,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="Light3D.h" />
     <ClInclude Include="LoginScene.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Material.h" />
     <ClInclude Include="MegaSlash.h" />
@@ -278,7 +279,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="desc.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="Dungeon.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Entity.cpp" />
