@@ -36,7 +36,7 @@ public:
 	void SendQuestDonePacket(SOCKET s, int playerId, QUEST nextQuest, bool isDone);
 
 	void SendDungeonEnterPacket(SOCKET s, const int& playerId, bool isEnter);
-
+	void Send_WaitRoom_Packet(SOCKET s);
 	void SendQuestStartPacket(SOCKET s, int id, bool isStart);
 
 	void Activate_Player_Move_Event(int target, int player_id);

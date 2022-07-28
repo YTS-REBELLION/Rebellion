@@ -2156,10 +2156,10 @@ void CSceneMgr::update()
 		if (m_pCurScene->GetType() != SCENE_TYPE::ASSEMBLY) {
 			cout << "들어 오나 7?" << endl;
 
-			tEvent evn = {};
-			evn.wParam = (DWORD_PTR)SCENE_TYPE::ASSEMBLY;
-			evn.eType = EVENT_TYPE::CHANGE_SCENE;
-			CEventMgr::GetInst()->AddEvent(evn);
+			//tEvent evn = {};
+			//evn.wParam = (DWORD_PTR)SCENE_TYPE::ASSEMBLY;
+			//evn.eType = EVENT_TYPE::CHANGE_SCENE;
+			//CEventMgr::GetInst()->AddEvent(evn);
 			
 
 			//()->GetScript<CPlayerScript>()->SetMain();
@@ -2172,10 +2172,10 @@ void CSceneMgr::update()
 			cout << "들어 오나 8?" << endl;
 			g_net.Send_Dungeon_Packet(true);
 
-			tEvent evn = {};
+			/*tEvent evn = {};
 			evn.wParam = (DWORD_PTR)SCENE_TYPE::DUNGEON;
 			evn.eType = EVENT_TYPE::CHANGE_SCENE;
-			CEventMgr::GetInst()->AddEvent(evn);
+			CEventMgr::GetInst()->AddEvent(evn);*/
 
 
 			//GetObj()->GetScript<CPlayerScript>()->SetMain();

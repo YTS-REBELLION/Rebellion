@@ -65,6 +65,8 @@ public:
 	void SetAnimation(int id, int i);
 	void Send_MonsterRotate_Packet(const int& id, const int& other_id, Vec3 vRot);
 	void Send_Dungeon_Packet(bool isEnter);
+	void Send_PlayerDieTest_Packet(const int& id);
+
 public:
 	void err_quit(const char* msg);
 private:

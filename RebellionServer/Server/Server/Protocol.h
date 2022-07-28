@@ -40,15 +40,15 @@ const char	CS_PACKET_MD = 14;
 const char	CS_PACKET_P2MCOL = 15;
 const char	CS_PACKET_MONSTERDIR = 16;
 const char	CS_PACKET_DUNGEON = 17;
-
+const char	CS_PACKET_DIETEST = 18;
 
 const char  SC_PACKET_LOGIN_OK = 1;
 const char  SC_PACKET_LOGIN_FAIL = 2;
-const char  SC_PACKET_MOVE_DIRECTION = 3;
+const char	SC_PACKET_PLAYER_DIE = 3;
+
 const char  SC_PACKET_PUT_OBJECT = 4;
 const char  SC_PACKET_LEAVE_OBJECT = 5;
-const char  SC_PACKET_STAT_CHANGE = 6;
-const char  SC_PACKET_CHAT = 7;
+
 const char	SC_PACKET_MOVE = 8;
 const char	SC_PACKET_STOP = 9;
 const char	SC_PACKET_PLAYER_ATTACK = 10;
@@ -61,10 +61,9 @@ const char	SC_PACKET_TARGET = 16;
 const char	SC_PACKET_QUESTDONE = 17;
 const char	SC_PACKET_QUESTSTART = 18;
 const char	SC_PACKET_DUNGEON_ENTER = 19;
-
+const char	SC_PACKET_WAITROOM = 20;
 
 const char	SC_PACKET_HP_CHANGE = 10;
-const char	SC_PACKET_PLAYER_DIE = 11;
 const char	SC_PACKET_DEFENCE = 15;
 const char	SC_PACKET_RETURN = 13;
 
@@ -272,6 +271,10 @@ struct sc_packet_dungeon {
 	bool isEnter;
 	int id;
 };
+struct sc_packet_waitroom {
+	char size;
+	char type;
+};
 //---------------------------------------
 
 
@@ -382,5 +385,10 @@ struct cs_packet_dungeon {
 	char size;
 	char type;
 	bool isEnter;
+};
+struct cs_packet_dietest {
+	char size;
+	char type;
+	int id;
 };
 #pragma pack(pop)

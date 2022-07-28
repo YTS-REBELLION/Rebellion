@@ -368,28 +368,39 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		cout << "던전 입장" << endl;
 		unordered_set<int> old_viewList = _objects[id].GetViewList();
 		//unordered_set<int> temp_vl = _objects[id].GetViewList();
+		_enterRoom.push_back(id);
 
-
-		
-		_objects[id].SetViewList(dun_vl);
-		_objects[id].ClearViewList();
-		_objects[id].SetDunGeonEnter(true);
-		
-
-
-
-		for (auto& users : old_viewList) {
-			if (users == id) continue;
-			if (false == IsPlayer(users)) continue;
-			_objects[users].ClientLock();
-			_objects[users].EraseViewList(id);
-			_objects[users].ClientUnLock();
-			_sender->SendLeaveObjectPacket(_objects[users].GetSocket(), id, _objects[id].GetMyType());
-
+		if (_enterRoom.size() != _acceptNumber) {
+			cout << "인원 대기중 .. " << endl;
+			for (auto& users : _enterRoom)
+				_sender->Send_WaitRoom_Packet(_objects[users].GetSocket());
 		}
-		DungeonEnter(id);
+		else {
+			fullEnter = true;
 
-		
+			_objects[id].SetViewList(dun_vl);
+			_objects[id].ClearViewList();
+			_objects[id].SetDunGeonEnter(true);
+
+			for (auto& users : old_viewList) {
+				if (users == id) continue;
+				if (false == IsPlayer(users)) continue;
+				_objects[users].ClientLock();
+				_objects[users].EraseViewList(id);
+				_objects[users].ClientUnLock();
+				_sender->SendLeaveObjectPacket(_objects[users].GetSocket(), id, _objects[id].GetMyType());
+			}
+
+			DungeonEnter(id);
+		}
+
+		break;
+	}
+	case CS_PACKET_DIETEST: {
+		cs_packet_dietest* packet = reinterpret_cast<cs_packet_dietest*>(buf);
+		int playerId = packet->id;
+		_objects[playerId].SetCurrentHp(0);
+
 		break;
 	}
 	}
@@ -536,6 +547,13 @@ void CServerFrame::DoWorker()
 			cout << "EV_ATTACK" << endl;
 			_objects[id].SetIsAttack(false);
 			break;
+		case EV_DUNGEON_ENTER: {
+
+
+
+
+			break;
+		}
 		default:
 			std::cout << "Unknown EVENT\n";
 			while (true);
@@ -574,6 +592,12 @@ void CServerFrame::DoTimer()
 				break;
 			}
 			case EV_ATTACK: {
+				EXP_OVER* exp_over = new EXP_OVER;
+				exp_over->event_type = ev.event_type;
+				PostQueuedCompletionStatus(_iocp, 1, ev.obj_id, &exp_over->over);
+				break;
+			}
+			case EV_DUNGEON_ENTER:{
 				EXP_OVER* exp_over = new EXP_OVER;
 				exp_over->event_type = ev.event_type;
 				PostQueuedCompletionStatus(_iocp, 1, ev.obj_id, &exp_over->over);
@@ -675,16 +699,19 @@ void CServerFrame::AggroMove(int npc_id)
 					if (0 > changeHp) changeHp = 0;
 					_objects[player_id].SetCurrentExp(changeHp);
 					_objects[player_id].SetCurrentHp(50);
-					//_objects[player_id].SetPos(VEC3_TOWN_ENTRANCE_POS);
+					_objects[player_id].SetPos(Vec3(0.f, 0.f, 0.f));
 				
-					/*_sender->SendPlayerDiePacket(_objects[player_id].GetSocket(), player_id);
+					_sender->SendPlayerDiePacket(_objects[player_id].GetSocket(), player_id);
+
 					std::unordered_set<int> vl = _objects[player_id].GetViewList();
 					for (const auto& id : vl) {
-						if (false == IsPlayer(id)) continue;
+						if (false == IsPlayer(id)) {
+							_objects[player_id].EraseViewList(id);
+						}
 						if (ST_ACTIVE != _objects[id]._status) continue;
 						_sender->SendPlayerDiePacket(_objects[id].GetSocket(), player_id);
-					}*/
-
+					}
+					return;
 				}
 			}
 			//////////////////////
@@ -828,7 +855,7 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 	_objects[id].ClientUnLock();
 	std::unordered_set<int> newViewList;
 	std::unordered_set<int> dun_vl;
-	if (_objects[id].GetPos().z >= 50000.f && !_objects[id]._questStart) {
+	if (_objects[id].GetPos().z >= 100.f && !_objects[id]._questStart && fullEnter) {
 		cout << "퀘스트 시작 패킷" << endl;
 		_objects[id]._questStart = true;
 		_sender->SendQuestStartPacket(_objects[id].GetSocket(), id, true);
@@ -841,29 +868,24 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 
 	for (auto& cl : _objects) {
 		if (false == IsNear(cl.GetID(), id)) continue;
-		if (ST_SLEEP == cl._status) {
+		if (ST_SLEEP == cl._status && fullEnter) {
 			ActivateNPC(cl.GetID());
 		}
 		if (ST_ACTIVE != cl._status) continue;
 		if (cl.GetID() == id) continue;
-		if (cl.GetDunGeonEnter()) {
-			dun_vl.insert(cl.GetID());
-			continue;
-		}
 		newViewList.insert(cl.GetID());
 	}
-	if (fullEnter) {
+	/*if (fullEnter) {
 		cout << "다 들어옴" << endl;
 		newViewList.clear();
 		newViewList = dun_vl;
-	}
+	}*/
 
 	for (auto& np : newViewList) {
 		if (0 == oldViewList.count(np)) {	// Object가 시야에 새로 들어왔을 때.
 			_objects[id].ClientLock();
 			_objects[id].InsertViewList(np);
 			_objects[id].ClientUnLock();
-			cout << "do_move 1" << endl;
 			
 			_sender->SendPutObjectPacket(_objects[id].GetSocket(), np,
 				_objects[np].GetPos().x, _objects[np].GetPos().y, _objects[np].GetPos().z, 
@@ -875,7 +897,6 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 			if (0 == _objects[np].GetViewListCount(id)) {
 				_objects[np].InsertViewList(id);
 				_objects[np].ClientUnLock();
-				cout << "do_move 2" << endl;
 
 				_sender->SendPutObjectPacket(_objects[np].GetSocket(), id, 
 					_objects[id].GetPos().x, _objects[id].GetPos().y, _objects[id].GetPos().z, 
@@ -1003,7 +1024,9 @@ void CServerFrame::DungeonEnter(int id)
 	cout << "던전 엔터" << endl;
 
 	_objects[id].ClientLock();
-	_sender->SendDungeonEnterPacket(_objects[id].GetSocket(), id, true);
+
+	for (auto& users : _enterRoom)
+		_sender->SendDungeonEnterPacket(_objects[users].GetSocket(), users, true);
 
 	_objects[id].ClientUnLock();
 
@@ -1036,11 +1059,6 @@ void CServerFrame::DungeonEnter(int id)
 
 
 	}
-
-	_enterPlayer++;
-
-	if (_enterPlayer == _acceptNumber)
-		fullEnter = true;
 
 }
 void CServerFrame::QuestDone(const short& id)
@@ -1112,11 +1130,11 @@ void CServerFrame::CreateMonster()
 	}
 
 	// LV1
-	_objects[NPC_ID_START].SetPos(Vec3(10.f, 0.f, 8400));
-	_objects[NPC_ID_START + 1].SetPos(Vec3(200.f, 0.f, 8200.f));
-	_objects[NPC_ID_START + 2].SetPos(Vec3(400.f, 0.f, 8200.f));
-	_objects[NPC_ID_START + 3].SetPos(Vec3(-200.f, 0.f, 8200.f));
-	_objects[NPC_ID_START + 4].SetPos(Vec3(-400.f, 0.f, 8200.f));
+	_objects[NPC_ID_START].SetPos(Vec3(10.f, 0.f, 2900));
+	_objects[NPC_ID_START + 1].SetPos(Vec3(200.f, 0.f, 2700));
+	_objects[NPC_ID_START + 2].SetPos(Vec3(400.f, 0.f, 2700));
+	_objects[NPC_ID_START + 3].SetPos(Vec3(-200.f, 0.f, 2700));
+	_objects[NPC_ID_START + 4].SetPos(Vec3(-400.f, 0.f, 2700));
 	
 	// 중앙 홀 몬스터
 

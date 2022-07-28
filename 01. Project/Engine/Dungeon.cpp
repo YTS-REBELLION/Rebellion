@@ -27,6 +27,8 @@
 #include "Core.h"
 
 #include "PlayerScript.h"
+#include "MonsterScript.h"
+#include "M_MonsterScript.h"
 #include "SwordScript.h"
 #include "ToolCamScript.h"
 #include "Network.h"
@@ -40,7 +42,7 @@ void CDungeonScene::init()
 	GetLayer(3)->SetName(L"House");
 	GetLayer(4)->SetName(L"Portal");
 	GetLayer(5)->SetName(L"UI");
-
+	GetLayer(6)->SetName(L"Monster");
 	// ====================
 	// 3D Light Object Ãß°¡
 	// ====================
@@ -75,7 +77,6 @@ void CDungeonScene::init()
 	pPlayer->SetName(L"FM_Player");
 	pPlayer->FrustumCheck(false);
 
-	pPlayer->Transform()->SetLocalPos(Vec3(Vec3(45.f, 0.f, 876.f)));
 	pPlayer->Transform()->SetLocalScale(Vec3(1.0f, 1.0f, 1.0f));
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), XMConvertToRadians(180.f), 0.f));
 
@@ -134,15 +135,15 @@ void CDungeonScene::init()
 	PlayerCamScript->SetCameraToPlayer(pPlayer);
 	FindLayer(L"Default")->AddGameObject(pMainCam);
 
-	//// UI Camera
-	//CGameObject* pUICam = new CGameObject;
-	//pUICam->SetName(L"UICam");
-	//pUICam->AddComponent(new CTransform);
-	//pUICam->AddComponent(new CCamera);
+	// UI Camera
+	CGameObject* pUICam = new CGameObject;
+	pUICam->SetName(L"UICam");
+	pUICam->AddComponent(new CTransform);
+	pUICam->AddComponent(new CCamera);
 
-	//pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHGRAPHIC);
-	//pUICam->Camera()->SetFar(100.f);
-	//pUICam->Camera()->SetLayerCheck(5, true);
+	pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHGRAPHIC);
+	pUICam->Camera()->SetFar(100.f);
+	pUICam->Camera()->SetLayerCheck(5, true);
 
-	//FindLayer(L"Default")->AddGameObject(pUICam);
+	FindLayer(L"Default")->AddGameObject(pUICam);
 }

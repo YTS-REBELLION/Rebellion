@@ -525,9 +525,23 @@ void CNetwork::ProcessPacket(char* ptr)
 		
 		break;
 	}
+	case SC_PACKET_WAITROOM: {
+		cout << "파티원을 기다리는중입니다." << endl;
+
+
+		break;
+	}
 	case SC_PACKET_DUNGEON_ENTER: {
 		sc_packet_dungeon* p = reinterpret_cast<sc_packet_dungeon*>(ptr);
 		cout << "던전에 들어옴!!!!!!!!!!" << endl;
+
+		tEvent evn = {};
+		evn.wParam = (DWORD_PTR)SCENE_TYPE::DUNGEON;
+		evn.eType = EVENT_TYPE::CHANGE_SCENE;
+		CEventMgr::GetInst()->AddEvent(evn);
+		CEventMgr::GetInst()->update();
+
+
 		GameObject.find(p->id)->second = m_pObj;
 		GameObject.find(g_myid)->second->SetID(g_myid);
 		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetID(g_myid);
@@ -544,11 +558,38 @@ void CNetwork::ProcessPacket(char* ptr)
 		
 		GameObject.find(g_myid)->second->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 
+	
 		//GameObject.find(g_myid)->second->Transform()->SetLocalPos(Vec3(4000.f, 2000.f, 876.f));
 
 		
 
 		//m_pDObj->Transform()->SetLocalPos(Vec3(45.f, 0.f, 876.f));
+
+		break;
+	}
+	case SC_PACKET_PLAYER_DIE: {
+		sc_packet_player_die* packet = reinterpret_cast<sc_packet_player_die*>(ptr);
+		cout << "나 죽었다!" << endl;
+
+		tEvent evn = {};
+		evn.wParam = (DWORD_PTR)SCENE_TYPE::ASSEMBLY;
+		evn.eType = EVENT_TYPE::CHANGE_SCENE;
+		CEventMgr::GetInst()->AddEvent(evn);
+		CEventMgr::GetInst()->update();
+
+		GameObject.find(packet->id)->second = m_pObj;
+		GameObject.find(g_myid)->second->SetID(g_myid);
+		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetID(g_myid);
+
+
+		GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetMain();
+
+
+
+		//SetObj(GameObject.find(p->id)->second);
+
+
+		GameObject.find(g_myid)->second->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 
 		break;
 	}
@@ -777,6 +818,17 @@ void CNetwork::Send_Dungeon_Packet(bool isEnter)
 	packet.size = sizeof(packet);
 	packet.type = CS_PACKET_DUNGEON;
 	packet.isEnter = isEnter;
+	Send_Packet(&packet);
+
+}
+
+void CNetwork::Send_PlayerDieTest_Packet(const int& id)
+{
+	cs_packet_dietest packet;
+	packet.size = sizeof(packet);
+	packet.type = CS_PACKET_DIETEST;
+	packet.id = id;
+
 	Send_Packet(&packet);
 
 }

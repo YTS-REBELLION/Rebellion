@@ -13,6 +13,7 @@
 #include"FireBall.h"
 #include"Meteor.h"
 #include"UnleashedPower.h"
+#include "Dungeon.h"
 #include "GameObject.h"
 
 bool isReckoning = false;
@@ -499,6 +500,10 @@ void CPlayerScript::update()
 			g_net.Send_Stop_Packet(false, GetObj()->GetID());
 		}
 
+		// 플레이어 사망
+		if (KEY_TAB(KEY_TYPE::KEY_NUM0)) {
+			g_net.Send_PlayerDieTest_Packet(GetObj()->GetID());
+		}
 
 		//if (KEY_TAB(KEY_TYPE::KEY_0))
 		//{
@@ -1566,7 +1571,7 @@ void CPlayerScript::Delete_Meteor()
 
 void CPlayerScript::QuestInit(QUEST questNum)
 {
-	Ptr<CTexture> pQuest = CResMgr::GetInst()->Load<CTexture>(L"Quest", L"Texture\\Quest\\npc1_quest1(1).png");
+	Ptr<CTexture> pQuest = CResMgr::GetInst()->Load<CTexture>(L"Quest", L"Texture\\Quest\\npc1_quest00.png");
 	//Ptr<CTexture> pQuest2 = CResMgr::GetInst()->Load<CTexture>(L"Quest3", L"Texture\\Quest\\UIboard.png");
 	Ptr<CTexture> pQuest2_0 = CResMgr::GetInst()->Load<CTexture>(L"Quest2_1", L"Texture\\Quest\\npc2_quest00.png");
 	Ptr<CTexture> pQuest3_0 = CResMgr::GetInst()->Load<CTexture>(L"Quest3_1", L"Texture\\Quest\\npc3_quest00.png");
@@ -1605,7 +1610,7 @@ void CPlayerScript::QuestInit(QUEST questNum)
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuest.GetPointer());
 
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+		//CDungeonScene::GetInst()->FindLayer(L"UI")->AddGameObject(pObject);
 		m_pQuestBox1 = pObject;
 
 		break;
