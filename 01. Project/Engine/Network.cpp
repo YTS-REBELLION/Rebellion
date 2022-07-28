@@ -528,14 +528,24 @@ void CNetwork::ProcessPacket(char* ptr)
 	case SC_PACKET_DUNGEON_ENTER: {
 		sc_packet_dungeon* p = reinterpret_cast<sc_packet_dungeon*>(ptr);
 		cout << "던전에 들어옴!!!!!!!!!!" << endl;
+		GameObject.find(p->id)->second = m_pObj;
+		GameObject.find(g_myid)->second->SetID(g_myid);
+		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetID(g_myid);
+
+		cout << "아이디 : " << GameObject.find(g_myid)->second->GetID() << endl;
+		cout << "스크립트 아이디 : " << GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->GetID() << endl;
+
+		GameObject.find(p->id)->second->GetScript<CPlayerScript>()->SetMain();
+
+
+
+		//SetObj(GameObject.find(p->id)->second);
 		
-		g_myid = p->id;
-		m_pObj->GetScript<CPlayerScript>()->SetMain();
-		//GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetMain();
-		//GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetID(g_myid);
-		//m_pObj->Transform()->SetLocalPos(Vec3(45.f, 0.f, 876.f));
-		GameObject.find(g_myid)->second = m_pObj;
-		GameObject.find(g_myid)->second->Transform()->SetLocalPos(Vec3(45.f, 0.f, 876.f));
+		
+
+		GameObject.find(g_myid)->second->Transform()->SetLocalPos(Vec3(4000.f, 2000.f, 876.f));
+
+		
 
 		//m_pDObj->Transform()->SetLocalPos(Vec3(45.f, 0.f, 876.f));
 

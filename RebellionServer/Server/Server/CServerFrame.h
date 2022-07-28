@@ -60,6 +60,7 @@ public:
 	void RecvPacketProcess(int, int);
 	void ProcessPacket(int , char*);
 	void EnterGame(int id, const char* name);
+	void DungeonEnter(int id);
 	bool CAS(volatile atomic<STATUS>* addr, STATUS expected, STATUS new_val);
 
 

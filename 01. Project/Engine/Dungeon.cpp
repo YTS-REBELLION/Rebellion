@@ -75,7 +75,7 @@ void CDungeonScene::init()
 	pPlayer->SetName(L"FM_Player");
 	pPlayer->FrustumCheck(false);
 
-
+	pPlayer->Transform()->SetLocalPos(Vec3(Vec3(45.f, 0.f, 876.f)));
 	pPlayer->Transform()->SetLocalScale(Vec3(1.0f, 1.0f, 1.0f));
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), XMConvertToRadians(180.f), 0.f));
 
@@ -115,7 +115,7 @@ void CDungeonScene::init()
 	FindLayer(L"Player")->AddGameObject(pPlayer);
 
 
-	g_net.D_SetObj(pPlayer);
+	g_net.SetObj(pPlayer);
 
 	
 	//Main Camera

@@ -364,11 +364,85 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 	}
 	case CS_PACKET_DUNGEON: {
 		cs_packet_dungeon* packet = reinterpret_cast<cs_packet_dungeon*>(buf);
-		
+		unordered_set<int> dun_vl;
 		cout << "던전 입장" << endl;
+		unordered_set<int> old_viewList = _objects[id].GetViewList();
+		//unordered_set<int> temp_vl = _objects[id].GetViewList();
+
+		
+		_objects[id].SetViewList(dun_vl);
+		_objects[id].ClearViewList();
+
+		//_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), id, _objects[id].GetMyType());
+	/*	_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), id, _objects[id].GetMyType());
+
+		for (int i = 0; i < NPC_ID_START; ++i) {
+			CObject& cl = _objects[id];
+			if (id == cl.GetID())
+				continue;
+			if (ST_ACTIVE == cl._status) {
+				cl.ClientLock();
+				cl.EraseViewList(id);
+				cl.ClientUnLock();
+				_sender->SendLeaveObjectPacket(cl.GetSocket(), id, _objects[id].GetMyType());
+			}
 
 
-		_sender->SendDungeonEnterPacket(_objects[id].GetSocket(), id, true);
+		}*/
+		
+
+		
+		for (auto& users : old_viewList) {
+			if (users == id) continue;
+			if (false == IsPlayer(users)) continue;
+			_objects[users].ClientLock();
+			_objects[users].EraseViewList(id);
+			_objects[users].ClientUnLock();
+			_sender->SendLeaveObjectPacket(_objects[users].GetSocket(), id, _objects[id].GetMyType());
+
+		}
+		DungeonEnter(id);
+
+
+		//_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), id, _objects[id].GetMyType());
+		//_objects[id].ClientLock();
+		//_objects[id]._status = ST_INGAME;
+		//closesocket(_objects[id].GetSocket());
+		//for (int i = 0; i < NPC_ID_START; ++i) {
+		//	CObject& cl = _objects[id];
+		//	if (id == cl.GetID())
+		//		continue;
+
+		//	if (ST_ACTIVE == cl._status) {
+		//		cl.ClientLock();
+		//		cl.EraseViewList(id);
+		//		cl.ClientUnLock();
+		//		_sender->SendLeaveObjectPacket(cl.GetSocket(), id, _objects[id].GetMyType());
+		//	}
+
+
+		//}
+		//_objects[id]._status = ST_FREE;
+		//_objects[id].ClientUnLock();
+		//for (auto& op : oldViewList) {		// Object가 시야에서 벗어났을 때.
+		//	if (0 == newViewList.count(op)) {
+		//		_objects[id].ClientLock();
+		//		_objects[id].EraseViewList(op);
+		//		_objects[id].ClientUnLock();
+		//		_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), op, _objects[op].GetMyType());
+		//		//std::atomic_compare_exchange_strong(&_objects[id]._status, &oldState, ST_ACTIVE);
+		//		if (false == IsPlayer(op)) continue;
+		//		_objects[op].ClientLock();
+		//		if (0 != _objects[op].GetViewListCount(id)) {
+		//			_objects[op].EraseViewList(id);
+		//			_objects[op].ClientUnLock();
+		//			_sender->SendLeaveObjectPacket(_objects[op].GetSocket(), id, _objects[id].GetMyType());
+		//		}
+		//		else {
+		//			_objects[op].ClientUnLock();
+		//		}
+		//	}
+		//}
 
 
 		break;
@@ -940,14 +1014,12 @@ void CServerFrame::EnterGame(int id, const char* name)
 
 	for (auto& cl : _objects) {
 		int i = cl.GetID();
-		if(id == i)continue;
+		if (id == i)break;
 		if (true == IsNear(id, i)) {
 
-
-			if (ST_SLEEP == _objects[i]._status) {
-				ActivateNPC(i);
-			}
-
+			//if (ST_SLEEP == _objects[i]._status) {
+			//	ActivateNPC(i);
+			//}
 			if (ST_ACTIVE == _objects[i]._status) {
 				_objects[id].ClientLock();
 				_objects[id].InsertViewList(i);
@@ -970,9 +1042,48 @@ void CServerFrame::EnterGame(int id, const char* name)
 	}
 
 }
+void CServerFrame::DungeonEnter(int id)
+{
+	cout << "던전 엔터" << endl;
+
+	_objects[id].ClientLock();
+	_sender->SendDungeonEnterPacket(_objects[id].GetSocket(), id, true);
+
+	_objects[id].ClientUnLock();
+
+	for (auto& cl : _objects) {
+		int i = cl.GetID();
+		if (id == i)break;
+		if (true == IsNear(id, i)) {
+
+			//if (ST_SLEEP == _objects[i]._status) {
+			//	ActivateNPC(i);
+			//}
+			if (ST_ACTIVE == _objects[i]._status) {
+				_objects[id].ClientLock();
+				_objects[id].InsertViewList(i);
+				_objects[id].ClientUnLock();
+
+				_sender->SendPutObjectPacket(_objects[id].GetSocket(), i, _objects[i].GetPos().x,
+					_objects[i].GetPos().y, _objects[i].GetPos().z, _objects[i].GetMyType());
+				if (true == IsPlayer(i)) {
+					_objects[i].ClientLock();
+					_objects[i].InsertViewList(id);
+					_objects[i].ClientUnLock();
+
+					_sender->SendPutObjectPacket(_objects[i].GetSocket(), id, _objects[id].GetPos().x,
+						_objects[id].GetPos().y, _objects[id].GetPos().z, _objects[id].GetMyType());
+				}
+			}
+		}
+
+
+	}
+}
 void CServerFrame::QuestDone(const short& id)
 {
 
+	
 }
 
 bool CServerFrame::CAS(volatile atomic<STATUS>* addr, STATUS expected, STATUS new_val)
