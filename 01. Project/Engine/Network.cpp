@@ -542,8 +542,9 @@ void CNetwork::ProcessPacket(char* ptr)
 		//SetObj(GameObject.find(p->id)->second);
 		
 		
+		GameObject.find(g_myid)->second->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 
-		GameObject.find(g_myid)->second->Transform()->SetLocalPos(Vec3(4000.f, 2000.f, 876.f));
+		//GameObject.find(g_myid)->second->Transform()->SetLocalPos(Vec3(4000.f, 2000.f, 876.f));
 
 		
 

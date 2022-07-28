@@ -369,29 +369,15 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		unordered_set<int> old_viewList = _objects[id].GetViewList();
 		//unordered_set<int> temp_vl = _objects[id].GetViewList();
 
+
 		
 		_objects[id].SetViewList(dun_vl);
 		_objects[id].ClearViewList();
-
-		//_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), id, _objects[id].GetMyType());
-	/*	_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), id, _objects[id].GetMyType());
-
-		for (int i = 0; i < NPC_ID_START; ++i) {
-			CObject& cl = _objects[id];
-			if (id == cl.GetID())
-				continue;
-			if (ST_ACTIVE == cl._status) {
-				cl.ClientLock();
-				cl.EraseViewList(id);
-				cl.ClientUnLock();
-				_sender->SendLeaveObjectPacket(cl.GetSocket(), id, _objects[id].GetMyType());
-			}
-
-
-		}*/
+		_objects[id].SetDunGeonEnter(true);
 		
 
-		
+
+
 		for (auto& users : old_viewList) {
 			if (users == id) continue;
 			if (false == IsPlayer(users)) continue;
@@ -403,48 +389,7 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		}
 		DungeonEnter(id);
 
-
-		//_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), id, _objects[id].GetMyType());
-		//_objects[id].ClientLock();
-		//_objects[id]._status = ST_INGAME;
-		//closesocket(_objects[id].GetSocket());
-		//for (int i = 0; i < NPC_ID_START; ++i) {
-		//	CObject& cl = _objects[id];
-		//	if (id == cl.GetID())
-		//		continue;
-
-		//	if (ST_ACTIVE == cl._status) {
-		//		cl.ClientLock();
-		//		cl.EraseViewList(id);
-		//		cl.ClientUnLock();
-		//		_sender->SendLeaveObjectPacket(cl.GetSocket(), id, _objects[id].GetMyType());
-		//	}
-
-
-		//}
-		//_objects[id]._status = ST_FREE;
-		//_objects[id].ClientUnLock();
-		//for (auto& op : oldViewList) {		// Object°¡ ½Ã¾ß¿¡¼­ ¹þ¾î³µÀ» ¶§.
-		//	if (0 == newViewList.count(op)) {
-		//		_objects[id].ClientLock();
-		//		_objects[id].EraseViewList(op);
-		//		_objects[id].ClientUnLock();
-		//		_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), op, _objects[op].GetMyType());
-		//		//std::atomic_compare_exchange_strong(&_objects[id]._status, &oldState, ST_ACTIVE);
-		//		if (false == IsPlayer(op)) continue;
-		//		_objects[op].ClientLock();
-		//		if (0 != _objects[op].GetViewListCount(id)) {
-		//			_objects[op].EraseViewList(id);
-		//			_objects[op].ClientUnLock();
-		//			_sender->SendLeaveObjectPacket(_objects[op].GetSocket(), id, _objects[id].GetMyType());
-		//		}
-		//		else {
-		//			_objects[op].ClientUnLock();
-		//		}
-		//	}
-		//}
-
-
+		
 		break;
 	}
 	}
@@ -882,7 +827,8 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 	std::unordered_set<int> oldViewList = _objects[id].GetViewList();
 	_objects[id].ClientUnLock();
 	std::unordered_set<int> newViewList;
-	if (_objects[id].GetPos().z >= 5600.f && !_objects[id]._questStart) {
+	std::unordered_set<int> dun_vl;
+	if (_objects[id].GetPos().z >= 50000.f && !_objects[id]._questStart) {
 		cout << "Äù½ºÆ® ½ÃÀÛ ÆÐÅ¶" << endl;
 		_objects[id]._questStart = true;
 		_sender->SendQuestStartPacket(_objects[id].GetSocket(), id, true);
@@ -900,9 +846,16 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 		}
 		if (ST_ACTIVE != cl._status) continue;
 		if (cl.GetID() == id) continue;
-		/*if (false == IsPlayer(cl.GetID()))
-			ActivateNPC(cl.GetID());*/
+		if (cl.GetDunGeonEnter()) {
+			dun_vl.insert(cl.GetID());
+			continue;
+		}
 		newViewList.insert(cl.GetID());
+	}
+	if (fullEnter) {
+		cout << "´Ù µé¾î¿È" << endl;
+		newViewList.clear();
+		newViewList = dun_vl;
 	}
 
 	for (auto& np : newViewList) {
@@ -910,7 +863,8 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 			_objects[id].ClientLock();
 			_objects[id].InsertViewList(np);
 			_objects[id].ClientUnLock();
-
+			cout << "do_move 1" << endl;
+			
 			_sender->SendPutObjectPacket(_objects[id].GetSocket(), np,
 				_objects[np].GetPos().x, _objects[np].GetPos().y, _objects[np].GetPos().z, 
 				_objects[np].GetMyType());
@@ -921,6 +875,8 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 			if (0 == _objects[np].GetViewListCount(id)) {
 				_objects[np].InsertViewList(id);
 				_objects[np].ClientUnLock();
+				cout << "do_move 2" << endl;
+
 				_sender->SendPutObjectPacket(_objects[np].GetSocket(), id, 
 					_objects[id].GetPos().x, _objects[id].GetPos().y, _objects[id].GetPos().z, 
 					_objects[id].GetMyType());
@@ -1054,6 +1010,7 @@ void CServerFrame::DungeonEnter(int id)
 	for (auto& cl : _objects) {
 		int i = cl.GetID();
 		if (id == i)break;
+		if (!cl.GetDunGeonEnter()) continue;
 		if (true == IsNear(id, i)) {
 
 			//if (ST_SLEEP == _objects[i]._status) {
@@ -1079,6 +1036,12 @@ void CServerFrame::DungeonEnter(int id)
 
 
 	}
+
+	_enterPlayer++;
+
+	if (_enterPlayer == _acceptNumber)
+		fullEnter = true;
+
 }
 void CServerFrame::QuestDone(const short& id)
 {

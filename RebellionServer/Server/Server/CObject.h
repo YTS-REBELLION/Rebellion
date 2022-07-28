@@ -62,7 +62,7 @@ class CObject
 
 	Vec3			_nextPos[3];
 	
-
+	bool			_dungeonEnter = false;
 	
 
 
@@ -196,8 +196,8 @@ public:
 		_nextPos[i].z = z;
 
 	}
-
-
+	void SetDunGeonEnter(bool isEnter) { _dungeonEnter = isEnter; }
+	bool GetDunGeonEnter() const { return _dungeonEnter; }
 
 };
 

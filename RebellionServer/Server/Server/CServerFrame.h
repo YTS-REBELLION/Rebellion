@@ -39,7 +39,7 @@ class CServerFrame {
 	int _acceptNumber = 0;
 	bool isQuestDone = false;
 	bool isSecondQuestDone = false;
-
+	
 
 public:
 	CServerFrame();
@@ -85,6 +85,9 @@ public:
 	int			monsterdieCnt = 0;
 	bool		queststart = false;
 
+	int _enterPlayer;
+
+	bool fullEnter = false;
 
 };
 

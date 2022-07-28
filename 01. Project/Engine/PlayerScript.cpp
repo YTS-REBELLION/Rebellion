@@ -482,7 +482,7 @@ void CPlayerScript::update()
 			player->Transform()->SetLocalRot(vRot);
 		}
 
-		if (KEY_HOLD(KEY_TYPE::KEY_ENTER))
+		/*if (KEY_HOLD(KEY_TYPE::KEY_ENTER))
 		{
 			localPos.x = 0.f;
 
@@ -491,7 +491,7 @@ void CPlayerScript::update()
 
 			localPos.z = 5600.f;
 			player->Transform()->SetLocalRot(vRot);
-		}
+		}*/
 
 		if ((KEY_AWAY(KEY_TYPE::KEY_W) || KEY_AWAY(KEY_TYPE::KEY_A) || KEY_AWAY(KEY_TYPE::KEY_S) || KEY_AWAY(KEY_TYPE::KEY_D)))
 		{
