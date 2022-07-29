@@ -368,14 +368,12 @@ void CNetwork::ProcessPacket(char* ptr)
 		{
 			if (packet->status)
 				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->AnimationPlay(other_id, PLAYER_ANI_TYPE::WALK);
-			cout << "현재 위치 x : " << packet->localPos.x << ", z : " << packet->localPos.z << endl;
 			GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 		}
 		else
 		{ 
 			if (CheckType(other_id) == OBJECT_TYPE::PLAYER)
 			{
-				cout << "현재 위치 x : " << packet->localPos.x << ", z : " << packet->localPos.z << endl;
 				GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetBisFrist(true);
 
@@ -399,10 +397,8 @@ void CNetwork::ProcessPacket(char* ptr)
 		break;
 	}
 	case SC_PACKET_STOP: {
-
 		sc_packet_stop* packet = reinterpret_cast<sc_packet_stop*>(ptr);
 		int other_id = packet->id;
-
 		if (CheckType(other_id) == OBJECT_TYPE::PLAYER) {
 			if (other_id == g_myid)
 			{
@@ -424,7 +420,6 @@ void CNetwork::ProcessPacket(char* ptr)
 		break;
 	}
 	case SC_PACKET_PLAYER_ATTACK: {
-		cout << "SC_PACKET_PLAYER_ATTACK" << endl;
 		sc_packet_player_attack* packet = reinterpret_cast<sc_packet_player_attack*>(ptr);
 		int id = packet->id;
 		if (id == g_myid) {
@@ -442,7 +437,6 @@ void CNetwork::ProcessPacket(char* ptr)
 		break;
 	}
 	case SC_PACKET_RUN: {
-		cout << "SC_PACKET_RUN" << endl;
 		sc_packet_run* packet = reinterpret_cast<sc_packet_run*>(ptr);
 		int id = packet->id;
 		if (id == g_myid) {
@@ -461,7 +455,6 @@ void CNetwork::ProcessPacket(char* ptr)
 		break;
 	}
 	case SC_PACKET_NPC_ATTACK: {
-		cout << "SC_PACKET_NPC_ATTACK" << endl;
 		sc_packet_npc_attack* packet = reinterpret_cast<sc_packet_npc_attack*>(ptr);
 		int monsterId = packet->id;
 
@@ -551,8 +544,6 @@ void CNetwork::ProcessPacket(char* ptr)
 
 		GameObject.find(p->id)->second->GetScript<CPlayerScript>()->SetMain();
 
-
-
 		//SetObj(GameObject.find(p->id)->second);
 		
 		
@@ -572,7 +563,6 @@ void CNetwork::ProcessPacket(char* ptr)
 		cout << "SC_PACKET_PLAYER_DIE" << endl;
 		if (g_myid == packet->id) {
 			cout << "나 죽었다!" << endl;
-
 			tEvent evn = {};
 			evn.wParam = (DWORD_PTR)SCENE_TYPE::ASSEMBLY;
 			evn.eType = EVENT_TYPE::CHANGE_SCENE;
@@ -582,17 +572,18 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.find(packet->id)->second = m_pObj;
 			GameObject.find(g_myid)->second->SetID(g_myid);
 			GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetID(g_myid);
-
-
 			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetMain();
+
 			GameObject.find(g_myid)->second->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 
 		}
 		else {
 			cout <<"아군이 사망하였습니다" << endl;
 
-			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->GetObj()->SetDead();
 
+			//GameObject.find(packet->id)->second->SetID(g_myid);
+			//GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetID(g_myid);
+			//GameObject.find(packet->id)->second->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 		}
 
 		//SetObj(GameObject.find(p->id)->second);

@@ -313,7 +313,6 @@ void CPlayerScript::update()
 	CPlayerScript* player = GetObj()->GetScript<CPlayerScript>();
 
 	if (m_isMain) {
-
 		if ((KEY_TAB(KEY_TYPE::KEY_W) || KEY_TAB(KEY_TYPE::KEY_A) || KEY_TAB(KEY_TYPE::KEY_S) || KEY_TAB(KEY_TYPE::KEY_D)))
 		{
 			GetObj()->Animator3D()->SetClipTime(0, 0.f);

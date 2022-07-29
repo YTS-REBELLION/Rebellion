@@ -82,7 +82,8 @@ public:
 
 	void QuestDone(const short& id);
 
-
+	void ComeBackScene(int id);
+	void Do_move_Dungeon(const short& id, const char& dir, Vec3& localPos, const float& rotate);
 
 	int			monsterdieCnt = 0;
 	bool		queststart = false;

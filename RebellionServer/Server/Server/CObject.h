@@ -63,7 +63,7 @@ class CObject
 	Vec3			_nextPos[3];
 	
 	bool			_dungeonEnter = false;
-	
+	unordered_set<int> _dungeonViewList;
 
 
 public:
@@ -143,6 +143,7 @@ public:
 	void EraseViewList(int id) { 
 		_viewLists.erase(id); 
 	}
+
 	void ClearViewList() { _viewLists.clear(); }
 	size_t GetViewListCount(int id) const { return _viewLists.count(id); }
 	std::unordered_set<int> GetViewList() const { return _viewLists; }
