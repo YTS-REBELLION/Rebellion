@@ -30,6 +30,8 @@ class CServerFrame {
 	std::priority_queue<EVENT>							_timerQueue;
 	std::chrono::time_point <std::chrono::system_clock> _prevTime;
 	std::chrono::duration<float>						_elapsedTime;
+	vector<int> _enterRoom;
+
 
 	bool _useDB;
 
@@ -61,6 +63,7 @@ public:
 	void RecvPacketProcess(int, int);
 	void ProcessPacket(int , char*);
 	void EnterGame(int id, const char* name);
+	void DungeonEnter(int id);
 	bool CAS(volatile atomic<STATUS>* addr, STATUS expected, STATUS new_val);
 
 
@@ -83,9 +86,15 @@ public:
 	bool comp(pair<int, int> a, pair<int, int> b);
 
 	void QuestDone(const short& id);
+
+	void ComeBackScene(int id);
+	void Do_move_Dungeon(const short& id, const char& dir, Vec3& localPos, const float& rotate);
+
 	int			monsterdieCnt = 0;
 	bool		queststart = false;
 
+	int _enterPlayer;
 
+	bool fullEnter = false;
 };
 

@@ -9,7 +9,6 @@
 #include "ConstantBuffer.h"
 
 #include "Script.h"
-#include "PlayerScript.h"
 
 UINT CCollider2D::g_iColID = 0;
 

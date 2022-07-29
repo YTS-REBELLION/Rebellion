@@ -256,6 +256,7 @@ enum class EVENT_TYPE
 	ACTIVATE_COMPONENT,		// wParam : Component Adress
 	DEACTIVATE_COMPONENT,	// wParam : Component Adress
 
+	CHANGE_SCENE,
 	END,
 };
 
@@ -328,6 +329,13 @@ enum class SHADER_POV
 	SHADOW
 };
 
+
+enum class SCENE_TYPE {
+	LOGIN,
+	ASSEMBLY,
+	DUNGEON,
+	END,
+};
 
 enum class CAMERASTATE
 {

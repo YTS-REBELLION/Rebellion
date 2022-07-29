@@ -380,8 +380,8 @@ bool CCollisionMgr::CollisionRectCircle(CCollider2D* _pCollider1, CCollider2D* _
 		if (disZ <= (_pCollider1->Transform()->GetLocalScale().z * _pCollider1->Collider2D()->GetOffsetScale().z) +
 			(_pCollider2->Transform()->GetLocalScale().z * _pCollider2->Collider2D()->GetOffsetScale().z) / 2)
 			return true;
-	}
 		break;
+	}
 	case 3:
 	case 5:
 	{
@@ -390,10 +390,11 @@ bool CCollisionMgr::CollisionRectCircle(CCollider2D* _pCollider1, CCollider2D* _
 		if (disX <= (_pCollider1->Transform()->GetLocalScale().x * _pCollider1->Collider2D()->GetOffsetScale().x) +
 			(_pCollider2->Transform()->GetLocalScale().x * _pCollider2->Collider2D()->GetOffsetScale().x) / 2)
 			return true;
-	}
 		break;
+	}
 	case 4:
 		return true;
+		break;
 	default:
 		break;
 	}

@@ -59,6 +59,7 @@ void CNetwork::err_quit(const char* msg)
 CNetwork::CNetwork()
 {
 	m_pObj = nullptr;
+	m_pDObj = nullptr;
 }
 
 
@@ -367,14 +368,12 @@ void CNetwork::ProcessPacket(char* ptr)
 		{
 			if (packet->status)
 				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->AnimationPlay(other_id, PLAYER_ANI_TYPE::WALK);
-			cout << "현재 위치 x : " << packet->localPos.x << ", z : " << packet->localPos.z << endl;
 			GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 		}
 		else
 		{ 
 			if (CheckType(other_id) == OBJECT_TYPE::PLAYER)
 			{
-				cout << "현재 위치 x : " << packet->localPos.x << ", z : " << packet->localPos.z << endl;
 				GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetBisFrist(true);
 
@@ -398,10 +397,8 @@ void CNetwork::ProcessPacket(char* ptr)
 		break;
 	}
 	case SC_PACKET_STOP: {
-
 		sc_packet_stop* packet = reinterpret_cast<sc_packet_stop*>(ptr);
 		int other_id = packet->id;
-
 		if (CheckType(other_id) == OBJECT_TYPE::PLAYER) {
 			if (other_id == g_myid)
 			{
@@ -423,7 +420,6 @@ void CNetwork::ProcessPacket(char* ptr)
 		break;
 	}
 	case SC_PACKET_PLAYER_ATTACK: {
-		cout << "SC_PACKET_PLAYER_ATTACK" << endl;
 		sc_packet_player_attack* packet = reinterpret_cast<sc_packet_player_attack*>(ptr);
 		int id = packet->id;
 		if (id == g_myid) {
@@ -441,7 +437,6 @@ void CNetwork::ProcessPacket(char* ptr)
 		break;
 	}
 	case SC_PACKET_RUN: {
-		cout << "SC_PACKET_RUN" << endl;
 		sc_packet_run* packet = reinterpret_cast<sc_packet_run*>(ptr);
 		int id = packet->id;
 		if (id == g_myid) {
@@ -460,7 +455,6 @@ void CNetwork::ProcessPacket(char* ptr)
 		break;
 	}
 	case SC_PACKET_NPC_ATTACK: {
-		cout << "SC_PACKET_NPC_ATTACK" << endl;
 		sc_packet_npc_attack* packet = reinterpret_cast<sc_packet_npc_attack*>(ptr);
 		int monsterId = packet->id;
 
@@ -471,7 +465,7 @@ void CNetwork::ProcessPacket(char* ptr)
 		GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->SetMove(false);
 		GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->SetAttack(packet->isAttack);
 		GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->AnimationPlay(MONSTER_ANI_TYPE::ATTACK);
-
+		
 		break;
 	}
 	case SC_PACKET_TARGET: {
@@ -521,6 +515,80 @@ void CNetwork::ProcessPacket(char* ptr)
 		//GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestView(packet->isStart);
 		GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestInit(QUEST::FIRST);
 		
+		break;
+	}
+	case SC_PACKET_WAITROOM: {
+		cout << "파티원을 기다리는중입니다." << endl;
+
+
+		break;
+	}
+	case SC_PACKET_DUNGEON_ENTER: {
+		sc_packet_dungeon* p = reinterpret_cast<sc_packet_dungeon*>(ptr);
+		cout << "던전에 들어옴!!!!!!!!!!" << endl;
+
+		tEvent evn = {};
+		evn.wParam = (DWORD_PTR)SCENE_TYPE::DUNGEON;
+		evn.eType = EVENT_TYPE::CHANGE_SCENE;
+		CEventMgr::GetInst()->AddEvent(evn);
+		CEventMgr::GetInst()->update();
+
+
+		GameObject.find(p->id)->second = m_pObj;
+		GameObject.find(g_myid)->second->SetID(g_myid);
+		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetID(g_myid);
+
+		cout << "아이디 : " << GameObject.find(g_myid)->second->GetID() << endl;
+		cout << "스크립트 아이디 : " << GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->GetID() << endl;
+
+		GameObject.find(p->id)->second->GetScript<CPlayerScript>()->SetMain();
+
+		//SetObj(GameObject.find(p->id)->second);
+		
+		
+		GameObject.find(g_myid)->second->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+
+	
+		//GameObject.find(g_myid)->second->Transform()->SetLocalPos(Vec3(4000.f, 2000.f, 876.f));
+
+		
+
+		//m_pDObj->Transform()->SetLocalPos(Vec3(45.f, 0.f, 876.f));
+
+		break;
+	}
+	case SC_PACKET_PLAYER_DIE: {
+		sc_packet_player_die* packet = reinterpret_cast<sc_packet_player_die*>(ptr);
+		cout << "SC_PACKET_PLAYER_DIE" << endl;
+		if (g_myid == packet->id) {
+			cout << "나 죽었다!" << endl;
+			tEvent evn = {};
+			evn.wParam = (DWORD_PTR)SCENE_TYPE::ASSEMBLY;
+			evn.eType = EVENT_TYPE::CHANGE_SCENE;
+			CEventMgr::GetInst()->AddEvent(evn);
+			CEventMgr::GetInst()->update();
+
+			GameObject.find(packet->id)->second = m_pObj;
+			GameObject.find(g_myid)->second->SetID(g_myid);
+			GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetID(g_myid);
+			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetMain();
+
+			GameObject.find(g_myid)->second->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+
+		}
+		else {
+			cout <<"아군이 사망하였습니다" << endl;
+
+
+			//GameObject.find(packet->id)->second->SetID(g_myid);
+			//GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetID(g_myid);
+			//GameObject.find(packet->id)->second->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+		}
+
+		//SetObj(GameObject.find(p->id)->second);
+
+
+
 		break;
 	}
 	default:
@@ -600,12 +668,8 @@ void CNetwork::Send_LogIn_Packet()
 	//cout << name << endl;
 	//strcpy_s(name, packet.name);
 
-
-
 	std::cout << "name : ";
 	std::cin >> name;
-
-	
 
 	sprintf_s(packet.name, name);
 	strcpy_s(name, packet.name);
@@ -771,6 +835,27 @@ void CNetwork::Send_Teleport_Packet(const int& playerId, Vec3 localPos)
 	Send_Packet(&packet);
 
 
+
+}
+
+void CNetwork::Send_Dungeon_Packet(bool isEnter)
+{
+	cs_packet_dungeon packet;
+	packet.size = sizeof(packet);
+	packet.type = CS_PACKET_DUNGEON;
+	packet.isEnter = isEnter;
+	Send_Packet(&packet);
+
+}
+
+void CNetwork::Send_PlayerDieTest_Packet(const int& id)
+{
+	cs_packet_dietest packet;
+	packet.size = sizeof(packet);
+	packet.type = CS_PACKET_DIETEST;
+	packet.id = id;
+
+	Send_Packet(&packet);
 
 }
 

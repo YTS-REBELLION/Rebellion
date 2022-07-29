@@ -8,9 +8,6 @@
     <Filter Include="01. Header">
       <UniqueIdentifier>{6990beb8-80b9-4501-9951-fd46a863c698}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Core">
-      <UniqueIdentifier>{007ffcba-46e9-48bb-ade9-0fe8ad8e970f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Device">
       <UniqueIdentifier>{6a3df6a8-6ff0-43df-af23-1c7c8499da19}</UniqueIdentifier>
     </Filter>
@@ -70,6 +67,9 @@
     </Filter>
     <Filter Include="04. GameObject\Script\03.Skill">
       <UniqueIdentifier>{d06cec06-6bfe-48db-b40c-a36798210a08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Core">
+      <UniqueIdentifier>{007ffcba-46e9-48bb-ade9-0fe8ad8e970f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

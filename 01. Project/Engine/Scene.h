@@ -10,7 +10,7 @@ class CScene :
 {
 private:
 	CLayer*				m_arrLayer[MAX_LAYER];	
-
+	SCENE_TYPE			m_eSceneType;
 
 public:
 	virtual void init() {};
@@ -27,7 +27,8 @@ public:
 	CLayer* FindLayer(const wstring& _strLayerName);
 	CLayer* GetLayer(int _iIdx) { return m_arrLayer[_iIdx]; };
 
-	
+	void SetType(SCENE_TYPE _eType) { m_eSceneType = _eType; }
+	SCENE_TYPE GetType() { return m_eSceneType; }
 
 private:
 	void AddLayer(const wstring& _strLayerName, int _iIdx = -1);

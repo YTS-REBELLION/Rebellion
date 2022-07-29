@@ -9,9 +9,13 @@ private:
 	Ptr<CMaterial>		m_pOriginMtrl;
 	Ptr<CMaterial>		m_pCloneMtrl;
 
+	CGameObject* m_pPlayer;
+	float m_fspeed = 1000.f;
 public:
 	virtual void awake();
 	virtual void update();
+
+	void Set_Player(CGameObject* _player) { m_pPlayer = _player; }
 
 public:
 	CLONE(CSwordStrike);

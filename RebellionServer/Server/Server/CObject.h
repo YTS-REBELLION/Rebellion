@@ -40,6 +40,7 @@ class CObject
 
 
 	std::unordered_set<int> _viewLists;
+	unordered_set<int>		_dungeonViewLists;
 
 	bool			_isAttack;
 	
@@ -62,6 +63,8 @@ class CObject
 
 	Vec3			_nextPos[3];
 	
+	bool			_dungeonEnter = false;
+	unordered_set<int> _dungeonViewList;
 	bool			_m2mCol;
 
 
@@ -72,6 +75,9 @@ public:
 	EXP_OVER _recvOver;
 	char _packetBuf[MAX_PACKET_SIZE];
 	bool			_questStart = false;
+	bool _objectsDie = false;
+
+
 	bool			_closed = false;
 	bool			_move = true;
 public:
@@ -143,9 +149,23 @@ public:
 	void EraseViewList(int id) { 
 		_viewLists.erase(id); 
 	}
+
 	void ClearViewList() { _viewLists.clear(); }
 	size_t GetViewListCount(int id) const { return _viewLists.count(id); }
 	std::unordered_set<int> GetViewList() const { return _viewLists; }
+	void SetViewList(unordered_set<int> vl) { _viewLists = vl; }
+
+	unordered_set<int> DungeonGetViewList() const { return _dungeonViewLists; }
+	size_t DungeonGetViewListCount(int id) const { return _dungeonViewLists.count(id); }
+
+	void DungeonClearViewList() { _dungeonViewLists.clear(); }
+	void DungeonInsertViewList(int id) {
+		_dungeonViewLists.insert(id);
+	}
+	void DungeonEraseViewList(int id) {
+		_dungeonViewLists.erase(id);
+	}
+
 
 	bool GetIsAttack() const { return _isAttack; }
 	void SetIsAttack(bool b) { _isAttack = b; }
@@ -184,6 +204,9 @@ public:
 		_nextPos[i].z = z;
 
 	}
+	void SetDunGeonEnter(bool isEnter) { _dungeonEnter = isEnter; }
+	bool GetDunGeonEnter() const { return _dungeonEnter; }
+
 
 	void SetMonsterCol(bool isCol) { _m2mCol = isCol; }
 	bool GetMonsterCol() const { return _m2mCol; }

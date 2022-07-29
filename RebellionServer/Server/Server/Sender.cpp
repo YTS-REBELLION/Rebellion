@@ -119,7 +119,6 @@ void CSender::SendPutObjectPacket(SOCKET s, int id, float x, float y, float z, i
 void CSender::Send_Stop_Packet(SOCKET s, int mover_id)
 {
 	sc_packet_stop p;
-	cout << "Send_Stop_Packet" << endl;
 	p.size = sizeof(p);
 	p.type = SC_PACKET_STOP;
 	p.id = mover_id;
@@ -130,6 +129,7 @@ void CSender::Send_Stop_Packet(SOCKET s, int mover_id)
 
 void CSender::SendPlayerDiePacket(SOCKET s, int id)
 {
+	cout << id << "플레이어 사망" << endl;
 	sc_packet_player_die packet;
 	packet.id = id;
 	packet.size = sizeof(packet);
@@ -154,21 +154,6 @@ void CSender::SendPlayerAttackPacket(SOCKET s, int attacker, bool isAttack)
 	SendPacket(s, &packet);
 }
 
-
-
-void CSender::SendStatChangePacket(SOCKET s, short level, short currentHp, short maxHp, short currentExp, short maxExp)
-{
-	sc_packet_stat_change packet;
-	packet.type = SC_PACKET_STAT_CHANGE;
-	packet.size = sizeof(packet);
-	packet.level = level;
-	packet.c_hp = currentHp;
-	packet.m_hp = maxHp;
-	packet.c_exp = currentExp;
-	packet.m_exp = maxExp;
-
-	SendPacket(s, &packet);
-}
 
 void CSender::SendHpPacket(SOCKET s, short currentHp)
 {
@@ -274,6 +259,28 @@ void CSender::SendQuestDonePacket(SOCKET s, int playerId, QUEST nextQuest, bool 
 	SendPacket(s, &packet);
 
 }
+
+void CSender::SendDungeonEnterPacket(SOCKET s, const int& playerId, bool isEnter)
+{
+	sc_packet_dungeon packet;
+	packet.size = sizeof(packet);
+	packet.id = playerId;
+	packet.type = SC_PACKET_DUNGEON_ENTER;
+	packet.isEnter = isEnter;
+
+	SendPacket(s, &packet);
+}
+
+void CSender::Send_WaitRoom_Packet(SOCKET s)
+{
+	sc_packet_waitroom packet;
+	packet.size = sizeof(packet);
+	packet.type = SC_PACKET_WAITROOM;
+
+	SendPacket(s, &packet);
+
+}
+
 
 void CSender::SendQuestStartPacket(SOCKET s, int id, bool isStart)
 {
