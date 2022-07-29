@@ -580,7 +580,8 @@ void CNetwork::ProcessPacket(char* ptr)
 		else {
 			cout <<"아군이 사망하였습니다" << endl;
 
-
+			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->GetObj()->SetDead();
+			GameObject.erase(packet->id);
 			//GameObject.find(packet->id)->second->SetID(g_myid);
 			//GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetID(g_myid);
 			//GameObject.find(packet->id)->second->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));

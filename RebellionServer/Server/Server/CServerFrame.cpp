@@ -882,6 +882,8 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 	_prevTime = curTime;
 
 	for (auto& cl : _objects) {
+		if (false == IsPlayer(cl.GetID())) continue;
+		if (cl.GetDunGeonEnter()) continue;
 		if (false == IsNear(cl.GetID(), id)) continue;
 		if (ST_ACTIVE != cl._status) continue;
 		if (cl.GetID() == id) continue;
@@ -1195,7 +1197,7 @@ void CServerFrame::DungeonEnter(int id)
 
 	for (auto& cl : _objects) {
 		int i = cl.GetID();
-		if (id == i) continue;
+		if (id == i) break;
 		if (true == IsNear(id, i)) {
 			cout << "던전 인설트" << endl;
 
@@ -1209,8 +1211,8 @@ void CServerFrame::DungeonEnter(int id)
 				_objects[id].ClientUnLock();
 				_sender->SendPutObjectPacket(_objects[id].GetSocket(), i, _objects[i].GetPos().x,
 					_objects[i].GetPos().y, _objects[i].GetPos().z, _objects[i].GetMyType());
-				if (true == IsPlayer(i)) {
 
+				if (true == IsPlayer(i)) {
 					_objects[i].ClientLock();
 					_objects[i].DungeonInsertViewList(id);
 					_objects[i].ClientUnLock();
@@ -1228,46 +1230,53 @@ void CServerFrame::ComeBackScene(int player_id)
 	cout << "집결지로 복귀합니다." << endl;
 	_objects[player_id].ClientLock();
 
-	_objects[player_id].SetDunGeonEnter(false);
 	/*short level = _objects[player_id].GetLevel();
 	short hp = _objects[player_id].GetCurrentHp();
 	short changeHp = hp - (50 * level);*/
 	//if (0 > changeHp) changeHp = 0;
 	/*_objects[player_id].SetCurrentExp(changeHp);
 	_objects[player_id].SetCurrentHp(50);*/
+	_objects[player_id].SetDunGeonEnter(false);
 	_objects[player_id].SetPos(Vec3(1000.f, 0.f, 2000.f));
 	_objects[player_id].ClearViewList();
 	_objects[player_id].DungeonClearViewList();
 
 	std::unordered_set<int> vl = _objects[player_id].DungeonGetViewList();
-	for (const auto& id : vl) {
+	/*for (const auto& id : vl) {
 		if (_objects[id]._objectsDie) continue;
 		if (ST_ACTIVE != _objects[id]._status) continue;
 		if (false == IsPlayer(id)) {
 			_objects[player_id].DungeonEraseViewList(id);
-			//_sender->SendLeaveObjectPacket(_objects[player_id].GetSocket(), id, _objects[id].GetMyType());
 			continue;
 		}
-		_objects[id].DungeonEraseViewList(player_id);
-		_sender->SendPlayerDiePacket(_objects[id].GetSocket(), player_id);
+		if (id != player_id) {
+			_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), player_id, _objects[player_id].GetMyType());
+			_objects[id].DungeonEraseViewList(player_id);
+			_sender->SendPlayerDiePacket(_objects[id].GetSocket(), player_id);
+		}
 	}
-	_sender->SendPlayerDiePacket(_objects[player_id].GetSocket(), player_id);
+	_sender->SendPlayerDiePacket(_objects[player_id].GetSocket(), player_id);*/
+
+
+	for (const auto& id : vl) {
+		if (_objects[id]._objectsDie == true) continue;
+		_sender->SendPlayerDiePacket(_objects[id].GetSocket(), player_id);
+		_objects[id].DungeonEraseViewList(player_id);
+	}
+
 
 	_objects[player_id]._objectsDie = true;
-
-
 	_objects[player_id].ClientUnLock();
 
 	for (auto& cl : _objects) {
 		int i = cl.GetID();
-		if (player_id == i) break;
-		if (!cl._objectsDie) continue;
+		if (player_id == i) continue;
 		if (true == IsNear(player_id, i)) {
 			if (ST_ACTIVE == _objects[i]._status) {
 				_objects[player_id].ClientLock();
 				_objects[player_id].InsertViewList(i);
 				_objects[player_id].ClientUnLock();
-
+				cout << "컴백홈" << endl;
 				_sender->SendPutObjectPacket(_objects[player_id].GetSocket(), i, _objects[i].GetPos().x,
 					_objects[i].GetPos().y, _objects[i].GetPos().z, _objects[i].GetMyType());
 				if (true == IsPlayer(i)) {
@@ -1280,10 +1289,7 @@ void CServerFrame::ComeBackScene(int player_id)
 				}
 			}
 		}
-
-
 	}
-
 }
 void CServerFrame::QuestDone(const short& id)
 {

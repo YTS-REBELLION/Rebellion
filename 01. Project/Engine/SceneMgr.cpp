@@ -95,7 +95,6 @@ void CSceneMgr::ChangeScene(SCENE_TYPE _Type)
 	default:
 		break;
 	}
-
 	m_pCurScene->SetType(_Type);
 	m_pCurScene->init();
 	m_pCurScene->awake();
