@@ -104,13 +104,14 @@ void CPlayerScript::init()
 
 
 
-	//트레일 적용하는곳
-	// MeshRender 설정
-	/*SwordScript->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	SwordScript->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TrailMtrl"));
-	SwordScript->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pTrail01.GetPointer());*/
-
+	////트레일 적용하는곳
+	//// MeshRender 설정
+	//SwordScript->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	//SwordScript->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TrailMtrl"));
+	//SwordScript->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pTrail01.GetPointer());
+	
 	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pSwordObject, false);
+	
 	GetObj()->AddChild(pSwordObject);
 
 
@@ -1198,6 +1199,8 @@ void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
 
 void CPlayerScript::OnCollision(CCollider2D* _pOther)
 {
+	float fdamage = 20.f;
+	float ftemphp = fdamage;
 	if (_pOther->GetObj()->GetName() == L"Map Object")
 	{
 		m_bColCheck = true;
@@ -1205,7 +1208,7 @@ void CPlayerScript::OnCollision(CCollider2D* _pOther)
 		Vec3 dir_vec = m_pColObj->Transform()->GetLocalDir(DIR_TYPE::RIGHT);
 		cout << "충돌" << endl;
 
-		MpUiScale.x -= 20.f;
+		MpUiScale.x -= fdamage;
 	}
 	
 	
@@ -1222,7 +1225,7 @@ void CPlayerScript::OnCollision(CCollider2D* _pOther)
 		pObject->AddComponent(new CTransform);
 		pObject->AddComponent(new CMeshRender);
 
-		pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 2.f) - (res.fWidth / 1.5f), res.fHeight / 2.7f, 1.f));
+		pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 2.f) - (res.fWidth / 1.5f)- ftemphp, res.fHeight / 2.7f, 1.f));
 		pObject->Transform()->SetLocalScale(MpUiScale);
 
 		//MeshRender 설정
@@ -1462,6 +1465,9 @@ void CPlayerScript::FireBall()
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
 
+	
+
+	
 }
 
 void CPlayerScript::UnleashedPower()

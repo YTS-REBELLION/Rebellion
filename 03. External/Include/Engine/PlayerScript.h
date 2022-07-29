@@ -97,11 +97,13 @@ private:
 	bool m_bQuest_05_clear = false;
 
 	CGameObject* pManaobj;
-
+	CGameObject* pHpobj;
 	Vec3	CharacterBoxScale = Vec3(100.f, 100.f, 1.f);
 	Vec3	FrameUiScale = Vec3(600.f, 100.f, 1.f);
 	Vec3	HpcoverUiScale = Vec3(500.f, 40.f, 1.f);
-	Vec3	HpUiScale = Vec3(500.f, 40.f, 1.f);
+	float m_fHp = 500.f;
+	Vec3	HpUiScale = Vec3(m_fHp, 40.f, 1.f);
+	
 	float m_fmana = 500.f;
 	Vec3	MpUiScale = Vec3(m_fmana, 40.f, 1.f);
 
@@ -136,6 +138,10 @@ private:
 	Ptr<CTexture> pQuestComplete = CResMgr::GetInst()->Load<CTexture>(L"QuestComplete", L"Texture\\Quest\\QuestComplete.png");
 
 	int					m_iID;
+
+
+	vector<Ptr<CMaterial>>	m_vecHideMtrl;
+
 public:
 	virtual void awake();	
 	virtual void update();

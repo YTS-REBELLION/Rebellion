@@ -2,7 +2,7 @@
 #define _TRIAL
 
 #include "value.fx"
-
+#include "func.fx"
 
 vector	g_vLightDir = (vector)0.f;
 
@@ -100,35 +100,35 @@ PS_OUT	PS_BOSS(PS_IN In)
 	return Out;
 }
 
-technique Default_Device
-{
-	// ±â´ÉÀÇ Ä¸½¶È­
-	pass
-	{
-		alphablendenable = true;
-		SRCBLEND = SRCALPHA;
-		destBlend = invsrcalpha;
-		vertexshader = compile vs_5_0 VS_TRAIL();
-		pixelshader = compile ps_5_0 PS_TRAIL();
-	}
-	pass TEST
-	{
-		alphablendenable = true;
-		SRCBLEND = SRCALPHA;
-		destBlend = invsrcalpha;
-		vertexshader = compile ps_5_0 VS_TRAIL();
-		pixelshader = compile ps_5_0 PS_TEST();
-	}
-	pass BOSS
-	{
-		alphablendenable = true;
-		SRCBLEND = SRCALPHA;
-		destBlend = invsrcalpha;
-		vertexshader = compile ps_5_0 VS_TRAIL();
-		pixelshader = compile ps_5_0 PS_BOSS();
-	}
-
-};
+//technique Default_Device
+//{
+//	// ±â´ÉÀÇ Ä¸½¶È­
+//	pass
+//	{
+//		alphablendenable = true;
+//		SRCBLEND = SRCALPHA;
+//		destBlend = invsrcalpha;
+//		vertexshader = compile vs_5_0 VS_TRAIL();
+//		pixelshader = compile ps_5_0 PS_TRAIL();
+//	}
+//	pass TEST
+//	{
+//		alphablendenable = true;
+//		SRCBLEND = SRCALPHA;
+//		destBlend = invsrcalpha;
+//		vertexshader = compile ps_5_0 VS_TRAIL();
+//		pixelshader = compile ps_5_0 PS_TEST();
+//	}
+//	pass BOSS
+//	{
+//		alphablendenable = true;
+//		SRCBLEND = SRCALPHA;
+//		destBlend = invsrcalpha;
+//		vertexshader = compile ps_5_0 VS_TRAIL();
+//		pixelshader = compile ps_5_0 PS_BOSS();
+//	}
+//
+//};
 
 
 

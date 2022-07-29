@@ -13,7 +13,7 @@ CParticleSystem::CParticleSystem()
 	: CComponent(COMPONENT_TYPE::PARTICLESYSTEM)
 	, m_pParticleBuffer(nullptr)
 	, m_pSharedBuffer(nullptr)
-	, m_iMaxParticle(1000)
+	, m_iMaxParticle(100)
 	, m_fFrequency(0.002f)
 	, m_fAccTime(0.f)
 	, m_fMinLifeTime(0.2f)
@@ -37,8 +37,8 @@ CParticleSystem::CParticleSystem()
 	m_pMesh = CResMgr::GetInst()->FindRes<CMesh>(L"PointMesh");
 
 	// Material
-	m_pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"ParticleMtrl");
-	Ptr<CTexture> pParticle = CResMgr::GetInst()->Load<CTexture>(L"Texture\\Particle\\Bubbles99px.png", L"Texture\\Particle\\Bubbles99px.png");
+	m_pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"RainMtrl");
+	Ptr<CTexture> pParticle = CResMgr::GetInst()->Load<CTexture>(L"Texture\\Particle\\Explosion21.png", L"Texture\\Particle\\Explosion21.png");
 	m_pMtrl->SetData(SHADER_PARAM::TEX_0, pParticle.GetPointer());
 
 	// ParticleUpdate
@@ -78,6 +78,8 @@ void CParticleSystem::finalupdate()
 	m_pUpdateMtrl->SetData(SHADER_PARAM::FLOAT_3, &m_fMaxSpeed);
 
 	m_pUpdateMtrl->Dispatch(1, 1, 1);
+
+
 }
 
 void CParticleSystem::render()

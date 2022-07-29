@@ -1452,6 +1452,9 @@ void CSceneMgr::init()
 
 	pPM = CResMgr::GetInst()->FindRes<CMaterial>(L"PointLightMtrl");
 	pPM->SetData(SHADER_PARAM::TEX_2, pSky01.GetPointer());
+
+
+	
 	
 	// ===============
 	// Test Scene 생성
@@ -1633,6 +1636,11 @@ void CSceneMgr::init()
 	pMonster->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
 	pMonster->Collider2D()->SetOffsetRot(Vec3(0.f, XMConvertToRadians(-90.f), XMConvertToRadians(90.f)));
 
+	//// Material 값 셋팅
+	//Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl");
+	////GateHouseObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CircleMesh"));
+	//pMonster->MeshRender()->SetMaterial(pMtrl2, 0);
+
 	// 몬스터 스크립트 붙여주기.
 	pMonster->AddComponent(new CM_MonsterScript);
 
@@ -1713,16 +1721,19 @@ void CSceneMgr::init()
 
 	pPotalObject = pPMeshData->Instantiate();
 	pPotalObject->SetName(L"Portal");
+
+	
 	pPotalObject->FrustumCheck(false);
 	pPotalObject->Transform()->SetLocalPos(Vec3(114.f, 150.f, 3300.f));
 	pPotalObject->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
 	pPotalObject->Transform()->SetLocalRot(Vec3(17.13f, 21.95f, 0.f));
-
+	
 	// 더미
 	pObject = new CGameObject;
 	pObject->SetName(L"Map Object");
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
+	
 	// Transform 설정
 	pObject->Transform()->SetLocalPos(Vec3(114.f, 150.f, 3450.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
@@ -1735,6 +1746,10 @@ void CSceneMgr::init()
 	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
 	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
 	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
+	
+
+
+	
 
 	// AddGameObject
 	m_pCurScene->FindLayer(L"Monster")->AddGameObject(pObject);
@@ -1842,6 +1857,8 @@ void CSceneMgr::init()
 	pPMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Gatehouses.mdat", L"MeshData\\Gatehouses.mdat");
 	GateHouseObject = pPMeshData->Instantiate();
 	GateHouseObject->SetName(L"Gate_houses");
+	
+
 	GateHouseObject->FrustumCheck(false);
 	GateHouseObject->MeshRender()->SetDynamicShadow(true);
 	// Transform 설정
@@ -2069,6 +2086,8 @@ void CSceneMgr::init()
 	// AddGameObject
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);
 
+	
+
 
 
 	//	비
@@ -2086,6 +2105,8 @@ void CSceneMgr::init()
 	pObject->Transform()->SetLocalPos(particlePos);
 	m_pCurScene->FindLayer(L"Default")->AddGameObject(pObject);
 
+
+	
 
 
 

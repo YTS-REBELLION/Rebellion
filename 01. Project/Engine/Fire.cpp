@@ -31,6 +31,9 @@ void CFire::update()
 		m_NoiseBuffer.frameTime = 0.f;
 	MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::FLOAT_0, &m_NoiseBuffer.frameTime);
 
+
+
+
 }
 
 
