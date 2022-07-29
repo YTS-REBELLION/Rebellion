@@ -171,7 +171,6 @@ public:
 		else m_bCol = true;
 	}
 	void SetQuestCnt(QUEST questId) { m_iClearCnt = questId; }
-	void SecondQuestInit();
 	void SetQuestView(bool isQuest) { m_questView = isQuest; }
 	void QuestDone(QUEST questNum);
 

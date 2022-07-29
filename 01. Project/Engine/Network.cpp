@@ -483,13 +483,10 @@ void CNetwork::ProcessPacket(char* ptr)
 			cout << "퀘스트 완료!" << endl;
 			cout << "다음 퀘스트 고고 !" << endl;
 		}
-		//GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestDone(QUEST::FIRST);
 		switch (packet->nextQuest) {
 		case QUEST::SECOND: {
 			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestCnt(QUEST::SECOND);
-			//GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestView(packet->isDone);
-			//GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestInit(QUEST::SECOND);
-			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SecondQuestInit();
+			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestInit(QUEST::SECOND);
 			break;
 		}
 		case QUEST::THIRD: {
@@ -806,19 +803,6 @@ void CNetwork::Send_MonsterRotate_Packet(const int& id, const int& other_id, Vec
 	packet.vRot = vRot;
 	packet.playerId = other_id;
 	packet.type = CS_PACKET_MONSTERDIR;
-
-	Send_Packet(&packet);
-
-}
-
-void CNetwork::Send_MobToMobCol_Packet(const int& monsterId, const int& other_monsterId,bool isCol, MONSTER_MOVE moveType)
-{
-	cs_packet_m2mcol packet;
-	packet.size = sizeof(packet);
-	packet.type = CS_PACKET_M2MCOL;
-	packet.monsterId = monsterId;
-	packet.other_monsterId = other_monsterId;
-	packet.isCol = isCol;
 
 	Send_Packet(&packet);
 
