@@ -92,6 +92,7 @@ private:
 
 
 	int					m_iID;
+	bool				m_bDash = false;
 public:
 	virtual void awake();	
 	virtual void update();
@@ -169,6 +170,8 @@ public:
 	CCollider2D* m_pColObj;
 	void SetColObj(CCollider2D* _obj) { m_pColObj = _obj; }
 
+	void StopToWall();
+	void isDash(bool _type) { m_bDash = _type; };
 public:
 	CLONE(CPlayerScript);
 

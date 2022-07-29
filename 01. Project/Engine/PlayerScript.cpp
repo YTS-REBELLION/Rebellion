@@ -336,26 +336,27 @@ void CPlayerScript::update()
 
 		if (KEY_HOLD(KEY_TYPE::KEY_W))
 		{
-			localPos += WorldDir * m_fSpeed * DT;
 			system_clock::time_point start = system_clock::now();
-			m_eDir = COL_DIR::FRONT;
-			cout << "KEY_W" << endl;
+			if(!m_bColCheck)
+				localPos += WorldDir * (m_bDash ? m_fSpeed * 2.0f : m_fSpeed) * DT;
+
+			AnimationPlay(PLAYER_ANI_TYPE::WALK);
+			g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+
 			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 			{
-				localPos += WorldDir * m_fSpeed * DT;
+				isDash(true);
 				AnimationPlay(PLAYER_ANI_TYPE::RUN);
 				g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
-
-
 			}
-			else {
-				AnimationPlay(PLAYER_ANI_TYPE::WALK);
-				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+			else if (KEY_AWAY(KEY_TYPE::KEY_LSHIFT)) isDash(false);
 
-			};
 		}
 		else if (KEY_HOLD(KEY_TYPE::KEY_S))
 		{
+
+			//Transform()->SetLocalRot(Vec3(localRot.x, XMConvertToRadians(90.f), localRot.z));
+
 			localPos -= WorldDir * m_fSpeed * DT;
 
 			system_clock::time_point start = system_clock::now();
@@ -375,6 +376,7 @@ void CPlayerScript::update()
 
 			};
 		}
+
 		else if (KEY_HOLD(KEY_TYPE::KEY_A))
 		{
 			WorldDir = playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
@@ -1026,7 +1028,9 @@ void CPlayerScript::update()
 			Delete_Meteor();
 		}
 
-		if (!m_bColCheck)
+		Transform()->SetLocalPos(localPos);
+
+		/*if (!m_bColCheck)
 		{
 			Transform()->SetLocalPos(localPos);
 		}
@@ -1087,7 +1091,7 @@ void CPlayerScript::update()
 				localPos.y = 0.0f;
 			}
 			Transform()->SetLocalPos(localPos);
-		}
+		}*/
 	
 }
 
@@ -1190,6 +1194,11 @@ void CPlayerScript::AnimationPlay(int other_id, const PLAYER_ANI_TYPE& type)
 	}
 }
 
+//void CPlayerScript::StopToWall()
+//{
+//	GetObj()->Transform()->GetLocalDir(DIR_TYPE::FRONT) * 5.0f
+//}
+
 void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
 {
 }
@@ -1199,12 +1208,12 @@ void CPlayerScript::OnCollision(CCollider2D* _pOther)
 	if (_pOther->GetObj()->GetName() == L"M_Monster" 
 		|| _pOther->GetObj()->GetName() == L"M_Monster2"
 		|| _pOther->GetObj()->GetName() == L"Map Object"
-		|| _pOther->GetObj()->GetName() == L"FM_Monster")
+		)
 	{
 		m_bColCheck = true;
 		SetColObj(_pOther);
 		Vec3 dir_vec = m_pColObj->Transform()->GetLocalDir(DIR_TYPE::RIGHT);
-		cout << "충돌" << endl;
+		//cout << "충돌" << endl;
 
 		MpUiScale.x -= 20.f;
 	}
@@ -1284,10 +1293,6 @@ void CPlayerScript::SwordStrike()
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
 
-
-
-
-
 	m_pSwordStrike = pPMeshData->Instantiate();
 	m_pSwordStrike->SetName(L"SwordStike");
 	m_pSwordStrike->FrustumCheck(false);
@@ -1327,14 +1332,6 @@ void CPlayerScript::SwordStrike()
 
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
-
-
-
-
-
-
-
-
 }
 
 void CPlayerScript::MegaSlash()
@@ -1657,6 +1654,7 @@ void CPlayerScript::Delete_Meteor()
 	m_bMeteor2 = false;
 
 }
+
 void CPlayerScript::SecondQuestInit()
 {
 	Ptr<CTexture> pQuest2_0 = CResMgr::GetInst()->Load<CTexture>(L"Quest2_1", L"Texture\\Quest\\npc2_quest00.png");

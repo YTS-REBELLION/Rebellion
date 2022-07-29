@@ -299,6 +299,8 @@
     <ClInclude Include="Quest.h">
       <Filter>04. GameObject\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Fire.h" />
+    <ClInclude Include="ParticleSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -515,6 +517,8 @@
     <ClCompile Include="Quest.cpp">
       <Filter>04. GameObject\Component</Filter>
     </ClCompile>
+    <ClCompile Include="Fire.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="std.fx">
@@ -544,6 +548,9 @@
     <FxCompile Include="trail.fx">
       <Filter>ShaderCode</Filter>
     </FxCompile>
+    <FxCompile Include="fire.fx" />
+    <FxCompile Include="particle.fx" />
+    <FxCompile Include="rain.fx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">

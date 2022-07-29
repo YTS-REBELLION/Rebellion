@@ -29,9 +29,9 @@ OBJECT_TYPE CheckType(const short& id)
 
 
 CNetwork g_net;
-//const char* SERVER_IP = "127.0.0.1";
+const char* SERVER_IP = "127.0.0.1";
 //const char* SERVER_IP = "192.168.63.11";
-const char* SERVER_IP = "121.190.132.161";
+//const char* SERVER_IP = "121.190.132.161";
 //const char* SERVER_IP = "172.20.10.2";
 OBJ GameObject;
 
@@ -268,11 +268,11 @@ void CNetwork::ProcessPacket(char* ptr)
 				//몬스터 애니메이션
 				MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 0, 0, 100);
 
-				pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Walk.mdat", L"MeshData\\Monster_FM_Walk.mdat");
-				MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 1, 0, 29);
+				pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Walk2.mdat", L"MeshData\\Monster_FM_Walk2.mdat");
+				MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 1, 0, 21);
 
 				pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Hit.mdat", L"MeshData\\Monster_FM_Hit.mdat");
-				MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 1, 0, 40);
+				MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 2, 0, 40);
 
 				pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Attack.mdat", L"MeshData\\Monster_FM_Attack.mdat");
 				MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 3, 0, 36);
@@ -478,7 +478,6 @@ void CNetwork::ProcessPacket(char* ptr)
 		sc_packet_targetplayer* packet = reinterpret_cast<sc_packet_targetplayer*>(ptr);
 		// packet -> int targetId, bool isTarget
 
-
 		GameObject.find(packet->monster_id)->second->GetScript<CMonsterScript>()->SetTarget(packet->isTarget);
 		GameObject.find(packet->monster_id)->second->GetScript<CMonsterScript>()->SetTargetID(packet->id);
 		
@@ -618,6 +617,7 @@ void CNetwork::Send_LogIn_Packet()
 
 
 }
+
 void CNetwork::Send_Move_Packet(unsigned const char& dir, const Vec3& localPos, const Vec3& dirVec,
 	const float& rotate, const system_clock::time_point& startTime,
 	const float& delta, const bool& movings)

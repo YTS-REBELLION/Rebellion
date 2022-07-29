@@ -25,6 +25,7 @@ public:
 	bool			m_bMouseFix = false;
 	float			checktime2 = 0.f;
 	CAMERASTATE		m_eCamState = CAMERASTATE::PLAYER;
+	Vec3			InitRot;
 public:
 	virtual void update();
 	void SetCameraToPlayer(CGameObject* Player) {
