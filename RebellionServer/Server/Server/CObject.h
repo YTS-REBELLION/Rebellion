@@ -71,6 +71,7 @@ public:
 	EXP_OVER _recvOver;
 	char _packetBuf[MAX_PACKET_SIZE];
 	bool			_questStart = false;
+	bool _objectsDie = false;
 
 
 public:

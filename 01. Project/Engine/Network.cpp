@@ -569,27 +569,35 @@ void CNetwork::ProcessPacket(char* ptr)
 	}
 	case SC_PACKET_PLAYER_DIE: {
 		sc_packet_player_die* packet = reinterpret_cast<sc_packet_player_die*>(ptr);
-		cout << "나 죽었다!" << endl;
+		cout << "SC_PACKET_PLAYER_DIE" << endl;
+		if (g_myid == packet->id) {
+			cout << "나 죽었다!" << endl;
 
-		tEvent evn = {};
-		evn.wParam = (DWORD_PTR)SCENE_TYPE::ASSEMBLY;
-		evn.eType = EVENT_TYPE::CHANGE_SCENE;
-		CEventMgr::GetInst()->AddEvent(evn);
-		CEventMgr::GetInst()->update();
+			tEvent evn = {};
+			evn.wParam = (DWORD_PTR)SCENE_TYPE::ASSEMBLY;
+			evn.eType = EVENT_TYPE::CHANGE_SCENE;
+			CEventMgr::GetInst()->AddEvent(evn);
+			CEventMgr::GetInst()->update();
 
-		GameObject.find(packet->id)->second = m_pObj;
-		GameObject.find(g_myid)->second->SetID(g_myid);
-		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetID(g_myid);
-
-
-		GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetMain();
+			GameObject.find(packet->id)->second = m_pObj;
+			GameObject.find(g_myid)->second->SetID(g_myid);
+			GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetID(g_myid);
 
 
+			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetMain();
+			GameObject.find(g_myid)->second->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+
+		}
+		else {
+			cout <<"아군이 사망하였습니다" << endl;
+
+			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->GetObj()->SetDead();
+
+		}
 
 		//SetObj(GameObject.find(p->id)->second);
 
 
-		GameObject.find(g_myid)->second->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 
 		break;
 	}

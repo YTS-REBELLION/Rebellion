@@ -700,19 +700,21 @@ void CServerFrame::AggroMove(int npc_id)
 					_objects[player_id].SetCurrentExp(changeHp);
 					_objects[player_id].SetCurrentHp(50);
 					_objects[player_id].SetPos(Vec3(0.f, 0.f, 0.f));
-				
-					_sender->SendPlayerDiePacket(_objects[player_id].GetSocket(), player_id);
+					_objects[player_id]._objectsDie = true;
 
 					std::unordered_set<int> vl = _objects[player_id].GetViewList();
 					for (const auto& id : vl) {
 						if (false == IsPlayer(id)) {
 							_objects[player_id].EraseViewList(id);
+							//_sender->SendLeaveObjectPacket(_objects[player_id].GetSocket(), id, _objects[id].GetMyType());
 							continue;
 						}
 						if (ST_ACTIVE != _objects[id]._status) continue;
 						_objects[player_id].EraseViewList(id);
 						_sender->SendPlayerDiePacket(_objects[id].GetSocket(), player_id);
 					}
+					_sender->SendPlayerDiePacket(_objects[player_id].GetSocket(), player_id);
+
 					return;
 				}
 			}
@@ -720,6 +722,7 @@ void CServerFrame::AggroMove(int npc_id)
 			for (auto& cl : _objects) {
 				if (false == IsPlayer(cl.GetID())) continue;
 				if (false == IsNear(cl.GetID(), npc_id)) continue;
+				if (cl._objectsDie == true) continue;
 				cl.ClientLock();
 				if (ST_ACTIVE == cl._status) {
 					cout << "NPC Attack" << endl;
@@ -744,6 +747,7 @@ void CServerFrame::AggroMove(int npc_id)
 	for (int i = 0; i < NPC_ID_START; ++i) {
 		if (ST_ACTIVE != _objects[i]._status) continue;
 		if (_objects[npc_id].GetMonsterMove() == false) continue;
+		if (_objects[i]._objectsDie == true) continue;
 		if (true == IsNear(i, npc_id)) {
 			_objects[i].ClientLock();
 			if (0 != _objects[i].GetViewListCount(npc_id)) {
@@ -761,10 +765,9 @@ void CServerFrame::AggroMove(int npc_id)
 				}
 			}
 			else {
-
 				_objects[i].InsertViewList(npc_id); 
 				_objects[i].ClientUnLock();
-
+				cout << "혹시 이곳 어그로무브?" << endl;
 				_sender->SendPutObjectPacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos().x,
 					_objects[npc_id].GetPos().y, _objects[npc_id].GetPos().z,
 					_objects[npc_id].GetMyType());
@@ -882,9 +885,15 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 		newViewList.clear();
 		newViewList = dun_vl;
 	}*/
+	if (_objects[id]._objectsDie == true) {
+		newViewList.clear();
+	}
+	for (auto& id : newViewList)
+		cout << "뷰리스트 아이디 : " << id << endl;
 
 	for (auto& np : newViewList) {
 		if (0 == oldViewList.count(np)) {	// Object가 시야에 새로 들어왔을 때.
+			
 			_objects[id].ClientLock();
 			_objects[id].InsertViewList(np);
 			_objects[id].ClientUnLock();

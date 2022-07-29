@@ -90,6 +90,5 @@ public:
 	int _enterPlayer;
 
 	bool fullEnter = false;
-
 };
 
