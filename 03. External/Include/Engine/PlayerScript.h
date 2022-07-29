@@ -15,27 +15,27 @@ private:
 
 	
 
-	CGameObject* m_pQuestComplete;
-	CGameObject* m_pQuestBoxExplane1;
-	CGameObject* m_pQuestBoxExplane2;
-	CGameObject* m_pQuestBoxExplane3;
-	CGameObject* m_pQuestBoxExplane4;
-	CGameObject* m_pQuestBoxExplane5;
-	CGameObject* m_pQuestBoxExplane6;
-	CGameObject* m_pQuestBoxExplane7;
-	CGameObject* m_pQuestBoxExplane8;
+	CGameObject* m_pQuestComplete = nullptr;
+	CGameObject* m_pQuestBoxExplane1= nullptr;
+	CGameObject* m_pQuestBoxExplane2= nullptr;
+	CGameObject* m_pQuestBoxExplane3= nullptr;
+	CGameObject* m_pQuestBoxExplane4= nullptr;
+	CGameObject* m_pQuestBoxExplane5= nullptr;
+	CGameObject* m_pQuestBoxExplane6= nullptr;
+	CGameObject* m_pQuestBoxExplane7= nullptr;
+	CGameObject* m_pQuestBoxExplane8= nullptr;
 
-	CGameObject* m_pQuestBox1;
-	CGameObject* m_pQuestBox2;
-	CGameObject* m_pQuestBox3;
+	CGameObject* m_pQuestBox1= nullptr;
+	CGameObject* m_pQuestBox2= nullptr;
+	CGameObject* m_pQuestBox3= nullptr;
 
-	CGameObject* m_pQuestBox2_1;
-	CGameObject* m_pQuestBox2_2;
-	CGameObject* m_pQuestBox2_3;
+	CGameObject* m_pQuestBox2_1 = nullptr;
+	CGameObject* m_pQuestBox2_2 = nullptr;
+	CGameObject* m_pQuestBox2_3 = nullptr;
 
-	CGameObject* m_pQuestBox3_1;
-	CGameObject* m_pQuestBox3_2;
-	CGameObject* m_pQuestBox3_3;
+	CGameObject* m_pQuestBox3_1 = nullptr;
+	CGameObject* m_pQuestBox3_2 = nullptr;
+	CGameObject* m_pQuestBox3_3 = nullptr;
 
 	int m_iKillMonCnt = 0;
 
@@ -122,6 +122,7 @@ private:
 
 
 	Ptr<CTexture> pQuestComplete = CResMgr::GetInst()->Load<CTexture>(L"QuestComplete", L"Texture\\Quest\\QuestComplete.png");
+	bool				m_bDash = false;
 public:
 	virtual void awake();	
 	virtual void update();
@@ -170,7 +171,6 @@ public:
 		else m_bCol = true;
 	}
 	void SetQuestCnt(QUEST questId) { m_iClearCnt = questId; }
-	void SecondQuestInit();
 	void SetQuestView(bool isQuest) { m_questView = isQuest; }
 	void QuestDone(QUEST questNum);
 
@@ -201,6 +201,8 @@ public:
 
 	bool GetSkillStrat(int _index) { return m_bSkill_Start[_index]; }
 
+	void StopToWall();
+	void isDash(bool _type) { m_bDash = _type; };
 public:
 	CLONE(CPlayerScript);
 

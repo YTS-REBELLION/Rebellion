@@ -44,7 +44,7 @@ void CPlayerScript::init()
 	pSwordObject = pMeshData->Instantiate();
 	pSwordObject->SetName(L"Player_Sword");
 	pSwordObject->FrustumCheck(false);
-	pSwordObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	//pSwordObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 	pSwordObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pSwordObject->AddComponent(new CCollider2D);
 	pSwordObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -320,25 +320,21 @@ void CPlayerScript::update()
 		
 		if (KEY_HOLD(KEY_TYPE::KEY_W))
 		{
-			
-			localPos += WorldDir * m_fSpeed * DT;
 			system_clock::time_point start = system_clock::now();
-			m_eDir = COL_DIR::FRONT;
+			if(!m_bColCheck)
+				localPos += WorldDir * (m_bDash ? m_fSpeed * 2.0f : m_fSpeed) * DT;
+
+			AnimationPlay(PLAYER_ANI_TYPE::WALK);
+			g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 
 			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
 			{
-				localPos += WorldDir * m_fSpeed * DT;
+				isDash(true);
 				AnimationPlay(PLAYER_ANI_TYPE::RUN);
 				g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
-
-
 			}
-			else
-			{
-				AnimationPlay(PLAYER_ANI_TYPE::WALK);
-				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+			else if (KEY_AWAY(KEY_TYPE::KEY_LSHIFT)) isDash(false);
 
-			};
 		}
 		else if (KEY_HOLD(KEY_TYPE::KEY_S))
 		{
@@ -361,6 +357,7 @@ void CPlayerScript::update()
 
 			};
 		}
+
 		else if (KEY_HOLD(KEY_TYPE::KEY_A))
 		{
 			WorldDir = playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
@@ -482,17 +479,6 @@ void CPlayerScript::update()
 			player->Transform()->SetLocalRot(vRot);
 		}
 
-		/*if (KEY_HOLD(KEY_TYPE::KEY_ENTER))
-		{
-			localPos.x = 0.f;
-
-			localPos.y = 0.f;
-			vRot.y = XM_PI;
-
-			localPos.z = 5600.f;
-			player->Transform()->SetLocalRot(vRot);
-		}*/
-
 		if ((KEY_AWAY(KEY_TYPE::KEY_W) || KEY_AWAY(KEY_TYPE::KEY_A) || KEY_AWAY(KEY_TYPE::KEY_S) || KEY_AWAY(KEY_TYPE::KEY_D)))
 		{
 			cout << "KET_AWAY" << endl;
@@ -503,37 +489,6 @@ void CPlayerScript::update()
 		if (KEY_TAB(KEY_TYPE::KEY_NUM0)) {
 			g_net.Send_PlayerDieTest_Packet(GetObj()->GetID());
 		}
-
-		//if (KEY_TAB(KEY_TYPE::KEY_0))
-		//{
-		//	//임시로 퀘스트 클리어 늘려서 다른퀘스트띄우려 만든거
-		//	m_iClearCnt = QUEST::SECOND;
-		//	tResolution res = CRenderMgr::GetInst()->GetResolution();
-
-		//	Vec3	QuestBoxinScale = Vec3(128, 54, 1.f);
-		//	CGameObject* pObject = new CGameObject;
-
-		//	pObject = new CGameObject;
-		//	pObject->SetName(L"QuestBoxComplete");
-		//	pObject->FrustumCheck(false);
-		//	pObject->AddComponent(new CTransform);
-		//	pObject->AddComponent(new CMeshRender);
-
-		//	pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f), 0.f, 1.f));
-		//	pObject->Transform()->SetLocalScale(QuestBoxinScale);
-
-		//	//MeshRender 설정
-
-		//	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-
-		//	Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
-		//	pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
-		//	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuestComplete.GetPointer());
-
-		//	// AddGameObject
-		//	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
-		//	m_pQuestComplete = pObject;
-		//}
 
 		if (KEY_TAB(KEY_TYPE::KEY_Q))
 		{
@@ -841,8 +796,8 @@ void CPlayerScript::update()
 
 				}
 			}
-
 		}
+		//}
 
 		////if (m_iKillMonCnt == 1)
 		////{
@@ -995,6 +950,7 @@ void CPlayerScript::update()
 				switch (m_eDir)
 				{
 				case COL_DIR::FRONT:
+
 					Dot(-WorldDir, CNormal_2) >= 0 ?
 						localPos += Reflect_vec * m_fSpeed * DT :
 						localPos += WorldDir * m_fSpeed * DT;
@@ -1125,12 +1081,12 @@ void CPlayerScript::OnCollision(CCollider2D* _pOther)
 	if (_pOther->GetObj()->GetName() == L"M_Monster" 
 		|| _pOther->GetObj()->GetName() == L"M_Monster2"
 		|| _pOther->GetObj()->GetName() == L"Map Object"
-		|| _pOther->GetObj()->GetName() == L"FM_Monster")
+		)
 	{
 		m_bColCheck = true;
 		SetColObj(_pOther);
 		Vec3 dir_vec = m_pColObj->Transform()->GetLocalDir(DIR_TYPE::RIGHT);
-		cout << "충돌" << endl;
+		//cout << "충돌" << endl;
 
 		MpUiScale.x -= 20.f;
 	}
@@ -1579,8 +1535,8 @@ void CPlayerScript::QuestInit(QUEST questNum)
 		//g_net.Send_Stop_Packet(false, GetObj()->GetID());
 
 		cout << "-------------------------------------------------" << endl;
-		cout << "		첫번째 퀘스트" << endl;
-		cout << "	문 앞에 있는 병사를 처치하라!" << endl;
+		cout << "      첫번째 퀘스트" << endl;
+		cout << "   문 앞에 있는 병사를 처치하라!" << endl;
 		cout << "-------------------------------------------------" << endl;
 
 		// 몬스터 사냥 카운트
@@ -1588,7 +1544,7 @@ void CPlayerScript::QuestInit(QUEST questNum)
 
 		tResolution res = CRenderMgr::GetInst()->GetResolution();
 
-		Vec3	QuestBoxinScale = Vec3(800.f, 200.f, 1.f);
+		Vec3   QuestBoxinScale = Vec3(800.f, 200.f, 1.f);
 		CGameObject* pObject = new CGameObject;
 
 		pObject = new CGameObject;
@@ -1619,14 +1575,14 @@ void CPlayerScript::QuestInit(QUEST questNum)
 
 		//m_pQuestComplete->SetDead();
 		cout << "-------------------------------------------------" << endl;
-		cout << "		두번째 퀘스트" << endl;
-		cout << "	중앙 홀에 있는 병사를 처치하라!" << endl;
+		cout << "      두번째 퀘스트" << endl;
+		cout << "   중앙 홀에 있는 병사를 처치하라!" << endl;
 		cout << "-------------------------------------------------" << endl;
 
 
 		tResolution res = CRenderMgr::GetInst()->GetResolution();
 
-		Vec3	QuestBoxinScale = Vec3(800.f, 200.f, 1.f);
+		Vec3   QuestBoxinScale = Vec3(800.f, 200.f, 1.f);
 		CGameObject* pObject = new CGameObject;
 
 		pObject = new CGameObject;
@@ -1650,7 +1606,7 @@ void CPlayerScript::QuestInit(QUEST questNum)
 		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
 
 
-		m_pQuestBox2_1= pObject;
+		m_pQuestBox2_1 = pObject;
 		break;
 	}
 	case QUEST::THIRD: {
@@ -1659,7 +1615,7 @@ void CPlayerScript::QuestInit(QUEST questNum)
 		//m_pQuestComplete->SetDead();
 		tResolution res = CRenderMgr::GetInst()->GetResolution();
 
-		Vec3	QuestBoxinScale = Vec3(800.f, 200.f, 1.f);
+		Vec3   QuestBoxinScale = Vec3(800.f, 200.f, 1.f);
 		CGameObject* pObject = new CGameObject;
 
 		pObject = new CGameObject;
@@ -1685,9 +1641,6 @@ void CPlayerScript::QuestInit(QUEST questNum)
 		break;
 	}
 	}
-	
-
-	
 }
 
 void CPlayerScript::QuestDone(QUEST questNum)

@@ -80,12 +80,10 @@ void CCollider2D::finalupdate()
 
 void CCollider2D::render()
 {
-	//if (KEY_HOLD(KEY_TYPE::KEY_D))
-	//{
-	//	return;
-	//}
-
-	return;
+	if (KEY_HOLD(KEY_TYPE::KEY_D))
+	{
+		return;
+	}
 	
 	if (!IsActive())
 		return;

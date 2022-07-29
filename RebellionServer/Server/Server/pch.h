@@ -13,6 +13,7 @@
 #include <chrono>
 
 #include <vector>
+#include <map>
 #include <thread>
 #include <queue>
 #include <mutex>
@@ -53,5 +54,6 @@ using DirectX::SimpleMath::Matrix;
 #include "Shared.h"
 
 
+#include "func.h"
 
 #endif //PCH_H

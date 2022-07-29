@@ -101,62 +101,66 @@ void CMonsterScript::update()
 		}
 
 	}
-	if (!m_bColCheck) {
 
-		//localPos += WorldDir * m_fSpeed * DT;
-		UpdateLerpPos();
-	}
-	else
-	{
-		if (m_pColObj->GetObj()->GetName() == L"FM_Monster")
-		{
-			if(GetObj()->GetScript<CMonsterScript>()->GetID() > m_pColObj->GetObj()->GetScript<CMonsterScript>()->GetID())
-			{
-				m_pColObj->GetObj()->GetScript<CMonsterScript>()->GetLerpPos() += WorldDir * m_fSpeed * DT;
-				//m_pColObj->GetObj()->GetScript<CMonsterScript>()->GetLerpPos() += WorldDir * 0.f * DT;
-				//Vec3 Col_Pos_1 = localPos;
-				//Vec3 Col_Pos_2 = m_pColObj->Transform()->GetLocalPos();
-				//Vec3 CNormal_1 = Col_Pos_2 - Col_Pos_1;
-				//CNormal_1.Normalize();
-				//Vec3 CNormal_2 = -CNormal_1;
-				//Vec3 Dir = WorldDir + CNormal_1;
-				//Dir.Normalize();
+	UpdateLerpPos();
 
-				//Vec3 Reflect_vec = WorldDir + 2 * CNormal_2 * (Dot(-WorldDir, CNormal_2));
-				//Dot(-WorldDir, CNormal_2) >= 0 ?
-				//	localPos -= Reflect_vec * 50.f * DT :
-				//	localPos += WorldDir * 100.f * DT;
+	//if (!m_bColCheck) {
 
-				//LerpPos.y = 0.f;
-				//Transform()->SetLocalPos(LerpPos);
-				UpdateLerpPos();
-			}
-			//// R = P +  2n(-P·n)
-			////	cout << "??" << endl;
-			//Vec3 Col_Pos_1 = localPos;
-			//Vec3 Col_Pos_2 = m_pColObj->Transform()->GetLocalPos();
-			//Vec3 CNormal_1 = Col_Pos_2 - Col_Pos_1;
-			//CNormal_1.Normalize();
-			//Vec3 CNormal_2 = -CNormal_1;
-			//Vec3 Dir = WorldDir + CNormal_1;
-			//Dir.Normalize();
-			////Vec3 Silde_vec = Dir - CNormal_2 * (Dot(Dir, CNormal_2));
-			//int a = 0;
-			////cout << Dot(-WorldDir, CNormal_2) << endl;
+	//	//localPos += WorldDir * m_fSpeed * DT;
+	//	UpdateLerpPos();
+	//}
+	//else
+	//{
+	//	if (m_pColObj->GetObj()->GetName() == L"FM_Monster")
+	//	{
+	//		if(GetObj()->GetScript<CMonsterScript>()->GetID() > m_pColObj->GetObj()->GetScript<CMonsterScript>()->GetID())
+	//		{
+	//			m_pColObj->GetObj()->GetScript<CMonsterScript>()->GetLerpPos() += WorldDir * m_fSpeed * DT;
+	//			//m_pColObj->GetObj()->GetScript<CMonsterScript>()->GetLerpPos() += WorldDir * 0.f * DT;
+	//			//Vec3 Col_Pos_1 = localPos;
+	//			//Vec3 Col_Pos_2 = m_pColObj->Transform()->GetLocalPos();
+	//			//Vec3 CNormal_1 = Col_Pos_2 - Col_Pos_1;
+	//			//CNormal_1.Normalize();
+	//			//Vec3 CNormal_2 = -CNormal_1;
+	//			//Vec3 Dir = WorldDir + CNormal_1;
+	//			//Dir.Normalize();
 
-			//Vec3 Reflect_vec = WorldDir + 2 * CNormal_2 * (Dot(-WorldDir, CNormal_2));
-			//Dot(-WorldDir, CNormal_2) >= 0 ?
-			//	localPos += Reflect_vec * m_fSpeed * DT :
-			//	localPos += WorldDir * m_fSpeed * DT;
-			////localPos -= Reflect_vec * m_fSpeed * DT;
-			//localPos.y = 0.f;
-		}
-	}
+	//			//Vec3 Reflect_vec = WorldDir + 2 * CNormal_2 * (Dot(-WorldDir, CNormal_2));
+	//			//Dot(-WorldDir, CNormal_2) >= 0 ?
+	//			//	localPos -= Reflect_vec * 50.f * DT :
+	//			//	localPos += WorldDir * 100.f * DT;
+
+	//			//LerpPos.y = 0.f;
+	//			//Transform()->SetLocalPos(LerpPos);
+	//			UpdateLerpPos();
+	//		}
+	//		//// R = P +  2n(-P·n)
+	//		////	cout << "??" << endl;
+	//		//Vec3 Col_Pos_1 = localPos;
+	//		//Vec3 Col_Pos_2 = m_pColObj->Transform()->GetLocalPos();
+	//		//Vec3 CNormal_1 = Col_Pos_2 - Col_Pos_1;
+	//		//CNormal_1.Normalize();
+	//		//Vec3 CNormal_2 = -CNormal_1;
+	//		//Vec3 Dir = WorldDir + CNormal_1;
+	//		//Dir.Normalize();
+	//		////Vec3 Silde_vec = Dir - CNormal_2 * (Dot(Dir, CNormal_2));
+	//		//int a = 0;
+	//		////cout << Dot(-WorldDir, CNormal_2) << endl;
+
+	//		//Vec3 Reflect_vec = WorldDir + 2 * CNormal_2 * (Dot(-WorldDir, CNormal_2));
+	//		//Dot(-WorldDir, CNormal_2) >= 0 ?
+	//		//	localPos += Reflect_vec * m_fSpeed * DT :
+	//		//	localPos += WorldDir * m_fSpeed * DT;
+	//		////localPos -= Reflect_vec * m_fSpeed * DT;
+	//		//localPos.y = 0.f;
+	//	}
+	//}
 }
 void CMonsterScript::UpdateLerpPos()
 {
 	Vec3 Pos = GetObj()->Transform()->GetLocalPos();
-	Pos = Vec3::Lerp(Pos, LerpPos, 5 * DT);
+	Pos = Vec3::Lerp(Pos, LerpPos, DT);
+
 	GetObj()->Transform()->SetLocalPos(Pos);
 }
 
@@ -234,14 +238,22 @@ void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 {
 	if (_pOther->GetObj()->GetName() == L"Player_Sword")
 	{
-		cout << "검과 충돌1" << endl;
+		//cout << "검과 충돌1" << endl;
 		m_bHit = true;
 		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
 
 	}
 	if (_pOther->GetObj()->GetName() == L"Player1")
 	{
-		cout << "플레이어와 충돌" << endl;
+		//cout << "플레이어와 충돌" << endl;
+	}
+	if (_pOther->GetObj()->GetName() == L"FM_Monster")
+	{
+		m_colEnter = true;
+		//cout << "ENTER" << endl;
+		//if (GetObj()->GetScript<CMonsterScript>()->GetID() < _pOther->GetObj()->GetScript<CMonsterScript>()->GetID())
+		//g_net.Send_MobToMobCol_Packet(GetObj()->GetScript<CMonsterScript>()->GetID(), _pOther->GetObj()->GetScript<CMonsterScript>()->GetID(), m_colEnter, MONSTER_MOVE::STOP);
+		//	cout << "충돌체 1 : " << GetObj()->GetScript<CMonsterScript>()->GetID() << " " << "충돌체 2 :" << _pOther->GetObj()->GetScript<CMonsterScript>()->GetID() << endl;
 	}
 }
 
@@ -250,24 +262,25 @@ void CMonsterScript::OnCollision(CCollider2D* _pOther)
 	//m_fHp -= 4.f;
 	if (_pOther->GetObj()->GetName() == L"Player1")
 	{
-		cout << "플레이어와 충돌" << endl;
+		//cout << "플레이어와 충돌" << endl;
 	}
 	else if (_pOther->GetObj()->GetName() == L"Player_Sword")
 	{
-		cout << "검과 충돌2" << endl;
+		//cout << "검과 충돌2" << endl;
 		//m_bHit = true;
 		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
 
 	}
-	else if (_pOther->GetObj()->GetName() == L"FM_Monster")
-	{
-		m_bColCheck = true;
-		SetColObj(_pOther);
-	}
+	//else if (_pOther->GetObj()->GetName() == L"FM_Monster")
+	//{
+	//	//cout << "몬스터 몬스터 충돌?" << endl;
+	//	m_bColCheck = true;
+	//	SetColObj(_pOther);
+	//}
 
 	if (m_fHp < 0.f)
 	{
-		cout << "몬스터 사망" << endl;
+		//cout << "몬스터 사망" << endl;
 		GetObj()->SetDead();
 		
 	}
@@ -281,6 +294,10 @@ void CMonsterScript::OnCollisionExit(CCollider2D* _pOther)
 	}
 	else if (_pOther->GetObj()->GetName() == L"FM_Monster")
 	{
+		cout << "EXIT" << endl;
+		m_colEnter = false;
+		//if (GetObj()->GetScript<CMonsterScript>()->GetID() < _pOther->GetObj()->GetScript<CMonsterScript>()->GetID())
+		//g_net.Send_MobToMobCol_Packet(GetObj()->GetScript<CMonsterScript>()->GetID(), _pOther->GetObj()->GetScript<CMonsterScript>()->GetID(), m_colEnter, MONSTER_MOVE::START);
 		m_bColCheck = false;
 	}
 }

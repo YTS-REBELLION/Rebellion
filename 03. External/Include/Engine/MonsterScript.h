@@ -32,6 +32,8 @@ private:
 	int					m_targetId;
 	bool				m_isTarget;
 
+	bool				m_colEnter = false;
+
 	float				m_fMaxHp=1200.f;
 	float				m_fHp=0.f;
 
