@@ -707,8 +707,10 @@ void CServerFrame::AggroMove(int npc_id)
 					for (const auto& id : vl) {
 						if (false == IsPlayer(id)) {
 							_objects[player_id].EraseViewList(id);
+							continue;
 						}
 						if (ST_ACTIVE != _objects[id]._status) continue;
+						_objects[player_id].EraseViewList(id);
 						_sender->SendPlayerDiePacket(_objects[id].GetSocket(), player_id);
 					}
 					return;

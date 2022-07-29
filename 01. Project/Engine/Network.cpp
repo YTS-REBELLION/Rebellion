@@ -472,7 +472,7 @@ void CNetwork::ProcessPacket(char* ptr)
 		GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->SetMove(false);
 		GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->SetAttack(packet->isAttack);
 		GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->AnimationPlay(MONSTER_ANI_TYPE::ATTACK);
-
+		
 		break;
 	}
 	case SC_PACKET_TARGET: {
