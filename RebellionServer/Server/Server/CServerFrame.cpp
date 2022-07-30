@@ -143,9 +143,9 @@ void CServerFrame::InitClients()
 			break;
 		}
 		Vec3 pos;
-		pos.x = x;
+		pos.x = 0.f;//x;
 		pos.y = 0.f;
-		pos.z = z;
+		pos.z = 0.f;// z;
 		
 		_objects[i].SetCurrentExp(0);
 		_objects[i].SetMaxExp(100);
