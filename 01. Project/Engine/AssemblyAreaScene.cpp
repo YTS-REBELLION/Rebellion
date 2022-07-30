@@ -32,7 +32,7 @@
 #include "ToolCamScript.h"
 #include"Fire.h"
 #include"ParticleSystem.h"
-
+#include"Boss.h"
 
 void CAssemblyAreaScene::init()
 {
@@ -40,7 +40,7 @@ void CAssemblyAreaScene::init()
 	cout << "집결지 컴백" << endl;
 	GetLayer(0)->SetName(L"Default");
 	GetLayer(1)->SetName(L"Player");
-	GetLayer(2)->SetName(L"House");
+	GetLayer(2)->SetName(L"Boss");
 	GetLayer(3)->SetName(L"House");
 	GetLayer(4)->SetName(L"Portal");
 	GetLayer(5)->SetName(L"UI");
@@ -188,6 +188,11 @@ void CAssemblyAreaScene::init()
 
 	pObject->Transform()->SetLocalPos(particlePos);
 	FindLayer(L"Default")->AddGameObject(pObject);
+
+
+
+
+	
 
 
 }

@@ -304,6 +304,9 @@
     <ClInclude Include="BossMap.h">
       <Filter>GameScene</Filter>
     </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -524,6 +527,9 @@
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="BossMap.cpp">
       <Filter>GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>04. GameObject\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

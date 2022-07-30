@@ -2187,7 +2187,7 @@ void CSceneMgr::update()
 	if (KEY_TAB(KEY_TYPE::KEY_0)) {
 		if (m_pCurScene->GetType() != SCENE_TYPE::BOSSMAP) {
 			cout << "º¸½º¸Ê" << endl;
-			g_net.Send_Dungeon_Packet(true);
+			g_net.Send_bossmap_Packet(true);
 
 			/*tEvent evn = {};
 			evn.wParam = (DWORD_PTR)SCENE_TYPE::DUNGEON;
