@@ -12,7 +12,9 @@
 #include"FireBall.h"
 #include"Meteor.h"
 #include"UnleashedPower.h"
+#include"ParticleSystem.h"
 
+#include"ParticleScript.h"
 
 bool isReckoning = false;
 CPlayerScript::CPlayerScript()
@@ -470,7 +472,23 @@ void CPlayerScript::update()
 		{
 			UnleashedPower();
 
+			CGameObject* pObject = nullptr;
+			//	Particle
+			pObject = new CGameObject;
+			pObject->SetName(L"Particle");
+			pObject->AddComponent(new CTransform);
+			pObject->AddComponent(new CParticleSystem);
+			pObject->Particlesystem()->SetFrequency(0.1f);
+			pObject->Particlesystem()->SetType(false);
+			pObject->Particlesystem()->SetMaxParticle(60);
+			pObject->AddComponent(new CParticleScript);
+			pObject->GetScript<CParticleScript>()->SetLifeTime(pObject->Particlesystem()->GetMaxLifeTime());
+			pObject->FrustumCheck(false);
 
+			Vec3 particlePos = Vec3(100.f, 300.f, 10.f);
+
+			pObject->Transform()->SetLocalPos(particlePos);
+			CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
 		}
 
 
@@ -1240,6 +1258,12 @@ void CPlayerScript::OnCollision(CCollider2D* _pOther)
 		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
 
 		pManaobj = pObject;
+
+
+
+
+
+
 	
 
 }

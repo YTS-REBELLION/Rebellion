@@ -13,17 +13,17 @@ CParticleSystem::CParticleSystem()
 	: CComponent(COMPONENT_TYPE::PARTICLESYSTEM)
 	, m_pParticleBuffer(nullptr)
 	, m_pSharedBuffer(nullptr)
-	, m_iMaxParticle(100)
+	, m_iMaxParticle(1000)
 	, m_fFrequency(0.002f)
 	, m_fAccTime(0.f)
-	, m_fMinLifeTime(0.2f)
+	, m_fMinLifeTime(0.5f)
 	, m_fMaxLifeTime(0.8f)
 	, m_fMinSpeed(100.f)
-	, m_fMaxSpeed(500.f)
+	, m_fMaxSpeed(50.f)
 	, m_fStartScale(5.f)
 	, m_fEndScale(10.f)
-	, m_vStartColor(Vec4(0.5f, 0.5f, 0.5f, 1.f))
-	, m_vEndColor(Vec4(0.0f, 0.0f, 0.0f, 1.0f))
+	, m_vStartColor(Vec4(1.f, 0.f, 0.f, 1.f))
+	, m_vEndColor(Vec4(1.0f, 0.0f, 0.0f, 1.0f))
 	, m_bType(true)
 {
 	// 구조화 버퍼 생성
@@ -37,8 +37,8 @@ CParticleSystem::CParticleSystem()
 	m_pMesh = CResMgr::GetInst()->FindRes<CMesh>(L"PointMesh");
 
 	// Material
-	m_pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"RainMtrl");
-	Ptr<CTexture> pParticle = CResMgr::GetInst()->Load<CTexture>(L"Texture\\Particle\\Explosion21.png", L"Texture\\Particle\\Explosion21.png");
+	m_pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"ParticleMtrl");
+	Ptr<CTexture> pParticle = CResMgr::GetInst()->Load<CTexture>(L"Texture\\Particle\\CartoonSmoke.png", L"Texture\\Particle\\particle_00.png");
 	m_pMtrl->SetData(SHADER_PARAM::TEX_0, pParticle.GetPointer());
 
 	// ParticleUpdate

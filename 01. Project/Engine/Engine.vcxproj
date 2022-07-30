@@ -171,6 +171,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="Animator2D.h" />
     <ClInclude Include="Animator3D.h" />
     <ClInclude Include="AssemblyAreaScene.h" />
+    <ClInclude Include="BossFire.h" />
     <ClInclude Include="BossScript.h" />
     <ClInclude Include="BulletScript.h" />
     <ClInclude Include="Camera.h" />
@@ -214,6 +215,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="M_MonsterScript.h" />
     <ClInclude Include="Network.h" />
     <ClInclude Include="NpcMon.h" />
+    <ClInclude Include="ParticleScript.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="PathMgr.h" />
     <ClInclude Include="PlayerScript.h" />
@@ -254,6 +256,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="AssemblyAreaScene.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="BossFire.cpp" />
     <ClCompile Include="BossScript.cpp" />
     <ClCompile Include="BulletScript.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -301,6 +304,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="M_MonsterScript.cpp" />
     <ClCompile Include="Network.cpp" />
     <ClCompile Include="NpcMon.cpp" />
+    <ClCompile Include="ParticleScript.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="PathMgr.cpp" />
     <ClCompile Include="PlayerScript.cpp" />
