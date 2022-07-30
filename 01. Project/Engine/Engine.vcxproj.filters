@@ -302,6 +302,9 @@
     <ClInclude Include="ParticleSystem.h">
       <Filter>04. GameObject\Script</Filter>
     </ClInclude>
+    <ClInclude Include="BossScript.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -519,6 +522,9 @@
       <Filter>04. GameObject\Script\03.Skill</Filter>
     </ClCompile>
     <ClCompile Include="ParticleSystem.cpp">
+      <Filter>04. GameObject\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="BossScript.cpp">
       <Filter>04. GameObject\Script</Filter>
     </ClCompile>
   </ItemGroup>
