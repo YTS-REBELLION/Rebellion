@@ -301,6 +301,9 @@
     </ClInclude>
     <ClInclude Include="Fire.h" />
     <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="BossMap.h">
+      <Filter>GameScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -519,6 +522,9 @@
     </ClCompile>
     <ClCompile Include="Fire.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="BossMap.cpp">
+      <Filter>GameScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="std.fx">

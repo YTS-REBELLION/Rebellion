@@ -334,6 +334,7 @@ enum class SCENE_TYPE {
 	LOGIN,
 	ASSEMBLY,
 	DUNGEON,
+	BOSSMAP,
 	END,
 };
 
