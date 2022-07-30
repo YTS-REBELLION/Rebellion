@@ -60,9 +60,9 @@ void CAssemblyAreaScene::CreateMap()
 	// Map 오브젝트 생성
 	// ====================
 
-	Ptr<CMeshData> pMapMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Map\\Assembly_Map.fbx");
-	pMapMeshData->Save(pMapMeshData->GetPath());
-	//Ptr<CMeshData> pMapMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Assembly_Map.mdat", L"MeshData\\Assembly_Map.mdat");
+	//Ptr<CMeshData> pMapMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Map\\Assembly_Map.fbx");
+	//pMapMeshData->Save(pMapMeshData->GetPath());
+	Ptr<CMeshData> pMapMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Assembly_Map.mdat", L"MeshData\\Assembly_Map.mdat");
 
 	CGameObject* pMap = new CGameObject;
 
