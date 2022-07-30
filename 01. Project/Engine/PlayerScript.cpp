@@ -411,11 +411,13 @@ void CPlayerScript::update()
 			GetObj()->Animator3D()->SetClipTime(0, 0.f);
 			SetSkill();
 			SwordStrike();
+			//g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_1);
 		}
 		else if (GetSkill() && m_vecAniClipTime[1] < GetObj()->Animator3D()->GetAnimClip(4).dTimeLength)
 		{
 			m_vecAniClipTime[1] += (DT * 1.5f * 1.5f);
 			AnimationPlay(PLAYER_ANI_TYPE::SKILL_1);
+			g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_1, GetSkill());
 
 			if (GetObj()->Animator3D()->GetCliTime(4) >= 0.9f)
 			{
@@ -423,9 +425,12 @@ void CPlayerScript::update()
 			}
 			if (m_vecAniClipTime[1] > GetObj()->Animator3D()->GetAnimClip(4).dTimeLength)
 			{
+
 				m_vecAniClipTime[1] = 0.0f;
 				m_bSkill_Start[0] = false;
 				SetSkill();
+				g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_1, GetSkill());
+
 			}
 		}
 
@@ -481,7 +486,6 @@ void CPlayerScript::update()
 
 		if ((KEY_AWAY(KEY_TYPE::KEY_W) || KEY_AWAY(KEY_TYPE::KEY_A) || KEY_AWAY(KEY_TYPE::KEY_S) || KEY_AWAY(KEY_TYPE::KEY_D)))
 		{
-			cout << "KET_AWAY" << endl;
 			g_net.Send_Stop_Packet(false, GetObj()->GetID());
 		}
 
@@ -1137,6 +1141,7 @@ void CPlayerScript::OnCollisionExit(CCollider2D* _pOther)
 
 void CPlayerScript::SwordStrike()
 {
+	cout << "소드 스트라이크" << endl;
 	//// ====================
 	////  오브젝트 생성
 	//// ====================
@@ -1157,10 +1162,10 @@ void CPlayerScript::SwordStrike()
 	m_pSwordStrike->AddComponent(new CSwordStrike);
 	m_pSwordStrike->GetScript<CSwordStrike>()->Set_Player(GetObj());
 
-	m_pSwordStrike->AddComponent(new CCollider2D);
+	/*m_pSwordStrike->AddComponent(new CCollider2D);
 	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));*/
 
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
@@ -1176,10 +1181,10 @@ void CPlayerScript::SwordStrike()
 	m_pSwordStrike->AddComponent(new CSwordStrike);
 	m_pSwordStrike->GetScript<CSwordStrike>()->Set_Player(GetObj());
 
-	m_pSwordStrike->AddComponent(new CCollider2D);
+	/*m_pSwordStrike->AddComponent(new CCollider2D);
 	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));*/
 
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
@@ -1194,10 +1199,10 @@ void CPlayerScript::SwordStrike()
 	m_pSwordStrike->AddComponent(new CSwordStrike);
 	m_pSwordStrike->GetScript<CSwordStrike>()->Set_Player(GetObj());
 
-	m_pSwordStrike->AddComponent(new CCollider2D);
+	/*m_pSwordStrike->AddComponent(new CCollider2D);
 	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));*/
 
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);

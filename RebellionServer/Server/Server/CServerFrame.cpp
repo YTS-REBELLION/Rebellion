@@ -4,6 +4,8 @@
 #include "Shared.h"
 #include "Sender.h"
 #include "CServerFrame.h"
+#include <map>
+#include "func.h"
 #include <algorithm>
 
 
@@ -235,7 +237,6 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		}
 		else {
 			Do_move(id, 0, pos, 0.f);
-
 		}
 
 		break;
@@ -244,12 +245,9 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 	case CS_PACKET_RUN: {
 		cs_packet_run* packet = reinterpret_cast<cs_packet_run*>(buf);
 		unordered_set<int> temp_vl;
-		if (_objects[id].GetDunGeonEnter()) {
-			temp_vl = _objects[id].DungeonGetViewList();
-		}
-		else {
-			temp_vl = _objects[id].GetViewList();
-		}
+		if (_objects[id].GetDunGeonEnter()) temp_vl = _objects[id].DungeonGetViewList();
+		else temp_vl = _objects[id].GetViewList();
+		
 		unordered_set<int> old_viewList = temp_vl;
 
 		Vec3 pos;
@@ -342,7 +340,7 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 			cout << "몬스터 잡기 : " << monsterdieCnt << endl;
 		}
 
-		if (monsterdieCnt == 3 && !isQuestDone)
+		if (monsterdieCnt == 5 && !isQuestDone)
 		{
 			for(int i = 0; i<_acceptNumber;++i){
 				cout << "첫번째 퀘스트 완료 패킷 전송 " << endl;
@@ -382,20 +380,17 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 	case CS_PACKET_DUNGEON: {
 		cs_packet_dungeon* packet = reinterpret_cast<cs_packet_dungeon*>(buf);
 		unordered_set<int> dun_vl;
-		cout << "던전 입장" << endl;
 		unordered_set<int> old_viewList = _objects[id].GetViewList();
 		//unordered_set<int> temp_vl = _objects[id].GetViewList();
 		_enterRoom.push_back(id);
 
 		if (_enterRoom.size() != _acceptNumber) {
-			cout << "인원 대기중 .. " << endl;
 			for (auto& users : _enterRoom)
-				_sender->Send_WaitRoom_Packet(_objects[users].GetSocket());
+				_sender->Send_WaitRoom_Packet(_objects[users].GetSocket(),_enterRoom.size());
 		}
 		else {
 			fullEnter = true;
-			
-			_objects[id].SetViewList(dun_vl);
+
 			_objects[id].ClearViewList();
 			_objects[id].SetDunGeonEnter(true);
 
@@ -421,6 +416,37 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 
 		break;
 	}
+	case CS_PACKET_SKILL: {
+		cs_packet_skill* packet = reinterpret_cast<cs_packet_skill*>(buf);
+
+		int playerId = packet->id;
+
+		switch (packet->anitype) {
+		case PLAYER_ANI_TYPE::SKILL_1: {
+			
+			for (int i = 0; i < _acceptNumber; ++i) {
+				if (_objects[i]._status != ST_ACTIVE) continue;
+				if (playerId == i) continue;
+				_sender->SendSkillPacket(_objects[i].GetSocket(), playerId, packet->anitype,packet->isSkill);
+			}
+
+			break;
+		}
+		case PLAYER_ANI_TYPE::SKILL_2: {
+
+
+			break;
+		}
+		default:
+			cout << "스킬 없슴" << endl;
+		}
+
+
+
+		break;
+	}
+	default:
+		printf("Unknown PACKET type [%d]\n", buf[1]);
 	}
 
 
@@ -642,7 +668,6 @@ void CServerFrame::AddTimer(int obj_id ,EV_TYPE ev_type, system_clock::time_poin
 void CServerFrame::ActivateNPC(int id)
 {
 	_objects[id].SetMoveType(TARGET);
-	cout << "액티베이트 npc" << endl;
 	if (ST_SLEEP == _objects[id]._status) {
 		if (true == CAS(&_objects[id]._status, ST_SLEEP, ST_ACTIVE))
 			AddTimer(id, EV_MONSTER_MOVE, system_clock::now() + 1s);
@@ -682,12 +707,12 @@ void CServerFrame::AggroMove(int npc_id)
 	Vec3 Forward = dir.Normalize();
 	prev_pos = Pos + (Forward * speed * _elapsedTime.count());
 	bool col = false;
-	cout << _elapsedTime.count() << endl;
 	vector<int>	M_A_B;
 
 	if (_objects[npc_id]._closed == false) {
 		for (int i = NPC_ID_START; i < NPC_ID_END; ++i)
 		{
+			if (_objects[i]._status == ST_SLEEP) continue;
 			if (npc_id != i) {
 				if (Vec3::Distance(prev_pos, _objects[i].GetPos()) < 150.f) {
 					col = true;
@@ -713,6 +738,7 @@ void CServerFrame::AggroMove(int npc_id)
 
 			for (int i = NPC_ID_START; i < NPC_ID_END; ++i)
 			{
+				if (_objects[i]._status == ST_SLEEP) continue;
 				for (auto dir : Monster_dir)
 				{
 					prev_pos = Pos + (dir * speed * _elapsedTime.count());
@@ -734,14 +760,16 @@ void CServerFrame::AggroMove(int npc_id)
 			_objects[npc_id]._move = false;
 			
 			AddTimer(npc_id, EV_ATTACK, system_clock::now() + 2s);
-
+			
+			if (0 >= _objects[player_id].GetCurrentHp() && !_objects[player_id]._objectsDie) {
+				ComeBackScene(player_id);
+			}
 			for (auto& cl : _objects) {
 				if (false == IsPlayer(cl.GetID())) continue;
 				if (false == IsNear(cl.GetID(), npc_id)) continue;
 				if (cl._objectsDie == true) continue;
 				cl.ClientLock();
 				if (ST_ACTIVE == cl._status) {
-					cout << "NPC Attack" << endl;
 					_sender->SendNPCAttackPacket(cl.GetSocket(), npc_id, Pos.x, Pos.z, true);
 				}
 				cl.ClientUnLock();
@@ -758,7 +786,6 @@ void CServerFrame::AggroMove(int npc_id)
 			_objects[i].ClientLock();
 			if (0 != _objects[i].DungeonGetViewListCount(npc_id)) {
 				_objects[i].ClientUnLock();
-				
 				if (_objects[npc_id]._closed == false) {					// 사거리에 들어오지 않음 
 					_objects[npc_id]._move = true;
 
@@ -777,7 +804,7 @@ void CServerFrame::AggroMove(int npc_id)
 			else {
 				_objects[i].DungeonInsertViewList(npc_id);
 				_objects[i].ClientUnLock();
-				cout << "혹시 이곳 어그로무브?" << endl;
+				cout << "혹시 이곳 어그로무브? 1 " << endl;
 				_sender->SendPutObjectPacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetPos().x,
 					_objects[npc_id].GetPos().y, _objects[npc_id].GetPos().z,
 					_objects[npc_id].GetMyType());
@@ -787,9 +814,9 @@ void CServerFrame::AggroMove(int npc_id)
 			_objects[i].ClientLock();
 			if (0 != _objects[i].DungeonGetViewListCount(npc_id)) {
 				_objects[i].DungeonEraseViewList(npc_id);
-				CAS(&_objects[npc_id]._status, ST_ACTIVE, ST_SLEEP);
+				//CAS(&_objects[npc_id]._status, ST_ACTIVE, ST_SLEEP);
 				_objects[i].ClientUnLock();
-				cout << "혹시 어그로무브 리브?" << endl;
+				cout << "혹시 어그로무브 리브? 2" << endl;
 				_sender->SendLeaveObjectPacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetMyType());
 			}
 			else {
@@ -836,8 +863,8 @@ bool CServerFrame::IsNear(int a, int b)
 {
 
 	if (abs(_objects[a].GetPos().x - _objects[b].GetPos().x) > VIEW_RADIUS) return false;
-	if (abs(_objects[a].GetPos().y - _objects[b].GetPos().y) > VIEW_RADIUS) return false;
 	if (abs(_objects[a].GetPos().z - _objects[b].GetPos().z) > VIEW_RADIUS) return false;
+
 	return true;
 }
 
@@ -846,17 +873,6 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 	
 	unordered_set<int> vl = _objects[id].GetViewList();
 	time_point<system_clock> curTime = system_clock::now();
-
-	// 몬스터 관련 패킷
-	//for (const int& npc : vl) {
-	//	if (true == IsPlayer(npc)) continue;
-	//	if (ST_ACTIVE != _objects[npc]._status) continue;
-	//	if (true == IsNearNPC(id, npc) ) {
-	//		_objects[npc].SetTargetID(id);
-	//		_objects[npc].SetTarget(true);
-	//	}
-	//	_sender->SendTargetPlayerPacket(_objects[id].GetSocket(), _objects[npc].GetTargetID(), true, npc);
-	//}
 
 	_objects[id].ClientLock();
 
@@ -868,23 +884,14 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 	_prevTime = curTime;
 
 	for (auto& cl : _objects) {
-		if (false == IsPlayer(cl.GetID())) continue;
-		if (cl.GetDunGeonEnter()) continue;
 		if (false == IsNear(cl.GetID(), id)) continue;
 		if (ST_ACTIVE != cl._status) continue;
 		if (cl.GetID() == id) continue;
-		newViewList.insert(cl.GetID());
-	}
+		if (cl.GetDunGeonEnter()) continue;
+		if (true == IsPlayer(cl.GetID()))
+			newViewList.insert(cl.GetID());
 
-	
-	/*if (fullEnter) {
-		cout << "다 들어옴" << endl;
-		newViewList.clear();
-		newViewList = dun_vl;
-	}*//*
-	if (_objects[id]._objectsDie == true) {
-		newViewList.clear();
-	}*/
+	}
 
 	for (auto& np : newViewList) {
 		if (0 == oldViewList.count(np)) {	// Object가 시야에 새로 들어왔을 때.
@@ -918,7 +925,6 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 		}
 		else {							// Object가 계속 시야에 존재하고 있을 떄.
 			if (false == IsPlayer(np)) continue;
-			if (_objects[id]._objectsDie) continue;
 			_objects[np].ClientLock();
 			if (0 != _objects[np].GetViewListCount(id)) {
 				_objects[np].ClientUnLock();
@@ -992,13 +998,16 @@ void CServerFrame::Do_move_Dungeon(const short& id, const char& dir, Vec3& local
 		_sender->SendQuestStartPacket(_objects[id].GetSocket(), id, true);
 	}
 
+
 	for (auto& cl : _objects) {
+
 		if (false == IsNear(cl.GetID(), id)) {
 			continue;
 		};
 		if (ST_SLEEP == cl._status && fullEnter) {
 			ActivateNPC(cl.GetID());
 		}
+		if (!cl.GetDunGeonEnter()) continue;
 		if (ST_ACTIVE != cl._status) continue;
 		if (cl.GetID() == id) continue;
 		newViewList.insert(cl.GetID());
@@ -1010,7 +1019,6 @@ void CServerFrame::Do_move_Dungeon(const short& id, const char& dir, Vec3& local
 			_objects[id].ClientLock();
 			_objects[id].DungeonInsertViewList(np);
 			_objects[id].ClientUnLock();
-			//cout << "do_move 1" << endl;.
 			cout << "do_move 던전 풋오브 1" << endl;
 
 			_sender->SendPutObjectPacket(_objects[id].GetSocket(), np,
@@ -1038,7 +1046,6 @@ void CServerFrame::Do_move_Dungeon(const short& id, const char& dir, Vec3& local
 		}
 		else {							// Object가 계속 시야에 존재하고 있을 떄.
 			if (false == IsPlayer(np)) continue;
-		//	if (_objects[id]._objectsDie) continue;
 			_objects[np].ClientLock();
 			if (0 != _objects[np].DungeonGetViewListCount(id)) {
 				_objects[np].ClientUnLock();
@@ -1064,10 +1071,8 @@ void CServerFrame::Do_move_Dungeon(const short& id, const char& dir, Vec3& local
 			_objects[id].ClientLock();
 			_objects[id].DungeonEraseViewList(op);
 			_objects[id].ClientUnLock();
-		//	if (_objects[id]._objectsDie) continue;
 			cout << "혹시 두 무브 던전 리브? 1" << endl;
 			_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), op, _objects[op].GetMyType());
-			//std::atomic_compare_exchange_strong(&_objects[id]._status, &oldState, ST_ACTIVE);
 			if (false == IsPlayer(op)) continue;
 			_objects[op].ClientLock();
 			if (0 != _objects[op].DungeonGetViewListCount(id)) {
@@ -1083,6 +1088,7 @@ void CServerFrame::Do_move_Dungeon(const short& id, const char& dir, Vec3& local
 	}
 
 	_elapsedTime = curTime - _prevTime;
+
 	_prevTime = curTime;
 }
 
@@ -1161,7 +1167,6 @@ void CServerFrame::EnterGame(int id, const char* name)
 }
 void CServerFrame::DungeonEnter(int id)
 {
-	cout << "던전 엔터" << endl;
 
 	_objects[id].ClientLock();
 
@@ -1178,7 +1183,7 @@ void CServerFrame::DungeonEnter(int id)
 
 			//if (ST_SLEEP == _objects[i]._status) {
 			//	ActivateNPC(i);
-			//}
+			//} 
 			if (ST_ACTIVE == _objects[i]._status) {
 
 				_objects[id].ClientLock();
@@ -1199,13 +1204,14 @@ void CServerFrame::DungeonEnter(int id)
 			}
 		}
 	}
+
 }
 void CServerFrame::ComeBackScene(int player_id)
 {
 	cout << "플레이어 사망" << endl;
 	cout << "집결지로 복귀합니다." << endl;
 	_objects[player_id].ClientLock();
-
+	_objects[player_id].SetCurrentHp(2000.f);
 	/*short level = _objects[player_id].GetLevel();
 	short hp = _objects[player_id].GetCurrentHp();
 	short changeHp = hp - (50 * level);*/
@@ -1213,11 +1219,32 @@ void CServerFrame::ComeBackScene(int player_id)
 	/*_objects[player_id].SetCurrentExp(changeHp);
 	_objects[player_id].SetCurrentHp(50);*/
 	_objects[player_id].SetDunGeonEnter(false);
-	_objects[player_id].SetPos(Vec3(1000.f, 0.f, 2000.f));
 	_objects[player_id].ClearViewList();
-	_objects[player_id].DungeonClearViewList();
 
 	std::unordered_set<int> vl = _objects[player_id].DungeonGetViewList();
+
+	for (const auto& id : vl) {
+		if (false == IsPlayer(id)) continue;
+		
+		_sender->SendPlayerDiePacket(_objects[id].GetSocket(), player_id);
+		
+		if (id != player_id)
+		{
+			_objects[id].DungeonEraseViewList(player_id);
+			_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), player_id, _objects[player_id].GetMyType());
+		}
+		//_sender->SendLeaveObjectPacket(_objects[player_id].GetSocket(), player_id, _objects[id].GetMyType());
+
+
+
+	}
+
+	_objects[player_id].DungeonClearViewList();
+	_sender->SendPlayerDiePacket(_objects[player_id].GetSocket(), player_id);
+
+	_objects[player_id]._objectsDie = true;
+	_objects[player_id].ClientUnLock();
+
 	/*for (const auto& id : vl) {
 		if (_objects[id]._objectsDie) continue;
 		if (ST_ACTIVE != _objects[id]._status) continue;
@@ -1233,29 +1260,23 @@ void CServerFrame::ComeBackScene(int player_id)
 	}
 	_sender->SendPlayerDiePacket(_objects[player_id].GetSocket(), player_id);*/
 
-
-	for (const auto& id : vl) {
-		if (_objects[id]._objectsDie == true) continue;
-		_sender->SendPlayerDiePacket(_objects[id].GetSocket(), player_id);
-		_objects[id].DungeonEraseViewList(player_id);
-	}
-
-
-	_objects[player_id]._objectsDie = true;
-	_objects[player_id].ClientUnLock();
-
 	for (auto& cl : _objects) {
 		int i = cl.GetID();
+		if (false == IsPlayer(i)) continue;
 		if (player_id == i) continue;
-		if (true == IsNear(player_id, i)) {
-			if (ST_ACTIVE == _objects[i]._status) {
+		if (true == IsNear(player_id, i)) 
+		{
+			if (true == _objects[i]._objectsDie)               
+			{
 				_objects[player_id].ClientLock();
 				_objects[player_id].InsertViewList(i);
 				_objects[player_id].ClientUnLock();
 				cout << "컴백홈" << endl;
+
 				_sender->SendPutObjectPacket(_objects[player_id].GetSocket(), i, _objects[i].GetPos().x,
 					_objects[i].GetPos().y, _objects[i].GetPos().z, _objects[i].GetMyType());
-				if (true == IsPlayer(i)) {
+				if (true == IsPlayer(i)) 
+				{
 					_objects[i].ClientLock();
 					_objects[i].InsertViewList(player_id);
 					_objects[i].ClientUnLock();
@@ -1293,13 +1314,13 @@ void CServerFrame::CreateMonster()
 {
 	cout << "Initializing Monster" << endl;
 
-	for (int monsterId = NPC_ID_START; monsterId < MONSTER_LV1_ID; ++monsterId) {
+	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_END; ++monsterId) {
 		_objects[monsterId].SetID(monsterId);
 		_objects[monsterId]._status = ST_SLEEP;
 		_objects[monsterId].SetSpeed(MONSTER_SPEED);
 		_objects[monsterId].SetMoveType(RANDOM);
 		_objects[monsterId].SetIsAttack(false);
-		_objects[monsterId].SetMonsterMove(MONSTER_MOVE::START);
+		_objects[monsterId].SetDunGeonEnter(true);
 		//_objects[monsterId].SetNextPosIndex(0);
 
 	}
@@ -1355,17 +1376,17 @@ void CServerFrame::CreateMonster()
 	// 중앙 홀 몬스터
 
 	// LV2
-	_objects[NPC_ID_START + 5].SetPos(Vec3(-400.f, 0.f, 10400.f));
-	_objects[NPC_ID_START + 6].SetPos(Vec3(-200.f, 0.f, 10400.f));
-	_objects[NPC_ID_START + 7].SetPos(Vec3(200.f, 0.f, 10400.f));
-	_objects[NPC_ID_START + 8].SetPos(Vec3(400.f, 0.f, 10400.f));
-	_objects[NPC_ID_START + 9].SetPos(Vec3(-600.f, 0.f, 10400.f));
-	_objects[NPC_ID_START + 10].SetPos(Vec3(600.f, 0.f, 10400.f));
-	_objects[NPC_ID_START + 11].SetPos(Vec3(800.f, 0.f, 10400.f));
-	_objects[NPC_ID_START + 12].SetPos(Vec3(-200.f, 0.f, 10600.f));
-	_objects[NPC_ID_START + 13].SetPos(Vec3(-400.f, 0.f, 10600.f));
-	_objects[NPC_ID_START + 14].SetPos(Vec3(200.f, 0.f, 10600.f));
-	_objects[NPC_ID_START + 15].SetPos(Vec3(400.f, 0.f, 10600.f));
+	_objects[NPC_ID_START + 5].SetPos(Vec3(-400.f, 0.f, 4500.f));
+	_objects[NPC_ID_START + 6].SetPos(Vec3(-200.f, 0.f, 4500.f));
+	_objects[NPC_ID_START + 7].SetPos(Vec3(200.f, 0.f, 4500.f));
+	_objects[NPC_ID_START + 8].SetPos(Vec3(400.f, 0.f, 4500.f));
+	_objects[NPC_ID_START + 9].SetPos(Vec3(-600.f, 0.f, 4500.f));
+	_objects[NPC_ID_START + 10].SetPos(Vec3(600.f, 0.f, 4500.f));
+	_objects[NPC_ID_START + 11].SetPos(Vec3(800.f, 0.f, 4500.f));
+	_objects[NPC_ID_START + 12].SetPos(Vec3(-200.f, 0.f, 4700.f));
+	_objects[NPC_ID_START + 13].SetPos(Vec3(-400.f, 0.f, 4700.f));
+	_objects[NPC_ID_START + 14].SetPos(Vec3(200.f, 0.f, 4700.f));
+	_objects[NPC_ID_START + 15].SetPos(Vec3(400.f, 0.f, 4700.f));
 	
 	//오른쪽 미로 몬스터
 	//중앙 몬스터

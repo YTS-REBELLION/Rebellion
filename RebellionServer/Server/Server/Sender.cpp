@@ -271,12 +271,12 @@ void CSender::SendDungeonEnterPacket(SOCKET s, const int& playerId, bool isEnter
 	SendPacket(s, &packet);
 }
 
-void CSender::Send_WaitRoom_Packet(SOCKET s)
+void CSender::Send_WaitRoom_Packet(SOCKET s, size_t enterNum)
 {
 	sc_packet_waitroom packet;
 	packet.size = sizeof(packet);
 	packet.type = SC_PACKET_WAITROOM;
-
+	packet.enterNum = enterNum;
 	SendPacket(s, &packet);
 
 }
@@ -290,6 +290,18 @@ void CSender::SendQuestStartPacket(SOCKET s, int id, bool isStart)
 	packet.isStart = isStart;
 	packet.id = id;
 	SendPacket(s, &packet);
+}
+
+void CSender::SendSkillPacket(SOCKET s, const int& id, PLAYER_ANI_TYPE anitype, bool isSkill)
+{
+	sc_packet_skill packet;
+	packet.size = sizeof(packet);
+	packet.type = SC_PACKET_SKILL;
+	packet.id = id;
+	packet.anitype = anitype;
+	packet.isSkill = isSkill;
+	SendPacket(s, &packet);
+
 }
 
 

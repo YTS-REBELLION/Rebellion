@@ -515,15 +515,14 @@ void CNetwork::ProcessPacket(char* ptr)
 		break;
 	}
 	case SC_PACKET_WAITROOM: {
-		cout << "파티원을 기다리는중입니다." << endl;
-
+		sc_packet_waitroom* packet = reinterpret_cast<sc_packet_waitroom*>(ptr);
+		cout << "파티원을 기다리는 중 입니다..." << endl;
+		cout << packet->enterNum << " / " << "3" << endl;
 
 		break;
 	}
 	case SC_PACKET_DUNGEON_ENTER: {
 		sc_packet_dungeon* p = reinterpret_cast<sc_packet_dungeon*>(ptr);
-		cout << "던전에 들어옴!!!!!!!!!!" << endl;
-
 		tEvent evn = {};
 		evn.wParam = (DWORD_PTR)SCENE_TYPE::DUNGEON;
 		evn.eType = EVENT_TYPE::CHANGE_SCENE;
@@ -534,9 +533,6 @@ void CNetwork::ProcessPacket(char* ptr)
 		GameObject.find(p->id)->second = m_pObj;
 		GameObject.find(g_myid)->second->SetID(g_myid);
 		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetID(g_myid);
-
-		cout << "아이디 : " << GameObject.find(g_myid)->second->GetID() << endl;
-		cout << "스크립트 아이디 : " << GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->GetID() << endl;
 
 		GameObject.find(p->id)->second->GetScript<CPlayerScript>()->SetMain();
 
@@ -555,8 +551,8 @@ void CNetwork::ProcessPacket(char* ptr)
 		break;
 	}
 	case SC_PACKET_PLAYER_DIE: {
+
 		sc_packet_player_die* packet = reinterpret_cast<sc_packet_player_die*>(ptr);
-		cout << "SC_PACKET_PLAYER_DIE" << endl;
 		if (g_myid == packet->id) {
 			cout << "나 죽었다!" << endl;
 			tEvent evn = {};
@@ -576,8 +572,8 @@ void CNetwork::ProcessPacket(char* ptr)
 		else {
 			cout <<"아군이 사망하였습니다" << endl;
 
-			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->GetObj()->SetDead();
-			GameObject.erase(packet->id);
+			/*GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->GetObj()->SetDead();
+			GameObject.erase(packet->id);*/
 			//GameObject.find(packet->id)->second->SetID(g_myid);
 			//GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetID(g_myid);
 			//GameObject.find(packet->id)->second->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
@@ -586,6 +582,27 @@ void CNetwork::ProcessPacket(char* ptr)
 		//SetObj(GameObject.find(p->id)->second);
 
 
+
+		break;
+	}
+	case SC_PACKET_SKILL: {
+		cout << "아군이 스킬 사용" << endl;
+		sc_packet_skill* packet = reinterpret_cast<sc_packet_skill*>(ptr);
+		int id = packet->id;
+
+		switch (packet->anitype) {
+		// 성준아 스킬 해줭
+		case PLAYER_ANI_TYPE::SKILL_1: {
+			GameObject.find(id)->second->GetScript<CPlayerScript>()->SwordStrike();
+			if(packet->isSkill)
+				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::SKILL_1);
+			else
+				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::IDLE);
+			
+			
+			break;
+		}
+		}
 
 		break;
 	}
@@ -723,7 +740,6 @@ void CNetwork::Send_Move_Packet(const Vec3& localPos, const Vec3& dirVec, const 
 
 void CNetwork::Send_Stop_Packet(const bool& isMoving, const short& id)
 {
-	cout << "Send_Stop_Packet" << endl;
 	cs_packet_stop packet;
 	packet.type = CS_PACKET_STOP;
 	packet.size = sizeof(packet);
@@ -820,6 +836,18 @@ void CNetwork::Send_Teleport_Packet(const int& playerId, Vec3 localPos)
 	Send_Packet(&packet);
 
 
+
+}
+
+void CNetwork::Send_Skill_Packet(const int& playerId, PLAYER_ANI_TYPE anitype, bool isSkill)
+{
+	cs_packet_skill packet;
+	packet.size = sizeof(packet);
+	packet.type = CS_PACKET_SKILL;
+	packet.id = playerId;
+	packet.anitype = anitype;
+	packet.isSkill = isSkill;
+	Send_Packet(&packet);
 
 }
 

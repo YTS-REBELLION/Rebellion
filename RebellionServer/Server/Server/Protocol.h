@@ -42,7 +42,7 @@ const char	CS_PACKET_P2MCOL = 15;
 const char	CS_PACKET_MONSTERDIR = 16;
 const char	CS_PACKET_DUNGEON = 17;
 const char	CS_PACKET_DIETEST = 18;
-
+const char	CS_PACKET_SKILL = 19;
 
 const char  SC_PACKET_LOGIN_OK = 1;
 const char  SC_PACKET_LOGIN_FAIL = 2;
@@ -64,6 +64,7 @@ const char	SC_PACKET_QUESTDONE = 17;
 const char	SC_PACKET_QUESTSTART = 18;
 const char	SC_PACKET_DUNGEON_ENTER = 19;
 const char	SC_PACKET_WAITROOM = 20;
+const char	SC_PACKET_SKILL = 21;
 
 const char	SC_PACKET_HP_CHANGE = 10;
 const char	SC_PACKET_DEFENCE = 15;
@@ -127,18 +128,6 @@ struct sc_packet_put_object {
 	char name[MAX_ID_LEN];
 	unsigned char objectType;
 	float x, y, z;
-
-	/*char size;
-	char type;
-	short  id;
-
-	Vec3 localVec;
-
-	float RotateY;
-
-	short hp;
-	char name[MAX_ID_LEN];
-	char o_type;*/
 };
 
 struct sc_packet_leave {
@@ -276,6 +265,14 @@ struct sc_packet_dungeon {
 struct sc_packet_waitroom {
 	char size;
 	char type;
+	size_t enterNum;
+};
+struct sc_packet_skill {
+	char size;
+	char type;
+	int id;
+	bool isSkill;
+	PLAYER_ANI_TYPE anitype;
 };
 //---------------------------------------
 
@@ -408,5 +405,12 @@ struct cs_packet_teleport {
 	int playerId;
 	Vec3 localPos;
 
+};
+struct cs_packet_skill {
+	char size;
+	char type;
+	int id;
+	bool isSkill;
+	PLAYER_ANI_TYPE anitype;
 };
 #pragma pack(pop)

@@ -21,11 +21,9 @@ public:
 	void SendPlayerDiePacket(SOCKET s, int id);
 	void SendNPCDiePacket(SOCKET s, int id, int type);
 	void SendPlayerAttackPacket(SOCKET s, int id, bool attacker);
-	void SendStatChangePacket(SOCKET s, short level, short currentHp, short maxHp, short currentExp, short maxExp);
 	void SendHpPacket(SOCKET s, short currentHp);
 	void SendDefencePacket(SOCKET s, int id, bool kind);
 	void SendDummyPacket(SOCKET s, int id, unsigned time);
-	void Send_Enter_Packet(SOCKET s, Vec3 target_pos, const short& id, const short& other_id);
 	void SendRotatePacket(SOCKET s, int mover, Vec3 rotate);
 	void SendRunPacket(SOCKET s, int id, Vec3 pos, bool isRun);
 	void SendMonsterDiePacket(SOCKET s, const int& monsterid);
@@ -35,10 +33,10 @@ public:
 	void SendQuestDonePacket(SOCKET s, int playerId, QUEST nextQuest, bool isDone);
 
 	void SendDungeonEnterPacket(SOCKET s, const int& playerId, bool isEnter);
-	void Send_WaitRoom_Packet(SOCKET s);
+	void Send_WaitRoom_Packet(SOCKET s, size_t enterNum);
 	void SendQuestStartPacket(SOCKET s, int id, bool isStart);
+	void SendSkillPacket(SOCKET s, const int& id, PLAYER_ANI_TYPE anitype,bool isSkill);
 
-	void Activate_Player_Move_Event(int target, int player_id);
 private:
 	void SendPacket(SOCKET s, void* buff);
 

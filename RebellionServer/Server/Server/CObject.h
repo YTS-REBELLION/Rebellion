@@ -149,15 +149,15 @@ public:
 	void EraseViewList(int id) { 
 		_viewLists.erase(id); 
 	}
-
 	void ClearViewList() { _viewLists.clear(); }
 	size_t GetViewListCount(int id) const { return _viewLists.count(id); }
 	std::unordered_set<int> GetViewList() const { return _viewLists; }
 	void SetViewList(unordered_set<int> vl) { _viewLists = vl; }
 
+
+
 	unordered_set<int> DungeonGetViewList() const { return _dungeonViewLists; }
 	size_t DungeonGetViewListCount(int id) const { return _dungeonViewLists.count(id); }
-
 	void DungeonClearViewList() { _dungeonViewLists.clear(); }
 	void DungeonInsertViewList(int id) {
 		_dungeonViewLists.insert(id);
@@ -188,9 +188,6 @@ public:
 
 	bool GetNearNpc() const { return _isNear; }
 	void SetNearNpc(bool isNear) { _isNear = isNear; }
-
-	MONSTER_MOVE GetMonsterMove() const { return _isMonsterMove; }
-	void SetMonsterMove(MONSTER_MOVE isMonsterMove) { _isMonsterMove = isMonsterMove; }
 
 	bool GetTarget() const { return _isTarget; }
 	void SetTarget(bool isTarget) { _isTarget = isTarget; }

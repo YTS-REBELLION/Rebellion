@@ -69,6 +69,7 @@ public:
 
 	void Send_MobToMobCol_Packet(const int& monsterId, const int& other_monsterId, bool isCol, MONSTER_MOVE moveType);
 	void Send_Teleport_Packet(const int& playerId, Vec3 localPos);
+	void Send_Skill_Packet(const int& playerId, PLAYER_ANI_TYPE anitype, bool isSkill);
 public:
 	void err_quit(const char* msg);
 private:
