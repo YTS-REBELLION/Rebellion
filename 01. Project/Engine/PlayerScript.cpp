@@ -439,7 +439,6 @@ void CPlayerScript::update()
 			cout << "메가슬레시!" << endl;
 			MegaSlash();
 
-
 		}
 
 		if (KEY_AWAY(KEY_TYPE::KEY_4))
@@ -460,6 +459,9 @@ void CPlayerScript::update()
 		{
 			cout << "파이어볼!" << endl;
 			FireBall();
+			g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_2, true);
+			g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_2, false);
+
 		}
 
 		if (KEY_AWAY(KEY_TYPE::KEY_7))

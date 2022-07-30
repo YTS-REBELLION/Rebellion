@@ -423,7 +423,6 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 
 		switch (packet->anitype) {
 		case PLAYER_ANI_TYPE::SKILL_1: {
-			
 			for (int i = 0; i < _acceptNumber; ++i) {
 				if (_objects[i]._status != ST_ACTIVE) continue;
 				if (playerId == i) continue;
@@ -433,7 +432,11 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 			break;
 		}
 		case PLAYER_ANI_TYPE::SKILL_2: {
-
+			for (int i = 0; i < _acceptNumber; ++i) {
+				if (_objects[i]._status != ST_ACTIVE) continue;
+				if (playerId == i) continue;
+				_sender->SendSkillPacket(_objects[i].GetSocket(), playerId, packet->anitype, packet->isSkill);
+			}
 
 			break;
 		}
