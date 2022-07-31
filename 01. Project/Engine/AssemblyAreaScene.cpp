@@ -113,7 +113,7 @@ void CAssemblyAreaScene::init()
 	GetLayer(6)->SetName(L"NPC");
 	GetLayer(7)->SetName(L"BOSS");
 
-	CreateMap();
+	//CreateMap();
 
 	// ====================
 	// 3D Light Object Ãß°¡

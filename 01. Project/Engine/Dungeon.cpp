@@ -42,7 +42,11 @@ void CDungeonScene::init()
 	GetLayer(3)->SetName(L"House");
 	GetLayer(4)->SetName(L"Portal");
 	GetLayer(5)->SetName(L"UI");
-	GetLayer(6)->SetName(L"Boss");
+	GetLayer(6)->SetName(L"Monster");
+	GetLayer(7)->SetName(L"Boss");
+
+
+
 	// ====================
 	// 3D Light Object Ãß°¡
 	// ====================

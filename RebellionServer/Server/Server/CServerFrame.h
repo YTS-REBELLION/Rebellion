@@ -22,7 +22,7 @@ class CServerFrame {
 	//class
 	CError*		_error;
 	CSender*	_sender;
-	CObject		_objects[141];
+	CObject		_objects[150];
 	
 
 	// timer

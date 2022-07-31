@@ -125,6 +125,8 @@ private:
 	bool				m_bDash = false;
 	float fdamage = 0.f;
 	float ftempmp = 0.f;
+
+	bool questStart = false;
 public:
 	virtual void awake();	
 	virtual void update();
@@ -172,6 +174,7 @@ public:
 		}
 		else m_bCol = true;
 	}
+	void SetQuestStart(bool isStart) { questStart = isStart; }
 	void SetQuestCnt(QUEST questId) { m_iClearCnt = questId; }
 	void SetQuestView(bool isQuest) { m_questView = isQuest; }
 	void QuestDone(QUEST questNum);

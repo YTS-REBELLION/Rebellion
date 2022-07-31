@@ -42,7 +42,6 @@ void CM_MonsterScript::init()
 	pSwordObject = pMeshData->Instantiate();
 	pSwordObject->SetName(L"M_Monster_Sword");
 	pSwordObject->FrustumCheck(false);
-	pSwordObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 	pSwordObject->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
 	pSwordObject->AddComponent(new CCollider2D);
 	pSwordObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
@@ -53,7 +52,7 @@ void CM_MonsterScript::init()
 	CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
 	pSwordObject->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::M_MONSTER, GetObj(), 12);
 
-	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", pSwordObject, false);
+	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Boss", pSwordObject, false);
 	GetObj()->AddChild(pSwordObject);
 
 	Ptr<CTexture> pBossName = CResMgr::GetInst()->Load<CTexture>(L"BossName", L"Texture\\HpUi\\BossName_ingkells.png");
@@ -64,6 +63,8 @@ void CM_MonsterScript::init()
 	CGameObject* pObject = new CGameObject;
 	Vec3 NameUiScale = { 100,100,1 };
 	Vec3 FrameUiScale = { 500,40,1 };
+
+
 	//체력 UI
 	pObject = new CGameObject;
 	pObject->SetName(L"HpUi");
@@ -120,7 +121,6 @@ void CM_MonsterScript::awake()
 
 void CM_MonsterScript::update()
 {
-	cout << m_bcenecheck << endl;
 	if (!m_bcenecheck)
 		//시네끝나고 update
 	{
@@ -152,15 +152,20 @@ void CM_MonsterScript::update()
 		const vector<CGameObject*>& vecObject = CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetObjects();
 		Vec3 vRot;
 
-		for (auto client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
-		{
-			if (client->GetScript<CPlayerScript>()->GetMain())
-				m_pPlayer = client;
+		if (m_isTarget) {
+			for (auto client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
+			{
+				if (client->GetScript<CPlayerScript>()->GetMain())
+					m_pPlayer = client;
+			}
+
+			m_fAngle = atan2(localPos.x - m_pPlayer->Transform()->GetLocalPos().x, localPos.z - m_pPlayer->Transform()->GetLocalPos().z) * (180 / XM_PI) * 0.0174532925f;//acosf(Dot(vDirFront, Monster_Nor));
 		}
-
-		m_fAngle = atan2(localPos.x - m_pPlayer->Transform()->GetLocalPos().x, localPos.z - m_pPlayer->Transform()->GetLocalPos().z) * (180 / XM_PI) * 0.0174532925f;//acosf(Dot(vDirFront, Monster_Nor));
-
 		//Transform()->SetLocalRot(Vec3(-m_fAngle+ XMConvertToRadians(-90.f), localRot.y, localRot.z));
+
+		vRot = Vec3(localRot.x, m_fAngle, localRot.z);
+
+		Monster->Transform()->SetLocalRot(vRot);
 
 
 		if (m_Is_Move) {
@@ -240,7 +245,7 @@ void CM_MonsterScript::update()
 			break;
 		}
 
-		if (!m_bColCheck)
+		/*if (!m_bColCheck)
 			Transform()->SetLocalPos(localPos);
 		else
 		{
@@ -255,7 +260,7 @@ void CM_MonsterScript::update()
 
 			Transform()->SetLocalPos(localPos);
 
-		}
+		}*/
 
 
 	}

@@ -1313,7 +1313,7 @@ void CServerFrame::CreateMonster()
 {
 	cout << "Initializing Monster" << endl;
 
-	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_START + 1; ++monsterId) {
+	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_START + 40; ++monsterId) {
 		_objects[monsterId].SetID(monsterId);
 		_objects[monsterId]._status = ST_SLEEP;
 		_objects[monsterId].SetSpeed(MONSTER_SPEED);
@@ -1426,8 +1426,18 @@ void CServerFrame::CreateMonster()
 	_objects[NPC_ID_START + 36].SetPos(Vec3(-6100.f, 0.f, 14100.f));
 	_objects[NPC_ID_START + 37].SetPos(Vec3(-6100.f, 0.f, 12900.f));
 
-	// 보스 몬스터 아이디 141
+	_objects[NPC_ID_START + 38].SetPos(Vec3(-6100.f, 0.f, 14100.f));
+	_objects[NPC_ID_START + 39].SetPos(Vec3(-6100.f, 0.f, 12900.f));
 
+
+	// 보스 몬스터 아이디 141
+	_objects[NPC_ID_START + 40].SetPos(Vec3(0, 0.f, 5000.f));
+	_objects[NPC_ID_START + 40].SetID(NPC_ID_START + 40);
+	_objects[NPC_ID_START + 40]._status = ST_SLEEP;
+	_objects[NPC_ID_START + 40].SetSpeed(2000.f);
+	_objects[NPC_ID_START + 40].SetMoveType(RANDOM);
+	_objects[NPC_ID_START + 40].SetIsAttack(false);
+	_objects[NPC_ID_START + 40].SetDunGeonEnter(true);
 
 
 	printf("Monster Initialization finished.\n");

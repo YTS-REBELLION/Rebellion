@@ -327,7 +327,8 @@ void CPlayerScript::update()
 		if ((KEY_TAB(KEY_TYPE::KEY_W) || KEY_TAB(KEY_TYPE::KEY_A) || KEY_TAB(KEY_TYPE::KEY_S) || KEY_TAB(KEY_TYPE::KEY_D)))
 		{
 			GetObj()->Animator3D()->SetClipTime(0, 0.f);
-			if (localPos.z >= 1400.f) {
+			if (localPos.z >= 1400.f && !questStart) {
+				questStart = true;
 				g_net.Send_Dungeon_Packet(true);
 			}
 		}
