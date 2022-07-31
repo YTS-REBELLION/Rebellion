@@ -10,4 +10,5 @@ class CAssemblyAreaScene :
 {
 public:
 	virtual void init();
+	void CreateMap();
 };

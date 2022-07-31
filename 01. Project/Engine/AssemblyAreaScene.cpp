@@ -34,16 +34,85 @@
 #include"ParticleSystem.h"
 #include"Boss.h"
 
+
+void CAssemblyAreaScene::CreateMap()
+{
+	// ====================
+	// 바닥 오브젝트 생성
+	// ====================
+
+	//Ptr<CMeshData> pTestMapMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Map\\g5.fbx");
+	//pTestMapMeshData->Save(pTestMapMeshData->GetPath());
+	Ptr<CMeshData> pTestMapMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Ground.mdat", L"MeshData\\Ground.mdat");
+
+	CGameObject* Tile = new CGameObject;
+
+	Tile->SetName(L"Map_Tile");
+	Tile = pTestMapMeshData->Instantiate();
+	Tile->FrustumCheck(false);
+	
+	// Transform 설정
+	Tile->Transform()->SetLocalPos(Vec3(-2500.f, -50.f, -2500.f));
+	Tile->Transform()->SetLocalScale(Vec3(3.f, 3.f, 1.f));
+	Tile->Transform()->SetLocalRot(Vec3(XMConvertToRadians(90.0f), 0.f, 0.f));
+
+	FindLayer(L"Map")->AddGameObject(Tile);
+
+
+	// ====================
+	// Map 오브젝트 생성
+	// ====================
+
+	//Ptr<CMeshData> pMapMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Map\\Assembly_Map.fbx");
+	//pMapMeshData->Save(pMapMeshData->GetPath());
+	Ptr<CMeshData> pMapMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Assembly_Map.mdat", L"MeshData\\Assembly_Map.mdat");
+
+	CGameObject* pMap = new CGameObject;
+
+	pMap->SetName(L"Assembly_Map");
+	pMap = pMapMeshData->Instantiate();
+	pMap->FrustumCheck(false);
+
+	// Transform 설정
+	pMap->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	pMap->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pMap->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
+
+	FindLayer(L"Map")->AddGameObject(pMap);
+
+	// ====================
+	// Skybox 오브젝트 생성
+	// ====================
+
+	Ptr<CTexture> pSkyboxTex = CResMgr::GetInst()->Load<CTexture>(L"SB", L"Texture\\Skybox\\Deep Dusk Equirect.png");
+
+	CGameObject* pSkybox = new CGameObject;
+	pSkybox->SetName(L"SkyBox");
+	pSkybox->FrustumCheck(false);
+	pSkybox->AddComponent(new CTransform);
+	pSkybox->AddComponent(new CMeshRender);
+
+	// MeshRender 설정
+	pSkybox->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh"));
+	pSkybox->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"SkyboxMtrl"));
+	pSkybox->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pSkyboxTex.GetPointer());
+
+	// AddGameObject
+	FindLayer(L"Default")->AddGameObject(pSkybox, false);
+}
+
 void CAssemblyAreaScene::init()
 {
-
 	cout << "집결지 컴백" << endl;
 	GetLayer(0)->SetName(L"Default");
 	GetLayer(1)->SetName(L"Player");
-	GetLayer(2)->SetName(L"Boss");
-	GetLayer(3)->SetName(L"House");
+	GetLayer(2)->SetName(L"House");
+	GetLayer(3)->SetName(L"Map");
 	GetLayer(4)->SetName(L"Portal");
 	GetLayer(5)->SetName(L"UI");
+	GetLayer(6)->SetName(L"NPC");
+
+	CreateMap();
 
 	// ====================
 	// 3D Light Object 추가
@@ -73,7 +142,7 @@ void CAssemblyAreaScene::init()
 	pPlayer = pMeshData->Instantiate();
 	pPlayer->SetName(L"FM_Player");
 	pPlayer->FrustumCheck(false);
-	
+	pPlayer->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 	pPlayer->Transform()->SetLocalScale(Vec3(1.0f, 1.0f, 1.0f));
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), XMConvertToRadians(180.f), 0.f));
 	
@@ -194,5 +263,29 @@ void CAssemblyAreaScene::init()
 
 	
 
+	// ===================
+	// NPC 로드
+	// ===================
 
+	//Ptr<CMeshData> pAS_NPCMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Monster\\FM_Idle.fbx");
+	//pAS_NPCMeshData->Save(pAS_NPCMeshData->GetPath());
+	Ptr<CMeshData> pAS_NPCMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FM_Idle.mdat", L"MeshData\\FM_Idle.mdat");
+
+	CGameObject* pAS_NPC = new CGameObject;
+
+	pAS_NPC = pAS_NPCMeshData->Instantiate();
+	pAS_NPC->SetName(L"AS_NPC_1");
+	pAS_NPC->FrustumCheck(false);
+
+	pAS_NPC->Transform()->SetLocalPos(Vec3(300.f, 0.f, 1600.f));
+	pAS_NPC->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	pAS_NPC->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
+
+	//pTest->AddComponent(new CCollider2D);
+	//pTest->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+	//pTest->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	//pTest->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+	//pTest->Collider2D()->SetOffsetRot(Vec3(0.f, 0.f, XMConvertToRadians(-180.f)));
+
+	FindLayer(L"NPC")->AddGameObject(pAS_NPC);
 }

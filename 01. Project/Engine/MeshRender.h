@@ -13,7 +13,9 @@ class CMeshRender :
 private:
 	Ptr<CMesh>				m_pMesh;
 	vector<Ptr<CMaterial>>  m_vecMtrl;	
-	bool					m_bDynamicShadow;
+
+	bool m_bDynamicShadow;
+
 public:
 	Ptr<CMesh> GetMesh() { return m_pMesh; }
 	void SetMesh(Ptr<CMesh> _pMesh) { m_pMesh = _pMesh; }	
