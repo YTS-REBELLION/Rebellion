@@ -1617,48 +1617,48 @@ void CSceneMgr::init()
 	// ===================
 	// Monster 파일 로드
 	// ===================
-	CGameObject* pMonster = new CGameObject;
-	//pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Monster\\Monster_M_Idle.fbx");
-	//pMeshData->Save(pMeshData->GetPath());
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Idle.mdat", L"MeshData\\Monster_M_Idle.mdat");
+	//CGameObject* pMonster = new CGameObject;
+	////pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Monster\\Monster_M_Idle.fbx");
+	////pMeshData->Save(pMeshData->GetPath());
+	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Idle.mdat", L"MeshData\\Monster_M_Idle.mdat");
 
-	pMonster = pMeshData->Instantiate();
-	pMonster->SetName(L"M_Monster");
-	pMonster->FrustumCheck(false);
-	pMonster->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-	pMonster->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
-	pMonster->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, XMConvertToRadians(-90.f)));
-	//pMonster->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
-	pMonster->AddComponent(new CCollider2D);
-	pMonster->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pMonster->Collider2D()->SetOffsetPos(Vec3(0.f, 100.f, 0.f));
-	pMonster->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
-	pMonster->Collider2D()->SetOffsetRot(Vec3(0.f, XMConvertToRadians(-90.f), XMConvertToRadians(90.f)));
+	//pMonster = pMeshData->Instantiate();
+	//pMonster->SetName(L"M_Monster");
+	//pMonster->FrustumCheck(false);
+	//pMonster->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	//pMonster->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//pMonster->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, XMConvertToRadians(-90.f)));
+	////pMonster->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
+	//pMonster->AddComponent(new CCollider2D);
+	//pMonster->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	//pMonster->Collider2D()->SetOffsetPos(Vec3(0.f, 100.f, 0.f));
+	//pMonster->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
+	//pMonster->Collider2D()->SetOffsetRot(Vec3(0.f, XMConvertToRadians(-90.f), XMConvertToRadians(90.f)));
 
-	//// Material 값 셋팅
-	//Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl");
-	////GateHouseObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CircleMesh"));
-	//pMonster->MeshRender()->SetMaterial(pMtrl2, 0);
+	////// Material 값 셋팅
+	////Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl");
+	//////GateHouseObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CircleMesh"));
+	////pMonster->MeshRender()->SetMaterial(pMtrl2, 0);
 
-	// 몬스터 스크립트 붙여주기.
-	pMonster->AddComponent(new CM_MonsterScript);
+	//// 몬스터 스크립트 붙여주기.
+	//pMonster->AddComponent(new CM_MonsterScript);
 
-	CM_MonsterScript* M_MonsterScript = pMonster->GetScript<CM_MonsterScript>();
-	pMonster->GetScript<CM_MonsterScript>()->init();
+	//CM_MonsterScript* M_MonsterScript = pMonster->GetScript<CM_MonsterScript>();
+	//pMonster->GetScript<CM_MonsterScript>()->init();
 
-	////몬스터 애니메이션
-	M_MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 0, 0, 55);								// AniData Index 0
+	//////몬스터 애니메이션
+	//M_MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 0, 0, 55);								// AniData Index 0
 
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Walk.mdat", L"MeshData\\Monster_M_Walk.mdat");
-	M_MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 1, 0, 41);								// AniData Index 1
+	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Walk.mdat", L"MeshData\\Monster_M_Walk.mdat");
+	//M_MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 1, 0, 41);								// AniData Index 1
 
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Hit.mdat", L"MeshData\\Monster_M_Hit.mdat");
-	M_MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 2, 0, 53);								// AniData Index 2
+	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Hit.mdat", L"MeshData\\Monster_M_Hit.mdat");
+	//M_MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 2, 0, 53);								// AniData Index 2
 
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Attack.mdat", L"MeshData\\Monster_M_Attack.mdat");
-	M_MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 3, 0, 53);								// AniData Index 3
-	
-	m_pCurScene->AddGameObject(L"Monster", pMonster, false);
+	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Attack.mdat", L"MeshData\\Monster_M_Attack.mdat");
+	//M_MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 3, 0, 53);								// AniData Index 3
+	//
+	//m_pCurScene->AddGameObject(L"Monster", pMonster, false);
 
 	//CGameObject* pMonster = new CGameObject;
 	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Idle.mdat", L"MeshData\\Monster_FM_Idle.mdat");

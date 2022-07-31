@@ -1414,24 +1414,25 @@ void CServerFrame::CreateMonster()
 	}
 
 
-	_objects[NPC_ID_START].SetPos(Vec3(10.f, 0.f, 8600.f));
-	//_objects[NPC_ID_START + 1].SetPos(Vec3(200.f, 5000.f, 3400.f));
-	//_objects[NPC_ID_START + 2].SetPos(Vec3(400.f, 5000.f, 3400.f));
-	//_objects[NPC_ID_START + 3].SetPos(Vec3(-200.f, 5000.f, 3400.f));
-	//_objects[NPC_ID_START + 4].SetPos(Vec3(-400.f, 5000.f, 3400.f));
-	//
-	//// ¡ﬂæ” »¶ ∏ÛΩ∫≈Õ
-	//_objects[NPC_ID_START + 5].SetPos(Vec3(-400.f, 5000.f, 5400.f));
-	//_objects[NPC_ID_START + 6].SetPos(Vec3(-200.f, 5000.f, 5400.f));
-	//_objects[NPC_ID_START + 7].SetPos(Vec3(200.f, 5000.f, 5400.f));
-	//_objects[NPC_ID_START + 8].SetPos(Vec3(400.f, 5000.f, 5400.f));
-	//_objects[NPC_ID_START + 9].SetPos(Vec3(-600.f, 5000.f, 5400.f));
-	//_objects[NPC_ID_START + 10].SetPos(Vec3(600.f, 5000.f, 5400.f));
-	//_objects[NPC_ID_START + 11].SetPos(Vec3(800.f, 5000.f, 5400.f));
-	//_objects[NPC_ID_START + 12].SetPos(Vec3(-200.f, 5000.f, 5600.f));
-	//_objects[NPC_ID_START + 13].SetPos(Vec3(-400.f, 5000.f, 5600.f));
-	//_objects[NPC_ID_START + 14].SetPos(Vec3(200.f, 5000.f, 5600.f));
-	//_objects[NPC_ID_START + 15].SetPos(Vec3(400.f, 5000.f, 5600.f));
+	_objects[NPC_ID_START].SetPos(Vec3(0.f, 0.f, 9200.f));
+	//_objects[NPC_ID_START + 1].SetPos(Vec3(200.f, 0.f, 8600.f));
+	//_objects[NPC_ID_START + 2].SetPos(Vec3(400.f, 0.f, 8600.f));
+	//_objects[NPC_ID_START + 3].SetPos(Vec3(-200.f, 0.f, 8600.f));
+	//_objects[NPC_ID_START + 4].SetPos(Vec3(-400.f, 0.f, 8600.f));
+
+	////
+	////// ¡ﬂæ” »¶ ∏ÛΩ∫≈Õ
+	//_objects[NPC_ID_START + 5].SetPos(Vec3(-400.f, 0.f, 9200.f));
+	//_objects[NPC_ID_START + 6].SetPos(Vec3(-200.f, 0.f, 9200.f));
+	//_objects[NPC_ID_START + 7].SetPos(Vec3(200.f, 0.f, 9200.f));
+	//_objects[NPC_ID_START + 8].SetPos(Vec3(400.f, 0.f, 9200.f));
+	//_objects[NPC_ID_START + 9].SetPos(Vec3(-600.f, 0.f, 9200.f));
+	//_objects[NPC_ID_START + 10].SetPos(Vec3(600.f, 0.f, 9200.f));
+	//_objects[NPC_ID_START + 11].SetPos(Vec3(800.f, 0.f, 9200.f));
+	//_objects[NPC_ID_START + 12].SetPos(Vec3(-200.f, 0.f, 9200.f));
+	//_objects[NPC_ID_START + 13].SetPos(Vec3(-400.f, 0.f, 9200.f));
+	//_objects[NPC_ID_START + 14].SetPos(Vec3(200.f, 0.f, 9200.f));
+	//_objects[NPC_ID_START + 15].SetPos(Vec3(400.f, 0.f, 9200.f));
 
 	////ø¿∏•¬  πÃ∑Œ ∏ÛΩ∫≈Õ
 	////¡ﬂæ” ∏ÛΩ∫≈Õ

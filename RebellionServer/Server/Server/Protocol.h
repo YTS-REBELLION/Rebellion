@@ -5,7 +5,7 @@
 
 //const char* SERVERIP = "127.0.0.1";
 
-const short SERVER_PORT = 9000;
+const short SERVER_PORT = 9002;
 
 constexpr int MAX_BUFFER = 1024;
 constexpr int MAX_PACKET_SIZE = 255;
@@ -111,17 +111,6 @@ struct sc_packet_put_object {
 	unsigned char objectType;
 	float x, y, z;
 
-	/*char size;
-	char type;
-	short  id;
-
-	Vec3 localVec;
-
-	float RotateY;
-
-	short hp;
-	char name[MAX_ID_LEN];
-	char o_type;*/
 };
 
 struct sc_packet_leave {

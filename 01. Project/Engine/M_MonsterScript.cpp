@@ -149,7 +149,7 @@ void CM_MonsterScript::update()
 
 	}
 	
-	//UpdateLerpPos();
+	UpdateLerpPos();
 	switch (m_skill)
 	{
 	case MonSkill1:
