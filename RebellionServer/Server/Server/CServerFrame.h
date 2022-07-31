@@ -14,6 +14,7 @@ class CServerFrame {
 	DWORD			_flags;
 	int				_addrLen;
 
+
 	//thread
 	std::thread					_timerThread;
 	std::vector<std::thread>	_workerThread;
@@ -80,10 +81,6 @@ public:
 	bool IsPlayer(int id);
 	bool IsNearNPC(int player, int npc);
 	bool IsNear(int a, int b);
-	bool CollisionMonster(Vec3 A_vPos, Vec3 B_vPos);
-
-	void TestCol(const short& monsterid, const short& other_monsterId);
-	bool comp(pair<int, int> a, pair<int, int> b);
 
 	void QuestDone(const short& id);
 

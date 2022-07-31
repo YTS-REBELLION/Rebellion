@@ -6,7 +6,7 @@
 
 //const char* SERVERIP = "127.0.0.1";
 
-const short SERVER_PORT = 9000;
+const short SERVER_PORT = 9002;
 
 constexpr int MAX_BUFFER = 1024;
 constexpr int MAX_PACKET_SIZE = 255;
@@ -28,10 +28,6 @@ const char  CS_PACKET_LOGIN = 1;
 const char  CS_PACKET_LOGOUT = 2;
 const char  CS_PACKET_ATTACK = 3;
 const char  CS_PACKET_TELEPORT = 4;
-const char  CS_PACKET_CHAT = 5;
-const char  CS_PACKET_MOUSE_MOVE = 6;
-const char  CS_PAKCET_POSITION = 7;
-const char  CS_PACKET_DEFENCE = 8;
 const char  CS_PACKET_QUEST_DONE = 9;
 const char	CS_PACKET_MOVE = 10;
 const char	CS_PACKET_STOP = 11;
@@ -65,10 +61,6 @@ const char	SC_PACKET_QUESTSTART = 18;
 const char	SC_PACKET_DUNGEON_ENTER = 19;
 const char	SC_PACKET_WAITROOM = 20;
 const char	SC_PACKET_SKILL = 21;
-
-const char	SC_PACKET_HP_CHANGE = 10;
-const char	SC_PACKET_DEFENCE = 15;
-const char	SC_PACKET_RETURN = 13;
 
 constexpr int MAX_PW_LEN = 12;
 constexpr int MAX_ID_LEN = 50;

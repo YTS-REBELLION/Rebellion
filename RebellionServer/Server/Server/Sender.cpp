@@ -155,38 +155,6 @@ void CSender::SendPlayerAttackPacket(SOCKET s, int attacker, bool isAttack)
 }
 
 
-void CSender::SendHpPacket(SOCKET s, short currentHp)
-{
-	sc_packet_hp packet;
-	packet.type = SC_PACKET_HP_CHANGE;
-	packet.size = sizeof(packet);
-	packet.c_hp = currentHp;
-
-	SendPacket(s, &packet);
-}
-
-void CSender::SendDefencePacket(SOCKET s, int id, bool kind)
-{
-	sc_packet_defence packet;
-	packet.type = SC_PACKET_DEFENCE;
-	packet.size = sizeof(packet);
-	packet.id = id;
-	packet.kind = kind;
-
-	SendPacket(s, &packet);
-}
-
-void CSender::SendDummyPacket(SOCKET s, int id, unsigned time)
-{
-	sc_packet_return packet;
-	packet.type = SC_PACKET_RETURN;
-	packet.size = sizeof(packet);
-	packet.id = id;
-	packet.moveTime = time;
-
-	SendPacket(s, &packet);
-}
-
 void CSender::SendRotatePacket(SOCKET s, int mover, Vec3 rotate)
 {
 	sc_packet_rotate packet;

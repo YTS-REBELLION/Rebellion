@@ -100,6 +100,7 @@ private:
 	Ptr<CTexture> pQuest0 = CResMgr::GetInst()->Load<CTexture>(L"Quest", L"Texture\\Quest\\npc1_quest00.png");
 	Ptr<CTexture> pQuest1 = CResMgr::GetInst()->Load<CTexture>(L"Quest2", L"Texture\\Quest\\npc1_quest01.png");
 	Ptr<CTexture> pQuest2 = CResMgr::GetInst()->Load<CTexture>(L"Quest3", L"Texture\\Quest\\npc1_quest02.png");
+
 	//Äù½ºÆ®2 png
 	Ptr<CTexture> pQuestexplane2_0 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane2_0", L"Texture\\Quest\\quest02_0.png");
 	Ptr<CTexture> pQuestexplane2_1 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane2_1", L"Texture\\Quest\\quest02_1.png");
