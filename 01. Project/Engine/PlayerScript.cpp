@@ -9,12 +9,19 @@
 #include"SwordStrike.h"
 #include"MegaSlash.h"
 #include"Sting.h"
+#include"Swing2.h"
+#include"Swing3.h"
+#include"Swing4.h"
 #include"Swing.h"
 #include"FireBall.h"
 #include"Meteor.h"
 #include"UnleashedPower.h"
 #include "Dungeon.h"
 #include "GameObject.h"
+
+#include"ParticleSystem.h"
+
+#include"ParticleScript.h"
 
 bool isReckoning = false;
 CPlayerScript::CPlayerScript()
@@ -411,6 +418,8 @@ void CPlayerScript::update()
 			GetObj()->Animator3D()->SetClipTime(0, 0.f);
 			SetSkill();
 			SwordStrike();
+			fdamage = 20.f;
+			MpUiScale.x -= fdamage;
 		}
 		else if (GetSkill() && m_vecAniClipTime[1] < GetObj()->Animator3D()->GetAnimClip(4).dTimeLength)
 		{
@@ -437,14 +446,16 @@ void CPlayerScript::update()
 		{
 			cout << "메가슬레시!" << endl;
 			MegaSlash();
-
+			fdamage = 20.f;
+			MpUiScale.x -= fdamage;
 		}
 
 		if (KEY_AWAY(KEY_TYPE::KEY_4))
 		{
 			cout << "가세연!" << endl;
 			Swing();
-
+			fdamage = 20.f;
+			MpUiScale.x -= fdamage;
 
 		}
 
@@ -452,6 +463,8 @@ void CPlayerScript::update()
 		{
 			cout << "찌르기!" << endl;
 			Sting();
+			fdamage = 20.f;
+			MpUiScale.x -= fdamage;
 		}
 
 		if (KEY_AWAY(KEY_TYPE::KEY_6))
@@ -460,7 +473,8 @@ void CPlayerScript::update()
 			FireBall();
 			g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_2, true);
 			g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_2, false);
-
+			fdamage = 20.f;
+			MpUiScale.x -= fdamage;
 		}
 
 		if (KEY_AWAY(KEY_TYPE::KEY_7))
@@ -468,13 +482,33 @@ void CPlayerScript::update()
 			cout << "메테오!" << endl;
 			Meteor();
 			m_bMeteor2 = true;
-
+			fdamage = 20.f;
+			MpUiScale.x -= fdamage;
 		}
 
 		if (KEY_AWAY(KEY_TYPE::KEY_8))
 		{
 			UnleashedPower();
+			fdamage = 20.f;
+			MpUiScale.x -= fdamage;
 
+			CGameObject* pObject = nullptr;
+			//	Particle
+			pObject = new CGameObject;
+			pObject->SetName(L"Particle");
+			pObject->AddComponent(new CTransform);
+			pObject->AddComponent(new CParticleSystem);
+			pObject->Particlesystem()->SetFrequency(0.1f);
+			pObject->Particlesystem()->SetType(false);
+			pObject->Particlesystem()->SetMaxParticle(60);
+			pObject->AddComponent(new CParticleScript);
+			pObject->GetScript<CParticleScript>()->SetLifeTime(pObject->Particlesystem()->GetMaxLifeTime());
+			pObject->FrustumCheck(false);
+
+			Vec3 particlePos = Vec3(100.f, 300.f, 10.f);
+
+			pObject->Transform()->SetLocalPos(particlePos);
+			CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
 
 		}
 
@@ -803,6 +837,35 @@ void CPlayerScript::update()
 			}
 		}
 
+		//마나달기 UI
+		pManaobj->SetDead();
+		Ptr<CTexture> pMana = CResMgr::GetInst()->Load<CTexture>(L"Mana", L"Texture\\HpUi\\Mana.png");
+
+
+		tResolution res = CRenderMgr::GetInst()->GetResolution();
+		CGameObject* pObject = new CGameObject;
+		Ptr<CMaterial>  pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+		pObject = new CGameObject;
+		pObject->SetName(L"MpUi");
+		pObject->FrustumCheck(false);
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
+		ftempmp = fdamage * 2;
+		pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 2.f) - (res.fWidth / 1.5f) - ftempmp, res.fHeight / 2.7f, 1.f));
+		pObject->Transform()->SetLocalScale(MpUiScale);
+
+		//MeshRender 설정
+
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+		pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+		pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pMana.GetPointer());
+
+		// AddGameObject
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+		pManaobj = pObject;
+
 
 		if (m_bMeteor2)
 		{
@@ -998,38 +1061,11 @@ void CPlayerScript::OnCollision(CCollider2D* _pOther)
 		Vec3 dir_vec = m_pColObj->Transform()->GetLocalDir(DIR_TYPE::RIGHT);
 		//cout << "충돌" << endl;
 
-		MpUiScale.x -= 20.f;
+	
 	}
 	
 	
-	pManaobj->SetDead();
-	Ptr<CTexture> pMana = CResMgr::GetInst()->Load<CTexture>(L"Mana", L"Texture\\HpUi\\Mana.png");
-
-
-	tResolution res = CRenderMgr::GetInst()->GetResolution();
-	CGameObject* pObject = new CGameObject;
-	Ptr<CMaterial>  pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
-	pObject = new CGameObject;
-	pObject->SetName(L"MpUi");
-	pObject->FrustumCheck(false);
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CMeshRender);
-
-	pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 2.f) - (res.fWidth / 1.5f), res.fHeight / 2.7f, 1.f));
-	pObject->Transform()->SetLocalScale(MpUiScale);
-
-	//MeshRender 설정
-
-	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-
-	pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
-	pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pMana.GetPointer());
-
-	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
-
-	pManaobj = pObject;
+	
 	
 
 }
@@ -1132,7 +1168,7 @@ void CPlayerScript::MegaSlash()
 
 	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,50.f,0.f });
 	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalDir(DIR_TYPE::FRONT));
-	m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	m_pSwordStrike->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
 	m_pSwordStrike->AddComponent(new CMegaSlash);
 
 
@@ -1149,13 +1185,13 @@ void CPlayerScript::MegaSlash()
 
 void CPlayerScript::Swing()
 {
-	//// ====================
-	////  오브젝트 생성
-	//// ====================
+	//플레이어 따라오는 표창
+//// ====================
+////  오브젝트 생성
+//// ====================
 	CGameObject* m_pSwordStrike = new CGameObject;
-	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
-	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
-	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
+	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sjuriken1.fbx");
+
 
 
 	m_pSwordStrike = pPMeshData->Instantiate();
@@ -1163,16 +1199,94 @@ void CPlayerScript::Swing()
 	m_pSwordStrike->FrustumCheck(false);
 
 
-	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,50.f,0.f });
+	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
 	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-	m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	m_pSwordStrike->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
 	m_pSwordStrike->AddComponent(new CSwing);
 
 
 	m_pSwordStrike->AddComponent(new CCollider2D);
 	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
+
+	// AddGameObject
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+
+	//// ====================
+	////  오브젝트 생성
+	//// ====================
+	m_pSwordStrike = new CGameObject;
+
+
+
+	m_pSwordStrike = pPMeshData->Instantiate();
+	m_pSwordStrike->SetName(L"Swing");
+	m_pSwordStrike->FrustumCheck(false);
+
+
+	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
+	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+	m_pSwordStrike->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
+	m_pSwordStrike->AddComponent(new CSwing2);
+
+
+	m_pSwordStrike->AddComponent(new CCollider2D);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
+
+	// AddGameObject
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+
+	//// ====================
+	////  오브젝트 생성
+	//// ====================
+	m_pSwordStrike = new CGameObject;
+
+
+
+	m_pSwordStrike = pPMeshData->Instantiate();
+	m_pSwordStrike->SetName(L"Swing");
+	m_pSwordStrike->FrustumCheck(false);
+
+
+	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
+	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+	m_pSwordStrike->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
+	m_pSwordStrike->AddComponent(new CSwing3);
+
+
+	m_pSwordStrike->AddComponent(new CCollider2D);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
+
+	// AddGameObject
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+
+	//// ====================
+	////  오브젝트 생성
+	//// ====================
+	m_pSwordStrike = new CGameObject;
+
+
+
+	m_pSwordStrike = pPMeshData->Instantiate();
+	m_pSwordStrike->SetName(L"Swing");
+	m_pSwordStrike->FrustumCheck(false);
+
+
+	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
+	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+	m_pSwordStrike->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
+	m_pSwordStrike->AddComponent(new CSwing4);
+
+
+	m_pSwordStrike->AddComponent(new CCollider2D);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
 
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);

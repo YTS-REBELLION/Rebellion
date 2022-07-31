@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Sting.h"
 
+
 CSting::CSting()
 	: CScript((UINT)SCRIPT_TYPE::SWORDSCRIPT)
 	, m_pOriginMtrl(nullptr)
