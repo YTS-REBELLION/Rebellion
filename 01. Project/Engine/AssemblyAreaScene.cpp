@@ -28,6 +28,7 @@
 #include "Core.h"
 
 #include "PlayerScript.h"
+#include "MonsterScript.h"
 #include "SwordScript.h"
 #include "ToolCamScript.h"
 #include"Fire.h"
@@ -147,6 +148,8 @@ void CAssemblyAreaScene::init()
 	pPlayer->Transform()->SetLocalScale(Vec3(1.0f, 1.0f, 1.0f));
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), XMConvertToRadians(180.f), 0.f));
 	
+	//pPlayer->MeshRender()->SetDynamicShadow(true);
+
 	pPlayer->AddComponent(new CCollider2D);
 	pPlayer->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	pPlayer->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
@@ -177,6 +180,10 @@ void CAssemblyAreaScene::init()
 
 	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Skill_1.mdat", L"MeshData\\Player_FM_Skill_1.mdat");
 	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 4, 0, 75);							// AniData Index 3
+	g_net.SetAniData(pMeshData->GetMesh());
+
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Die.mdat", L"MeshData\\Player_FM_Die.mdat");
+	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 5, 0, 100);
 	g_net.SetAniData(pMeshData->GetMesh());
 
 	FindLayer(L"Player")->AddGameObject(pPlayer);
@@ -240,10 +247,6 @@ void CAssemblyAreaScene::init()
 	//// AddGameObject
 	//FindLayer(L"Default")->AddGameObject(pObject);
 
-
-
-
-
 	////	비
 	//pObject = new CGameObject;
 	//pObject->SetName(L"Rain");
@@ -258,11 +261,6 @@ void CAssemblyAreaScene::init()
 
 	//pObject->Transform()->SetLocalPos(particlePos);
 	//FindLayer(L"Default")->AddGameObject(pObject);
-
-
-
-
-	
 
 	// ===================
 	// NPC 로드
@@ -289,4 +287,45 @@ void CAssemblyAreaScene::init()
 	//pTest->Collider2D()->SetOffsetRot(Vec3(0.f, 0.f, XMConvertToRadians(-180.f)));
 
 	FindLayer(L"NPC")->AddGameObject(pAS_NPC);
+
+	
+	//CGameObject* pMoster = new CGameObject;
+
+	//Ptr<CMeshData> pmMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Monster\\Monster_FM_Run.fbx");
+	//pmMeshData->Save(pmMeshData->GetPath());
+	////Ptr<CMeshData> pmMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Walk2.mdat", L"MeshData\\Monster_FM_Walk2.mdat");
+
+	//pMoster = pmMeshData->Instantiate();
+	//pMoster->SetName(L"FM_Monster1");
+	//pMoster->FrustumCheck(false);
+
+	//pMoster->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	//pMoster->Transform()->SetLocalScale(Vec3(4.5f, 4.5f, 4.5f));
+	//pMoster->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), 0.f, 0.f));
+
+	//// 플레이어 스크립트 붙여주기.
+	//pMoster->AddComponent(new CMonsterScript);
+
+	//CMonsterScript* MonsterScript = pMoster->GetScript<CMonsterScript>();
+	//pMoster->GetScript<CMonsterScript>()->init();
+
+	//FindLayer(L"NPC")->AddGameObject(pMoster);
+
+	// 검 테스트
+
+	//Ptr<CMeshData> ptestMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Monster\\Weapon\\Monster_FM_Weapon.fbx");
+	//ptestMeshData->Save(ptestMeshData->GetPath());
+	////Ptr<CMeshData> ptestMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
+
+	//CGameObject* ptest = new CGameObject;
+
+	//ptest = ptestMeshData->Instantiate();
+	//ptest->SetName(L"Weapon");
+	//ptest->FrustumCheck(false);
+
+	//ptest->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	//ptest->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	//ptest->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
+
+	//FindLayer(L"NPC")->AddGameObject(ptest);
 }

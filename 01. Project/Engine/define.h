@@ -356,6 +356,8 @@ enum class PLAYER_ANI_TYPE
 	SKILL_1,
 	SKILL_2,
 	SKILL_3,
+	DIE,
+
 };
 
 enum class MONSTER_ANI_TYPE

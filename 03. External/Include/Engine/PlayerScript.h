@@ -206,7 +206,6 @@ public:
 
 	bool GetSkillStrat(int _index) { return m_bSkill_Start[_index]; }
 
-	void StopToWall();
 	void isDash(bool _type) { m_bDash = _type; };
 public:
 	CLONE(CPlayerScript);
