@@ -2168,7 +2168,6 @@ void CSceneMgr::update()
 	}
 	if (KEY_TAB(KEY_TYPE::KEY_9)) {
 		if (m_pCurScene->GetType() != SCENE_TYPE::DUNGEON) {
-			cout << "들어 오나 8?" << endl;
 			g_net.Send_Dungeon_Packet(true);
 
 			/*tEvent evn = {};

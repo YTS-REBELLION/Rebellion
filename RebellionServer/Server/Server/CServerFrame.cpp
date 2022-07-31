@@ -340,12 +340,13 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 			cout << "몬스터 잡기 : " << monsterdieCnt << endl;
 		}
 
-		if (monsterdieCnt == 5 && !isQuestDone)
+
+		if (monsterdieCnt == 3 && !isSecondQuestDone)
 		{
 			for(int i = 0; i<_acceptNumber;++i){
-				cout << "첫번째 퀘스트 완료 패킷 전송 " << endl;
+				cout << "두번째 퀘스트 완료 패킷 전송 " << endl;
 				_sender->SendQuestDonePacket(_objects[i].GetSocket(), i, QUEST::SECOND, true);
-				isQuestDone = true;
+				isSecondQuestDone = true;
 			}
 		}
 
@@ -382,7 +383,11 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		unordered_set<int> dun_vl;
 		unordered_set<int> old_viewList = _objects[id].GetViewList();
 		//unordered_set<int> temp_vl = _objects[id].GetViewList();
-		_enterRoom.push_back(id);
+		_enterRoom.insert(id);
+		
+		for (int i = 0; i < _enterRoom.size(); ++i) {
+			if (id == i) break;
+		}
 
 		if (_enterRoom.size() != _acceptNumber) {
 			for (auto& users : _enterRoom)
@@ -393,6 +398,8 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 
 			_objects[id].ClearViewList();
 			_objects[id].SetDunGeonEnter(true);
+
+			
 
 			for (auto& users : old_viewList) {
 				_objects[users].SetDunGeonEnter(true);
@@ -764,6 +771,9 @@ void CServerFrame::AggroMove(int npc_id)
 			
 			AddTimer(npc_id, EV_ATTACK, system_clock::now() + 2s);
 			
+			/*_objects[player_id].SetCurrentHp(_objects[player_id].GetCurrentHp() - _objects[npc_id].GetDamage());
+			_sender->SendHpPacket(_objects[player_id].GetSocket(), _objects[player_id].GetCurrentHp());*/
+
 			if (0 >= _objects[player_id].GetCurrentHp() && !_objects[player_id]._objectsDie) {
 				cout<<"아이디 : " << player_id << " 님 사망" << endl;
 				
@@ -886,8 +896,18 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 	_objects[id].ClientUnLock();
 	std::unordered_set<int> newViewList;
 
-	_elapsedTime = curTime - _prevTime;
-	_prevTime = curTime;
+	/*if (_objects[id].GetPos().z >= 310.f && !_objects[id]._questStart) {
+		cout << "퀘스트 시작 패킷" << endl;
+		_objects[id]._questStart = true;
+		_sender->SendQuestStartPacket(_objects[id].GetSocket(), id, true);
+	}*/
+
+	if (_objects[id].GetPos().z >= 100.f && !_objects[id]._questStart) {
+		cout << "퀘스트 시작 패킷" << endl;
+		_objects[id]._questStart = true;
+		_sender->SendQuestStartPacket(_objects[id].GetSocket(), id, true);
+	}
+
 
 	for (auto& cl : _objects) {
 		if (false == IsNear(cl.GetID(), id)) continue;
@@ -975,7 +995,8 @@ void CServerFrame::Do_move(const short& id, const char& dir, Vec3& localPos, con
 		}
 	}
 
-
+	_elapsedTime = curTime - _prevTime;
+	_prevTime = curTime;
 }
 void CServerFrame::Do_move_Dungeon(const short& id, const char& dir, Vec3& localPos, const float& rotate)
 {
@@ -998,12 +1019,12 @@ void CServerFrame::Do_move_Dungeon(const short& id, const char& dir, Vec3& local
 	std::unordered_set<int> oldViewList = _objects[id].DungeonGetViewList();
 	_objects[id].ClientUnLock();
 	std::unordered_set<int> newViewList;
+	/*
 	if (_objects[id].GetPos().z >= 100.f && !_objects[id]._questStart && fullEnter) {
 		cout << "퀘스트 시작 패킷" << endl;
 		_objects[id]._questStart = true;
 		_sender->SendQuestStartPacket(_objects[id].GetSocket(), id, true);
-	}
-
+	}*/
 
 	for (auto& cl : _objects) {
 
@@ -1200,6 +1221,10 @@ void CServerFrame::DungeonEnter(int id)
 	}
 
 
+	for (int i = 0; i < _enterRoom.size(); ++i) {
+		_sender->SendQuestDonePacket(_objects[i].GetSocket(), i, QUEST::SECOND, true);
+	}
+
 }
 void CServerFrame::ComeBackScene(int player_id)
 {
@@ -1307,7 +1332,7 @@ void CServerFrame::CreateMonster()
 
 	}
 
-	/*for (int monsterId = MONSTER_LV1_ID; monsterId < MONSTER_LV2_ID; ++monsterId) {
+	for (int monsterId = MONSTER_LV1_ID; monsterId < MONSTER_LV2_ID; ++monsterId) {
 
 		_objects[monsterId].SetCurrentHp(LV2_MONSTER_HP);
 		_objects[monsterId].SetMaxHp(LV2_MONSTER_HP);
@@ -1338,68 +1363,68 @@ void CServerFrame::CreateMonster()
 		_objects[monsterId].SetMaxHp(LV6_MONSTER_HP);
 		_objects[monsterId].SetLevel(6);
 		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 10);
-	}*/
+	}
 
 	// LV1
 	_objects[NPC_ID_START].SetPos(Vec3(10.f, 0.f, 2900));
 	_objects[NPC_ID_START + 1].SetPos(Vec3(200.f, 0.f, 2700));
 	_objects[NPC_ID_START + 2].SetPos(Vec3(400.f, 0.f, 2700));
-	_objects[NPC_ID_START + 3].SetPos(Vec3(-200.f, 0.f, 2700));
-	_objects[NPC_ID_START + 4].SetPos(Vec3(-400.f, 0.f, 2700));
 	
 	// 중앙 홀 몬스터
 
+
+
 	// LV2
-	_objects[NPC_ID_START + 5].SetPos(Vec3(-400.f, 0.f, 4500.f));
-	_objects[NPC_ID_START + 6].SetPos(Vec3(-200.f, 0.f, 4500.f));
-	_objects[NPC_ID_START + 7].SetPos(Vec3(200.f, 0.f, 4500.f));
-	_objects[NPC_ID_START + 8].SetPos(Vec3(400.f, 0.f, 4500.f));
-	_objects[NPC_ID_START + 9].SetPos(Vec3(-600.f, 0.f, 4500.f));
-	_objects[NPC_ID_START + 10].SetPos(Vec3(600.f, 0.f, 4500.f));
-	_objects[NPC_ID_START + 11].SetPos(Vec3(800.f, 0.f, 4500.f));
-	_objects[NPC_ID_START + 12].SetPos(Vec3(-200.f, 0.f, 4700.f));
-	_objects[NPC_ID_START + 13].SetPos(Vec3(-400.f, 0.f, 4700.f));
-	_objects[NPC_ID_START + 14].SetPos(Vec3(200.f, 0.f, 4700.f));
-	_objects[NPC_ID_START + 15].SetPos(Vec3(400.f, 0.f, 4700.f));
+	_objects[NPC_ID_START + 3].SetPos(Vec3(-400.f, 0.f, 4500.f));
+	_objects[NPC_ID_START + 4].SetPos(Vec3(-200.f, 0.f, 4500.f));
+	_objects[NPC_ID_START + 5].SetPos(Vec3(200.f, 0.f, 4500.f));
+	_objects[NPC_ID_START + 6].SetPos(Vec3(400.f, 0.f, 4500.f));
+	_objects[NPC_ID_START + 7].SetPos(Vec3(-600.f, 0.f, 4500.f));
+	_objects[NPC_ID_START + 8].SetPos(Vec3(600.f, 0.f, 4500.f));
+	_objects[NPC_ID_START + 9].SetPos(Vec3(800.f, 0.f, 4500.f));
+	_objects[NPC_ID_START + 10].SetPos(Vec3(-200.f, 0.f, 4700.f));
+	_objects[NPC_ID_START + 11].SetPos(Vec3(-400.f, 0.f, 4700.f));
+	_objects[NPC_ID_START + 12].SetPos(Vec3(200.f, 0.f, 4700.f));
+	_objects[NPC_ID_START + 13].SetPos(Vec3(400.f, 0.f, 4700.f));
 	
 	//오른쪽 미로 몬스터
 	//중앙 몬스터
 	// LV3
-	_objects[NPC_ID_START + 16].SetPos(Vec3(4000.f, 0.f, 10800.f));
-	_objects[NPC_ID_START + 17].SetPos(Vec3(3800.f, 0.f, 11000.f));
-	_objects[NPC_ID_START + 18].SetPos(Vec3(3800.f, 0.f, 11200.f));
-	_objects[NPC_ID_START + 19].SetPos(Vec3(3800.f, 0.f, 10600.f));
-	_objects[NPC_ID_START + 20].SetPos(Vec3(3800.f, 0.f, 10400.f));
+	_objects[NPC_ID_START + 14].SetPos(Vec3(4000.f, 0.f, 10800.f));
+	_objects[NPC_ID_START + 15].SetPos(Vec3(3800.f, 0.f, 11000.f));
+	_objects[NPC_ID_START + 16].SetPos(Vec3(3800.f, 0.f, 11200.f));
+	_objects[NPC_ID_START + 17].SetPos(Vec3(3800.f, 0.f, 10600.f));
+	_objects[NPC_ID_START + 18].SetPos(Vec3(3800.f, 0.f, 10400.f));
 	
 	
 	// 북쪽 몬스터
 	// 중앙 몬스터
 	// LV5
-	_objects[NPC_ID_START + 21].SetPos(Vec3(0.f, 0.f, 16700.f));
-	_objects[NPC_ID_START + 22].SetPos(Vec3(-200.f, 0.f, 16400.f));
-	_objects[NPC_ID_START + 23].SetPos(Vec3(-400.f, 0.f, 16400.f));
-	_objects[NPC_ID_START + 24].SetPos(Vec3(200.f, 0.f, 16400.f));
-	_objects[NPC_ID_START + 25].SetPos(Vec3(400.f, 0.f, 16400.f));
-	_objects[NPC_ID_START + 26].SetPos(Vec3(-600.f, 0.f, 16400.f));
-	_objects[NPC_ID_START + 27].SetPos(Vec3(600.f, 0.f, 16400.f));
+	_objects[NPC_ID_START + 19].SetPos(Vec3(0.f, 0.f, 16700.f));
+	_objects[NPC_ID_START + 20].SetPos(Vec3(-200.f, 0.f, 16400.f));
+	_objects[NPC_ID_START + 21].SetPos(Vec3(-400.f, 0.f, 16400.f));
+	_objects[NPC_ID_START + 22].SetPos(Vec3(200.f, 0.f, 16400.f));
+	_objects[NPC_ID_START + 23].SetPos(Vec3(400.f, 0.f, 16400.f));
+	_objects[NPC_ID_START + 24].SetPos(Vec3(-600.f, 0.f, 16400.f));
+	_objects[NPC_ID_START + 25].SetPos(Vec3(600.f, 0.f, 16400.f));
 	
 	// 북쪽 왼쪽 통로 몬스터
 	// LV4
-	_objects[NPC_ID_START + 28].SetPos(Vec3(-1700.f, 0.f, 13600.f));
-	_objects[NPC_ID_START + 29].SetPos(Vec3(-1300.f, 0.f, 13400.f));
-	_objects[NPC_ID_START + 30].SetPos(Vec3(-1500.f, 0.f, 13400.f));
-	_objects[NPC_ID_START + 31].SetPos(Vec3(-1300.f, 0.f, 13800.f));
-	_objects[NPC_ID_START + 32].SetPos(Vec3(-1500.f, 0.f, 13800.f));
+	_objects[NPC_ID_START + 26].SetPos(Vec3(-1700.f, 0.f, 13600.f));
+	_objects[NPC_ID_START + 27].SetPos(Vec3(-1300.f, 0.f, 13400.f));
+	_objects[NPC_ID_START + 28].SetPos(Vec3(-1500.f, 0.f, 13400.f));
+	_objects[NPC_ID_START + 29].SetPos(Vec3(-1300.f, 0.f, 13800.f));
+	_objects[NPC_ID_START + 30].SetPos(Vec3(-1500.f, 0.f, 13800.f));
 	
 	// 좌측 끝 몬스터
 	// LV6
-	_objects[NPC_ID_START + 33].SetPos(Vec3(-6300.f, 0.f, 13500.f));
-	_objects[NPC_ID_START + 34].SetPos(Vec3(-6100.f, 0.f, 13300.f));
-	_objects[NPC_ID_START + 35].SetPos(Vec3(-6100.f, 0.f, 13100.f));
-	_objects[NPC_ID_START + 36].SetPos(Vec3(-6100.f, 0.f, 13700.f));
-	_objects[NPC_ID_START + 37].SetPos(Vec3(-6100.f, 0.f, 13900.f));
-	_objects[NPC_ID_START + 38].SetPos(Vec3(-6100.f, 0.f, 14100.f));
-	_objects[NPC_ID_START + 39].SetPos(Vec3(-6100.f, 0.f, 12900.f));
+	_objects[NPC_ID_START + 31].SetPos(Vec3(-6300.f, 0.f, 13500.f));
+	_objects[NPC_ID_START + 32].SetPos(Vec3(-6100.f, 0.f, 13300.f));
+	_objects[NPC_ID_START + 33].SetPos(Vec3(-6100.f, 0.f, 13100.f));
+	_objects[NPC_ID_START + 34].SetPos(Vec3(-6100.f, 0.f, 13700.f));
+	_objects[NPC_ID_START + 35].SetPos(Vec3(-6100.f, 0.f, 13900.f));
+	_objects[NPC_ID_START + 36].SetPos(Vec3(-6100.f, 0.f, 14100.f));
+	_objects[NPC_ID_START + 37].SetPos(Vec3(-6100.f, 0.f, 12900.f));
 
 
 

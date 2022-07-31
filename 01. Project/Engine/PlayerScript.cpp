@@ -316,6 +316,9 @@ void CPlayerScript::update()
 		if ((KEY_TAB(KEY_TYPE::KEY_W) || KEY_TAB(KEY_TYPE::KEY_A) || KEY_TAB(KEY_TYPE::KEY_S) || KEY_TAB(KEY_TYPE::KEY_D)))
 		{
 			GetObj()->Animator3D()->SetClipTime(0, 0.f);
+			if (localPos.z >= 1400.f) {
+				g_net.Send_Dungeon_Packet(true);
+			}
 		}
 		
 		if (KEY_HOLD(KEY_TYPE::KEY_W))
@@ -1452,7 +1455,6 @@ void CPlayerScript::QuestInit(QUEST questNum)
 
 		// 몬스터 사냥 카운트
 		//퀘스트 png
-
 		tResolution res = CRenderMgr::GetInst()->GetResolution();
 
 		Vec3   QuestBoxinScale = Vec3(800.f, 200.f, 1.f);
@@ -1476,8 +1478,10 @@ void CPlayerScript::QuestInit(QUEST questNum)
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuest.GetPointer());
 
 		// AddGameObject
-		m_pQuestBox1 = pObject;
 		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+		m_pQuestBox1 = pObject;
+
+		
 
 		break;
 	}

@@ -30,7 +30,7 @@ class CServerFrame {
 	std::priority_queue<EVENT>							_timerQueue;
 	std::chrono::time_point <std::chrono::system_clock> _prevTime;
 	std::chrono::duration<float>						_elapsedTime;
-	vector<int> _enterRoom;
+	unordered_set<int> _enterRoom;
 
 
 	bool _useDB;

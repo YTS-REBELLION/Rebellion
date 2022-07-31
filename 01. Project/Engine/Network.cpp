@@ -168,11 +168,6 @@ void CNetwork::ProcessPacket(char* ptr)
 		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetID(g_myid);
 		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->Transform()->SetLocalPos(Vec3(p->x, p->y, p->z));
 
-		//GameObject.find(g_myid)->second->//GetScript<CPlayerScript>()->SetMain();
-		/*GameObject.emplace(g_myid, m_pObj);
-
-		GameObject.find(g_myid)->second->SetID(g_myid);*/
-
 
 		break;
 
@@ -462,12 +457,10 @@ void CNetwork::ProcessPacket(char* ptr)
 		if (CheckType(other_id) == OBJECT_TYPE::PLAYER) {
 			if (other_id == g_myid)
 			{
-				// 혹시나 해서 하는 SetPlayerAnimation g_myid가 맞음
 				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->AnimationPlay(other_id, PLAYER_ANI_TYPE::IDLE);
 			}
 			else
 			{
-
 				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->AnimationPlay(other_id, PLAYER_ANI_TYPE::IDLE);
 			}
 		}
@@ -543,6 +536,7 @@ void CNetwork::ProcessPacket(char* ptr)
 			cout << "퀘스트 완료!" << endl;
 			cout << "다음 퀘스트 고고 !" << endl;
 		}
+
 		switch (packet->nextQuest) {
 		case QUEST::SECOND: {
 			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestCnt(QUEST::SECOND);
@@ -569,7 +563,6 @@ void CNetwork::ProcessPacket(char* ptr)
 			
 		cout << "클라이언트 퀘스트 시작하세요" << endl;
 		GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestCnt(QUEST::FIRST);
-		//GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestView(packet->isStart);
 		GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestInit(QUEST::FIRST);
 		
 		break;

@@ -199,7 +199,7 @@ void CAssemblyAreaScene::init()
 	FindLayer(L"Default")->AddGameObject(pMainCam);
 
 	// UI Camera
-	/*CGameObject* pUICam = new CGameObject;
+	CGameObject* pUICam = new CGameObject;
 	pUICam->SetName(L"UICam");
 	pUICam->AddComponent(new CTransform);
 	pUICam->AddComponent(new CCamera);	
@@ -208,7 +208,7 @@ void CAssemblyAreaScene::init()
 	pUICam->Camera()->SetFar(100.f);	
 	pUICam->Camera()->SetLayerCheck(5, true);	
 	
-	FindLayer(L"Default")->AddGameObject(pUICam);*/
+	FindLayer(L"Default")->AddGameObject(pUICam);
 
 	//CGameObject* pObject = nullptr;
 
