@@ -4,6 +4,7 @@
 #include "RenderMgr.h"
 #include "Animator3D.h"
 #include "PlayerScript.h"
+#include "SwordScript.h"
 
 CMonsterScript::CMonsterScript()
 	: CScript((UINT)SCRIPT_TYPE::MONSTERSCRIPT)
@@ -24,6 +25,33 @@ CMonsterScript::~CMonsterScript()
 {
 }
 
+
+void CMonsterScript::init()
+{
+	// ===================
+	// Sword 파일 로드
+	// ===================
+	CGameObject* pSwordObject = new CGameObject;
+
+	Ptr<CMeshData>pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
+
+	pSwordObject = pMeshData->Instantiate();
+	pSwordObject->SetName(L"FM_Monster_Sword");
+	pSwordObject->FrustumCheck(false);
+	pSwordObject->Transform()->SetLocalScale(Vec3(0.25f, 0.25f, 0.25f));
+	pSwordObject->AddComponent(new CCollider2D);
+
+	pSwordObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pSwordObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pSwordObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+
+	pSwordObject->AddComponent(new CSwordScript);
+	CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
+	pSwordObject->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::FM_MONSTER, GetObj(), 18);
+
+	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", pSwordObject, false);
+	GetObj()->AddChild(pSwordObject);
+}
 
 void CMonsterScript::awake()
 {

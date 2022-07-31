@@ -33,6 +33,10 @@ void CSwordScript::Set_Sword_To_Fbx()
 	Vec4 qRot = m_pTargetBone->vecKeyFrame[m_pTargetObject->Animator3D()->GetFrameIdx()].qRot;
 	Vec3 vRot;
 
+	tMTBone* m_pTargetBone2;
+	Vec3 vTrans2;
+	Vec3 Dir;
+
 	switch (m_eType)
 	{
 	case PERSON_OBJ_TYPE::WARRIOR_PLAYER:
@@ -41,10 +45,17 @@ void CSwordScript::Set_Sword_To_Fbx()
 	case PERSON_OBJ_TYPE::WIZARD_PLAYER:
 		break;
 	case PERSON_OBJ_TYPE::M_MONSTER:
-		//vRot = Vec3(0.f, 0.f, 0.f);
 		vRot = Vec3(0.f, 0.f, XMConvertToRadians(90.f));
 		break;
 	case PERSON_OBJ_TYPE::FM_MONSTER:
+		//m_pTargetBone2 = const_cast<tMTBone*>(m_pTargetObject->MeshRender()->GetMesh()->GetBone(19));
+		//vTrans2 = m_pTargetBone2->vecKeyFrame[m_pTargetObject->Animator3D()->GetFrameIdx()].vTranslate;
+		//Dir = vTrans2 - vTrans;
+		//Dir.Normalize();
+		//vTrans = Dir + vTrans;
+		/*vTrans *= Vec3(0.9f, 1.0f, 1.0f);*/
+
+		vRot = Vec3(0.f, 0.f, XMConvertToRadians(45.f));
 		break;
 	case PERSON_OBJ_TYPE::BOSS:
 		break;

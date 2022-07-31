@@ -49,6 +49,7 @@ private:
 	bool		m_bColCheck = false;
 
 public:
+	void init();
 	virtual void awake();
 	virtual void update();
 
