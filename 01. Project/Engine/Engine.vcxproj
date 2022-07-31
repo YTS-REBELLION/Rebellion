@@ -176,6 +176,7 @@ call EngineCopy.bat</Command>
     </ClInclude>
     <ClInclude Include="Boss.h" />
     <ClInclude Include="BossMap.h" />
+    <ClInclude Include="BossSkill1.h" />
     <ClInclude Include="BulletScript.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Castle.h" />
@@ -276,6 +277,7 @@ call EngineCopy.bat</Command>
     </ClCompile>
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="BossMap.cpp" />
+    <ClCompile Include="BossSkill1.cpp" />
     <ClCompile Include="BulletScript.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Castle.cpp" />

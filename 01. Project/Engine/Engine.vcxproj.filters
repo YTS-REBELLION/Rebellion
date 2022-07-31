@@ -319,6 +319,7 @@
     <ClInclude Include="ParticleScript.h">
       <Filter>04. GameObject\Script</Filter>
     </ClInclude>
+    <ClInclude Include="BossSkill1.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -555,6 +556,7 @@
     <ClCompile Include="ParticleScript.cpp">
       <Filter>04. GameObject\Script</Filter>
     </ClCompile>
+    <ClCompile Include="BossSkill1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="std.fx">

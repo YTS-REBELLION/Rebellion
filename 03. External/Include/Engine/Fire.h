@@ -32,7 +32,9 @@ public:
 
 public:
 	virtual void update();
-	
+	Vec3 vPos = { 0.f,0.f,0.f };
+	float m_fcreate_time = 0.f;
+	CGameObject* m_pPlayer;
 
 public:
 	CLONE(CFire);

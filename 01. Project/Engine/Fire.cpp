@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "Fire.h"
 #include "TimeMgr.h"
-
+#include"PlayerScript.h"
+#include"Camera.h"
+#include"ToolCamScript.h"
 void CFire::init()
 {
 	Ptr<CMaterial> pMtrl = MeshRender()->GetSharedMaterial();
@@ -20,9 +22,7 @@ void CFire::init()
 
 void CFire::update()
 {
-	//	빌보드
-	//Vector3 PlayerRot = g_Object.find(g_myid)->second->Transform()->GetLocalRot();
-	//Transform()->SetLocalRot(Vector3(PlayerRot + Vector3(0.f, XM_PI, 0.f)));
+
 
 	//	frametime ConstBuffer Parameter 최신화
 	m_NoiseBuffer.frameTime += DT;
@@ -31,7 +31,35 @@ void CFire::update()
 		m_NoiseBuffer.frameTime = 0.f;
 	MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::FLOAT_0, &m_NoiseBuffer.frameTime);
 
+	for (auto client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
+	{
+		if (client->GetScript<CPlayerScript>()->GetMain())
+			m_pPlayer = client;
+	}
 
+	m_fcreate_time += DT;
+	if (m_fcreate_time >= 4.f)
+	{
+		GetObj()->SetDead();
+	}
+
+
+	Vec3 WorldDir = /*m_pPlayer->Transform()->GetLocalPos() - this->Transform()->GetLocalPos();*/ Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	Vec3 localPos = Transform()->GetLocalPos();
+
+	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
+	Vec3 vRot = Transform()->GetLocalRot();
+	float Temp = 125 * DT;
+
+
+
+
+	localPos += WorldDir * Temp;
+
+
+
+	Transform()->SetLocalPos(localPos);
+	Transform()->SetLocalRot(vRot);
 
 
 }
