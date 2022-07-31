@@ -223,13 +223,13 @@ void CResMgr::CreateDefaultShader()
 
 	
 
-	//  // ShadowMap Shader
-	//pShader = new CShader;
-	//pShader->CreateVertexShader(L"Shader\\light.fx", "VS_ShadowMap", "vs_5_0");
-	//pShader->CreatePixelShader(L"Shader\\light.fx", "PS_ShadowMap", "ps_5_0");
-	//pShader->SetDepthStencilType(DEPTH_STENCIL_TYPE::LESS);
-	//pShader->Create(SHADER_POV::SHADOW);
-	//AddRes(L"ShadowMapShader", pShader);
+	  // ShadowMap Shader
+	pShader = new CShader;
+	pShader->CreateVertexShader(L"Shader\\light.fx", "VS_ShadowMap", "vs_5_0");
+	pShader->CreatePixelShader(L"Shader\\light.fx", "PS_ShadowMap", "ps_5_0");
+	pShader->SetDepthStencilType(DEPTH_STENCIL_TYPE::LESS);
+	pShader->Create(SHADER_POV::SHADOW);
+	AddRes(L"ShadowMapShader", pShader);
 
 	// ===============
 	// Particle Shader
@@ -279,24 +279,45 @@ void CResMgr::CreateDefaultShader()
 	AddRes(L"ParticleUpdateShader", pShader);
 
 
+
+
+	// =================
+   // Distortion Shader
+   // =================
+	pShader = new CShader;
+	pShader->CreateVertexShader(L"Shader\\posteffect.fx", "VS_Distortion", "vs_5_0");
+	pShader->CreatePixelShader(L"Shader\\posteffect.fx", "PS_Distortion", "ps_5_0");
+	pShader->SetDepthStencilType(DEPTH_STENCIL_TYPE::LESS_NO_WRITE);
+	pShader->Create(SHADER_POV::POSTEFFECT);
+	AddRes(L"DistortionShader", pShader);
+
+	// ===========================
+	// Distortion Character Shader
+	// ===========================
+	pShader = new CShader;
+	pShader->CreateVertexShader(L"Shader\\posteffect.fx", "VS_DistortionCharacter", "vs_5_0");
+	pShader->CreatePixelShader(L"Shader\\posteffect.fx", "PS_DistortionCharacter", "ps_5_0");
+	pShader->SetDepthStencilType(DEPTH_STENCIL_TYPE::LESS_NO_WRITE);
+	pShader->Create(SHADER_POV::POSTEFFECT);
+	AddRes(L"DistortionCharacterShader", pShader);
+
 	// ======================
-  // Rain Update Shader
-  // ======================
+// Rain Update Shader
+// ======================
 	pShader = new CShader;
 	pShader->CreateComputeShader(L"Shader\\rain.fx", "CS_RainUpdate", "cs_5_0");
 	AddRes(L"RainUpdateShader", pShader);
 
-
-	//// ======================
- // // Fire Shader
- // // ======================
- //  pShader = new CShader;
- //  pShader->CreateVertexShader(L"Shader\\fire.fx", "VS_Fire", "vs_5_0");
- //  pShader->CreatePixelShader(L"Shader\\fire.fx", "PS_Fire", "ps_5_0");
- //  pShader->SetBlendState(BLEND_TYPE::ALPHABLEND);
- //  pShader->SetDepthStencilType(DEPTH_STENCIL_TYPE::LESS_NO_WRITE);
- //  pShader->Create(SHADER_POV::FORWARD);
- //  AddRes(L"FireShader", pShader);
+	// ======================
+  // Fire Shader
+  // ======================
+   pShader = new CShader;
+   pShader->CreateVertexShader(L"Shader\\fire.fx", "VS_Fire", "vs_5_0");
+   pShader->CreatePixelShader(L"Shader\\fire.fx", "PS_Fire", "ps_5_0");
+   pShader->SetBlendState(BLEND_TYPE::ALPHABLEND);
+   pShader->SetDepthStencilType(DEPTH_STENCIL_TYPE::LESS_NO_WRITE);
+   pShader->Create(SHADER_POV::FORWARD);
+   AddRes(L"FireShader", pShader);
 
 }
 
@@ -414,6 +435,18 @@ void CResMgr::CreateDefaultMaterial()
 		AddRes(L"MergeLightMtrl", pMtrl);
 	}
 
+
+
+	{
+		// Material °ª ¼ÂÆÃ
+		pMtrl = new CMaterial;
+		pMtrl->DisableFileSave();
+		pMtrl->SetShader(CResMgr::GetInst()->FindRes<CShader>(L"DistortionShader"));
+		Ptr<CTexture> pTex = CResMgr::GetInst()->FindRes<CTexture>(L"PosteffectTargetTex");
+		pMtrl->SetData(SHADER_PARAM::TEX_0, pTex.GetPointer());
+		AddRes(L"DistortionMtrl", pMtrl);
+	}
+
 	pMtrl = new CMaterial;
 	pMtrl->DisableFileSave();
 	pMtrl->SetShader(FindRes<CShader>(L"CSTestShader"));
@@ -432,11 +465,21 @@ void CResMgr::CreateDefaultMaterial()
 	//AddRes(L"Material\\2DShadowMtrl.mtrl", pMtrl);
 
 
-	//  // ShadowMap Material
-	//pMtrl = new CMaterial;
-	//pMtrl->DisableFileSave();
-	//pMtrl->SetShader(FindRes<CShader>(L"ShadowMapShader"));
-	//AddRes(L"ShadowMapMtrl", pMtrl);
+	// ==================
+	// trail Material
+	// ==================
+	pMtrl = new CMaterial;
+	pMtrl->DisableFileSave();
+	pMtrl->SetShader(FindRes<CShader>(L"TrailShader"));
+	AddRes(L"TrailMtrl", pMtrl);
+
+	
+
+	  // ShadowMap Material
+	pMtrl = new CMaterial;
+	pMtrl->DisableFileSave();
+	pMtrl->SetShader(FindRes<CShader>(L"ShadowMapShader"));
+	AddRes(L"ShadowMapMtrl", pMtrl);
 
 	// Particle Mtrl
 	pMtrl = new CMaterial;
@@ -467,6 +510,8 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl->SetData(SHADER_PARAM::TEX_0, pNoiseTex.GetPointer());
 	pMtrl->SetData(SHADER_PARAM::VEC2_0, &Vec2(pNoiseTex->Width(), pNoiseTex->Height()));
 	AddRes(L"RainUpdateMtrl", pMtrl);
+
+
 
 	  // fire
 	pMtrl = new CMaterial;

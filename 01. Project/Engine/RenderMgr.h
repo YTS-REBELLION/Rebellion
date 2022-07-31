@@ -34,6 +34,8 @@ private:
 	HWND					m_hWnd;
 	bool					m_bWindowed;
 
+	int						m_MainCamNum;
+
 public:
 	void init(HWND _hWnd, const tResolution & _res, bool _bWindow);
 	void render();
@@ -42,7 +44,7 @@ public:
 
 	void render_lights();
 	void merge_light();
-
+	void render_shadowmap();
 private:
 	void CreateMRT();
 	
@@ -69,6 +71,7 @@ public:
 	}
 
 	CCamera* GetCamera(int _iIdx) { return m_vecCam[_iIdx]; }
+	CCamera* GetMainCam();
 	void RegisterCamera(CCamera* _pCam) { m_vecCam.push_back(_pCam); }
 	void ClearCamera() { m_vecCam.clear(); }
 
@@ -77,6 +80,8 @@ public:
 	UINT GetRTVHeapSize() { return m_iRTVHeapSize; }
 
 	CMRT* GetMRT(MRT_TYPE _eType) { return m_arrMRT[(UINT)_eType]; }
+	void CopySwapToPosteffect();
+
 
 	friend class CSceneMgr;
 };

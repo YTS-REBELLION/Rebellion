@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Fire.h"
 #include "TimeMgr.h"
-
+#include"PlayerScript.h"
 void CFire::init()
 {
 	Ptr<CMaterial> pMtrl = MeshRender()->GetSharedMaterial();
@@ -27,9 +27,40 @@ void CFire::update()
 	//	frametime ConstBuffer Parameter √÷Ω≈»≠
 	m_NoiseBuffer.frameTime += DT;
 	//cout << m_NoiseBuffer.frameTime << endl;
-	if (m_NoiseBuffer.frameTime > 1000.f)
+	if (m_NoiseBuffer.frameTime > 2000.f)
 		m_NoiseBuffer.frameTime = 0.f;
 	MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::FLOAT_0, &m_NoiseBuffer.frameTime);
+
+	/*for (auto client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
+	{
+		if (client->GetScript<CPlayerScript>()->GetMain())
+			m_pPlayer = client;
+	}*/
+
+	m_fcreate_time += DT;
+	if (m_fcreate_time >= 4.f)
+	{
+		GetObj()->SetDead();
+	}
+
+
+	Vec3 WorldDir = /*m_pPlayer->Transform()->GetLocalPos() - this->Transform()->GetLocalPos();*/ Transform()->GetWorldDir(DIR_TYPE::FRONT);
+	Vec3 localPos = Transform()->GetLocalPos();
+
+	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
+	Vec3 vRot = Transform()->GetLocalRot();
+	float Temp = 125 * DT;
+
+
+
+
+	localPos += WorldDir * Temp;
+
+
+
+	Transform()->SetLocalPos(localPos);
+	Transform()->SetLocalRot(vRot);
+
 
 }
 

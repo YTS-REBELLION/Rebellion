@@ -3,17 +3,7 @@
 #include "Script.h"
 #include "Mesh.h"
 class CPlayerScript;
-
-enum MonSkill
-{
-	MonSkill1,
-	MonSkill2,
-	MonSkill3,
-	End,
-
-};
-
-class CM_MonsterScript :
+class CBossScript :
 	public CScript
 {
 private:
@@ -50,11 +40,6 @@ private:
 	float m_fAngle;
 
 	Vec3 LerpPos;
-
-	bool MonSkill1Check = false;
-	bool MonSkill2Check = false;
-	bool MonSkill3Check = false;
-	bool check = false;
 public:
 	virtual void awake();
 	virtual void update();
@@ -94,32 +79,20 @@ public:
 
 	void SetLerpPos(Vec3 Pos) { LerpPos = Pos; }
 	void UpdateLerpPos();
-
-	void Skill1();
-	void Skill2();
-	void Skill3();
-	float m_fskillTime=0.f;
+public:
+	CLONE(CBossScript);
 
 public:
-	CLONE(CM_MonsterScript);
-
-public:
-	CM_MonsterScript();
-	virtual ~CM_MonsterScript();
+	CBossScript();
+	virtual ~CBossScript();
 
 public:
 	bool				m_bIsActive = false;
 	bool GetIsHide() { return m_bIsActive; }
 	Vec3 GetPlayerDir() { return m_vecPlayerDir; }
-	MonSkill m_skill=MonSkill::End;
 public:
 	virtual void OnCollisionEnter(CCollider2D* _pOther);
 	virtual void OnCollision(CCollider2D* _pOther);
 	virtual void OnCollisionExit(CCollider2D* _pOther);
-
-
-	Ptr<CTexture> pfFire01 = CResMgr::GetInst()->Load<CTexture>(L"Fire01", L"Texture\\Explosion\\fire01.dds");
-	Ptr<CTexture> pfNoise01 = CResMgr::GetInst()->Load<CTexture>(L"Noise01", L"Texture\\Explosion\\noise01.dds");
-	Ptr<CTexture> pfAlpha01 = CResMgr::GetInst()->Load<CTexture>(L"Alpha01", L"Texture\\Explosion\\alpha01.dds");
 };
 
