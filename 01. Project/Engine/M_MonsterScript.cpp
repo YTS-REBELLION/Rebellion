@@ -130,7 +130,7 @@ void CM_MonsterScript::update()
 	}
 	
 	//cout << "dir_m ¹æÇâ	   : " << GetObj()->Transform()->GetLocalDir(DIR_TYPE::FRONT).x << ",  " << GetObj()->Transform()->GetLocalDir(DIR_TYPE::FRONT).y << ",  " << GetObj()->Transform()->GetLocalDir(DIR_TYPE::FRONT).z << endl;
-	//UpdateLerpPos();
+	UpdateLerpPos();
 
 	if(!m_bColCheck)
 		Transform()->SetLocalPos(localPos);
