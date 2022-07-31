@@ -145,9 +145,9 @@ void CServerFrame::InitClients()
 			break;
 		}
 		Vec3 pos;
-		pos.x = 0.f;//x;
+		pos.x = x;//x;
 		pos.y = 0.f;
-		pos.z = 0.f;// z;
+		pos.z = z;// z;
 		
 		_objects[i].SetCurrentExp(0);
 		_objects[i].SetMaxExp(100);
@@ -765,8 +765,11 @@ void CServerFrame::AggroMove(int npc_id)
 			AddTimer(npc_id, EV_ATTACK, system_clock::now() + 2s);
 			
 			if (0 >= _objects[player_id].GetCurrentHp() && !_objects[player_id]._objectsDie) {
+				cout<<"¾ÆÀÌµð : " << player_id << " ´Ô »ç¸Á" << endl;
+				
 				ComeBackScene(player_id);
 			}
+
 			for (auto& cl : _objects) {
 				if (false == IsPlayer(cl.GetID())) continue;
 				if (false == IsNear(cl.GetID(), npc_id)) continue;
@@ -1211,16 +1214,19 @@ void CServerFrame::DungeonEnter(int id)
 }
 void CServerFrame::ComeBackScene(int player_id)
 {
-	cout << "ÇÃ·¹ÀÌ¾î »ç¸Á" << endl;
 	cout << "Áý°áÁö·Î º¹±ÍÇÕ´Ï´Ù." << endl;
 	_objects[player_id].ClientLock();
 	_objects[player_id].SetCurrentHp(2000.f);
+	
+	
 	/*short level = _objects[player_id].GetLevel();
 	short hp = _objects[player_id].GetCurrentHp();
 	short changeHp = hp - (50 * level);*/
 	//if (0 > changeHp) changeHp = 0;
 	/*_objects[player_id].SetCurrentExp(changeHp);
 	_objects[player_id].SetCurrentHp(50);*/
+
+
 	_objects[player_id].SetDunGeonEnter(false);
 	_objects[player_id].ClearViewList();
 
@@ -1248,21 +1254,6 @@ void CServerFrame::ComeBackScene(int player_id)
 	_objects[player_id]._objectsDie = true;
 	_objects[player_id].ClientUnLock();
 
-	/*for (const auto& id : vl) {
-		if (_objects[id]._objectsDie) continue;
-		if (ST_ACTIVE != _objects[id]._status) continue;
-		if (false == IsPlayer(id)) {
-			_objects[player_id].DungeonEraseViewList(id);
-			continue;
-		}
-		if (id != player_id) {
-			_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), player_id, _objects[player_id].GetMyType());
-			_objects[id].DungeonEraseViewList(player_id);
-			_sender->SendPlayerDiePacket(_objects[id].GetSocket(), player_id);
-		}
-	}
-	_sender->SendPlayerDiePacket(_objects[player_id].GetSocket(), player_id);*/
-
 	for (auto& cl : _objects) {
 		int i = cl.GetID();
 		if (false == IsPlayer(i)) continue;
@@ -1278,6 +1269,7 @@ void CServerFrame::ComeBackScene(int player_id)
 
 				_sender->SendPutObjectPacket(_objects[player_id].GetSocket(), i, _objects[i].GetPos().x,
 					_objects[i].GetPos().y, _objects[i].GetPos().z, _objects[i].GetMyType());
+
 				if (true == IsPlayer(i)) 
 				{
 					_objects[i].ClientLock();
