@@ -1303,16 +1303,6 @@ bool CServerFrame::CAS(volatile atomic<STATUS>* addr, STATUS expected, STATUS ne
 	return atomic_compare_exchange_strong(reinterpret_cast<volatile atomic<STATUS>*>(addr), &expected, new_val);
 }
 
-bool CServerFrame::CollisionMonster(Vec3 A_vPos, Vec3 B_vPos)
-{
-	float distance = Vec3::Distance(A_vPos, B_vPos);
-
-	if (distance < 50.f)
-		return true;
-	else
-		return false;
-}
-
 void CServerFrame::CreateMonster()
 {
 	cout << "Initializing Monster" << endl;

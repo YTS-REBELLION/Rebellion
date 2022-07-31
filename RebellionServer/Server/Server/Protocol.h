@@ -6,7 +6,7 @@
 
 //const char* SERVERIP = "127.0.0.1";
 
-const short SERVER_PORT = 9000;
+const short SERVER_PORT = 9997;
 
 constexpr int MAX_BUFFER = 1024;
 constexpr int MAX_PACKET_SIZE = 255;

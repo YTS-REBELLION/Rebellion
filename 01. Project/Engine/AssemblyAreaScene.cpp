@@ -141,53 +141,53 @@ void CAssemblyAreaScene::init()
 	
 	FindLayer(L"Default")->AddGameObject(pUICam);*/
 
-	CGameObject* pObject = nullptr;
+	//CGameObject* pObject = nullptr;
 
-	Ptr<CTexture> pfFire01 = CResMgr::GetInst()->Load<CTexture>(L"Fire01", L"Texture\\Explosion\\fire01.dds");
-	Ptr<CTexture> pfNoise01 = CResMgr::GetInst()->Load<CTexture>(L"Noise01", L"Texture\\Explosion\\noise01.dds");
-	Ptr<CTexture> pfAlpha01 = CResMgr::GetInst()->Load<CTexture>(L"Alpha01", L"Texture\\Explosion\\alpha01.dds");
-	// ====================
-	// Fire 오브젝트 생성
-	// ====================
+	//Ptr<CTexture> pfFire01 = CResMgr::GetInst()->Load<CTexture>(L"Fire01", L"Texture\\Explosion\\fire01.dds");
+	//Ptr<CTexture> pfNoise01 = CResMgr::GetInst()->Load<CTexture>(L"Noise01", L"Texture\\Explosion\\noise01.dds");
+	//Ptr<CTexture> pfAlpha01 = CResMgr::GetInst()->Load<CTexture>(L"Alpha01", L"Texture\\Explosion\\alpha01.dds");
+	//// ====================
+	//// Fire 오브젝트 생성
+	//// ====================
 
-	pObject = new CGameObject;
-	pObject->SetName(L"FireTest");
-	pObject->FrustumCheck(false);
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CMeshRender);
-	pObject->AddComponent(new CFire);
-
-
-	pObject->Transform()->SetLocalPos(Vec3(200, 200, 200));
-	pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
-	// MeshRender 설정
-	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
-	pObject->GetScript<CFire>()->init();
-	// AddGameObject
-	FindLayer(L"Default")->AddGameObject(pObject);
+	//pObject = new CGameObject;
+	//pObject->SetName(L"FireTest");
+	//pObject->FrustumCheck(false);
+	//pObject->AddComponent(new CTransform);
+	//pObject->AddComponent(new CMeshRender);
+	//pObject->AddComponent(new CFire);
 
 
+	//pObject->Transform()->SetLocalPos(Vec3(200, 200, 200));
+	//pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
+	//// MeshRender 설정
+	//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	//pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+	//pObject->GetScript<CFire>()->init();
+	//// AddGameObject
+	//FindLayer(L"Default")->AddGameObject(pObject);
 
 
 
-	//	비
-	pObject = new CGameObject;
-	pObject->SetName(L"Rain");
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CParticleSystem);
-	//pObject->Particlesystem()->SetFrequency(2.f);
-	pObject->Particlesystem()->SetType(true);
-	//pObject->Particlesystem()->SetMaxParticle(10);
-	pObject->FrustumCheck(false);
 
-	Vec3 particlePos = Vec3(100.f, 300.f, 10.f);
 
-	pObject->Transform()->SetLocalPos(particlePos);
-	FindLayer(L"Default")->AddGameObject(pObject);
+	////	비
+	//pObject = new CGameObject;
+	//pObject->SetName(L"Rain");
+	//pObject->AddComponent(new CTransform);
+	//pObject->AddComponent(new CParticleSystem);
+	////pObject->Particlesystem()->SetFrequency(2.f);
+	//pObject->Particlesystem()->SetType(true);
+	////pObject->Particlesystem()->SetMaxParticle(10);
+	//pObject->FrustumCheck(false);
+
+	//Vec3 particlePos = Vec3(100.f, 300.f, 10.f);
+
+	//pObject->Transform()->SetLocalPos(particlePos);
+	//FindLayer(L"Default")->AddGameObject(pObject);
 
 
 
