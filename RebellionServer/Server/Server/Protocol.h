@@ -17,7 +17,7 @@ constexpr short MONSTER_LV3_ID = 120;
 constexpr short MONSTER_LV4_ID = 125;
 constexpr short MONSTER_LV5_ID = 132;
 constexpr short MONSTER_LV6_ID = 139;
-constexpr short NPC_ID_END = 138;
+constexpr short NPC_ID_END = 141;
 
 constexpr int MAX_USER = 100;
 //#define NPC_ID_START 10000

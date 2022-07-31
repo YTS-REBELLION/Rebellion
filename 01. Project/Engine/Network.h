@@ -20,7 +20,7 @@ struct EXOVER
 	int id;
 };
 
-enum class OBJECT_TYPE {PLAYER, M_MONSTER, FM_MONSTER,BOSS,NPC};
+enum class OBJECT_TYPE { PLAYER, M_MONSTER, FM_MONSTER, BOSS, NPC };
 
 
 class CNetwork

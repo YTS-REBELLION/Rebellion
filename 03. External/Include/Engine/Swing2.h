@@ -4,7 +4,7 @@
 #pragma once
 #include "Script.h"
 
-class CSwing :
+class CSwing2 :
 	public CScript
 {
 private:
@@ -16,13 +16,14 @@ public:
 	virtual void update();
 
 public:
-	CLONE(CSwing);
+	CLONE(CSwing2);
 
 public:
-	CSwing();
-	virtual ~CSwing();
+	CSwing2();
+	virtual ~CSwing2();
 public:
 	Vec3 vPos = { 0.f,0.f,0.f };
 	float m_fcreate_time = 0.f;
 	CGameObject* m_pPlayer;
+	int m_count = 0.f;
 };

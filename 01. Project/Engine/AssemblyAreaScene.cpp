@@ -111,6 +111,7 @@ void CAssemblyAreaScene::init()
 	GetLayer(4)->SetName(L"Portal");
 	GetLayer(5)->SetName(L"UI");
 	GetLayer(6)->SetName(L"NPC");
+	GetLayer(7)->SetName(L"BOSS");
 
 	CreateMap();
 

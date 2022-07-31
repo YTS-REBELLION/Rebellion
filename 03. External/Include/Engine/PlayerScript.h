@@ -123,6 +123,8 @@ private:
 
 	Ptr<CTexture> pQuestComplete = CResMgr::GetInst()->Load<CTexture>(L"QuestComplete", L"Texture\\Quest\\QuestComplete.png");
 	bool				m_bDash = false;
+	float fdamage = 0.f;
+	float ftempmp = 0.f;
 public:
 	virtual void awake();	
 	virtual void update();

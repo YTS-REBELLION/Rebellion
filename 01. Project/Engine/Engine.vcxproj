@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -176,6 +176,7 @@ call EngineCopy.bat</Command>
     </ClInclude>
     <ClInclude Include="Boss.h" />
     <ClInclude Include="BossMap.h" />
+    <ClInclude Include="BossSkill1.h" />
     <ClInclude Include="BulletScript.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Castle.h" />
@@ -223,6 +224,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="M_MonsterScript.h" />
     <ClInclude Include="Network.h" />
     <ClInclude Include="NpcMon.h" />
+    <ClInclude Include="ParticleScript.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="PathMgr.h" />
     <ClInclude Include="PlayerScript.h" />
@@ -250,6 +252,9 @@ call EngineCopy.bat</Command>
     <ClInclude Include="struct.h" />
     <ClInclude Include="StructuredBuffer.h" />
     <ClInclude Include="Swing.h" />
+    <ClInclude Include="Swing2.h" />
+    <ClInclude Include="Swing3.h" />
+    <ClInclude Include="Swing4.h" />
     <ClInclude Include="Sword.h" />
     <ClInclude Include="SwordScript.h" />
     <ClInclude Include="SwordStrike.h" />
@@ -272,6 +277,7 @@ call EngineCopy.bat</Command>
     </ClCompile>
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="BossMap.cpp" />
+    <ClCompile Include="BossSkill1.cpp" />
     <ClCompile Include="BulletScript.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Castle.cpp" />
@@ -319,6 +325,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="M_MonsterScript.cpp" />
     <ClCompile Include="Network.cpp" />
     <ClCompile Include="NpcMon.cpp" />
+    <ClCompile Include="ParticleScript.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="PathMgr.cpp" />
     <ClCompile Include="PlayerScript.cpp" />
@@ -350,6 +357,9 @@ call EngineCopy.bat</Command>
     <ClCompile Include="Sting.cpp" />
     <ClCompile Include="StructuredBuffer.cpp" />
     <ClCompile Include="Swing.cpp" />
+    <ClCompile Include="Swing2.cpp" />
+    <ClCompile Include="Swing3.cpp" />
+    <ClCompile Include="Swing4.cpp" />
     <ClCompile Include="Sword.cpp" />
     <ClCompile Include="SwordScript.cpp" />
     <ClCompile Include="SwordStrike.cpp" />

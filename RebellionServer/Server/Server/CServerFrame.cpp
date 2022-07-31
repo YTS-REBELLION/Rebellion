@@ -1313,7 +1313,7 @@ void CServerFrame::CreateMonster()
 {
 	cout << "Initializing Monster" << endl;
 
-	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_END; ++monsterId) {
+	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_START + 1; ++monsterId) {
 		_objects[monsterId].SetID(monsterId);
 		_objects[monsterId]._status = ST_SLEEP;
 		_objects[monsterId].SetSpeed(MONSTER_SPEED);
@@ -1426,6 +1426,7 @@ void CServerFrame::CreateMonster()
 	_objects[NPC_ID_START + 36].SetPos(Vec3(-6100.f, 0.f, 14100.f));
 	_objects[NPC_ID_START + 37].SetPos(Vec3(-6100.f, 0.f, 12900.f));
 
+	// 보스 몬스터 아이디 141
 
 
 
