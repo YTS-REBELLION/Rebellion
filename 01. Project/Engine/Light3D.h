@@ -13,9 +13,10 @@ private:
 
 	Ptr<CMesh>		m_pVolumeMesh;
 	Ptr<CMaterial>	m_pLightMtrl;
+	Ptr<CMaterial>	m_pDepthMtrl;
 
 	int				m_iArrIdx;
-
+	CGameObject* m_pCamObj;
 public:
 	void SetLightType(LIGHT_TYPE _eType);
 	void SetLightPos(const Vec3& _vPos);
@@ -31,7 +32,7 @@ public:
 public:
 	virtual void finalupdate();
 	void render();
-
+	void render_shadowmap();
 	virtual void SaveToScene(FILE* _pFile);
 	virtual void LoadFromScene(FILE* _pFile);
 

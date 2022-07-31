@@ -43,6 +43,7 @@ const char	CS_PACKET_MONSTERDIR = 16;
 const char	CS_PACKET_DUNGEON = 17;
 const char	CS_PACKET_DIETEST = 18;
 const char	CS_PACKET_SKILL = 19;
+const char	CS_PACKET_BOSSMAP = 20;
 
 const char  SC_PACKET_LOGIN_OK = 1;
 const char  SC_PACKET_LOGIN_FAIL = 2;
@@ -381,6 +382,11 @@ struct cs_packet_monsterdir {
 
 };
 struct cs_packet_dungeon {
+	char size;
+	char type;
+	bool isEnter;
+};
+struct cs_packet_bossmap {
 	char size;
 	char type;
 	bool isEnter;

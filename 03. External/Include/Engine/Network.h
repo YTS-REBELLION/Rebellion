@@ -20,7 +20,7 @@ struct EXOVER
 	int id;
 };
 
-enum class OBJECT_TYPE {PLAYER, M_MONSTER, FM_MONSTER, NPC};
+enum class OBJECT_TYPE {PLAYER, M_MONSTER, FM_MONSTER,BOSS,NPC};
 
 
 class CNetwork
@@ -65,6 +65,7 @@ public:
 	void SetAnimation(int id, int i);
 	void Send_MonsterRotate_Packet(const int& id, const int& other_id, Vec3 vRot);
 	void Send_Dungeon_Packet(bool isEnter);
+	void Send_bossmap_Packet(bool isEnter);
 	void Send_PlayerDieTest_Packet(const int& id);
 
 	void Send_MobToMobCol_Packet(const int& monsterId, const int& other_monsterId, bool isCol, MONSTER_MOVE moveType);

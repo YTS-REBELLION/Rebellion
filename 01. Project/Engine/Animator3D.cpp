@@ -12,6 +12,7 @@ CAnimator3D::CAnimator3D()
 	, m_iFrameCount(30)
 	, m_pBoneFinalMat(nullptr)
 	, m_bFinalMatUpdate(false)
+	, m_bAniUse(true)
 	, CComponent(COMPONENT_TYPE::ANIMATOR3D)
 {	
 	m_pBoneMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Animation3DUpdateMtrl");

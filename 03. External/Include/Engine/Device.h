@@ -34,6 +34,9 @@ private:
 	ComPtr<ID3D12CommandAllocator>			m_pCmdAllocCompute;
 	ComPtr<ID3D12GraphicsCommandList>		m_pCmdListCompute;
 
+	// SwapChain
+	static const int						SwapChainBufferCount = 2;
+	UINT									m_iCurTargetIdx = 0;
 
 	ComPtr<ID3D12Fence>						m_pFence;
 	ComPtr<ID3D12Fence>						m_pFenceCompute;
@@ -57,7 +60,7 @@ private:
 
 	HANDLE									m_hFenceEvent;
 	size_t									m_iFenceValue;
-	UINT									m_iCurTargetIdx;
+	
 
 	vector<CConstantBuffer*>				m_vecCB;
 

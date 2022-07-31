@@ -25,6 +25,7 @@ private:
 	CStructuredBuffer*			m_pBoneFinalMat;  // 특정 프레임의 최종 행렬
 	bool						m_bFinalMatUpdate; // 최종행렬 연산 수행여부
 
+	bool						m_bAniUse; // animator 사용할 건지 말 건지
 public:
 	void SetBones(const vector<tMTBone>* _vecBones) { m_pVecBones = _vecBones; m_vecFinalBoneMat.resize(m_pVecBones->size()); }
 	void SetAnimClip(const vector<tMTAnimClip>* _vecAnimClip);
@@ -49,6 +50,8 @@ public:
 	
 	const vector<tMTAnimClip>* GetAnimClip() { return m_pVecClip; }
 
+
+	bool GetAniUse() { return m_bAniUse; }
 private:
 	void check_mesh(Ptr<CMesh> _pMesh);
 
