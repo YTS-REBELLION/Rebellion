@@ -107,6 +107,7 @@ void CAssemblyAreaScene::init()
 	GetLayer(3)->SetName(L"Map");
 	GetLayer(4)->SetName(L"Portal");
 	GetLayer(5)->SetName(L"UI");
+	GetLayer(6)->SetName(L"NPC");
 
 	CreateMap();
 
@@ -208,22 +209,22 @@ void CAssemblyAreaScene::init()
 
 
 	// ===================
-	// 임시 파일 로드
+	// NPC 로드
 	// ===================
 
-	Ptr<CMeshData> pTestMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Monster\\FM_Idle.fbx");
+	//Ptr<CMeshData> pAS_NPCMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Monster\\FM_Idle.fbx");
+	//pAS_NPCMeshData->Save(pAS_NPCMeshData->GetPath());
+	Ptr<CMeshData> pAS_NPCMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FM_Idle.mdat", L"MeshData\\FM_Idle.mdat");
 
-	//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX<CMeshData>(L"MeshData\\Player_FM_Idle.mdat", L"MeshData\\Player_FM_Idle.mdat");
+	CGameObject* pAS_NPC = new CGameObject;
 
-	CGameObject* pTest = new CGameObject;
+	pAS_NPC = pAS_NPCMeshData->Instantiate();
+	pAS_NPC->SetName(L"AS_NPC_1");
+	pAS_NPC->FrustumCheck(false);
 
-	pTest = pTestMeshData->Instantiate();
-	pTest->SetName(L"test_m");
-	pTest->FrustumCheck(false);
-
-	pTest->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-	pTest->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
-	pTest->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
+	pAS_NPC->Transform()->SetLocalPos(Vec3(300.f, 0.f, 1600.f));
+	pAS_NPC->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	pAS_NPC->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 
 	//pTest->AddComponent(new CCollider2D);
 	//pTest->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
@@ -231,5 +232,5 @@ void CAssemblyAreaScene::init()
 	//pTest->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 	//pTest->Collider2D()->SetOffsetRot(Vec3(0.f, 0.f, XMConvertToRadians(-180.f)));
 
-	FindLayer(L"Default")->AddGameObject(pTest);
+	FindLayer(L"NPC")->AddGameObject(pAS_NPC);
 }
