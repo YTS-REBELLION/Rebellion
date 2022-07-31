@@ -195,7 +195,7 @@ void CM_MonsterScript::Skill1()
 		m_pSwordStrike->FrustumCheck(false);
 
 
-		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() );
+		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 10.f,0.f,10.f });
 		m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
 		m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 		m_pSwordStrike->AddComponent(new CBossFire);
@@ -210,6 +210,26 @@ void CM_MonsterScript::Skill1()
 		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
 
 
+
+		m_pSwordStrike = new CGameObject;
+		m_pSwordStrike = pPMeshData->Instantiate();
+		m_pSwordStrike->SetName(L"BossFire");
+		m_pSwordStrike->FrustumCheck(false);
+
+
+		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 10.f,0.f,-10.f });
+		m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot() + Vec3{0.f,10.f,0.f});
+		m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		m_pSwordStrike->AddComponent(new CBossFire);
+
+
+		m_pSwordStrike->AddComponent(new CCollider2D);
+		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+
+		// AddGameObject
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
 
 		MonSkill1Check = false;
 		

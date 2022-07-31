@@ -26,12 +26,7 @@ void CBossFire::awake()
 void CBossFire::update()
 {
 
-	for (auto client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
-	{
-		if (client->GetScript<CPlayerScript>()->GetMain())
-			m_pPlayer = client;
-	}
-
+	
 	m_fcreate_time += DT;
 	if (m_fcreate_time >= 3.f)
 	{

@@ -141,7 +141,8 @@ private:
 
 
 	vector<Ptr<CMaterial>>	m_vecHideMtrl;
-
+	float fdamage=0.f;
+	float ftempmp = 0.f;
 public:
 	virtual void awake();	
 	virtual void update();
