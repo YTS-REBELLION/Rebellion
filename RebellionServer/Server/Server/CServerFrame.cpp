@@ -130,18 +130,18 @@ void CServerFrame::InitClients()
 		float x, z;
 		idx = (idx + 1) % 3;
 
-		switch (idx) {
+		switch (i) {
 		case 0:
-			x = 100.f;
-			z = 100.f;
+			x = 300.f;
+			z = 300.f;
 			break;
 		case 1:
-			x = -150.f;
-			z = 150.f;
+			x = -300.f;
+			z = -300.f;
 			break;
 		case 2:
-			x = -140.f;
-			z = 400.f;
+			x = 0.f;
+			z = 300.f;
 			break;
 		}
 		Vec3 pos;
@@ -1140,15 +1140,9 @@ void CServerFrame::EnterGame(int id, const char* name)
 	_objects[id]._status = ST_ACTIVE;
 	_objects[id].ClientUnLock();
 
-
-	for (auto& cl : _objects) {
-		int i = cl.GetID();
-		if (id == i)break;
+	for (int i = 0; i < NPC_ID_START;++i) {
+		if (id == i) continue;
 		if (true == IsNear(id, i)) {
-
-			//if (ST_SLEEP == _objects[i]._status) {
-			//	ActivateNPC(i);
-			//}
 			if (ST_ACTIVE == _objects[i]._status) {
 				_objects[id].ClientLock();
 				_objects[id].InsertViewList(i);
@@ -1166,30 +1160,24 @@ void CServerFrame::EnterGame(int id, const char* name)
 				}
 			}
 		}
-
-
 	}
+
 
 }
 void CServerFrame::DungeonEnter(int id)
 {
 
 	_objects[id].ClientLock();
-
+	_objects[id].SetPos(Vec3(0.f, 0.f, 0.f));
 	for (auto& users : _enterRoom)
 		_sender->SendDungeonEnterPacket(_objects[users].GetSocket(), users, true);
 
 	_objects[id].ClientUnLock();
 
-	for (auto& cl : _objects) {
-		int i = cl.GetID();
-		if (id == i) break;
+	for (int i = 0; i < _enterRoom.size(); ++i) {
+		if (id == i) continue;
 		if (true == IsNear(id, i)) {
-			//cout << "던전 인설트" << endl;
 
-			//if (ST_SLEEP == _objects[i]._status) {
-			//	ActivateNPC(i);
-			//} 
 			if (ST_ACTIVE == _objects[i]._status) {
 
 				_objects[id].ClientLock();
@@ -1211,6 +1199,7 @@ void CServerFrame::DungeonEnter(int id)
 		}
 	}
 
+
 }
 void CServerFrame::ComeBackScene(int player_id)
 {
@@ -1226,7 +1215,7 @@ void CServerFrame::ComeBackScene(int player_id)
 	/*_objects[player_id].SetCurrentExp(changeHp);
 	_objects[player_id].SetCurrentHp(50);*/
 
-
+	_objects[player_id].SetPos(Vec3(0.f, 0.f, 300.f));
 	_objects[player_id].SetDunGeonEnter(false);
 	_objects[player_id].ClearViewList();
 
@@ -1254,13 +1243,12 @@ void CServerFrame::ComeBackScene(int player_id)
 	_objects[player_id]._objectsDie = true;
 	_objects[player_id].ClientUnLock();
 
-	for (auto& cl : _objects) {
-		int i = cl.GetID();
+	for (int i = 0; i < _acceptNumber; ++i) {
 		if (false == IsPlayer(i)) continue;
 		if (player_id == i) continue;
-		if (true == IsNear(player_id, i)) 
+		if (true == IsNear(player_id, i))
 		{
-			if (true == _objects[i]._objectsDie)               
+			if (true == _objects[i]._objectsDie)
 			{
 				_objects[player_id].ClientLock();
 				_objects[player_id].InsertViewList(i);
@@ -1270,7 +1258,7 @@ void CServerFrame::ComeBackScene(int player_id)
 				_sender->SendPutObjectPacket(_objects[player_id].GetSocket(), i, _objects[i].GetPos().x,
 					_objects[i].GetPos().y, _objects[i].GetPos().z, _objects[i].GetMyType());
 
-				if (true == IsPlayer(i)) 
+				if (true == IsPlayer(i))
 				{
 					_objects[i].ClientLock();
 					_objects[i].InsertViewList(player_id);
@@ -1280,6 +1268,7 @@ void CServerFrame::ComeBackScene(int player_id)
 						_objects[player_id].GetPos().y, _objects[player_id].GetPos().z, _objects[player_id].GetMyType());
 				}
 			}
+
 		}
 	}
 }

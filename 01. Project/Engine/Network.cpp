@@ -626,7 +626,6 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetID(g_myid);
 			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetMain();
 
-			GameObject.find(g_myid)->second->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 
 		}
 		else {
