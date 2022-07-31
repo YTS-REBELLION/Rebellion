@@ -1448,9 +1448,8 @@ void CPlayerScript::Swing()
 	////  오브젝트 생성
 	//// ====================
 	CGameObject* m_pSwordStrike = new CGameObject;
-	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
-	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
-	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
+	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sjuriken1.fbx");
+	
 
 
 	m_pSwordStrike = pPMeshData->Instantiate();
