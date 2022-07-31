@@ -14,6 +14,8 @@ private:
 	Ptr<CMesh>				m_pMesh;
 	vector<Ptr<CMaterial>>  m_vecMtrl;	
 
+	bool m_bDynamicShadow;
+
 public:
 	Ptr<CMesh> GetMesh() { return m_pMesh; }
 	void SetMesh(Ptr<CMesh> _pMesh) { m_pMesh = _pMesh; }	
@@ -23,9 +25,12 @@ public:
 	UINT GetMaterialCount() { return (UINT)m_vecMtrl.size(); }
 	void SetMaterial(Ptr<CMaterial> _pMtrl, UINT _iSubset = 0);
 	
+	void SetDynamicShadow(bool _bTrue) { m_bDynamicShadow = _bTrue; }
+	bool IsDynamicShadow() { return m_bDynamicShadow; }
 
 public:
 	void render();
+	void render_shadowmap();
 
 	virtual void SaveToScene(FILE* _pFile);
 	virtual void LoadFromScene(FILE* _pFile);
