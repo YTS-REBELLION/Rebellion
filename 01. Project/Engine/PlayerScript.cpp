@@ -317,6 +317,10 @@ void CPlayerScript::update()
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
 	Vec3 vRot = Transform()->GetLocalRot();
 
+	/*cout << "playerPosX:"<< localPos.x << endl;
+	cout << "playerPosY:" << localPos.y << endl;
+	cout << "playerPosZ:" << localPos.z << endl;*/
+
 	CPlayerScript* player = GetObj()->GetScript<CPlayerScript>();
 
 	if (m_isMain) {
@@ -413,7 +417,7 @@ void CPlayerScript::update()
 			}
 		}
 
-		if (KEY_TAB(KEY_TYPE::KEY_2))
+		if (KEY_TAB(KEY_TYPE::KEY_3))
 		{
 			GetObj()->Animator3D()->SetClipTime(0, 0.f);
 			SetSkill();
@@ -442,7 +446,7 @@ void CPlayerScript::update()
 			}
 		}
 
-		if (KEY_AWAY(KEY_TYPE::KEY_3))
+		if (KEY_AWAY(KEY_TYPE::KEY_4))
 		{
 			cout << "메가슬레시!" << endl;
 			MegaSlash();
@@ -450,21 +454,13 @@ void CPlayerScript::update()
 			MpUiScale.x -= fdamage;
 		}
 
-		if (KEY_AWAY(KEY_TYPE::KEY_4))
+		if (KEY_AWAY(KEY_TYPE::KEY_5))
 		{
-			cout << "가세연!" << endl;
+			cout << "표창!" << endl;
 			Swing();
 			fdamage = 20.f;
 			MpUiScale.x -= fdamage;
 
-		}
-
-		if (KEY_AWAY(KEY_TYPE::KEY_5))
-		{
-			cout << "찌르기!" << endl;
-			Sting();
-			fdamage = 20.f;
-			MpUiScale.x -= fdamage;
 		}
 
 		if (KEY_AWAY(KEY_TYPE::KEY_6))

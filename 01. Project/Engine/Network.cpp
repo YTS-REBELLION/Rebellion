@@ -349,10 +349,11 @@ void CNetwork::ProcessPacket(char* ptr)
 
 				// 몬스터 스크립트 붙여주기.
 				GameObject.find(id)->second->AddComponent(new CM_MonsterScript);
+				
 				GameObject.find(id)->second->GetScript<CM_MonsterScript>()->SetID(id);
-
+				
 				CM_MonsterScript* M_MonsterScript = GameObject.find(id)->second->GetScript<CM_MonsterScript>();
-
+				//M_MonsterScript->init();
 				////몬스터 애니메이션
 				M_MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 0, 0, 55);								// AniData Index 0
 
@@ -370,7 +371,7 @@ void CNetwork::ProcessPacket(char* ptr)
 				GameObject.find(id)->second->GetScript<CM_MonsterScript>()->SetHP(100);
 				GameObject.find(id)->second->GetScript<CM_MonsterScript>()->SetLerpPos(Vec3(packet->x, packet->y, packet->z));
 
-				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", GameObject.find(id)->second, false);
+				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Boss", GameObject.find(id)->second, false);
 			}
 
 			else if (CheckType(id) == OBJECT_TYPE::M_MONSTER) {

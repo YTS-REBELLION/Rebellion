@@ -73,7 +73,8 @@ public:
 	void AnimationPlay(const MONSTER_ANI_TYPE& type);
 
 	Ptr<CMesh> GetAniData(const int& type) { return m_pAniData[(int)type]; }
-
+	bool m_bcenecheck = false;
+	void  SetCenematicCheck() { m_bcenecheck = true; };
 	void SetMain() { m_isMain = true; };
 
 	void SetOtherMovePacket(sc_packet_move* p);

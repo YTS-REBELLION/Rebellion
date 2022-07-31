@@ -21,9 +21,15 @@ private:
 public:	
 	bool			m_bCine1 = false;
 	bool			m_bCheckFin1 = false;
-	float			checktime = 0.f;
+	bool			m_bCine2 = false;
+	bool			m_bCheckFin2 = false;
+	
 	bool			m_bMouseFix = false;
+	float			checktime = 0.f;
 	float			checktime2 = 0.f;
+	float			checktime2_1 = 0.f;
+	float			checktime2_2 = 0.f;
+
 	CAMERASTATE		m_eCamState = CAMERASTATE::PLAYER;
 	Vec3			InitRot;
 public:
@@ -35,6 +41,7 @@ public:
 	void SetFreeCamera();
 	void SetPlayerFixedCamera();
 	void SetCenematic0();
+	void SetCenematicBoss();
 	void CameraMode();
 	//void CameraMode();
 	//void Player_Mode();
@@ -62,5 +69,9 @@ private:
 
 	Vec2				m_vDragDir;
 	Vec3				m_vMouseRot = { 0.f,0.f,0.f };
+
+	Vec3 vBossCamRot = {};
+	bool bBosscamCheck = false;
+	
 };
 
