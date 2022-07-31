@@ -26,6 +26,8 @@ private:
 
 	bool				FirstPacket = false;
 
+	int					m_targetId;
+	bool				m_isTarget;
 
 	int					m_id;
 	bool				m_isMain;
@@ -80,7 +82,8 @@ public:
 	void SetID(const int& id) { m_id = id; }
 
 	CGameObject* m_pPlayer;
-
+	void SetTargetID(const int& targetID) { m_targetId = targetID; }
+	void SetTarget(const bool& isTarget) { m_isTarget = isTarget; }
 	void SetLerpPos(Vec3 Pos) { LerpPos = Pos; }
 	void UpdateLerpPos();
 

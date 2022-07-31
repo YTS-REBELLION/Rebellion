@@ -1307,7 +1307,7 @@ void CServerFrame::CreateMonster()
 {
 	cout << "Initializing Monster" << endl;
 
-	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_END; ++monsterId) {
+	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_START + 1; ++monsterId) {
 		_objects[monsterId].SetID(monsterId);
 		_objects[monsterId]._status = ST_SLEEP;
 		_objects[monsterId].SetSpeed(MONSTER_SPEED);
@@ -1359,67 +1359,72 @@ void CServerFrame::CreateMonster()
 		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 10);
 	}*/
 
-	// LV1
-	_objects[NPC_ID_START].SetPos(Vec3(10.f, 0.f, 2900));
-	_objects[NPC_ID_START + 1].SetPos(Vec3(200.f, 0.f, 2700));
-	_objects[NPC_ID_START + 2].SetPos(Vec3(400.f, 0.f, 2700));
-	_objects[NPC_ID_START + 3].SetPos(Vec3(-200.f, 0.f, 2700));
-	_objects[NPC_ID_START + 4].SetPos(Vec3(-400.f, 0.f, 2700));
+
+	//_objects[NPC_ID_START].SetPos(Vec3(0.f, 0.f, 2900.f));
+
+
+	//// LV1
+	_objects[NPC_ID_START].SetPos(Vec3(10.f, 0.f, 2000.f));
+	//_objects[NPC_ID_START + 1].SetPos(Vec3(200.f, 0.f, 2700));
+	//_objects[NPC_ID_START + 2].SetPos(Vec3(400.f, 0.f, 2700));
+	//_objects[NPC_ID_START + 3].SetPos(Vec3(-200.f, 0.f, 2700));
+	//_objects[NPC_ID_START + 4].SetPos(Vec3(-400.f, 0.f, 2700));
 	
 	// 중앙 홀 몬스터
 
 	// LV2
-	_objects[NPC_ID_START + 5].SetPos(Vec3(-400.f, 0.f, 4500.f));
-	_objects[NPC_ID_START + 6].SetPos(Vec3(-200.f, 0.f, 4500.f));
-	_objects[NPC_ID_START + 7].SetPos(Vec3(200.f, 0.f, 4500.f));
-	_objects[NPC_ID_START + 8].SetPos(Vec3(400.f, 0.f, 4500.f));
-	_objects[NPC_ID_START + 9].SetPos(Vec3(-600.f, 0.f, 4500.f));
-	_objects[NPC_ID_START + 10].SetPos(Vec3(600.f, 0.f, 4500.f));
-	_objects[NPC_ID_START + 11].SetPos(Vec3(800.f, 0.f, 4500.f));
-	_objects[NPC_ID_START + 12].SetPos(Vec3(-200.f, 0.f, 4700.f));
-	_objects[NPC_ID_START + 13].SetPos(Vec3(-400.f, 0.f, 4700.f));
-	_objects[NPC_ID_START + 14].SetPos(Vec3(200.f, 0.f, 4700.f));
-	_objects[NPC_ID_START + 15].SetPos(Vec3(400.f, 0.f, 4700.f));
-	
-	//오른쪽 미로 몬스터
-	//중앙 몬스터
-	// LV3
-	_objects[NPC_ID_START + 16].SetPos(Vec3(4000.f, 0.f, 10800.f));
-	_objects[NPC_ID_START + 17].SetPos(Vec3(3800.f, 0.f, 11000.f));
-	_objects[NPC_ID_START + 18].SetPos(Vec3(3800.f, 0.f, 11200.f));
-	_objects[NPC_ID_START + 19].SetPos(Vec3(3800.f, 0.f, 10600.f));
-	_objects[NPC_ID_START + 20].SetPos(Vec3(3800.f, 0.f, 10400.f));
-	
-	
-	// 북쪽 몬스터
-	// 중앙 몬스터
-	// LV5
-	_objects[NPC_ID_START + 21].SetPos(Vec3(0.f, 0.f, 16700.f));
-	_objects[NPC_ID_START + 22].SetPos(Vec3(-200.f, 0.f, 16400.f));
-	_objects[NPC_ID_START + 23].SetPos(Vec3(-400.f, 0.f, 16400.f));
-	_objects[NPC_ID_START + 24].SetPos(Vec3(200.f, 0.f, 16400.f));
-	_objects[NPC_ID_START + 25].SetPos(Vec3(400.f, 0.f, 16400.f));
-	_objects[NPC_ID_START + 26].SetPos(Vec3(-600.f, 0.f, 16400.f));
-	_objects[NPC_ID_START + 27].SetPos(Vec3(600.f, 0.f, 16400.f));
-	
-	// 북쪽 왼쪽 통로 몬스터
-	// LV4
-	_objects[NPC_ID_START + 28].SetPos(Vec3(-1700.f, 0.f, 13600.f));
-	_objects[NPC_ID_START + 29].SetPos(Vec3(-1300.f, 0.f, 13400.f));
-	_objects[NPC_ID_START + 30].SetPos(Vec3(-1500.f, 0.f, 13400.f));
-	_objects[NPC_ID_START + 31].SetPos(Vec3(-1300.f, 0.f, 13800.f));
-	_objects[NPC_ID_START + 32].SetPos(Vec3(-1500.f, 0.f, 13800.f));
-	
-	// 좌측 끝 몬스터
-	// LV6
-	_objects[NPC_ID_START + 33].SetPos(Vec3(-6300.f, 0.f, 13500.f));
-	_objects[NPC_ID_START + 34].SetPos(Vec3(-6100.f, 0.f, 13300.f));
-	_objects[NPC_ID_START + 35].SetPos(Vec3(-6100.f, 0.f, 13100.f));
-	_objects[NPC_ID_START + 36].SetPos(Vec3(-6100.f, 0.f, 13700.f));
-	_objects[NPC_ID_START + 37].SetPos(Vec3(-6100.f, 0.f, 13900.f));
-	_objects[NPC_ID_START + 38].SetPos(Vec3(-6100.f, 0.f, 14100.f));
-	_objects[NPC_ID_START + 39].SetPos(Vec3(-6100.f, 0.f, 12900.f));
+	//_objects[NPC_ID_START + 5].SetPos(Vec3(-400.f, 0.f, 4500.f));
+	//_objects[NPC_ID_START + 6].SetPos(Vec3(-200.f, 0.f, 4500.f));
+	//_objects[NPC_ID_START + 7].SetPos(Vec3(200.f, 0.f, 4500.f));
+	//_objects[NPC_ID_START + 8].SetPos(Vec3(400.f, 0.f, 4500.f));
+	//_objects[NPC_ID_START + 9].SetPos(Vec3(-600.f, 0.f, 4500.f));
+	//_objects[NPC_ID_START + 10].SetPos(Vec3(600.f, 0.f, 4500.f));
+	//_objects[NPC_ID_START + 11].SetPos(Vec3(800.f, 0.f, 4500.f));
+	//_objects[NPC_ID_START + 12].SetPos(Vec3(-200.f, 0.f, 4700.f));
+	//_objects[NPC_ID_START + 13].SetPos(Vec3(-400.f, 0.f, 4700.f));
+	//_objects[NPC_ID_START + 14].SetPos(Vec3(200.f, 0.f, 4700.f));
+	//_objects[NPC_ID_START + 15].SetPos(Vec3(400.f, 0.f, 4700.f));
+	//
+	////오른쪽 미로 몬스터
+	////중앙 몬스터
+	//// LV3
+	//_objects[NPC_ID_START + 16].SetPos(Vec3(4000.f, 0.f, 10800.f));
+	//_objects[NPC_ID_START + 17].SetPos(Vec3(3800.f, 0.f, 11000.f));
+	//_objects[NPC_ID_START + 18].SetPos(Vec3(3800.f, 0.f, 11200.f));
+	//_objects[NPC_ID_START + 19].SetPos(Vec3(3800.f, 0.f, 10600.f));
+	//_objects[NPC_ID_START + 20].SetPos(Vec3(3800.f, 0.f, 10400.f));
+	//
+	//
+	//// 북쪽 몬스터
+	//// 중앙 몬스터
+	//// LV5
+	//_objects[NPC_ID_START + 21].SetPos(Vec3(0.f, 0.f, 16700.f));
+	//_objects[NPC_ID_START + 22].SetPos(Vec3(-200.f, 0.f, 16400.f));
+	//_objects[NPC_ID_START + 23].SetPos(Vec3(-400.f, 0.f, 16400.f));
+	//_objects[NPC_ID_START + 24].SetPos(Vec3(200.f, 0.f, 16400.f));
+	//_objects[NPC_ID_START + 25].SetPos(Vec3(400.f, 0.f, 16400.f));
+	//_objects[NPC_ID_START + 26].SetPos(Vec3(-600.f, 0.f, 16400.f));
+	//_objects[NPC_ID_START + 27].SetPos(Vec3(600.f, 0.f, 16400.f));
+	//
+	//// 북쪽 왼쪽 통로 몬스터
+	//// LV4
+	//_objects[NPC_ID_START + 28].SetPos(Vec3(-1700.f, 0.f, 13600.f));
+	//_objects[NPC_ID_START + 29].SetPos(Vec3(-1300.f, 0.f, 13400.f));
+	//_objects[NPC_ID_START + 30].SetPos(Vec3(-1500.f, 0.f, 13400.f));
+	//_objects[NPC_ID_START + 31].SetPos(Vec3(-1300.f, 0.f, 13800.f));
+	//_objects[NPC_ID_START + 32].SetPos(Vec3(-1500.f, 0.f, 13800.f));
+	//
+	//// 좌측 끝 몬스터
+	//// LV6
+	//_objects[NPC_ID_START + 33].SetPos(Vec3(-6300.f, 0.f, 13500.f));
+	//_objects[NPC_ID_START + 34].SetPos(Vec3(-6100.f, 0.f, 13300.f));
+	//_objects[NPC_ID_START + 35].SetPos(Vec3(-6100.f, 0.f, 13100.f));
+	//_objects[NPC_ID_START + 36].SetPos(Vec3(-6100.f, 0.f, 13700.f));
+	//_objects[NPC_ID_START + 37].SetPos(Vec3(-6100.f, 0.f, 13900.f));
+	//_objects[NPC_ID_START + 38].SetPos(Vec3(-6100.f, 0.f, 14100.f));
+	//_objects[NPC_ID_START + 39].SetPos(Vec3(-6100.f, 0.f, 12900.f));
 
+	// 보스 몬스터 아이디 141
 
 
 
