@@ -221,9 +221,7 @@ void CResMgr::CreateDefaultShader()
 	AddRes(L"TrailShader", pShader);
 
 
-	
-
-	  // ShadowMap Shader
+	// ShadowMap Shader
 	pShader = new CShader;
 	pShader->CreateVertexShader(L"Shader\\light.fx", "VS_ShadowMap", "vs_5_0");
 	pShader->CreatePixelShader(L"Shader\\light.fx", "PS_ShadowMap", "ps_5_0");
@@ -475,7 +473,7 @@ void CResMgr::CreateDefaultMaterial()
 
 	
 
-	  // ShadowMap Material
+	// ShadowMap Material
 	pMtrl = new CMaterial;
 	pMtrl->DisableFileSave();
 	pMtrl->SetShader(FindRes<CShader>(L"ShadowMapShader"));
@@ -493,23 +491,23 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl->SetShader(FindRes<CShader>(L"RainShader"));
 	AddRes(L"RainMtrl", pMtrl);
 
-	// Particle Update
-	pMtrl = new CMaterial;
-	pMtrl->DisableFileSave();
-	pMtrl->SetShader(FindRes<CShader>(L"ParticleUpdateShader"));
-	Ptr<CTexture> pNoiseTex = Load<CTexture>(L"Texture\\noise.png", L"Texture\\noise.png");
-	pMtrl->SetData(SHADER_PARAM::TEX_0, pNoiseTex.GetPointer());
-	pMtrl->SetData(SHADER_PARAM::VEC2_0, &Vec2(pNoiseTex->Width(), pNoiseTex->Height()));
-	AddRes(L"ParticleUpdateMtrl", pMtrl);
-
-	// Particle Update
-	pMtrl = new CMaterial;
-	pMtrl->DisableFileSave();
-	pMtrl->SetShader(FindRes<CShader>(L"RainUpdateShader"));
+	//// Particle Update
+	//pMtrl = new CMaterial;
+	//pMtrl->DisableFileSave();
+	//pMtrl->SetShader(FindRes<CShader>(L"ParticleUpdateShader"));
 	//Ptr<CTexture> pNoiseTex = Load<CTexture>(L"Texture\\noise.png", L"Texture\\noise.png");
-	pMtrl->SetData(SHADER_PARAM::TEX_0, pNoiseTex.GetPointer());
-	pMtrl->SetData(SHADER_PARAM::VEC2_0, &Vec2(pNoiseTex->Width(), pNoiseTex->Height()));
-	AddRes(L"RainUpdateMtrl", pMtrl);
+	//pMtrl->SetData(SHADER_PARAM::TEX_0, pNoiseTex.GetPointer());
+	//pMtrl->SetData(SHADER_PARAM::VEC2_0, &Vec2(pNoiseTex->Width(), pNoiseTex->Height()));
+	//AddRes(L"ParticleUpdateMtrl", pMtrl);
+
+	//// Particle Update
+	//pMtrl = new CMaterial;
+	//pMtrl->DisableFileSave();
+	//pMtrl->SetShader(FindRes<CShader>(L"RainUpdateShader"));
+	////Ptr<CTexture> pNoiseTex = Load<CTexture>(L"Texture\\noise.png", L"Texture\\noise.png");
+	//pMtrl->SetData(SHADER_PARAM::TEX_0, pNoiseTex.GetPointer());
+	//pMtrl->SetData(SHADER_PARAM::VEC2_0, &Vec2(pNoiseTex->Width(), pNoiseTex->Height()));
+	//AddRes(L"RainUpdateMtrl", pMtrl);
 
 
 

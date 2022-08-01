@@ -74,6 +74,8 @@ void CAssemblyAreaScene::CreateMap()
 	pMap = pMapMeshData->Instantiate();
 	pMap->FrustumCheck(false);
 
+	pMap->MeshRender()->SetDynamicShadow(true);
+
 	// Transform 설정
 	pMap->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 	pMap->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
@@ -113,7 +115,7 @@ void CAssemblyAreaScene::init()
 	GetLayer(5)->SetName(L"UI");
 	GetLayer(6)->SetName(L"NPC");
 
-	//CreateMap();
+	CreateMap();
 
 	// ====================
 	// 3D Light Object 추가
@@ -122,14 +124,14 @@ void CAssemblyAreaScene::init()
 	pLight->AddComponent(new CTransform);
 	pLight->AddComponent(new CLight3D);
 
-	pLight->Light3D()->SetLightPos(Vec3(0.f, 500.f, 0.f));
+	pLight->Light3D()->SetLightPos(Vec3(1000.f, 0.f, 1000.f));
 	pLight->Light3D()->SetLightType(LIGHT_TYPE::DIR);
 	pLight->Light3D()->SetDiffuseColor(Vec3(1.f, 1.f, 1.f));
-	pLight->Light3D()->SetSpecular(Vec3(0.1f, 0.1f, 0.1f));
-	pLight->Light3D()->SetAmbient(Vec3(0.8f, 0.8f, 0.8f));
+	pLight->Light3D()->SetSpecular(Vec3(0.3f, 0.3f, 0.3f));
+	pLight->Light3D()->SetAmbient(Vec3(0.5f, 0.5f, 0.5f));
 	pLight->Light3D()->SetLightDir(Vec3(-1.f, -1.f, -1.f));
 	pLight->Light3D()->SetLightRange(1000.f);
-
+	//pLight->Transform()->SetLocalPos(Vec3(-1000.f, 1000.f, -1000.f));
 	FindLayer(L"Default")->AddGameObject(pLight);
 
 	// ===================
@@ -147,7 +149,7 @@ void CAssemblyAreaScene::init()
 	pPlayer->Transform()->SetLocalScale(Vec3(1.0f, 1.0f, 1.0f));
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), XMConvertToRadians(180.f), 0.f));
 	
-	//pPlayer->MeshRender()->SetDynamicShadow(true);
+	pPlayer->MeshRender()->SetDynamicShadow(true);
 
 	pPlayer->AddComponent(new CCollider2D);
 	pPlayer->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
@@ -286,29 +288,6 @@ void CAssemblyAreaScene::init()
 	//pTest->Collider2D()->SetOffsetRot(Vec3(0.f, 0.f, XMConvertToRadians(-180.f)));
 
 	FindLayer(L"NPC")->AddGameObject(pAS_NPC);
-
-	
-	//CGameObject* pMoster = new CGameObject;
-
-	//Ptr<CMeshData> pmMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Monster\\Monster_FM_Run.fbx");
-	//pmMeshData->Save(pmMeshData->GetPath());
-	////Ptr<CMeshData> pmMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Walk2.mdat", L"MeshData\\Monster_FM_Walk2.mdat");
-
-	//pMoster = pmMeshData->Instantiate();
-	//pMoster->SetName(L"FM_Monster1");
-	//pMoster->FrustumCheck(false);
-
-	//pMoster->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-	//pMoster->Transform()->SetLocalScale(Vec3(4.5f, 4.5f, 4.5f));
-	//pMoster->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), 0.f, 0.f));
-
-	//// 플레이어 스크립트 붙여주기.
-	//pMoster->AddComponent(new CMonsterScript);
-
-	//CMonsterScript* MonsterScript = pMoster->GetScript<CMonsterScript>();
-	//pMoster->GetScript<CMonsterScript>()->init();
-
-	//FindLayer(L"NPC")->AddGameObject(pMoster);
 
 	// 검 테스트
 

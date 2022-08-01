@@ -77,7 +77,7 @@ PS_OUTPUT PS_DirLight(VS_OUTPUT _in)
             && 0.01f < vShadowUV.y && vShadowUV.y < 0.99f)
         {
             float fShadowDepth = g_tex_3.Sample(g_sam_0, vShadowUV).r;
-            fFactor = g_tex_3.SampleCmpLevelZero(g_sam_2, vShadowUV, fDepth).r;
+           // fFactor = g_tex_3.SampleCmpLevelZero(g_sam_2, vShadowUV, fDepth).r;
             // 그림자인 경우 빛을 약화시킨다.
             if (fShadowDepth != 0.f && (fDepth > fShadowDepth + 0.00001f))
             {

@@ -2151,6 +2151,7 @@ void CSceneMgr::update()
 
 	// 충돌 처리
 	CCollisionMgr::GetInst()->update();
+
 	if (KEY_TAB(KEY_TYPE::KEY_NUM7)) {
 		if (m_pCurScene->GetType() != SCENE_TYPE::ASSEMBLY) {
 			cout << "들어 오나 7?" << endl;

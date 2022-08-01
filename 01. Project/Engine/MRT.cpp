@@ -69,6 +69,8 @@ void CMRT::Create(UINT _iCount, tRT* _arrRT, Ptr<CTexture> _pDSTex)
 
 	//m_tVP = D3D12_VIEWPORT{ 0.f, 0.f, m_arrRT[0].pTarget->Width() , m_arrRT[0].pTarget->Height(), 0.f, 1.f };
 	//m_tScissorRect = D3D12_RECT{ 0, 0, (LONG)m_arrRT[0].pTarget->Width(), (LONG)m_arrRT[0].pTarget->Height() };
+	m_tVP = D3D12_VIEWPORT{ 0.f, 0.f, 1280, 768, 0.f, 1.f };
+	m_tScissorRect = D3D12_RECT{ 0, 0, (LONG)1280, (LONG)768 };
 }
 
 void CMRT::OMSet(UINT _iCount, UINT _iOffset)
@@ -80,8 +82,8 @@ void CMRT::OMSet(UINT _iCount, UINT _iOffset)
 	D3D12_CPU_DESCRIPTOR_HANDLE hDSVHandle = m_pDSTex->GetDSV()->GetCPUDescriptorHandleForHeapStart();
 
 	//// 뷰포트 설정
-	//CMDLIST->RSSetViewports(1, &m_tVP);
-	//CMDLIST->RSSetScissorRects(1, &m_tScissorRect);
+	CMDLIST->RSSetViewports(1, &m_tVP);
+	CMDLIST->RSSetScissorRects(1, &m_tScissorRect);
 
 	// 타겟 지정	
 	CMDLIST->OMSetRenderTargets(_iCount, &hRTVHandle, FALSE, &hDSVHandle);
@@ -93,9 +95,9 @@ void CMRT::OMSet()
 	D3D12_CPU_DESCRIPTOR_HANDLE hRTVHandle = m_pRTV->GetCPUDescriptorHandleForHeapStart();
 	D3D12_CPU_DESCRIPTOR_HANDLE hDSVHandle = m_pDSTex->GetDSV()->GetCPUDescriptorHandleForHeapStart();
 
-	//// 뷰포트 설정
-	//CMDLIST->RSSetViewports(1, &m_tVP);
-	//CMDLIST->RSSetScissorRects(1, &m_tScissorRect);
+	// 뷰포트 설정
+	CMDLIST->RSSetViewports(1, &m_tVP);
+	CMDLIST->RSSetScissorRects(1, &m_tScissorRect);
 
 	// 타겟 지정	
 	CMDLIST->OMSetRenderTargets(m_iRTCount, &hRTVHandle, TRUE/*DescHeap 에 연속적으로 있다*/, &hDSVHandle);
