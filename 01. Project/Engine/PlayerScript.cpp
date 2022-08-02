@@ -54,9 +54,9 @@ void CPlayerScript::init()
 	//pSwordObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 	pSwordObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pSwordObject->AddComponent(new CCollider2D);
-	pSwordObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pSwordObject->Collider2D()->SetOffsetPos(Vec3(0.f, 50.f, 0.f));
-	pSwordObject->Collider2D()->SetOffsetScale(Vec3(20.f, 140.f, 20.f));
+	pSwordObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+	pSwordObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pSwordObject->Collider2D()->SetOffsetScale(Vec3(140.f, 140.f, 140.f));
 
 	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
 	pSwordObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, SwordObject.GetPointer());
@@ -66,7 +66,7 @@ void CPlayerScript::init()
 	CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
 	pSwordObject->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, GetObj(), 25);
 
-	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pSwordObject, false);
+	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Sword", pSwordObject, false);
 	GetObj()->AddChild(pSwordObject);
 	Ptr<CTexture> pS_astrostone = CResMgr::GetInst()->Load<CTexture>(L"Astrostone", L"Texture\\Icon\\S_astrostone.png");
 	Ptr<CTexture> pS_Blood_splash = CResMgr::GetInst()->Load<CTexture>(L"Bloodsplash", L"Texture\\Icon\\S_Blood_splash.png");
@@ -932,7 +932,7 @@ void CPlayerScript::update()
 			Transform()->SetLocalPos(localPos);
 		}
 	}
-}
+
 
 void CPlayerScript::SetPlayerAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
 {
@@ -1340,7 +1340,7 @@ void CPlayerScript::FireBall()
 
 
 	m_pSwordStrike->AddComponent(new CCollider2D);
-	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 

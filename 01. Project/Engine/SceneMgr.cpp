@@ -97,6 +97,8 @@ void CSceneMgr::ChangeScene(SCENE_TYPE _Type)
 	}
 	m_pCurScene->SetType(_Type);
 	m_pCurScene->init();
+
+	
 	m_pCurScene->awake();
 	m_pCurScene->start();
 }

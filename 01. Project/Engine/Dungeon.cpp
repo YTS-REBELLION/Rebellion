@@ -37,13 +37,14 @@ void CDungeonScene::init()
 {
 	cout << "ДјРќ РЬДж" << endl;
 	GetLayer(0)->SetName(L"Default");
-	GetLayer(1)->SetName(L"Player");
-	GetLayer(2)->SetName(L"House");
+	GetLayer(1)->SetName(L"Sword");
+	GetLayer(2)->SetName(L"Player");
 	GetLayer(3)->SetName(L"House");
 	GetLayer(4)->SetName(L"Portal");
 	GetLayer(5)->SetName(L"UI");
 	GetLayer(6)->SetName(L"Monster");
 	GetLayer(7)->SetName(L"Boss");
+	GetLayer(8)->SetName(L"Player_Skill");
 
 
 
@@ -150,4 +151,10 @@ void CDungeonScene::init()
 	pUICam->Camera()->SetLayerCheck(5, true);
 
 	FindLayer(L"Default")->AddGameObject(pUICam);
+
+
+
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Default"); 
 }

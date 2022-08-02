@@ -90,7 +90,7 @@ void CMonsterScript::update()
 	Vec3 vRot;
 
 	if (m_isTarget) {
-		for (auto& client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
+		for (auto& client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(2)->GetParentObj())
 		{
 			if (client->GetScript<CPlayerScript>()->GetID() == m_targetId)
 			{
@@ -266,12 +266,12 @@ void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 {
 	if (_pOther->GetObj()->GetName() == L"Player_Sword")
 	{
-		//cout << "검과 충돌1" << endl;
+		cout << "검과 충돌1" << endl;
 		m_bHit = true;
 		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
 
 	}
-	if (_pOther->GetObj()->GetName() == L"Player1")
+	if (_pOther->GetObj()->GetName() == L"FM_Player")
 	{
 		//cout << "플레이어와 충돌" << endl;
 	}
@@ -288,13 +288,13 @@ void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 void CMonsterScript::OnCollision(CCollider2D* _pOther)
 {
 	//m_fHp -= 4.f;
-	if (_pOther->GetObj()->GetName() == L"Player1")
+	if (_pOther->GetObj()->GetName() == L"FM_Player")
 	{
 		//cout << "플레이어와 충돌" << endl;
 	}
 	else if (_pOther->GetObj()->GetName() == L"Player_Sword")
 	{
-		//cout << "검과 충돌2" << endl;
+		cout << "검과 충돌2" << endl;
 		//m_bHit = true;
 		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
 
@@ -318,7 +318,7 @@ void CMonsterScript::OnCollisionExit(CCollider2D* _pOther)
 {
 	if (_pOther->GetObj()->GetName() == L"Player_Sword")
 	{
-		//cout << "검과 충돌 해제" << endl;
+		cout << "검과 충돌 해제" << endl;
 	}
 	else if (_pOther->GetObj()->GetName() == L"FM_Monster")
 	{

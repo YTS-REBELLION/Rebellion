@@ -26,6 +26,7 @@ private:
 	PERSON_OBJ_TYPE m_eType;
 
 public:
+
 	void init(PERSON_OBJ_TYPE type, CGameObject* _target, int _boneIdx);
 
 	void update();

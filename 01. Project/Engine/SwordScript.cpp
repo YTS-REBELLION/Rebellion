@@ -23,6 +23,10 @@ void CSwordScript::init(PERSON_OBJ_TYPE type, CGameObject* _target, int _boneIdx
 void CSwordScript::update()
 {
 	Set_Sword_To_Fbx();
+
+	cout << "Ä®Æ÷ÁîX:" << Transform()->GetLocalPos().x << endl;
+	cout << "Ä®Æ÷ÁîZ:" << Transform()->GetLocalPos().z << endl;
+
 }
 
 void CSwordScript::Set_Sword_To_Fbx()

@@ -408,9 +408,12 @@ bool CCollisionMgr::CollisionSphere(CCollider2D* _pCollider1, CCollider2D* _pCol
 
 	float Radius1 = (_pCollider1->Transform()->GetLocalScale().x * _pCollider1->Collider2D()->GetOffsetScale().x);
 	float Radius2 = (_pCollider2->Transform()->GetLocalScale().x * _pCollider2->Collider2D()->GetOffsetScale().x);
-
-	if ((Radius1 + Radius2) >= Length(Center2 - Center1))
+	float temp = Length(Center2 - Center1);
+	if ((Radius1 + Radius2) >= temp)
+	{
+	
 		return true;
+	}
 	else
 		return false;
 }

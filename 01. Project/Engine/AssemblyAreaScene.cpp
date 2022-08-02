@@ -106,13 +106,15 @@ void CAssemblyAreaScene::init()
 {
 	cout << "집결지 컴백" << endl;
 	GetLayer(0)->SetName(L"Default");
-	GetLayer(1)->SetName(L"Player");
-	GetLayer(2)->SetName(L"House");
-	GetLayer(3)->SetName(L"Map");
-	GetLayer(4)->SetName(L"Portal");
-	GetLayer(5)->SetName(L"UI");
-	GetLayer(6)->SetName(L"NPC");
-	GetLayer(7)->SetName(L"BOSS");
+	GetLayer(1)->SetName(L"Sword");
+	GetLayer(2)->SetName(L"Player");
+	GetLayer(3)->SetName(L"House");
+	GetLayer(4)->SetName(L"Map");
+	GetLayer(5)->SetName(L"Portal");
+	GetLayer(6)->SetName(L"UI");
+	GetLayer(7)->SetName(L"NPC");
+	GetLayer(8)->SetName(L"Player_Skill");
+	
 
 	//CreateMap();
 
