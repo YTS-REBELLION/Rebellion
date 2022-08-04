@@ -364,7 +364,7 @@ void CM_MonsterScript::OnCollision(CCollider2D* _pOther)
 	{
 		//cout << "검과 충돌" << endl;
 		//m_bHit = true;
-		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
+		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true, 0);
 
 	}
 	//else if (_pOther->GetObj()->GetName() == L"Map Object")

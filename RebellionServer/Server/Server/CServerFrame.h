@@ -7,6 +7,8 @@ class CSender;
 
 
 class CServerFrame {
+
+
 	// socket 관련 구조체
 	SOCKET			_listenSocket;
 	SOCKET			_clientSocket;

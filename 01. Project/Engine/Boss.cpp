@@ -248,8 +248,8 @@ void CBoss::OnCollision(CCollider2D* _pOther)
 	else if (_pOther->GetObj()->GetName() == L"Player_Sword")
 	{
 		//cout << "검과 충돌" << endl;
-		//m_bHit = true;
-		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
+		m_bHit = true;
+		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true, 0);
 
 	}
 	//else if (_pOther->GetObj()->GetName() == L"Map Object")

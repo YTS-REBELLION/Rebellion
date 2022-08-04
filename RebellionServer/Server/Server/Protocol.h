@@ -368,6 +368,7 @@ struct cs_packet_player2monstercol {
 	int id;
 	int playerId;
 	bool iscol;
+	int attackType;
 };
 struct cs_packet_monsterdir {
 	char size;

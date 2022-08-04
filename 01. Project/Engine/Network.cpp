@@ -884,7 +884,7 @@ void CNetwork::Send_MonsterDie_Packet(const int& id, const bool& isDead)
 
 }
 
-void CNetwork::Send_Player2MonsterCol_Packet(const int& id, const int& playerid, const bool& iscol)
+void CNetwork::Send_Player2MonsterCol_Packet(const int& id, const int& playerid, const bool& iscol,int attackType)
 {
 
 	cs_packet_player2monstercol packet;
@@ -893,7 +893,7 @@ void CNetwork::Send_Player2MonsterCol_Packet(const int& id, const int& playerid,
 	packet.playerId = playerid;
 	packet.size = sizeof(packet);
 	packet.iscol = iscol;
-
+	packet.attackType = attackType;
 	Send_Packet(&packet);
 
 }

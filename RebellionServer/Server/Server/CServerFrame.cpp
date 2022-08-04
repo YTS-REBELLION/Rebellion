@@ -329,9 +329,33 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		int monsterId = packet->id;
 		int pid = packet->playerId;
 
+		switch (packet->attackType) {
+		case 0: {
+			
+			_objects[monsterId].SetCurrentHp(_objects[monsterId].GetCurrentHp() - _objects[pid].GetDamage());
+
+
+			break;
+		}
+		case 1: {
+			cout << "스킬 맞음" << endl;
+
+			_objects[monsterId].SetCurrentHp(_objects[monsterId].GetCurrentHp() - _objects[pid].GetDamage());
+
+
+			break;
+		}
+		default:
+			cout << "패킷 오류" << endl;
+			break;
+		}
+		
+		
 		_objects[monsterId].SetCurrentHp(_objects[monsterId].GetCurrentHp() - _objects[pid].GetDamage());
 
 		unordered_set<int> old_viewList = _objects[id].GetViewList();
+
+
 
 		if (_objects[monsterId].GetCurrentHp() <= 0) {
 			_objects[monsterId]._status = ST_FREE;

@@ -340,13 +340,13 @@ void CPlayerScript::update()
 			GetObj()->Animator3D()->SetClipTime(4, 0.f);
 			SetSkill();
 		}
-		
-			if (localPos.z >= 1400.f && !questStart) {
-				questStart = true;
-				g_net.Send_Dungeon_Packet(true);
-			}
+
+		if (localPos.z >= 1400.f && !questStart) {
+			questStart = true;
+			g_net.Send_Dungeon_Packet(true);
 		}
-		
+
+
 		if (KEY_HOLD(KEY_TYPE::KEY_W))
 		{
 			system_clock::time_point start = system_clock::now();
@@ -404,10 +404,10 @@ void CPlayerScript::update()
 				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 			};
 		}
-		else if (KEY_HOLD(KEY_TYPE::KEY_NUM3)) 
+		else if (KEY_HOLD(KEY_TYPE::KEY_NUM3))
 		{
 			AnimationPlay(PLAYER_ANI_TYPE::DIE);
-		} 
+		}
 
 		else if (KEY_HOLD(KEY_TYPE::KEY_SPACE))
 		{
@@ -428,7 +428,9 @@ void CPlayerScript::update()
 				g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_1, GetSkill());
 
 				if (GetObj()->Animator3D()->GetCliTime(4) >= 0.9f
-					&& GetObj()->Animator3D()->GetCliTime(4)<=0.92f) { SwordStrike(); m_bSkill_Start[0] = true; }
+					&& GetObj()->Animator3D()->GetCliTime(4) <= 0.92f) {
+					SwordStrike(); m_bSkill_Start[0] = true;
+				}
 			}
 			else
 			{
@@ -932,6 +934,7 @@ void CPlayerScript::update()
 			Transform()->SetLocalPos(localPos);
 		}
 	}
+}
 
 
 void CPlayerScript::SetPlayerAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
@@ -1345,7 +1348,7 @@ void CPlayerScript::FireBall()
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
 }
 

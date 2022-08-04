@@ -24,8 +24,8 @@ void CSwordScript::update()
 {
 	Set_Sword_To_Fbx();
 
-	cout << "Ä®Æ÷ÁîX:" << Transform()->GetLocalPos().x << endl;
-	cout << "Ä®Æ÷ÁîZ:" << Transform()->GetLocalPos().z << endl;
+	//cout << "Ä®Æ÷ÁîX:" << Transform()->GetLocalPos().x << endl;
+	//cout << "Ä®Æ÷ÁîZ:" << Transform()->GetLocalPos().z << endl;
 
 }
 

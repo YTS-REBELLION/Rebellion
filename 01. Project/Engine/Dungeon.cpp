@@ -149,12 +149,12 @@ void CDungeonScene::init()
 	pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHGRAPHIC);
 	pUICam->Camera()->SetFar(100.f);
 	pUICam->Camera()->SetLayerCheck(5, true);
-
+	
 	FindLayer(L"Default")->AddGameObject(pUICam);
 
 
 
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Default"); 
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player_Skill"); 
 }

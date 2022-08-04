@@ -411,7 +411,8 @@ bool CCollisionMgr::CollisionSphere(CCollider2D* _pCollider1, CCollider2D* _pCol
 	float temp = Length(Center2 - Center1);
 	if ((Radius1 + Radius2) >= temp)
 	{
-	
+		cout << "CollisionSphere" << endl;
+
 		return true;
 	}
 	else

@@ -61,7 +61,7 @@ public:
 	void Send_Attack_Animation_Packet(const int& id, const bool& isAttack);
 	void Send_Run_Packet(const int& id, Vec3 pos, const bool& isRun);
 	void Send_MonsterDie_Packet(const int& id, const bool& isDead);
-	void Send_Player2MonsterCol_Packet(const int& id, const int& playerid, const bool& iscol);
+	void Send_Player2MonsterCol_Packet(const int& id, const int& playerid, const bool& iscol, int attackType);
 	void SetAnimation(int id, int i);
 	void Send_MonsterRotate_Packet(const int& id, const int& other_id, Vec3 vRot);
 	void Send_Dungeon_Packet(bool isEnter);

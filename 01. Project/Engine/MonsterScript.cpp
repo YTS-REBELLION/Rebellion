@@ -268,7 +268,7 @@ void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 	{
 		cout << "검과 충돌1" << endl;
 		m_bHit = true;
-		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
+		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true, 0);
 
 	}
 	if (_pOther->GetObj()->GetName() == L"FM_Player")
@@ -283,6 +283,9 @@ void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 		//g_net.Send_MobToMobCol_Packet(GetObj()->GetScript<CMonsterScript>()->GetID(), _pOther->GetObj()->GetScript<CMonsterScript>()->GetID(), m_colEnter, MONSTER_MOVE::STOP);
 		//	cout << "충돌체 1 : " << GetObj()->GetScript<CMonsterScript>()->GetID() << " " << "충돌체 2 :" << _pOther->GetObj()->GetScript<CMonsterScript>()->GetID() << endl;
 	}
+	if (_pOther->GetObj()->GetName() == L"FireBall") {
+
+	}
 }
 
 void CMonsterScript::OnCollision(CCollider2D* _pOther)
@@ -296,8 +299,12 @@ void CMonsterScript::OnCollision(CCollider2D* _pOther)
 	{
 		cout << "검과 충돌2" << endl;
 		//m_bHit = true;
-		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
+		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true, 0);
 
+	}
+	else if (_pOther->GetObj()->GetName() == L"FireBall") {
+		cout << "파이어볼 충돌" << endl;
+		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true, 1);
 	}
 	//else if (_pOther->GetObj()->GetName() == L"FM_Monster")
 	//{
