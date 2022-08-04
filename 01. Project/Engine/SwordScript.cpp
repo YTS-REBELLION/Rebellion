@@ -3,6 +3,7 @@
 #include "MeshRender.h"
 #include "Animator3D.h"
 #include "Collider2D.h"
+#include"PlayerScript.h"
 
 CSwordScript::CSwordScript()
 	: CScript((UINT)SCRIPT_TYPE::SWORDSCRIPT)
@@ -24,14 +25,21 @@ void CSwordScript::update()
 {
 	Set_Sword_To_Fbx();
 
-	cout << "Ä®Æ÷ÁîX:" << Transform()->GetLocalPos().x << endl;
-	cout << "Ä®Æ÷ÁîZ:" << Transform()->GetLocalPos().z << endl;
+	/*cout << "Ä®Æ÷ÁîX:" << Transform()->GetLocalPos().x << endl;
+	cout << "Ä®Æ÷ÁîZ:" << Transform()->GetLocalPos().z << endl;*/
 
 }
 
 void CSwordScript::Set_Sword_To_Fbx()
 {
 	m_pTargetBone = const_cast<tMTBone*>(m_pTargetObject->MeshRender()->GetMesh()->GetBone(m_iTargetBoneIdx));
+
+	for (auto& client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(2)->GetParentObj())
+	{
+		
+			m_pPlayer = client;
+		
+	}
 
 	Vec3 vTrans = m_pTargetBone->vecKeyFrame[m_pTargetObject->Animator3D()->GetFrameIdx()].vTranslate;
 	Vec4 qRot = m_pTargetBone->vecKeyFrame[m_pTargetObject->Animator3D()->GetFrameIdx()].qRot;

@@ -153,7 +153,7 @@ void CM_MonsterScript::update()
 		Vec3 vRot;
 
 		if (m_isTarget) {
-			for (auto client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
+			for (auto client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(2)->GetParentObj())
 			{
 				if (client->GetScript<CPlayerScript>()->GetMain())
 					m_pPlayer = client;

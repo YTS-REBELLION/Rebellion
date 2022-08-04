@@ -202,7 +202,7 @@ void CAssemblyAreaScene::init()
 	pMainCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
 	pMainCam->Camera()->SetFar(100000.f);
 	pMainCam->Camera()->SetLayerAllCheck();
-	pMainCam->Camera()->SetLayerCheck(5, false);
+	pMainCam->Camera()->SetLayerCheck(6, false);
 
 	CToolCamScript* PlayerCamScript = pMainCam->GetScript<CToolCamScript>();
 	PlayerCamScript->SetCameraToPlayer(pPlayer);
@@ -216,7 +216,7 @@ void CAssemblyAreaScene::init()
 	
 	pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHGRAPHIC);
 	pUICam->Camera()->SetFar(100.f);	
-	pUICam->Camera()->SetLayerCheck(5, true);	
+	pUICam->Camera()->SetLayerCheck(6, true);	
 	
 	FindLayer(L"Default")->AddGameObject(pUICam);
 
