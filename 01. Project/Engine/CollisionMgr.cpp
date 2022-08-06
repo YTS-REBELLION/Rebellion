@@ -8,7 +8,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "Collider2D.h"
-
+#include "TimeMgr.h"
 
 CCollisionMgr::CCollisionMgr()
 	: m_LayerCheck{}
@@ -71,6 +71,16 @@ void CCollisionMgr::CheckCollisionLayer(int _iLayerIdx1, int _iLyaerIdx2)
 
 void CCollisionMgr::CollisionLayer(const CLayer * _pLayer1, const CLayer * _pLayer2)
 {
+
+	if (m_bColCheck)
+	{
+		m_fColCheckTime += DT;
+		if (m_fColCheckTime >= 1.f)
+		{
+			m_bColCheck = false;
+		}
+	}
+
 	const vector<CGameObject*>& vecObj1 = _pLayer1->GetObjects();
 	const vector<CGameObject*>& vecObj2 = _pLayer2->GetObjects();
 
@@ -121,8 +131,15 @@ void CCollisionMgr::CollisionLayer(const CLayer * _pLayer1, const CLayer * _pLay
 					}
 					else
 					{
-						pCollider1->OnCollision(pCollider2);
-						pCollider2->OnCollision(pCollider1);
+
+						/*if (!m_bColCheck)
+						{*/
+							cout << "충돌1번만" << endl;
+
+							pCollider1->OnCollision(pCollider2);
+							pCollider2->OnCollision(pCollider1);
+							m_bColCheck = true;
+						//}
 					}					
 				}
 				// 처음 충돌했다

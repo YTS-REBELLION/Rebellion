@@ -41,7 +41,7 @@ void CSwordScript::Set_Sword_To_Fbx()
 		
 	}
 
-	Vec3 vTrans = m_pTargetBone->vecKeyFrame[m_pTargetObject->Animator3D()->GetFrameIdx()].vTranslate;
+	Vec3 vTrans = m_pTargetBone->vecKeyFrame[m_pTargetObject->Animator3D()->GetFrameIdx()].vTranslate+m_pPlayer->Transform()->GetLocalPos();
 	Vec4 qRot = m_pTargetBone->vecKeyFrame[m_pTargetObject->Animator3D()->GetFrameIdx()].qRot;
 	Vec3 vRot;
 

@@ -36,5 +36,8 @@ private:
 	bool CollisionCube(CCollider2D* _pCollider1, CCollider2D* _pCollider2);
 
 	bool CollisionSphere(CCollider2D* _pCollider1, CCollider2D* _pCollider2);
+
+	float m_fColCheckTime = 0.f;
+	bool m_bColCheck = false;
 };
 
