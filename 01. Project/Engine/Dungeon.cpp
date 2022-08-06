@@ -38,7 +38,7 @@ void CDungeonScene::init()
 	cout << "ДјРќ РЬДж" << endl;
 	GetLayer(0)->SetName(L"Default");
 	GetLayer(1)->SetName(L"Player");
-	GetLayer(2)->SetName(L"House");
+	GetLayer(2)->SetName(L"Camera");
 	GetLayer(3)->SetName(L"House");
 	GetLayer(4)->SetName(L"Portal");
 	GetLayer(5)->SetName(L"UI");
@@ -112,7 +112,7 @@ void CDungeonScene::init()
 	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Skill_1.mdat", L"MeshData\\Player_FM_Skill_1.mdat");
 	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 4, 0, 75);							// AniData Index 3
 	g_net.SetAniData(pMeshData->GetMesh());
-
+	PlayerScript->MeshRender()->SetDynamicShadow(true);
 	FindLayer(L"Player")->AddGameObject(pPlayer);
 
 
@@ -133,7 +133,7 @@ void CDungeonScene::init()
 
 	CToolCamScript* PlayerCamScript = pMainCam->GetScript<CToolCamScript>();
 	PlayerCamScript->SetCameraToPlayer(pPlayer);
-	FindLayer(L"Default")->AddGameObject(pMainCam);
+	FindLayer(L"Camera")->AddGameObject(pMainCam);
 
 	// UI Camera
 	CGameObject* pUICam = new CGameObject;

@@ -143,6 +143,9 @@ void CAssemblyAreaScene::init()
 	pPlayer = pMeshData->Instantiate();
 	pPlayer->SetName(L"FM_Player");
 	pPlayer->FrustumCheck(false);
+	
+	
+
 	pPlayer->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 	pPlayer->Transform()->SetLocalScale(Vec3(1.0f, 1.0f, 1.0f));
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), XMConvertToRadians(180.f), 0.f));
@@ -179,6 +182,9 @@ void CAssemblyAreaScene::init()
 	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 4, 0, 75);							// AniData Index 3
 	g_net.SetAniData(pMeshData->GetMesh());
 
+	Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl");
+	pPlayer->MeshRender()->SetMaterial(pMtrl, 0);
+	//pPlayer->MeshRender()->SetDynamicShadow(true);
 	FindLayer(L"Player")->AddGameObject(pPlayer);
 	
 	g_net.SetObj(pPlayer);
@@ -197,10 +203,10 @@ void CAssemblyAreaScene::init()
 
 	CToolCamScript* PlayerCamScript = pMainCam->GetScript<CToolCamScript>();
 	PlayerCamScript->SetCameraToPlayer(pPlayer);
-	FindLayer(L"Default")->AddGameObject(pMainCam);
+	FindLayer(L"UI")->AddGameObject(pMainCam);
 
 	// UI Camera
-	/*CGameObject* pUICam = new CGameObject;
+	CGameObject* pUICam = new CGameObject;
 	pUICam->SetName(L"UICam");
 	pUICam->AddComponent(new CTransform);
 	pUICam->AddComponent(new CCamera);	
@@ -209,7 +215,7 @@ void CAssemblyAreaScene::init()
 	pUICam->Camera()->SetFar(100.f);	
 	pUICam->Camera()->SetLayerCheck(5, true);	
 	
-	FindLayer(L"Default")->AddGameObject(pUICam);*/
+	FindLayer(L"UI")->AddGameObject(pUICam);
 
 	//CGameObject* pObject = nullptr;
 
@@ -281,7 +287,7 @@ void CAssemblyAreaScene::init()
 	pAS_NPC->Transform()->SetLocalPos(Vec3(300.f, 0.f, 1600.f));
 	pAS_NPC->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 	pAS_NPC->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
-
+	pAS_NPC->MeshRender()->SetMaterial(pMtrl, 0);
 	//pTest->AddComponent(new CCollider2D);
 	//pTest->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	//pTest->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
@@ -289,4 +295,48 @@ void CAssemblyAreaScene::init()
 	//pTest->Collider2D()->SetOffsetRot(Vec3(0.f, 0.f, XMConvertToRadians(-180.f)));
 
 	FindLayer(L"NPC")->AddGameObject(pAS_NPC);
+
+
+
+
+
+
+
+
+
+
+	Vec3 vScale(150.f, 150.f, 1.f);
+
+	Ptr<CTexture> arrTex[5] = { CResMgr::GetInst()->FindRes<CTexture>(L"DiffuseTargetTex")
+		, CResMgr::GetInst()->FindRes<CTexture>(L"NormalTargetTex")
+		, CResMgr::GetInst()->FindRes<CTexture>(L"PositionTargetTex")
+		, CResMgr::GetInst()->FindRes<CTexture>(L"DiffuseLightTargetTex")
+		, CResMgr::GetInst()->FindRes<CTexture>(L"SpecularLightTargetTex") };
+
+	for (UINT i = 0; i < 5; ++i)
+	{
+		CGameObject* pObject = new CGameObject;
+		pObject->SetName(L"UI Object");
+		pObject->FrustumCheck(false);	// 절두체 컬링 사용하지 않음
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
+
+		// Transform 설정
+		tResolution res = CRenderMgr::GetInst()->GetResolution();
+
+		pObject->Transform()->SetLocalPos(Vec3(-(res.fWidth / 2.f) + (vScale.x / 2.f) + (i * vScale.x)
+			, (res.fHeight / 2.f) - (vScale.y / 2.f)
+			, 1.f));
+
+		pObject->Transform()->SetLocalScale(vScale);
+
+		// MeshRender 설정
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+		pObject->MeshRender()->SetMaterial(pMtrl->Clone());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, arrTex[i].GetPointer());
+
+		// AddGameObject
+		FindLayer(L"UI")->AddGameObject(pObject);
+	}
 }
