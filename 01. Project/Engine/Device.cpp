@@ -91,7 +91,7 @@ int CDevice::init(HWND _hWnd, const tResolution& _res, bool _bWindow)
 	CreateSwapChain();
 
 	// ViewPort 만들기
-	CreateViewPort();
+	//CreateViewPort();
 
 	// RootSignature 만들기
 	CreateRootSignature();
@@ -112,8 +112,8 @@ void CDevice::render_start(float(&_arrFloat)[4])
 	// RootSignature 설정	
 	CMDLIST->SetGraphicsRootSignature(CDevice::GetInst()->GetRootSignature(ROOT_SIG_TYPE::RENDER).Get());
 
-	m_pCmdListGraphic->RSSetViewports(1, &m_tVP);
-	m_pCmdListGraphic->RSSetScissorRects(1, &m_tScissorRect);
+	//m_pCmdListGraphic->RSSetViewports(1, &m_tVP);
+	//m_pCmdListGraphic->RSSetScissorRects(1, &m_tScissorRect);
 
 	CMRT* pSwapChainMRT = CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN);
 

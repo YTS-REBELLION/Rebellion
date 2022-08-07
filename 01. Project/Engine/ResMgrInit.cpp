@@ -441,7 +441,7 @@ void CResMgr::CreateDefaultMaterial()
 		// Material °ª ¼ÂÆÃ
 		pMtrl = new CMaterial;
 		pMtrl->DisableFileSave();
-		pMtrl->SetShader(CResMgr::GetInst()->FindRes<CShader>(L"DistortionShader"));
+		pMtrl->SetShader(CResMgr::GetInst()->FindRes<CShader>(L"DistortionCharacterShader"));
 		Ptr<CTexture> pTex = CResMgr::GetInst()->FindRes<CTexture>(L"PosteffectTargetTex");
 		pMtrl->SetData(SHADER_PARAM::TEX_0, pTex.GetPointer());
 		AddRes(L"DistortionMtrl", pMtrl);

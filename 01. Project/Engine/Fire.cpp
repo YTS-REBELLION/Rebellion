@@ -42,8 +42,8 @@ void CFire::update()
 		rotation = (float)angle * 0.0174532925f;
 		XMMATRIX tempMAt = XMLoadFloat4x4(&this->Transform()->GetWorldMat());
 		tempMAt=XMMatrixRotationY(rotation);
-		XMMatrixTranslation();
-		XMMatrixMultiply();
+		/*XMMatrixTranslation();
+		XMMatrixMultiply();*/
 		
 	
 	}

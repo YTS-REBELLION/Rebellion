@@ -18,6 +18,7 @@ private:
 	UINT							m_iRTCount;
 	Ptr<CTexture>					m_pDSTex;
 	ComPtr<ID3D12DescriptorHeap>	m_pRTV;
+	
 
 	D3D12_RESOURCE_BARRIER			m_TargetToRes[8];
 	D3D12_RESOURCE_BARRIER			m_ResToTarget[8];
@@ -37,6 +38,8 @@ public:
 	Ptr<CTexture> GetRTTex(UINT _iIdx) { return m_arrRT[_iIdx].pTarget; }
 	Ptr<CTexture> GetDSTex() { return m_pDSTex; }
 
+public:
+	D3D12_VIEWPORT GetView() { return m_tVP; }
 public:
 	CMRT();
 	virtual ~CMRT();

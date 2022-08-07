@@ -184,7 +184,8 @@ void CAssemblyAreaScene::init()
 
 	Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl");
 	pPlayer->MeshRender()->SetMaterial(pMtrl, 0);
-	//pPlayer->MeshRender()->SetDynamicShadow(true);
+	pPlayer->MeshRender()->SetDynamicShadow(true);
+
 	FindLayer(L"Player")->AddGameObject(pPlayer);
 	
 	g_net.SetObj(pPlayer);
@@ -288,12 +289,15 @@ void CAssemblyAreaScene::init()
 	pAS_NPC->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 	pAS_NPC->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 	pAS_NPC->MeshRender()->SetMaterial(pMtrl, 0);
+	pAS_NPC->MeshRender()->SetMaterial(pMtrl, 1);
+	pAS_NPC->MeshRender()->SetMaterial(pMtrl, 2);
+	pAS_NPC->MeshRender()->SetMaterial(pMtrl, 3);
 	//pTest->AddComponent(new CCollider2D);
 	//pTest->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	//pTest->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	//pTest->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 	//pTest->Collider2D()->SetOffsetRot(Vec3(0.f, 0.f, XMConvertToRadians(-180.f)));
-
+	pAS_NPC->MeshRender()->SetDynamicShadow(true);
 	FindLayer(L"NPC")->AddGameObject(pAS_NPC);
 
 

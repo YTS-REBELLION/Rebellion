@@ -833,34 +833,34 @@ void CPlayerScript::update()
 			}
 		}
 
-		//마나달기 UI
-		pManaobj->SetDead();
-		Ptr<CTexture> pMana = CResMgr::GetInst()->Load<CTexture>(L"Mana", L"Texture\\HpUi\\Mana.png");
+		////마나달기 UI
+		//pManaobj->SetDead();
+		//Ptr<CTexture> pMana = CResMgr::GetInst()->Load<CTexture>(L"Mana", L"Texture\\HpUi\\Mana.png");
 
 
-		tResolution res = CRenderMgr::GetInst()->GetResolution();
-		CGameObject* pObject = new CGameObject;
-		Ptr<CMaterial>  pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
-		pObject = new CGameObject;
-		pObject->SetName(L"MpUi");
-		pObject->FrustumCheck(false);
-		pObject->AddComponent(new CTransform);
-		pObject->AddComponent(new CMeshRender);
-		ftempmp = fdamage * 2;
-		pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 2.f) - (res.fWidth / 1.5f) - ftempmp, res.fHeight / 2.7f, 1.f));
-		pObject->Transform()->SetLocalScale(MpUiScale);
+		//tResolution res = CRenderMgr::GetInst()->GetResolution();
+		//CGameObject* pObject = new CGameObject;
+		//Ptr<CMaterial>  pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+		//pObject = new CGameObject;
+		//pObject->SetName(L"MpUi");
+		//pObject->FrustumCheck(false);
+		//pObject->AddComponent(new CTransform);
+		//pObject->AddComponent(new CMeshRender);
+		//ftempmp = fdamage * 2;
+		//pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 2.f) - (res.fWidth / 1.5f) - ftempmp, res.fHeight / 2.7f, 1.f));
+		//pObject->Transform()->SetLocalScale(MpUiScale);
 
-		//MeshRender 설정
+		////MeshRender 설정
 
-		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 
-		pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
-		pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
-		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pMana.GetPointer());
+		//pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+		//pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+		//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pMana.GetPointer());
 
-		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
-		pManaobj = pObject;
+		//// AddGameObject
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+		//pManaobj = pObject;
 
 
 		if (m_bMeteor2)
