@@ -1286,6 +1286,23 @@ void CPlayerScript::Swing()
 
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+
+
+
+	CGameObject* pObject = new CGameObject;
+	pObject->SetName(L"Particle");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CParticleSystem);
+	pObject->Particlesystem()->SetFrequency(2.f);
+	pObject->Particlesystem()->SetType(false);
+	pObject->Particlesystem()->SetMaxParticle(10);
+	pObject->AddComponent(new CParticleScript);
+	pObject->GetScript<CParticleScript>()->SetLifeTime(pObject->Particlesystem()->GetMaxLifeTime());
+	pObject->FrustumCheck(false);
+	Vec3 particlePos = Vec3(200.f, 300.f, 100.f);
+	pObject->Transform()->SetLocalPos(particlePos);
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
 }
 
 void CPlayerScript::Sting()

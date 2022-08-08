@@ -32,6 +32,7 @@
 #include "ToolCamScript.h"
 #include"Fire.h"
 #include"ParticleSystem.h"
+#include"ParticleScript.h"
 #include"Boss.h"
 
 
@@ -248,28 +249,7 @@ void CAssemblyAreaScene::init()
 	//FindLayer(L"Default")->AddGameObject(pObject);
 
 
-
-
-
-	////	비
-	//pObject = new CGameObject;
-	//pObject->SetName(L"Rain");
-	//pObject->AddComponent(new CTransform);
-	//pObject->AddComponent(new CParticleSystem);
-	////pObject->Particlesystem()->SetFrequency(2.f);
-	//pObject->Particlesystem()->SetType(true);
-	////pObject->Particlesystem()->SetMaxParticle(10);
-	//pObject->FrustumCheck(false);
-
-	//Vec3 particlePos = Vec3(100.f, 300.f, 10.f);
-
-	//pObject->Transform()->SetLocalPos(particlePos);
-	//FindLayer(L"Default")->AddGameObject(pObject);
-
-
-
-
-	
+		
 
 	// ===================
 	// NPC 로드
@@ -302,6 +282,7 @@ void CAssemblyAreaScene::init()
 
 
 
+	
 
 
 
@@ -309,38 +290,38 @@ void CAssemblyAreaScene::init()
 
 
 
-	Vec3 vScale(150.f, 150.f, 1.f);
+	//Vec3 vScale(150.f, 150.f, 1.f);
 
-	Ptr<CTexture> arrTex[5] = { CResMgr::GetInst()->FindRes<CTexture>(L"DiffuseTargetTex")
-		, CResMgr::GetInst()->FindRes<CTexture>(L"NormalTargetTex")
-		, CResMgr::GetInst()->FindRes<CTexture>(L"PositionTargetTex")
-		, CResMgr::GetInst()->FindRes<CTexture>(L"DiffuseLightTargetTex")
-		, CResMgr::GetInst()->FindRes<CTexture>(L"SpecularLightTargetTex") };
+	//Ptr<CTexture> arrTex[5] = { CResMgr::GetInst()->FindRes<CTexture>(L"DiffuseTargetTex")
+	//	, CResMgr::GetInst()->FindRes<CTexture>(L"NormalTargetTex")
+	//	, CResMgr::GetInst()->FindRes<CTexture>(L"PositionTargetTex")
+	//	, CResMgr::GetInst()->FindRes<CTexture>(L"DiffuseLightTargetTex")
+	//	, CResMgr::GetInst()->FindRes<CTexture>(L"SpecularLightTargetTex") };
 
-	for (UINT i = 0; i < 5; ++i)
-	{
-		CGameObject* pObject = new CGameObject;
-		pObject->SetName(L"UI Object");
-		pObject->FrustumCheck(false);	// 절두체 컬링 사용하지 않음
-		pObject->AddComponent(new CTransform);
-		pObject->AddComponent(new CMeshRender);
+	//for (UINT i = 0; i < 5; ++i)
+	//{
+	//	CGameObject* pObject = new CGameObject;
+	//	pObject->SetName(L"UI Object");
+	//	pObject->FrustumCheck(false);	// 절두체 컬링 사용하지 않음
+	//	pObject->AddComponent(new CTransform);
+	//	pObject->AddComponent(new CMeshRender);
 
-		// Transform 설정
-		tResolution res = CRenderMgr::GetInst()->GetResolution();
+	//	// Transform 설정
+	//	tResolution res = CRenderMgr::GetInst()->GetResolution();
 
-		pObject->Transform()->SetLocalPos(Vec3(-(res.fWidth / 2.f) + (vScale.x / 2.f) + (i * vScale.x)
-			, (res.fHeight / 2.f) - (vScale.y / 2.f)
-			, 1.f));
+	//	pObject->Transform()->SetLocalPos(Vec3(-(res.fWidth / 2.f) + (vScale.x / 2.f) + (i * vScale.x)
+	//		, (res.fHeight / 2.f) - (vScale.y / 2.f)
+	//		, 1.f));
 
-		pObject->Transform()->SetLocalScale(vScale);
+	//	pObject->Transform()->SetLocalScale(vScale);
 
-		// MeshRender 설정
-		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-		Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
-		pObject->MeshRender()->SetMaterial(pMtrl->Clone());
-		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, arrTex[i].GetPointer());
+	//	// MeshRender 설정
+	//	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	//	Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+	//	pObject->MeshRender()->SetMaterial(pMtrl->Clone());
+	//	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, arrTex[i].GetPointer());
 
-		// AddGameObject
-		FindLayer(L"UI")->AddGameObject(pObject);
-	}
+	//	// AddGameObject
+	//	FindLayer(L"UI")->AddGameObject(pObject);
+	//}
 }
