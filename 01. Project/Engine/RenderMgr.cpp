@@ -138,7 +138,8 @@ void CRenderMgr::render_lights()
 	m_arrMRT[(UINT)MRT_TYPE::LIGHT]->OMSet();
 
 	// 광원을 그린다.
-	CCamera* pMainCam = CRenderMgr::GetInst()->GetMainCam();
+	CCamera* pMainCam = nullptr;
+	pMainCam=CRenderMgr::GetInst()->GetMainCam();
 	if (nullptr == pMainCam)
 		return;
 

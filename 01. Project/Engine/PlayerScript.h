@@ -9,25 +9,25 @@ class CPlayerScript :
 	public CScript
 {
 public:
-	
+
 
 private:
 
-	
+
 
 	CGameObject* m_pQuestComplete = nullptr;
-	CGameObject* m_pQuestBoxExplane1= nullptr;
-	CGameObject* m_pQuestBoxExplane2= nullptr;
-	CGameObject* m_pQuestBoxExplane3= nullptr;
-	CGameObject* m_pQuestBoxExplane4= nullptr;
-	CGameObject* m_pQuestBoxExplane5= nullptr;
-	CGameObject* m_pQuestBoxExplane6= nullptr;
-	CGameObject* m_pQuestBoxExplane7= nullptr;
-	CGameObject* m_pQuestBoxExplane8= nullptr;
+	CGameObject* m_pQuestBoxExplane1 = nullptr;
+	CGameObject* m_pQuestBoxExplane2 = nullptr;
+	CGameObject* m_pQuestBoxExplane3 = nullptr;
+	CGameObject* m_pQuestBoxExplane4 = nullptr;
+	CGameObject* m_pQuestBoxExplane5 = nullptr;
+	CGameObject* m_pQuestBoxExplane6 = nullptr;
+	CGameObject* m_pQuestBoxExplane7 = nullptr;
+	CGameObject* m_pQuestBoxExplane8 = nullptr;
 
-	CGameObject* m_pQuestBox1= nullptr;
-	CGameObject* m_pQuestBox2= nullptr;
-	CGameObject* m_pQuestBox3= nullptr;
+	CGameObject* m_pQuestBox1 = nullptr;
+	CGameObject* m_pQuestBox2 = nullptr;
+	CGameObject* m_pQuestBox3 = nullptr;
 
 	CGameObject* m_pQuestBox2_1 = nullptr;
 	CGameObject* m_pQuestBox2_2 = nullptr;
@@ -49,7 +49,7 @@ private:
 	bool				m_bSkill;
 	bool				m_bCol;
 	sc_packet_move* m_movePacketTemp = nullptr;
-	
+
 	int					m_targetId;
 	bool				m_isTarget;
 
@@ -62,7 +62,7 @@ private:
 
 	bool				m_bColCheck = false;
 
-	DeadReckoning*		m_DeadReckoner;
+	DeadReckoning* m_DeadReckoner;
 
 	vector<tMTAnimClip>			m_pVecAnimClip;
 
@@ -126,13 +126,13 @@ private:
 	float fdamage = 0.f;
 	float ftempmp = 0.f;
 public:
-	virtual void awake();	
+	virtual void awake();
 	virtual void update();
 
 	void init();
 
 	void SetPlayerAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame);
-	
+
 	void SetPlayerAnimation(const int& i);
 	void SetPlayerAnimation(int other_id, int i);
 
@@ -152,8 +152,8 @@ public:
 	void SetTargetID(const int& targetID) { m_targetId = targetID; }
 	void SetTarget(const bool& isTarget) { m_isTarget = isTarget; }
 	int GetTargetId() const { return m_targetId; }
-	bool GetTarget() const {return m_isTarget;}
-	void SetAttack() { 
+	bool GetTarget() const { return m_isTarget; }
+	void SetAttack() {
 		if (m_bAttack) {
 			m_bAttack = false;
 		}
@@ -185,7 +185,7 @@ public:
 	void Meteor();
 	void Delete_Meteor();
 	void Set_MagicJin(CGameObject* p) { pMagicJinpp = p; };
-	
+
 
 	bool GetAttack() { return m_bAttack; }
 	bool GetSkill() { return m_bSkill; }

@@ -4,13 +4,14 @@
 #include "RenderMgr.h"
 #include "Animator3D.h"
 #include "PlayerScript.h"
+#include "SwordScript.h"
 
 CMonsterScript::CMonsterScript()
 	: CScript((UINT)SCRIPT_TYPE::MONSTERSCRIPT)
 	, m_pOriginMtrl(nullptr)
 	, m_pCloneMtrl(nullptr)
 	, m_Is_Move(false)
-	,m_Is_Attack(false)
+	, m_Is_Attack(false)
 	, m_bHit(false)
 	, m_iCulidx(0)
 	, m_bAniOk(false)
@@ -24,6 +25,33 @@ CMonsterScript::~CMonsterScript()
 {
 }
 
+
+void CMonsterScript::init()
+{
+	// ===================
+	// Sword 파일 로드
+	// ===================
+	CGameObject* pSwordObject = new CGameObject;
+
+	Ptr<CMeshData>pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
+
+	pSwordObject = pMeshData->Instantiate();
+	pSwordObject->SetName(L"FM_Monster_Sword");
+	pSwordObject->FrustumCheck(false);
+	pSwordObject->Transform()->SetLocalScale(Vec3(0.25f, 0.25f, 0.25f));
+	pSwordObject->AddComponent(new CCollider2D);
+
+	pSwordObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pSwordObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pSwordObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+
+	pSwordObject->AddComponent(new CSwordScript);
+	CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
+	pSwordObject->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::FM_MONSTER, GetObj(), 18);
+
+	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", pSwordObject, false);
+	GetObj()->AddChild(pSwordObject);
+}
 
 void CMonsterScript::awake()
 {
@@ -57,12 +85,12 @@ void CMonsterScript::update()
 	float fDistanceP_M = Vec3::Distance(CSceneMgr::GetInst()->m_vSavePos, localPos);
 	CMonsterScript* Monster = GetObj()->GetScript<CMonsterScript>();
 	const vector<CGameObject*>& vecObject = CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetObjects();
-	
+
 	//m_fAngle = acosf(Dot(vDirFront, Monster_Dir) / (Length(vDirFront) * Length(Monster_Dir)));
 	Vec3 vRot;
 
 	if (m_isTarget) {
-		for (auto& client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
+		for (auto& client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(2)->GetParentObj())
 		{
 			if (client->GetScript<CPlayerScript>()->GetID() == m_targetId)
 			{
@@ -76,7 +104,7 @@ void CMonsterScript::update()
 
 
 	vRot = Vec3(localRot.x, m_fAngle, localRot.z);
-	
+
 	Monster->Transform()->SetLocalRot(vRot);
 
 	if (m_Is_Move) {
@@ -238,12 +266,12 @@ void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 {
 	if (_pOther->GetObj()->GetName() == L"Player_Sword")
 	{
-		//cout << "검과 충돌1" << endl;
+		cout << "검과 충돌1" << endl;
 		m_bHit = true;
 		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
 
 	}
-	if (_pOther->GetObj()->GetName() == L"Player1")
+	if (_pOther->GetObj()->GetName() == L"FM_Player")
 	{
 		//cout << "플레이어와 충돌" << endl;
 	}
@@ -260,13 +288,13 @@ void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 void CMonsterScript::OnCollision(CCollider2D* _pOther)
 {
 	//m_fHp -= 4.f;
-	if (_pOther->GetObj()->GetName() == L"Player1")
+	if (_pOther->GetObj()->GetName() == L"FM_Player")
 	{
 		//cout << "플레이어와 충돌" << endl;
 	}
 	else if (_pOther->GetObj()->GetName() == L"Player_Sword")
 	{
-		//cout << "검과 충돌2" << endl;
+		cout << "검과 충돌2" << endl;
 		//m_bHit = true;
 		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
 
@@ -282,7 +310,7 @@ void CMonsterScript::OnCollision(CCollider2D* _pOther)
 	{
 		//cout << "몬스터 사망" << endl;
 		GetObj()->SetDead();
-		
+
 	}
 }
 
@@ -290,7 +318,7 @@ void CMonsterScript::OnCollisionExit(CCollider2D* _pOther)
 {
 	if (_pOther->GetObj()->GetName() == L"Player_Sword")
 	{
-		//cout << "검과 충돌 해제" << endl;
+		cout << "검과 충돌 해제" << endl;
 	}
 	else if (_pOther->GetObj()->GetName() == L"FM_Monster")
 	{

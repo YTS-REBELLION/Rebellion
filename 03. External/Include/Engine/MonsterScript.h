@@ -11,20 +11,20 @@ private:
 	vector<Ptr<CMesh>>	m_pAniData;
 	Vec3				m_vecPlayerDir;
 	float				m_fSpeed = 100.f;
-	
+
 	bool				m_Is_Move;
 	bool				m_Is_Attack;
 	bool				m_bHit;
 
 	bool				m_bAniOk;
 
-	sc_packet_move*		  m_movePacketTemp = nullptr;
+	sc_packet_move* m_movePacketTemp = nullptr;
 	sc_packet_npc_attack* m_attackPacket = nullptr;
 	float				m_vecAniClipTime[5]{};
 	int					m_iCulidx;
 
 	bool				FirstPacket = false;
-	
+
 	bool				isDir = false;
 	int					m_id;
 	bool				m_isMain;
@@ -34,8 +34,8 @@ private:
 
 	bool				m_colEnter = false;
 
-	float				m_fMaxHp=1200.f;
-	float				m_fHp=0.f;
+	float				m_fMaxHp = 1200.f;
+	float				m_fHp = 0.f;
 
 	vector<tMTAnimClip>			m_pVecAnimClip;
 
@@ -49,6 +49,7 @@ private:
 	bool		m_bColCheck = false;
 
 public:
+	void init();
 	virtual void awake();
 	virtual void update();
 
@@ -79,12 +80,12 @@ public:
 	void SetTargetID(const int& targetID) { m_targetId = targetID; }
 	void SetTarget(const bool& isTarget) { m_isTarget = isTarget; }
 	void SetNor(Vec3 nor) { Monster_Dir = nor; }
-	
+
 	int GetID() { return m_id; }
 	void SetID(const int& id) { m_id = id; }
 
 	CGameObject* m_pPlayer;
-	
+
 	void SetLerpPos(Vec3 Pos) { LerpPos = Pos; }
 	Vec3 GetLerpPos() { return LerpPos; }
 	void UpdateLerpPos();

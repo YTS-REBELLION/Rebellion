@@ -499,17 +499,9 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl->SetShader(FindRes<CShader>(L"ParticleUpdateShader"));
 	Ptr<CTexture> pNoiseTex = Load<CTexture>(L"Texture\\noise.png", L"Texture\\noise.png");
 	pMtrl->SetData(SHADER_PARAM::TEX_0, pNoiseTex.GetPointer());
-	pMtrl->SetData(SHADER_PARAM::VEC2_0, &Vec2(pNoiseTex->Width(), pNoiseTex->Height()));
+	pMtrl->SetData(SHADER_PARAM::VEC2_0, &Vec2(pNoiseTex->Width(),pNoiseTex->Height()));
 	AddRes(L"ParticleUpdateMtrl", pMtrl);
 
-	// Particle Update
-	pMtrl = new CMaterial;
-	pMtrl->DisableFileSave();
-	pMtrl->SetShader(FindRes<CShader>(L"RainUpdateShader"));
-	//Ptr<CTexture> pNoiseTex = Load<CTexture>(L"Texture\\noise.png", L"Texture\\noise.png");
-	pMtrl->SetData(SHADER_PARAM::TEX_0, pNoiseTex.GetPointer());
-	pMtrl->SetData(SHADER_PARAM::VEC2_0, &Vec2(pNoiseTex->Width(), pNoiseTex->Height()));
-	AddRes(L"RainUpdateMtrl", pMtrl);
 
 
 

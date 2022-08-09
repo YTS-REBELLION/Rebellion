@@ -37,12 +37,14 @@ void CDungeonScene::init()
 {
 	cout << "던전 이닛" << endl;
 	GetLayer(0)->SetName(L"Default");
-	GetLayer(1)->SetName(L"Player");
-	GetLayer(2)->SetName(L"Camera");
-	GetLayer(3)->SetName(L"Map");
+	GetLayer(1)->SetName(L"Sword");
+	GetLayer(2)->SetName(L"Player");
+	GetLayer(3)->SetName(L"House");
 	GetLayer(4)->SetName(L"Portal");
 	GetLayer(5)->SetName(L"UI");
-	GetLayer(6)->SetName(L"Boss");
+	GetLayer(6)->SetName(L"Monster");
+	GetLayer(7)->SetName(L"Boss");
+	GetLayer(8)->SetName(L"Player_Skill");
 	// ====================
 	// 3D Light Object 추가
 	// ====================
@@ -136,7 +138,7 @@ void CDungeonScene::init()
 
 	CToolCamScript* PlayerCamScript = pMainCam->GetScript<CToolCamScript>();
 	PlayerCamScript->SetCameraToPlayer(pPlayer);
-	FindLayer(L"Camera")->AddGameObject(pMainCam);
+	FindLayer(L"Default")->AddGameObject(pMainCam);
 
 	// UI Camera
 	CGameObject* pUICam = new CGameObject;
@@ -182,4 +184,15 @@ void CDungeonScene::init()
 
 		}
 	}
+
+
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player_Skill");
+
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Sword");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Player");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Player_Skill");
+
+
 }

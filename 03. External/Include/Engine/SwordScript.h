@@ -36,7 +36,7 @@ public:
 
 	CSwordScript();
 	virtual ~CSwordScript();
-
+	CGameObject* m_pPlayer;
 public:
 	CLONE(CSwordScript);
 };
