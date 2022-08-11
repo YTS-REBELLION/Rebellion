@@ -32,7 +32,7 @@ void CMeshRender::render()
 		Transform()->UpdateData();
 
 		// Animator3D 컴포넌트가 있는 경우...
-		if (Animator3D() && Animator3D()->GetAniUse() == true)
+		if (Animator3D() )
 		{
 			Animator3D()->UpdateData();
 			a = 1;
@@ -44,7 +44,7 @@ void CMeshRender::render()
 
 		a = 0;
 		m_vecMtrl[i]->SetData(SHADER_PARAM::INT_0, &a); // Animation Mesh 알리기
-		m_vecMtrl[i]->SetData(SHADER_PARAM::INT_3, &a); // Animation Mesh 알리기
+		//m_vecMtrl[i]->SetData(SHADER_PARAM::INT_3, &a); // Animation Mesh 알리기
 	}
 }
 //

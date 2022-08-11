@@ -31,7 +31,7 @@ CPlayerScript::CPlayerScript()
 	, m_bAttack(false)
 	, m_iCulidx(0)
 	, m_isTarget(false)
-{	
+{
 }
 
 CPlayerScript::~CPlayerScript()
@@ -55,8 +55,8 @@ void CPlayerScript::init()
 	pSwordObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pSwordObject->AddComponent(new CCollider2D);
 	pSwordObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	pSwordObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	pSwordObject->Collider2D()->SetOffsetScale(Vec3(140.f, 140.f, 140.f));
+	pSwordObject->Collider2D()->SetOffsetPos(Vec3(0.f, 50.f, 0.f));
+	pSwordObject->Collider2D()->SetOffsetScale(Vec3(20.f, 140.f, 20.f));
 
 	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
 	pSwordObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, SwordObject.GetPointer());
@@ -80,7 +80,7 @@ void CPlayerScript::init()
 
 	tResolution res = CRenderMgr::GetInst()->GetResolution();
 	CGameObject* pObject = new CGameObject;
-	
+
 	//체력 UI
 	pObject = new CGameObject;
 	pObject->SetName(L"HpUi");
@@ -143,7 +143,7 @@ void CPlayerScript::init()
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
 
 
-	 pObject = new CGameObject;
+	pObject = new CGameObject;
 
 	pObject = new CGameObject;
 	pObject->SetName(L"MpUi");
@@ -167,7 +167,7 @@ void CPlayerScript::init()
 
 	pManaobj = pObject;
 
-	
+
 
 
 	pObject = new CGameObject;
@@ -190,7 +190,7 @@ void CPlayerScript::init()
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
 
-	
+
 
 
 	pObject = new CGameObject;
@@ -826,34 +826,34 @@ void CPlayerScript::update()
 			}
 		}
 
-		//마나달기 UI
-		pManaobj->SetDead();
-		Ptr<CTexture> pMana = CResMgr::GetInst()->Load<CTexture>(L"Mana", L"Texture\\HpUi\\Mana.png");
+		////마나달기 UI
+		//pManaobj->SetDead();
+		//Ptr<CTexture> pMana = CResMgr::GetInst()->Load<CTexture>(L"Mana", L"Texture\\HpUi\\Mana.png");
 
 
-		tResolution res = CRenderMgr::GetInst()->GetResolution();
-		CGameObject* pObject = new CGameObject;
-		Ptr<CMaterial>  pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
-		pObject = new CGameObject;
-		pObject->SetName(L"MpUi");
-		pObject->FrustumCheck(false);
-		pObject->AddComponent(new CTransform);
-		pObject->AddComponent(new CMeshRender);
-		ftempmp = fdamage * 2;
-		pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 2.f) - (res.fWidth / 1.5f) - ftempmp, res.fHeight / 2.7f, 1.f));
-		pObject->Transform()->SetLocalScale(MpUiScale);
+		//tResolution res = CRenderMgr::GetInst()->GetResolution();
+		//CGameObject* pObject = new CGameObject;
+		//Ptr<CMaterial>  pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+		//pObject = new CGameObject;
+		//pObject->SetName(L"MpUi");
+		//pObject->FrustumCheck(false);
+		//pObject->AddComponent(new CTransform);
+		//pObject->AddComponent(new CMeshRender);
+		//ftempmp = fdamage * 2;
+		//pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 2.f) - (res.fWidth / 1.5f) - ftempmp, res.fHeight / 2.7f, 1.f));
+		//pObject->Transform()->SetLocalScale(MpUiScale);
 
-		//MeshRender 설정
+		////MeshRender 설정
 
-		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 
-		pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
-		pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
-		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pMana.GetPointer());
+		//pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+		//pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+		//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pMana.GetPointer());
 
-		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
-		pManaobj = pObject;
+		//// AddGameObject
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+		//pManaobj = pObject;
 
 
 		if (m_bMeteor2)
@@ -974,7 +974,7 @@ void CPlayerScript::SetOtherMovePacket(sc_packet_move* p, const float& rtt)
 	m_movePacketTemp = new sc_packet_move;
 
 	m_movePacketTemp = p;
-	
+
 }
 
 void CPlayerScript::AnimationPlay(const PLAYER_ANI_TYPE& type)
@@ -1051,7 +1051,7 @@ void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
 
 void CPlayerScript::OnCollision(CCollider2D* _pOther)
 {
-	if (_pOther->GetObj()->GetName() == L"M_Monster" 
+	if (_pOther->GetObj()->GetName() == L"M_Monster"
 		|| _pOther->GetObj()->GetName() == L"M_Monster2"
 		|| _pOther->GetObj()->GetName() == L"Map Object"
 		)
@@ -1061,12 +1061,12 @@ void CPlayerScript::OnCollision(CCollider2D* _pOther)
 		Vec3 dir_vec = m_pColObj->Transform()->GetLocalDir(DIR_TYPE::RIGHT);
 		//cout << "충돌" << endl;
 
-	
+
 	}
-	
-	
-	
-	
+
+
+
+
 
 }
 
@@ -1107,7 +1107,7 @@ void CPlayerScript::SwordStrike()
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));*/
 
 	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
 
 	m_pSwordStrike = pPMeshData->Instantiate();
@@ -1126,7 +1126,7 @@ void CPlayerScript::SwordStrike()
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));*/
 
 	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
 	m_pSwordStrike = pPMeshData->Instantiate();
 	m_pSwordStrike->SetName(L"SwordStike");
@@ -1144,7 +1144,7 @@ void CPlayerScript::SwordStrike()
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));*/
 
 	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 }
 
 void CPlayerScript::MegaSlash()
@@ -1175,7 +1175,7 @@ void CPlayerScript::MegaSlash()
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(300.f, 300.f, 300.f));
 
 	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
 
 }
@@ -1208,7 +1208,7 @@ void CPlayerScript::Swing()
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
 
 	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
 	//// ====================
 	////  오브젝트 생성
@@ -1234,7 +1234,7 @@ void CPlayerScript::Swing()
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
 
 	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
 	//// ====================
 	////  오브젝트 생성
@@ -1260,7 +1260,7 @@ void CPlayerScript::Swing()
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
 
 	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
 	//// ====================
 	////  오브젝트 생성
@@ -1286,7 +1286,24 @@ void CPlayerScript::Swing()
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
 
 	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
+
+
+
+	CGameObject* pObject = new CGameObject;
+	pObject->SetName(L"Particle");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CParticleSystem);
+	pObject->Particlesystem()->SetFrequency(2.f);
+	pObject->Particlesystem()->SetType(false);
+	pObject->Particlesystem()->SetMaxParticle(10);
+	pObject->AddComponent(new CParticleScript);
+	pObject->GetScript<CParticleScript>()->SetLifeTime(pObject->Particlesystem()->GetMaxLifeTime());
+	pObject->FrustumCheck(false);
+	Vec3 particlePos = Vec3(200.f, 300.f, 100.f);
+	pObject->Transform()->SetLocalPos(particlePos);
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(pObject);
+
 }
 
 void CPlayerScript::Sting()
@@ -1317,7 +1334,7 @@ void CPlayerScript::Sting()
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 }
 
 void CPlayerScript::FireBall()
@@ -1377,7 +1394,7 @@ void CPlayerScript::UnleashedPower()
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
 
 	m_pSwordStrike = new CGameObject;
@@ -1401,7 +1418,7 @@ void CPlayerScript::UnleashedPower()
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
 
 	m_pSwordStrike = new CGameObject;
@@ -1425,7 +1442,7 @@ void CPlayerScript::UnleashedPower()
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
 
 	m_pSwordStrike = new CGameObject;
@@ -1449,7 +1466,7 @@ void CPlayerScript::UnleashedPower()
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
 
 	m_pSwordStrike = new CGameObject;
@@ -1473,7 +1490,7 @@ void CPlayerScript::UnleashedPower()
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 }
 
 void CPlayerScript::Meteor()
@@ -1501,7 +1518,7 @@ void CPlayerScript::Meteor()
 
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pMagicJin);
-	
+
 
 
 
@@ -1530,7 +1547,7 @@ void CPlayerScript::Meteor()
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
 
 	Set_MagicJin(pMagicJin);
@@ -1695,6 +1712,6 @@ void CPlayerScript::QuestDone(QUEST questNum)
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
 	m_pQuestComplete = pObject;
-	
-	
+
+
 }

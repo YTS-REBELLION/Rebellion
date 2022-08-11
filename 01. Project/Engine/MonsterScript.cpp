@@ -11,7 +11,7 @@ CMonsterScript::CMonsterScript()
 	, m_pOriginMtrl(nullptr)
 	, m_pCloneMtrl(nullptr)
 	, m_Is_Move(false)
-	,m_Is_Attack(false)
+	, m_Is_Attack(false)
 	, m_bHit(false)
 	, m_iCulidx(0)
 	, m_bAniOk(false)
@@ -85,7 +85,7 @@ void CMonsterScript::update()
 	float fDistanceP_M = Vec3::Distance(CSceneMgr::GetInst()->m_vSavePos, localPos);
 	CMonsterScript* Monster = GetObj()->GetScript<CMonsterScript>();
 	const vector<CGameObject*>& vecObject = CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetObjects();
-	
+
 	//m_fAngle = acosf(Dot(vDirFront, Monster_Dir) / (Length(vDirFront) * Length(Monster_Dir)));
 	Vec3 vRot;
 
@@ -104,7 +104,7 @@ void CMonsterScript::update()
 
 
 	vRot = Vec3(localRot.x, m_fAngle, localRot.z);
-	
+
 	Monster->Transform()->SetLocalRot(vRot);
 
 	if (m_Is_Move) {
@@ -317,7 +317,7 @@ void CMonsterScript::OnCollision(CCollider2D* _pOther)
 	{
 		//cout << "¸ó½ºÅÍ »ç¸Á" << endl;
 		GetObj()->SetDead();
-		
+
 	}
 }
 

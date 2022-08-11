@@ -587,8 +587,15 @@
       <Filter>ShaderCode</Filter>
     </FxCompile>
     <FxCompile Include="fire.fx" />
-    <FxCompile Include="particle.fx" />
-    <FxCompile Include="rain.fx" />
+    <FxCompile Include="posteffect.fx">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="particle.fx">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="rain.fx">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">

@@ -86,7 +86,7 @@ void CNetwork::Connect()
 	recvAddr.sin_family = AF_INET;
 	//recvAddr.sin_addr.s_addr = inet_addr(SERVER_IP);
 	inet_pton(AF_INET, SERVER_IP, &(recvAddr.sin_addr));
-	
+
 	recvAddr.sin_port = htons(SERVER_PORT);
 
 	if (connect(g_socket, (SOCKADDR*)&recvAddr, sizeof(recvAddr)) == SOCKET_ERROR)
@@ -117,8 +117,8 @@ void CNetwork::Connect()
 
 void CNetwork::Receive()
 {
-	
-	EXOVER*	 dataBuf = new EXOVER{};
+
+	EXOVER* dataBuf = new EXOVER{};
 	DWORD	 recvByte = 0;
 	DWORD	 flags = 0;
 	dataBuf->over = _overlapped;
@@ -136,9 +136,9 @@ void CNetwork::Receive()
 	{
 		//pass
 	}
-	
+
 	Process_Data(recvbuf, retbytesize);
-	
+
 
 
 }
@@ -162,7 +162,7 @@ void CNetwork::ProcessPacket(char* ptr)
 
 		g_myid = p->id;
 		m_pObj->Transform()->SetLocalPos(Vec3(p->x, p->y, p->z));
-		
+
 		GameObject.emplace(g_myid, m_pObj);
 		GameObject.find(g_myid)->second->SetID(g_myid);
 
@@ -305,7 +305,7 @@ void CNetwork::ProcessPacket(char* ptr)
 				GameObject.find(id)->second->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, XMConvertToRadians(-90.f)));
 
 				GameObject.find(id)->second->AddComponent(new CCollider2D);
-				GameObject.find(id)->second->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+				GameObject.find(id)->second->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 				GameObject.find(id)->second->Collider2D()->SetOffsetPos(Vec3(-120.f, 15.f, 0.f));
 				GameObject.find(id)->second->Collider2D()->SetOffsetScale(Vec3(45.f, 35.f, 25.f));
 
@@ -430,14 +430,14 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 		}
 		else
-		{ 
+		{
 			if (CheckType(other_id) == OBJECT_TYPE::PLAYER)
 			{
 				GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetBisFrist(true);
 
 				if (packet->status)
-					GameObject.find(other_id)->second->GetScript<CPlayerScript>()->AnimationPlay(other_id, PLAYER_ANI_TYPE::WALK);			
+					GameObject.find(other_id)->second->GetScript<CPlayerScript>()->AnimationPlay(other_id, PLAYER_ANI_TYPE::WALK);
 			}
 			else if (CheckType(other_id) == OBJECT_TYPE::FM_MONSTER)
 			{
@@ -476,7 +476,7 @@ void CNetwork::ProcessPacket(char* ptr)
 			}
 		}
 	}
-	break;
+					   break;
 	case SC_PACKET_ROTATE: {
 		sc_packet_rotate* packet = reinterpret_cast<sc_packet_rotate*>(ptr);
 
@@ -523,7 +523,7 @@ void CNetwork::ProcessPacket(char* ptr)
 		int monsterId = packet->id;
 
 		CMonsterScript* monsterScr = GameObject.find(monsterId)->second->GetScript<CMonsterScript>();
-	
+
 		//GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->SetDirChange(false);
 		if (monsterId == 141)
 		{
@@ -536,7 +536,7 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->SetAttack(packet->isAttack);
 			GameObject.find(monsterId)->second->GetScript<CMonsterScript>()->AnimationPlay(MONSTER_ANI_TYPE::ATTACK);
 		}
-		
+
 		break;
 	}
 	case SC_PACKET_TARGET: {
@@ -552,7 +552,7 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.find(packet->monster_id)->second->GetScript<CMonsterScript>()->SetTargetID(packet->id);
 
 		}
-		
+
 		break;
 	}
 	case SC_PACKET_QUESTDONE: {
@@ -585,11 +585,11 @@ void CNetwork::ProcessPacket(char* ptr)
 	}
 	case SC_PACKET_QUESTSTART: {
 		sc_packet_queststart* packet = reinterpret_cast<sc_packet_queststart*>(ptr);
-			
+
 		cout << "클라이언트 퀘스트 시작하세요" << endl;
 		GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestCnt(QUEST::FIRST);
 		GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestInit(QUEST::FIRST);
-		
+
 		break;
 	}
 	case SC_PACKET_WAITROOM: {
@@ -615,14 +615,14 @@ void CNetwork::ProcessPacket(char* ptr)
 		GameObject.find(p->id)->second->GetScript<CPlayerScript>()->SetMain();
 
 		//SetObj(GameObject.find(p->id)->second);
-		
-		
+
+
 		GameObject.find(g_myid)->second->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetQuestStart(true);
 	
 		//GameObject.find(g_myid)->second->Transform()->SetLocalPos(Vec3(4000.f, 2000.f, 876.f));
 
-		
+
 
 		//m_pDObj->Transform()->SetLocalPos(Vec3(45.f, 0.f, 876.f));
 
@@ -647,7 +647,7 @@ void CNetwork::ProcessPacket(char* ptr)
 
 		}
 		else {
-			cout <<"아군이 사망하였습니다" << endl;
+			cout << "아군이 사망하였습니다" << endl;
 
 			/*GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->GetObj()->SetDead();
 			GameObject.erase(packet->id);*/
@@ -668,18 +668,18 @@ void CNetwork::ProcessPacket(char* ptr)
 		int id = packet->id;
 
 		switch (packet->anitype) {
-		// 성준아 스킬 해줭
+			// 성준아 스킬 해줭
 		case PLAYER_ANI_TYPE::SKILL_1: {
 			GameObject.find(id)->second->GetScript<CPlayerScript>()->SwordStrike();
-			if(packet->isSkill)
+			if (packet->isSkill)
 				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::SKILL_1);
 			else
 				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::IDLE);
-			
-			
+
+
 			break;
 		}
-		case PLAYER_ANI_TYPE::SKILL_2:{
+		case PLAYER_ANI_TYPE::SKILL_2: {
 			GameObject.find(id)->second->GetScript<CPlayerScript>()->FireBall();
 
 			if (packet->isSkill)
@@ -762,10 +762,10 @@ void CNetwork::Send_LogIn_Packet()
 	cs_packet_login packet;
 	packet.size = sizeof(packet);
 	packet.type = CS_PACKET_LOGIN;
-	
+
 	char name[MAX_ID_LEN] = "Tester";
 	string namestring;
-	
+
 	//cout << name << endl;
 	//strcpy_s(name, packet.name);
 
@@ -815,7 +815,7 @@ void CNetwork::Send_Move_Packet(const Vec3& localPos, const Vec3& dirVec, const 
 
 	packet.localPos = localPos;
 	packet.dirVec = dirVec;
-	
+
 	packet.rotate = rotate;
 
 	packet.start = startTime;
@@ -859,7 +859,7 @@ void CNetwork::Send_Attack_Animation_Packet(const int& id, const bool& isAttack)
 
 }
 
-void CNetwork::Send_Run_Packet(const int& id, Vec3 pos ,const bool& isRun)
+void CNetwork::Send_Run_Packet(const int& id, Vec3 pos, const bool& isRun)
 {
 	cs_packet_run packet;
 	packet.type = CS_PACKET_RUN;

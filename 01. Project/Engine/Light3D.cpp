@@ -76,7 +76,7 @@ void CLight3D::finalupdate()
 
 
 	vector<CGameObject*> vectemp;
-	CSceneMgr::GetInst()->FindGameObjectByTag(L"Player1", vectemp);
+	CSceneMgr::GetInst()->FindGameObjectByTag(L"FM_Player", vectemp);
 	if (vectemp.size() == 0)
 	{
 		// 광원 관리 카메라도 광원과 같은 Transform 정보를 가지게 한다.

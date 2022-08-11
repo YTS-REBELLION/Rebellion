@@ -4,6 +4,8 @@
 #include"PlayerScript.h"
 #include"Camera.h"
 #include"ToolCamScript.h"
+
+
 void CFire::init()
 {
 	Ptr<CMaterial> pMtrl = MeshRender()->GetSharedMaterial();
@@ -22,8 +24,8 @@ void CFire::init()
 
 void CFire::update()
 {
-
-
+	float angle=0.f;
+	float rotation = 0.f;
 	//	frametime ConstBuffer Parameter √÷Ω≈»≠
 	m_NoiseBuffer.frameTime += DT;
 	//cout << m_NoiseBuffer.frameTime << endl;
@@ -31,10 +33,19 @@ void CFire::update()
 		m_NoiseBuffer.frameTime = 0.f;
 	MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::FLOAT_0, &m_NoiseBuffer.frameTime);
 
-	for (auto client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
+	for (auto client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(2)->GetParentObj())
 	{
-		if (client->GetScript<CPlayerScript>()->GetMain())
-			m_pPlayer = client;
+		client->GetScript<CToolCamScript>();
+		m_pCamera = client;
+	
+		angle=atan2(this->Transform()->GetLocalPos().x - client->Transform()->GetLocalPos().x, this->Transform()->GetLocalPos().z - client->Transform()->GetLocalPos().z)* (180 / XM_PI);
+		rotation = (float)angle * 0.0174532925f;
+		XMMATRIX tempMAt = XMLoadFloat4x4(&this->Transform()->GetWorldMat());
+		tempMAt=XMMatrixRotationY(rotation);
+		/*XMMatrixTranslation();
+		XMMatrixMultiply();*/
+		
+	
 	}
 
 	m_fcreate_time += DT;
@@ -57,7 +68,7 @@ void CFire::update()
 	localPos += WorldDir * Temp;
 
 
-
+	
 	Transform()->SetLocalPos(localPos);
 	Transform()->SetLocalRot(vRot);
 

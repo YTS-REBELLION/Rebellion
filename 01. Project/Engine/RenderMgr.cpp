@@ -41,7 +41,7 @@ void CRenderMgr::render()
 	CDevice::GetInst()->SetConstBufferToRegister(pGlobalBuffer, pGlobalBuffer->AddData(&g_global));
 
 	// 광원 정보 업데이트
-	//UpdateLight2D();
+	UpdateLight2D();
 	UpdateLight3D();
 
 	// SwapChain MRT 초기화
@@ -101,7 +101,7 @@ void CRenderMgr::render_tool()
 	//Clear(arrColor);
 
 	// 광원 정보 업데이트
-	//UpdateLight2D();
+	UpdateLight2D();
 	UpdateLight3D();
 }
 
@@ -138,7 +138,8 @@ void CRenderMgr::render_lights()
 	m_arrMRT[(UINT)MRT_TYPE::LIGHT]->OMSet();
 
 	// 광원을 그린다.
-	CCamera* pMainCam = CRenderMgr::GetInst()->GetMainCam();
+	CCamera* pMainCam = nullptr;
+	pMainCam=CRenderMgr::GetInst()->GetMainCam();
 	if (nullptr == pMainCam)
 		return;
 

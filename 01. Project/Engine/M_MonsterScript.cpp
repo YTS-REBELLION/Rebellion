@@ -149,11 +149,11 @@ void CM_MonsterScript::update()
 		float fDistanceP_M = Vec3::Distance(CSceneMgr::GetInst()->m_vSavePos, localPos);
 
 		CM_MonsterScript* Monster = GetObj()->GetScript<CM_MonsterScript>();
-		const vector<CGameObject*>& vecObject = CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetObjects();
+		const vector<CGameObject*>& vecObject = CSceneMgr::GetInst()->GetCurScene()->GetLayer(2)->GetObjects();
 		Vec3 vRot;
 
 		if (m_isTarget) {
-			for (auto client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
+			for (auto client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(2)->GetParentObj())
 			{
 				if (client->GetScript<CPlayerScript>()->GetMain())
 					m_pPlayer = client;
@@ -416,95 +416,316 @@ void CM_MonsterScript::Skill1()
 		//// ====================
 		////  오브젝트 생성
 		//// ====================
-		CGameObject* m_pSwordStrike = new CGameObject;
-		Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sjuriken1.fbx");
+		//CGameObject* m_pSwordStrike = new CGameObject;
+		//Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sjuriken1.fbx");
 	
 
-		m_pSwordStrike = pPMeshData->Instantiate();
-		m_pSwordStrike->SetName(L"BossFire");
-		m_pSwordStrike->FrustumCheck(false);
+		//m_pSwordStrike = pPMeshData->Instantiate();
+		//m_pSwordStrike->SetName(L"BossFire");
+		//m_pSwordStrike->FrustumCheck(false);
 
 
-		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 50.f,0.f,50.f });
-		m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-		m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-		m_pSwordStrike->AddComponent(new CBossSkill1);
+		//m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 50.f,0.f,50.f });
+		//m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+		//m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//m_pSwordStrike->AddComponent(new CBossSkill1);
 
 
-		m_pSwordStrike->AddComponent(new CCollider2D);
-		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+		//m_pSwordStrike->AddComponent(new CCollider2D);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
+		//// AddGameObject
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+
+
+
+		//m_pSwordStrike = new CGameObject;
+		//m_pSwordStrike = pPMeshData->Instantiate();
+		//m_pSwordStrike->SetName(L"BossFire");
+		//m_pSwordStrike->FrustumCheck(false);
+
+
+		//m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 50.f,0.f,-50.f });
+		//m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+		//m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//m_pSwordStrike->AddComponent(new CBossSkill1);
+
+
+		//m_pSwordStrike->AddComponent(new CCollider2D);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+
+		//// AddGameObject
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+
+
+		//m_pSwordStrike = new CGameObject;
+		//m_pSwordStrike = pPMeshData->Instantiate();
+		//m_pSwordStrike->SetName(L"BossFire");
+		//m_pSwordStrike->FrustumCheck(false);
+
+
+		//m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ -50.f,0.f,50.f });
+		//m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+		//m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//m_pSwordStrike->AddComponent(new CBossSkill1);
+
+
+		//m_pSwordStrike->AddComponent(new CCollider2D);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+
+		//// AddGameObject
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+
+
+		//m_pSwordStrike = new CGameObject;
+		//m_pSwordStrike = pPMeshData->Instantiate();
+		//m_pSwordStrike->SetName(L"BossFire");
+		//m_pSwordStrike->FrustumCheck(false);
+
+
+		//m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ -50.f,0.f,-50.f });
+		//m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+		//m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//m_pSwordStrike->AddComponent(new CBossSkill1);
+
+
+		//m_pSwordStrike->AddComponent(new CCollider2D);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+
+		//// AddGameObject
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+
+
+			// ====================
+	// Fire 오브젝트 생성
+	// ====================
+		CGameObject* pObject = new CGameObject;
+
+		pObject = new CGameObject;
+		pObject->SetName(L"FireTest");
+		pObject->FrustumCheck(false);
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
+		pObject->AddComponent(new CFire);
+
+
+		pObject->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,100.f,0.f } + this->Transform()->GetWorldDir(DIR_TYPE::FRONT));
+		pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
+		// MeshRender 설정
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+		pObject->GetScript<CFire>()->init();
+		pObject->AddComponent(new CCollider2D);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
+		pObject = new CGameObject;
+		pObject->SetName(L"FireTest2");
+		pObject->FrustumCheck(false);
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
+		pObject->AddComponent(new CFire);
 
 
-
-		m_pSwordStrike = new CGameObject;
-		m_pSwordStrike = pPMeshData->Instantiate();
-		m_pSwordStrike->SetName(L"BossFire");
-		m_pSwordStrike->FrustumCheck(false);
-
-
-		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 50.f,0.f,-50.f });
-		m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-		m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-		m_pSwordStrike->AddComponent(new CBossSkill1);
-
-
-		m_pSwordStrike->AddComponent(new CCollider2D);
-		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
-
+		pObject->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,100.f,0.f } + this->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 500);
+		pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
+		// MeshRender 설정
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+		pObject->GetScript<CFire>()->init();
+		pObject->AddComponent(new CCollider2D);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
+		pObject = new CGameObject;
+		pObject->SetName(L"FireTest3");
+		pObject->FrustumCheck(false);
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
+		pObject->AddComponent(new CFire);
 
 
-		m_pSwordStrike = new CGameObject;
-		m_pSwordStrike = pPMeshData->Instantiate();
-		m_pSwordStrike->SetName(L"BossFire");
-		m_pSwordStrike->FrustumCheck(false);
-
-
-		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ -50.f,0.f,50.f });
-		m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-		m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-		m_pSwordStrike->AddComponent(new CBossSkill1);
-
-
-		m_pSwordStrike->AddComponent(new CCollider2D);
-		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
-
+		pObject->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,100.f,0.f } + this->Transform()->GetWorldDir(DIR_TYPE::FRONT) * -500);
+		pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
+		// MeshRender 설정
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+		pObject->GetScript<CFire>()->init();
+		pObject->AddComponent(new CCollider2D);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
 
 
-		m_pSwordStrike = new CGameObject;
-		m_pSwordStrike = pPMeshData->Instantiate();
-		m_pSwordStrike->SetName(L"BossFire");
-		m_pSwordStrike->FrustumCheck(false);
+
+		pObject = new CGameObject;
+		pObject->SetName(L"FireTest4");
+		pObject->FrustumCheck(false);
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
+		pObject->AddComponent(new CFire);
 
 
-		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ -50.f,0.f,-50.f });
-		m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-		m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-		m_pSwordStrike->AddComponent(new CBossSkill1);
-
-
-		m_pSwordStrike->AddComponent(new CCollider2D);
-		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
-
+		pObject->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,100.f,0.f } + this->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * 500);
+		pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
+		// MeshRender 설정
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+		pObject->GetScript<CFire>()->init();
+		pObject->AddComponent(new CCollider2D);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
 
 
 
+		pObject = new CGameObject;
+		pObject->SetName(L"FireTest5");
+		pObject->FrustumCheck(false);
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
+		pObject->AddComponent(new CFire);
+
+
+		pObject->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,100.f,0.f } + this->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * -500);
+		pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
+		// MeshRender 설정
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+		pObject->GetScript<CFire>()->init();
+		pObject->AddComponent(new CCollider2D);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+		// AddGameObject
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
+
+
+		pObject = new CGameObject;
+		pObject->SetName(L"FireTest6");
+		pObject->FrustumCheck(false);
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
+		pObject->AddComponent(new CFire);
+
+
+		pObject->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,100.f,0.f } + this->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * -500 + this->Transform()->GetWorldDir(DIR_TYPE::FRONT) * -500);
+		pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
+		// MeshRender 설정
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+		pObject->GetScript<CFire>()->init();
+		pObject->AddComponent(new CCollider2D);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+		// AddGameObject
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
+
+		pObject = new CGameObject;
+		pObject->SetName(L"FireTest7");
+		pObject->FrustumCheck(false);
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
+		pObject->AddComponent(new CFire);
+		pObject->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,100.f,0.f } + this->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * -500 + this->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 500);
+		pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
+		// MeshRender 설정
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+		pObject->GetScript<CFire>()->init();
+		pObject->AddComponent(new CCollider2D);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+		// AddGameObject
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
+
+		pObject = new CGameObject;
+		pObject->SetName(L"FireTest8");
+		pObject->FrustumCheck(false);
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
+		pObject->AddComponent(new CFire);
+		pObject->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,100.f,0.f } + this->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * 500 + this->Transform()->GetWorldDir(DIR_TYPE::FRONT) * -500);
+		pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
+		// MeshRender 설정
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+		pObject->GetScript<CFire>()->init();
+		pObject->AddComponent(new CCollider2D);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+		// AddGameObject
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
+		pObject = new CGameObject;
+		pObject->SetName(L"FireTest9");
+		pObject->FrustumCheck(false);
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
+		pObject->AddComponent(new CFire);
+		pObject->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,100.f,0.f } + this->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * 500 + this->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 500);
+		pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
+		// MeshRender 설정
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+		pObject->GetScript<CFire>()->init();
+		pObject->AddComponent(new CCollider2D);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+		// AddGameObject
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
 
 
 
@@ -520,208 +741,432 @@ void CM_MonsterScript::Skill2()
 	//메테오
 	if (MonSkill2Check)
 	{
-		CGameObject* m_pSwordStrike = new CGameObject;
-		Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
-		
+		//CGameObject* m_pSwordStrike = new CGameObject;
+		//Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
+		//
 
-		m_pSwordStrike = pPMeshData->Instantiate();
-		m_pSwordStrike->SetName(L"Meteor");
-		m_pSwordStrike->FrustumCheck(false);
+		//m_pSwordStrike = pPMeshData->Instantiate();
+		//m_pSwordStrike->SetName(L"Meteor");
+		//m_pSwordStrike->FrustumCheck(false);
 
 
-		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 500.f,800.f,-500.f });
-		m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-		m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-		m_pSwordStrike->AddComponent(new CMeteor);
+		//m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 500.f,800.f,-500.f });
+		//m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+		//m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//m_pSwordStrike->AddComponent(new CMeteor);
 
 
-		m_pSwordStrike->AddComponent(new CCollider2D);
-		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+		//m_pSwordStrike->AddComponent(new CCollider2D);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
-		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//// AddGameObject
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
 
 
-		m_pSwordStrike = new CGameObject;
+		//m_pSwordStrike = new CGameObject;
 
 
 
-		m_pSwordStrike = pPMeshData->Instantiate();
-		m_pSwordStrike->SetName(L"Meteor");
-		m_pSwordStrike->FrustumCheck(false);
+		//m_pSwordStrike = pPMeshData->Instantiate();
+		//m_pSwordStrike->SetName(L"Meteor");
+		//m_pSwordStrike->FrustumCheck(false);
 
 
-		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ -500.f,800.f,-500.f });
-		m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-		m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-		m_pSwordStrike->AddComponent(new CMeteor);
+		//m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ -500.f,800.f,-500.f });
+		//m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+		//m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//m_pSwordStrike->AddComponent(new CMeteor);
 
 
-		m_pSwordStrike->AddComponent(new CCollider2D);
-		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+		//m_pSwordStrike->AddComponent(new CCollider2D);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
-		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//// AddGameObject
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
 
-		m_pSwordStrike = new CGameObject;
+		//m_pSwordStrike = new CGameObject;
 
 
 
-		m_pSwordStrike = pPMeshData->Instantiate();
-		m_pSwordStrike->SetName(L"Meteor");
-		m_pSwordStrike->FrustumCheck(false);
+		//m_pSwordStrike = pPMeshData->Instantiate();
+		//m_pSwordStrike->SetName(L"Meteor");
+		//m_pSwordStrike->FrustumCheck(false);
 
 
-		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ -500.f,800.f,500.f });
-		m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-		m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-		m_pSwordStrike->AddComponent(new CMeteor);
+		//m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ -500.f,800.f,500.f });
+		//m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+		//m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//m_pSwordStrike->AddComponent(new CMeteor);
 
 
-		m_pSwordStrike->AddComponent(new CCollider2D);
-		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+		//m_pSwordStrike->AddComponent(new CCollider2D);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
-		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//// AddGameObject
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
 
-		m_pSwordStrike = new CGameObject;
+		//m_pSwordStrike = new CGameObject;
 
 
 
-		m_pSwordStrike = pPMeshData->Instantiate();
-		m_pSwordStrike->SetName(L"Meteor");
-		m_pSwordStrike->FrustumCheck(false);
+		//m_pSwordStrike = pPMeshData->Instantiate();
+		//m_pSwordStrike->SetName(L"Meteor");
+		//m_pSwordStrike->FrustumCheck(false);
 
 
-		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 500.f,800.f,500.f });
-		m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-		m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-		m_pSwordStrike->AddComponent(new CMeteor);
+		//m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 500.f,800.f,500.f });
+		//m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+		//m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//m_pSwordStrike->AddComponent(new CMeteor);
 
 
-		m_pSwordStrike->AddComponent(new CCollider2D);
-		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+		//m_pSwordStrike->AddComponent(new CCollider2D);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
-		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//// AddGameObject
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
 
 
 
-		m_pSwordStrike = new CGameObject;
+		//m_pSwordStrike = new CGameObject;
 
-		m_pSwordStrike = pPMeshData->Instantiate();
-		m_pSwordStrike->SetName(L"Meteor");
-		m_pSwordStrike->FrustumCheck(false);
+		//m_pSwordStrike = pPMeshData->Instantiate();
+		//m_pSwordStrike->SetName(L"Meteor");
+		//m_pSwordStrike->FrustumCheck(false);
 
 
-		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 500.f,800.f,500.f });
-		m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-		m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-		m_pSwordStrike->AddComponent(new CMeteor);
+		//m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 500.f,800.f,500.f });
+		//m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+		//m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//m_pSwordStrike->AddComponent(new CMeteor);
 
 
-		m_pSwordStrike->AddComponent(new CCollider2D);
-		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+		//m_pSwordStrike->AddComponent(new CCollider2D);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
-		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//// AddGameObject
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
 
 
 
-		m_pSwordStrike = new CGameObject;
+		//m_pSwordStrike = new CGameObject;
 
-		m_pSwordStrike = pPMeshData->Instantiate();
-		m_pSwordStrike->SetName(L"Meteor");
-		m_pSwordStrike->FrustumCheck(false);
+		//m_pSwordStrike = pPMeshData->Instantiate();
+		//m_pSwordStrike->SetName(L"Meteor");
+		//m_pSwordStrike->FrustumCheck(false);
 
 
-		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 500.f,800.f,00.f });
-		m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-		m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-		m_pSwordStrike->AddComponent(new CMeteor);
+		//m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 500.f,800.f,00.f });
+		//m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+		//m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//m_pSwordStrike->AddComponent(new CMeteor);
 
 
-		m_pSwordStrike->AddComponent(new CCollider2D);
-		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+		//m_pSwordStrike->AddComponent(new CCollider2D);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
-		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//// AddGameObject
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
 
-		m_pSwordStrike = new CGameObject;
+		//m_pSwordStrike = new CGameObject;
 
-		m_pSwordStrike = pPMeshData->Instantiate();
-		m_pSwordStrike->SetName(L"Meteor");
-		m_pSwordStrike->FrustumCheck(false);
+		//m_pSwordStrike = pPMeshData->Instantiate();
+		//m_pSwordStrike->SetName(L"Meteor");
+		//m_pSwordStrike->FrustumCheck(false);
 
 
-		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ -500.f,800.f,0.f });
-		m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-		m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-		m_pSwordStrike->AddComponent(new CMeteor);
+		//m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ -500.f,800.f,0.f });
+		//m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+		//m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//m_pSwordStrike->AddComponent(new CMeteor);
 
 
-		m_pSwordStrike->AddComponent(new CCollider2D);
-		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+		//m_pSwordStrike->AddComponent(new CCollider2D);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
-		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//// AddGameObject
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
 
-		m_pSwordStrike = new CGameObject;
+		//m_pSwordStrike = new CGameObject;
 
-		m_pSwordStrike = pPMeshData->Instantiate();
-		m_pSwordStrike->SetName(L"Meteor");
-		m_pSwordStrike->FrustumCheck(false);
+		//m_pSwordStrike = pPMeshData->Instantiate();
+		//m_pSwordStrike->SetName(L"Meteor");
+		//m_pSwordStrike->FrustumCheck(false);
 
 
-		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,800.f,500.f });
-		m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-		m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-		m_pSwordStrike->AddComponent(new CMeteor);
+		//m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,800.f,500.f });
+		//m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+		//m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//m_pSwordStrike->AddComponent(new CMeteor);
 
 
-		m_pSwordStrike->AddComponent(new CCollider2D);
-		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+		//m_pSwordStrike->AddComponent(new CCollider2D);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
-		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//// AddGameObject
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
 
 
-		m_pSwordStrike = new CGameObject;
+		//m_pSwordStrike = new CGameObject;
 
-		m_pSwordStrike = pPMeshData->Instantiate();
-		m_pSwordStrike->SetName(L"Meteor");
-		m_pSwordStrike->FrustumCheck(false);
+		//m_pSwordStrike = pPMeshData->Instantiate();
+		//m_pSwordStrike->SetName(L"Meteor");
+		//m_pSwordStrike->FrustumCheck(false);
 
 
-		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,800.f,-500.f });
-		m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-		m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-		m_pSwordStrike->AddComponent(new CMeteor);
+		//m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,800.f,-500.f });
+		//m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+		//m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//m_pSwordStrike->AddComponent(new CMeteor);
 
 
-		m_pSwordStrike->AddComponent(new CCollider2D);
-		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+		//m_pSwordStrike->AddComponent(new CCollider2D);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
-		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//// AddGameObject
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+
+	// ====================
+	// Fire 오브젝트 생성
+	// ====================
+CGameObject* pObject = new CGameObject;
+
+pObject = new CGameObject;
+pObject->SetName(L"FireTest");
+pObject->FrustumCheck(false);
+pObject->AddComponent(new CTransform);
+pObject->AddComponent(new CMeshRender);
+pObject->AddComponent(new CFire);
+
+
+pObject->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,100.f,0.f } + this->Transform()->GetWorldDir(DIR_TYPE::FRONT));
+pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
+// MeshRender 설정
+pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+pObject->GetScript<CFire>()->init();
+pObject->AddComponent(new CCollider2D);
+pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+// AddGameObject
+CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
+pObject = new CGameObject;
+pObject->SetName(L"FireTest2");
+pObject->FrustumCheck(false);
+pObject->AddComponent(new CTransform);
+pObject->AddComponent(new CMeshRender);
+pObject->AddComponent(new CFire);
+
+
+pObject->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,100.f,0.f } + this->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 500);
+pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
+// MeshRender 설정
+pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+pObject->GetScript<CFire>()->init();
+pObject->AddComponent(new CCollider2D);
+pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+// AddGameObject
+CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
+pObject = new CGameObject;
+pObject->SetName(L"FireTest3");
+pObject->FrustumCheck(false);
+pObject->AddComponent(new CTransform);
+pObject->AddComponent(new CMeshRender);
+pObject->AddComponent(new CFire);
+
+
+pObject->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,100.f,0.f } + this->Transform()->GetWorldDir(DIR_TYPE::FRONT) * -500);
+pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
+// MeshRender 설정
+pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+pObject->GetScript<CFire>()->init();
+pObject->AddComponent(new CCollider2D);
+pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+// AddGameObject
+CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
+
+
+pObject = new CGameObject;
+pObject->SetName(L"FireTest4");
+pObject->FrustumCheck(false);
+pObject->AddComponent(new CTransform);
+pObject->AddComponent(new CMeshRender);
+pObject->AddComponent(new CFire);
+
+
+pObject->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,100.f,0.f } + this->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * 500);
+pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
+// MeshRender 설정
+pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+pObject->GetScript<CFire>()->init();
+pObject->AddComponent(new CCollider2D);
+pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+// AddGameObject
+CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
+
+
+pObject = new CGameObject;
+pObject->SetName(L"FireTest5");
+pObject->FrustumCheck(false);
+pObject->AddComponent(new CTransform);
+pObject->AddComponent(new CMeshRender);
+pObject->AddComponent(new CFire);
+
+
+pObject->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,100.f,0.f } + this->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * -500);
+pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
+// MeshRender 설정
+pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+pObject->GetScript<CFire>()->init();
+pObject->AddComponent(new CCollider2D);
+pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+// AddGameObject
+CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
+
+
+pObject = new CGameObject;
+pObject->SetName(L"FireTest6");
+pObject->FrustumCheck(false);
+pObject->AddComponent(new CTransform);
+pObject->AddComponent(new CMeshRender);
+pObject->AddComponent(new CFire);
+
+
+pObject->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,100.f,0.f } + this->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * -500 + this->Transform()->GetWorldDir(DIR_TYPE::FRONT) * -500);
+pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
+// MeshRender 설정
+pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+pObject->GetScript<CFire>()->init();
+pObject->AddComponent(new CCollider2D);
+pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+// AddGameObject
+CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
+
+pObject = new CGameObject;
+pObject->SetName(L"FireTest7");
+pObject->FrustumCheck(false);
+pObject->AddComponent(new CTransform);
+pObject->AddComponent(new CMeshRender);
+pObject->AddComponent(new CFire);
+pObject->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,100.f,0.f } + this->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * -500 + this->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 500);
+pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
+// MeshRender 설정
+pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+pObject->GetScript<CFire>()->init();
+pObject->AddComponent(new CCollider2D);
+pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+// AddGameObject
+CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
+
+pObject = new CGameObject;
+pObject->SetName(L"FireTest8");
+pObject->FrustumCheck(false);
+pObject->AddComponent(new CTransform);
+pObject->AddComponent(new CMeshRender);
+pObject->AddComponent(new CFire);
+pObject->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,100.f,0.f } + this->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * 500 + this->Transform()->GetWorldDir(DIR_TYPE::FRONT) * -500);
+pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
+// MeshRender 설정
+pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+pObject->GetScript<CFire>()->init();
+pObject->AddComponent(new CCollider2D);
+pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+// AddGameObject
+CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
+pObject = new CGameObject;
+pObject->SetName(L"FireTest9");
+pObject->FrustumCheck(false);
+pObject->AddComponent(new CTransform);
+pObject->AddComponent(new CMeshRender);
+pObject->AddComponent(new CFire);
+pObject->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 0.f,100.f,0.f } + this->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * 500 + this->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 500);
+pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
+// MeshRender 설정
+pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
+pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
+pObject->GetScript<CFire>()->init();
+pObject->AddComponent(new CCollider2D);
+pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+// AddGameObject
+CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
 
 		MonSkill2Check = false;
 	}

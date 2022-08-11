@@ -118,6 +118,9 @@ void CDungeonScene::init()
 	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 4, 0, 75);							// AniData Index 3
 	g_net.SetAniData(pMeshData->GetMesh());
 
+	Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl");
+	pPlayer->MeshRender()->SetMaterial(pMtrl, 0);
+	pPlayer->MeshRender()->SetDynamicShadow(true);
 	FindLayer(L"Player")->AddGameObject(pPlayer);
 
 
@@ -153,8 +156,46 @@ void CDungeonScene::init()
 	FindLayer(L"Default")->AddGameObject(pUICam);
 
 
+	Ptr<CTexture> pColor = CResMgr::GetInst()->Load<CTexture>(L"Tile", L"Texture\\Tile\\TILE_01.tga");
+	Ptr<CTexture> pNormal = CResMgr::GetInst()->Load<CTexture>(L"Tile_n", L"Texture\\Tile\\TILE_01_N.tga");
+		// ==================
+	// Map 오브젝트 생성
+	// ==================
+
+	for (int j = 0; j < 5; ++j)
+	{
+		for (int i = 0; i < 5; ++i)
+		{
+			CGameObject* pObject = new CGameObject;
+			pObject->SetName(L"Map Object");
+			pObject->AddComponent(new CTransform);
+			pObject->AddComponent(new CMeshRender);
+
+			// Transform 설정
+			pObject->Transform()->SetLocalPos(Vec3(i * 1000.f - 2000.f, 0.f, j * 1000.f - 1000.f));
+			pObject->Transform()->SetLocalScale(Vec3(1000.f, 1000.f, 1.f));
+			pObject->Transform()->SetLocalRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
+
+			// MeshRender 설정
+			pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+			pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
+			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
+
+			// AddGameObject
+			FindLayer(L"Default")->AddGameObject(pObject);
+
+		}
+	}
+
 
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player_Skill"); 
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player_Skill");
+
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Sword");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Player");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Player_Skill");
+
+
 }
