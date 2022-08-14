@@ -1251,6 +1251,7 @@ void CServerFrame::DungeonEnter(int id)
 	}
 
 }
+
 void CServerFrame::ComeBackScene(int player_id)
 {
 	cout << "집결지로 복귀합니다." << endl;
@@ -1357,7 +1358,7 @@ void CServerFrame::CreateMonster()
 
 	}
 
-	for (int monsterId = MONSTER_LV1_ID; monsterId < MONSTER_LV2_ID; ++monsterId) {
+	/*for (int monsterId = MONSTER_LV1_ID; monsterId < MONSTER_LV2_ID; ++monsterId) {
 
 		_objects[monsterId].SetCurrentHp(LV2_MONSTER_HP);
 		_objects[monsterId].SetMaxHp(LV2_MONSTER_HP);
@@ -1388,7 +1389,7 @@ void CServerFrame::CreateMonster()
 		_objects[monsterId].SetMaxHp(LV6_MONSTER_HP);
 		_objects[monsterId].SetLevel(6);
 		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 10);
-	}
+	}*/
 
 	// LV1
 	_objects[NPC_ID_START].SetPos(Vec3(150.f, 0.f, 1200.f));
@@ -1457,15 +1458,13 @@ void CServerFrame::CreateMonster()
 
 
 	// 보스 몬스터 아이디 141
-	_objects[NPC_ID_START + 40].SetPos(Vec3(0, 0.f, 5000.f));
-	_objects[NPC_ID_START + 40].SetID(NPC_ID_START + 40);
-	_objects[NPC_ID_START + 40]._status = ST_SLEEP;
-	_objects[NPC_ID_START + 40].SetSpeed(2000.f);
-	_objects[NPC_ID_START + 40].SetMoveType(RANDOM);
-	_objects[NPC_ID_START + 40].SetIsAttack(false);
-	_objects[NPC_ID_START + 40].SetDunGeonEnter(true);
-
+	//_objects[NPC_ID_START + 40].SetPos(Vec3(0, 0.f, 5000.f));
+	//_objects[NPC_ID_START + 40].SetID(NPC_ID_START + 40);
+	//_objects[NPC_ID_START + 40]._status = ST_SLEEP;
+	//_objects[NPC_ID_START + 40].SetSpeed(2000.f);
+	//_objects[NPC_ID_START + 40].SetMoveType(RANDOM);
+	//_objects[NPC_ID_START + 40].SetIsAttack(false);
+	//_objects[NPC_ID_START + 40].SetDunGeonEnter(true);
 
 	printf("Monster Initialization finished.\n");
-
 }

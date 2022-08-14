@@ -75,24 +75,25 @@ void CLight3D::finalupdate()
 	m_iArrIdx = CRenderMgr::GetInst()->RegisterLight3D(this);
 
 
-	vector<CGameObject*> vectemp;
-	CSceneMgr::GetInst()->FindGameObjectByTag(L"FM_Player", vectemp);
-	if (vectemp.size() == 0)
-	{
-		// 광원 관리 카메라도 광원과 같은 Transform 정보를 가지게 한다.
-		*m_pCamObj->Transform() = *Transform();
-	}
-	else
-	{
-		// 광원 관리 카메라를 플레이어 월드좌표와 더하여 쉐도우맵 위치 업데이트
-		auto a = *Transform();
-		a.SetLocalPos(a.GetLocalPos() + vectemp[0]->Transform()->GetLocalPos());
-		*m_pCamObj->Transform() = a;
-		//Vector3 temp = a.Transform()->GetLocalPos();
-		//m_pCamObj->Transform()->SetLocalPos(Vector3(temp.x, temp.y, temp.z + 500.f));
+	//vector<CGameObject*> vectemp;
+	//CSceneMgr::GetInst()->FindGameObjectByTag(L"FM_Player", vectemp);
+	//if (vectemp.size() == 0)
+	//{
+	//	// 광원 관리 카메라도 광원과 같은 Transform 정보를 가지게 한다.
+	//	*m_pCamObj->Transform() = *Transform();
+	//}
+	//else
+	//{
+	//	// 광원 관리 카메라를 플레이어 월드좌표와 더하여 쉐도우맵 위치 업데이트
+	//	auto a = *Transform();
+	//	a.SetLocalPos(a.GetLocalPos() + vectemp[0]->Transform()->GetLocalPos());
+	//	*m_pCamObj->Transform() = a;
+	//	//Vector3 temp = a.Transform()->GetLocalPos();
+	//	//m_pCamObj->Transform()->SetLocalPos(Vector3(temp.x, temp.y, temp.z + 500.f));
 
-	}
+	//}
 
+	*m_pCamObj->Transform() = *Transform();
 	// 렌더매니저에 등록 안됌.
 	m_pCamObj->finalupdate();
 

@@ -84,6 +84,7 @@ PS_OUTPUT PS_DirLight(VS_OUTPUT _in)
                 fFactor = saturate(fFactor + fDepth);
                 tCurCol.vDiff *= 0.1f;//fFactor;
                 tCurCol.vSpec = (float4) 0.f;
+                tCurCol.vAmb *= 0.1f;
             }
         }
     }

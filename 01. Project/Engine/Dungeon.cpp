@@ -44,10 +44,10 @@ void CDungeonScene::CreateMap()
 	Map->FrustumCheck(false);
 
 	// Transform 설정
-	Map->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	Map->Transform()->SetLocalPos(Vec3(0.f, -2.f, 0.f));
 	Map->Transform()->SetLocalScale(Vec3(2.3f, 2.3f, 2.0f));
 	Map->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.0f), XMConvertToRadians(180.0f), 0.f));
-
+	Map->MeshRender()->SetDynamicShadow(true);
 	FindLayer(L"Map")->AddGameObject(Map);
 
 
@@ -93,14 +93,14 @@ void CDungeonScene::init()
 	pLight->AddComponent(new CTransform);
 	pLight->AddComponent(new CLight3D);
 
-	pLight->Light3D()->SetLightPos(Vec3(0.f, 500.f, 0.f));
+	pLight->Light3D()->SetLightPos(Vec3(2000.f, 3000.f, 2000.f));
 	pLight->Light3D()->SetLightType(LIGHT_TYPE::DIR);
 	pLight->Light3D()->SetDiffuseColor(Vec3(1.f, 1.f, 1.f));
 	pLight->Light3D()->SetSpecular(Vec3(0.1f, 0.1f, 0.1f));
 	pLight->Light3D()->SetAmbient(Vec3(0.8f, 0.8f, 0.8f));
 	pLight->Light3D()->SetLightDir(Vec3(-1.f, -1.f, -1.f));
-	pLight->Light3D()->SetLightRange(1000.f);
-
+	pLight->Light3D()->SetLightRange(10000.f);
+	//pLight->Transform()->SetLocalPos(Vec3(0.f, 1000.f, 0.f));
 	FindLayer(L"Default")->AddGameObject(pLight);
 
 	// ===================
@@ -110,11 +110,6 @@ void CDungeonScene::init()
 	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Idle.mdat", L"MeshData\\Player_FM_Idle.mdat");
 
 	CGameObject* pPlayer = new CGameObject;
-
-
-	//pPlayer = g_net.GetObj();
-	//pPlayer->GetScript<CPlayerScript>()->SetMain();
-	//pPlayer->Transform()->SetLocalPos(Vec3(200.f, 0.f, 200.f));
 
 	pPlayer = pMeshData->Instantiate();
 	pPlayer->SetName(L"FM_Player");
@@ -194,7 +189,7 @@ void CDungeonScene::init()
 
 	Ptr<CTexture> pColor = CResMgr::GetInst()->Load<CTexture>(L"Tile", L"Texture\\Tile\\TILE_01.tga");
 	Ptr<CTexture> pNormal = CResMgr::GetInst()->Load<CTexture>(L"Tile_n", L"Texture\\Tile\\TILE_01_N.tga");
-		// ==================
+	// ==================
 	// Map 오브젝트 생성
 	// ==================
 

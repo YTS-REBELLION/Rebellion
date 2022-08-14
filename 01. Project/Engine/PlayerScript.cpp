@@ -317,10 +317,6 @@ void CPlayerScript::update()
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
 	Vec3 vRot = Transform()->GetLocalRot();
 
-	/*cout << "playerPosX:"<< localPos.x << endl;
-	cout << "playerPosY:" << localPos.y << endl;
-	cout << "playerPosZ:" << localPos.z << endl;*/
-
 	CPlayerScript* player = GetObj()->GetScript<CPlayerScript>();
 
 	if (m_isMain) {
