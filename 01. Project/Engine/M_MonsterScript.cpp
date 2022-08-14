@@ -149,7 +149,7 @@ void CM_MonsterScript::update()
 		float fDistanceP_M = Vec3::Distance(CSceneMgr::GetInst()->m_vSavePos, localPos);
 
 		CM_MonsterScript* Monster = GetObj()->GetScript<CM_MonsterScript>();
-		const vector<CGameObject*>& vecObject = CSceneMgr::GetInst()->GetCurScene()->GetLayer(2)->GetObjects();
+		const vector<CGameObject*>& vecObject = CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetObjects();
 		Vec3 vRot;
 
 		if (m_isTarget) {

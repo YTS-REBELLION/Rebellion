@@ -414,12 +414,6 @@ void CPlayerScript::update()
 			AnimationPlay(PLAYER_ANI_TYPE::ATTACK);
 			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
 		}
-		else if (KEY_AWAY(KEY_TYPE::KEY_SPACE))
-		{
-			SetAttack();
-			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
-		}
-
 		else if (GetSkill())
 		{
 			if (GetObj()->Animator3D()->GetCliTime(4) < GetObj()->Animator3D()->GetAnimClip(4).dTimeLength - 0.05f)

@@ -44,9 +44,16 @@ void CDungeonScene::init()
 	GetLayer(5)->SetName(L"UI");
 	GetLayer(6)->SetName(L"Monster");
 	GetLayer(7)->SetName(L"Boss");
-	GetLayer(8)->SetName(L"Player_Skill");
 
-
+	/*GetLayer(0)->SetName(L"Default");
+	GetLayer(1)->SetName(L"Sword");
+	GetLayer(2)->SetName(L"Player");
+	GetLayer(3)->SetName(L"House");
+	GetLayer(4)->SetName(L"Map");
+	GetLayer(5)->SetName(L"Portal");
+	GetLayer(6)->SetName(L"UI");
+	GetLayer(7)->SetName(L"NPC");
+	GetLayer(8)->SetName(L"Player_Skill");*/
 
 	// ====================
 	// 3D Light Object Ãß°¡
@@ -189,13 +196,13 @@ void CDungeonScene::init()
 	}
 
 
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");
+	/*CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player_Skill");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player_Skill");*/
 
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Sword");
+	/*CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Sword");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Player");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Player_Skill");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Player_Skill");*/
 
 
 }
