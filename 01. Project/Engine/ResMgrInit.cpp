@@ -221,9 +221,7 @@ void CResMgr::CreateDefaultShader()
 	AddRes(L"TrailShader", pShader);
 
 
-	
-
-	  // ShadowMap Shader
+	// ShadowMap Shader
 	pShader = new CShader;
 	pShader->CreateVertexShader(L"Shader\\light.fx", "VS_ShadowMap", "vs_5_0");
 	pShader->CreatePixelShader(L"Shader\\light.fx", "PS_ShadowMap", "ps_5_0");
@@ -475,7 +473,7 @@ void CResMgr::CreateDefaultMaterial()
 
 	
 
-	  // ShadowMap Material
+	// ShadowMap Material
 	pMtrl = new CMaterial;
 	pMtrl->DisableFileSave();
 	pMtrl->SetShader(FindRes<CShader>(L"ShadowMapShader"));

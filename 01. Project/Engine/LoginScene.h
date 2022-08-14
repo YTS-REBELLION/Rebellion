@@ -5,6 +5,6 @@ class CLoginScene :
     public CScene
 {
 public:
-    virtual void Init();
+    void Init();
     virtual void update();
 };

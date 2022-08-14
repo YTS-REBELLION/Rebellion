@@ -145,12 +145,12 @@ void CToolCamScript::SetPlayerFixedCamera()
 	vPos = vPlayerPos->GetLocalPos() - (vPlayerPos->GetWorldDir(DIR_TYPE::FRONT) * fDistance);
 	vPos.y = vPlayerPos->GetLocalPos().y + 200.f;
 
-	if (m_pPlayer->GetScript<CPlayerScript>()->GetAttack())
-	{
-		//vPos.x += uid(dre);
-		//vPos.y += uid(dre);
-		vPos.z += uid(dre);
-	}
+	//if (m_pPlayer->GetScript<CPlayerScript>()->GetAttack())
+	//{
+	//	//vPos.x += uid(dre);
+	//	//vPos.y += uid(dre);
+	//	vPos.z += uid(dre);
+	//}
 	Transform()->SetLocalPos(vPos);
 	Transform()->SetLocalRot(vPlayerPos->GetLocalRot() + Vec3(XMConvertToRadians(185.f), XM_PI, 0.f));
 }

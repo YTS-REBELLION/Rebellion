@@ -14,6 +14,7 @@ class CMRT :
 	public CEntity
 {
 private:
+	tResolution						m_tResolution;
 	tRT								m_arrRT[8];
 	UINT							m_iRTCount;
 	Ptr<CTexture>					m_pDSTex;

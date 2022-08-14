@@ -23,6 +23,7 @@ void CRenderMgr::CreateMRT()
 {
 	// RenderTargetViewHeap 의 메모리 사이즈
 	m_iRTVHeapSize = DEVICE->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+	g_global.vResolution = m_tResolution;
 
 	// =============
 	// SwapChain MRT
@@ -109,13 +110,13 @@ void CRenderMgr::CreateMRT()
 
 		arrRT[0].vClearColor = Vec4(0.f, 0.f, 0.f, 0.f);
 		arrRT[0].pTarget = CResMgr::GetInst()->CreateTexture(L"ShadowMapTargetTex"
-			, 8192, 8192/*, 1024, 1024*/
+			, 4096, 4096/*, 1024, 1024*/
 			, DXGI_FORMAT_R32_FLOAT, CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT), D3D12_HEAP_FLAG_NONE
 			, D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET, arrRT[0].vClearColor);
 
 		// 별도의 깊이버퍼를 가짐
 		Ptr<CTexture> pDSTex = CResMgr::GetInst()->CreateTexture(L"ShadowMapDepthTex"
-			, 8192, 8192
+			, 4096, 4096
 			, DXGI_FORMAT_D32_FLOAT, CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT), D3D12_HEAP_FLAG_NONE
 			, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL);
 
