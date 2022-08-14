@@ -10,4 +10,5 @@ class CDungeonScene:
 {
 public:
 	virtual void init();
+	void CreateMap();
 };

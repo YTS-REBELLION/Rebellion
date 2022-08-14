@@ -267,7 +267,7 @@ void CNetwork::ProcessPacket(char* ptr)
 				GameObject.find(id)->second->AddComponent(new CMonsterScript);
 
 				CMonsterScript* MonsterScript = GameObject.find(id)->second->GetScript<CMonsterScript>();
-				GameObject.find(id)->second->GetScript<CMonsterScript>()->init();
+				//GameObject.find(id)->second->GetScript<CMonsterScript>()->init();
 
 				//몬스터 애니메이션
 				MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 0, 0, 44);

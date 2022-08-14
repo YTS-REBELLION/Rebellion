@@ -115,7 +115,7 @@ void CMonsterScript::update()
 		AnimationPlay(MONSTER_ANI_TYPE::ATTACK);
 	}
 	else
-		AnimationPlay(MONSTER_ANI_TYPE::IDLE);
+		AnimationPlay(MONSTER_ANI_TYPE::HIT);
 
 	if (m_bHit && m_vecAniClipTime[0] < GetObj()->Animator3D()->GetAnimClip(2).dTimeLength)
 	{
@@ -130,59 +130,7 @@ void CMonsterScript::update()
 
 	}
 
-	UpdateLerpPos();
-
-	//if (!m_bColCheck) {
-
-	//	//localPos += WorldDir * m_fSpeed * DT;
-	//	UpdateLerpPos();
-	//}
-	//else
-	//{
-	//	if (m_pColObj->GetObj()->GetName() == L"FM_Monster")
-	//	{
-	//		if(GetObj()->GetScript<CMonsterScript>()->GetID() > m_pColObj->GetObj()->GetScript<CMonsterScript>()->GetID())
-	//		{
-	//			m_pColObj->GetObj()->GetScript<CMonsterScript>()->GetLerpPos() += WorldDir * m_fSpeed * DT;
-	//			//m_pColObj->GetObj()->GetScript<CMonsterScript>()->GetLerpPos() += WorldDir * 0.f * DT;
-	//			//Vec3 Col_Pos_1 = localPos;
-	//			//Vec3 Col_Pos_2 = m_pColObj->Transform()->GetLocalPos();
-	//			//Vec3 CNormal_1 = Col_Pos_2 - Col_Pos_1;
-	//			//CNormal_1.Normalize();
-	//			//Vec3 CNormal_2 = -CNormal_1;
-	//			//Vec3 Dir = WorldDir + CNormal_1;
-	//			//Dir.Normalize();
-
-	//			//Vec3 Reflect_vec = WorldDir + 2 * CNormal_2 * (Dot(-WorldDir, CNormal_2));
-	//			//Dot(-WorldDir, CNormal_2) >= 0 ?
-	//			//	localPos -= Reflect_vec * 50.f * DT :
-	//			//	localPos += WorldDir * 100.f * DT;
-
-	//			//LerpPos.y = 0.f;
-	//			//Transform()->SetLocalPos(LerpPos);
-	//			UpdateLerpPos();
-	//		}
-	//		//// R = P +  2n(-P¡¤n)
-	//		////	cout << "??" << endl;
-	//		//Vec3 Col_Pos_1 = localPos;
-	//		//Vec3 Col_Pos_2 = m_pColObj->Transform()->GetLocalPos();
-	//		//Vec3 CNormal_1 = Col_Pos_2 - Col_Pos_1;
-	//		//CNormal_1.Normalize();
-	//		//Vec3 CNormal_2 = -CNormal_1;
-	//		//Vec3 Dir = WorldDir + CNormal_1;
-	//		//Dir.Normalize();
-	//		////Vec3 Silde_vec = Dir - CNormal_2 * (Dot(Dir, CNormal_2));
-	//		//int a = 0;
-	//		////cout << Dot(-WorldDir, CNormal_2) << endl;
-
-	//		//Vec3 Reflect_vec = WorldDir + 2 * CNormal_2 * (Dot(-WorldDir, CNormal_2));
-	//		//Dot(-WorldDir, CNormal_2) >= 0 ?
-	//		//	localPos += Reflect_vec * m_fSpeed * DT :
-	//		//	localPos += WorldDir * m_fSpeed * DT;
-	//		////localPos -= Reflect_vec * m_fSpeed * DT;
-	//		//localPos.y = 0.f;
-	//	}
-	//}
+	//UpdateLerpPos();
 }
 void CMonsterScript::UpdateLerpPos()
 {

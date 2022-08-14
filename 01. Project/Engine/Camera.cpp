@@ -208,7 +208,6 @@ void CCamera::SortShadowObject()
 					&& vecObj[j]->MeshRender()->GetSharedMaterial()->GetShader() != nullptr
 					&& vecObj[j]->MeshRender()->GetDynamicShadow())
 				{
-					cout << "여기까지는 안오잖아" << endl;
 					m_vecShadowObj.push_back(vecObj[j]);
 				}
 			}
@@ -225,7 +224,6 @@ void CCamera::render_shadowmap()
 
 	for (UINT i = 0; i < m_vecShadowObj.size(); ++i)
 	{
-		cout << "그전에 여기 거치나?" << endl;
 		m_vecShadowObj[i]->MeshRender()->render_shadowmap();
 	}
 }

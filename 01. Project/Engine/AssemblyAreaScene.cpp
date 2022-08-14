@@ -38,70 +38,346 @@
 
 void CAssemblyAreaScene::CreateMap()
 {
-	// ====================
-	// 바닥 오브젝트 생성
-	// ====================
+	Ptr<CMeshData> pMapMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Dungeon_Map.mdat", L"MeshData\\Dungeon_Map.mdat");
 
-	//Ptr<CMeshData> pTestMapMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Map\\g5.fbx");
-	//pTestMapMeshData->Save(pTestMapMeshData->GetPath());
-	Ptr<CMeshData> pTestMapMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Ground.mdat", L"MeshData\\Ground.mdat");
+	CGameObject* Map = new CGameObject;
 
-	CGameObject* Tile = new CGameObject;
-
-	Tile->SetName(L"Map_Tile");
-	Tile = pTestMapMeshData->Instantiate();
-	Tile->FrustumCheck(false);
-	
-	// Transform 설정
-	Tile->Transform()->SetLocalPos(Vec3(-2500.f, -50.f, -2500.f));
-	Tile->Transform()->SetLocalScale(Vec3(3.f, 3.f, 1.f));
-	Tile->Transform()->SetLocalRot(Vec3(XMConvertToRadians(90.0f), 0.f, 0.f));
-
-	FindLayer(L"Map")->AddGameObject(Tile);
-
-
-	// ====================
-	// Map 오브젝트 생성
-	// ====================
-
-	//Ptr<CMeshData> pMapMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Map\\Assembly_Map.fbx");
-	//pMapMeshData->Save(pMapMeshData->GetPath());
-	Ptr<CMeshData> pMapMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Assembly_Map.mdat", L"MeshData\\Assembly_Map.mdat");
-
-	CGameObject* pMap = new CGameObject;
-
-	pMap->SetName(L"Assembly_Map");
-	pMap = pMapMeshData->Instantiate();
-	pMap->FrustumCheck(false);
-
-	pMap->MeshRender()->SetDynamicShadow(true);
+	Map->SetName(L"Map_Object");
+	Map = pMapMeshData->Instantiate();
+	Map->FrustumCheck(false);
 
 	// Transform 설정
-	pMap->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-	pMap->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	pMap->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
+	Map->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	Map->Transform()->SetLocalScale(Vec3(2.3f, 2.3f, 2.0f));
+	Map->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.0f), XMConvertToRadians(180.0f), 0.f));
 
-	FindLayer(L"Map")->AddGameObject(pMap);
+	FindLayer(L"Map")->AddGameObject(Map);
 
-	// ====================
-	// Skybox 오브젝트 생성
-	// ====================
 
-	Ptr<CTexture> pSkyboxTex = CResMgr::GetInst()->Load<CTexture>(L"SB", L"Texture\\Skybox\\Deep Dusk Equirect.png");
+	// 맵 콜라이더 만들기
 
-	CGameObject* pSkybox = new CGameObject;
-	pSkybox->SetName(L"SkyBox");
-	pSkybox->FrustumCheck(false);
-	pSkybox->AddComponent(new CTransform);
-	pSkybox->AddComponent(new CMeshRender);
+	// 1
+	CGameObject* pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(0.f, 50.f, -150.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(500.f, 100.f, 50.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
 
-	// MeshRender 설정
-	pSkybox->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh"));
-	pSkybox->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"SkyboxMtrl"));
-	pSkybox->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pSkyboxTex.GetPointer());
+	// 2
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(250.f, 50.f, 1300.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(50.f, 100.f, 2800.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
 
-	// AddGameObject
-	FindLayer(L"Default")->AddGameObject(pSkybox, false);
+	// 3
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(-250.f, 50.f, 1300.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(50.f, 100.f, 2800.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
+
+	// 4
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(600.f, 50.f, 2750.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(1000.f, 100.f, 50.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
+
+	// 5
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(-600.f, 50.f, 2750.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(1000.f, 100.f, 50.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
+
+	// 6
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(1150.f, 50.f, 3600.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(50.f, 100.f, 1600.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
+
+	// 7
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(0.f, 50.f, 4400.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(2100.f, 100.f, 50.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
+
+	// 8
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(-1150.f, 50.f, 4100.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 800.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
+
+	// 9
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(-1150.f, 50.f, 3080.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 800.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
+
+	// 10
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(-2580.f, 50.f, 3300.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(2800.f, 100.f, 50.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
+
+	// 11
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(-2580.f, 50.f, 3870.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(2800.f, 100.f, 50.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
+
+	// 12
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(-6550.f, 50.f, 3600.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(50.f, 100.f, 1600.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
+
+	// 13
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(-5300.f, 50.f, 2750.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(2500.f, 100.f, 50.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
+
+	// 14
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(-4000.f, 50.f, 4100.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 800.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
+
+	// 15
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(-4000.f, 50.f, 3080.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 800.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
+
+	// 16
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(-4700.f, 50.f, 4450.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(1300.f, 100.f, 50.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
+
+	// 17 박스
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(-6250.f, 50.f, 4150.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(450.f, 100.f, 450.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
+
+	// 18
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(-6050.f, 50.f, 4450.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(1025.f, 100.f, 50.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
+
+	//// ====================
+	//// 바닥 오브젝트 생성
+	//// ====================
+	//Ptr<CMeshData> pTestMapMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Ground.mdat", L"MeshData\\Ground.mdat");
+
+	//CGameObject* Tile = new CGameObject;
+
+	//Tile->SetName(L"Map_Tile");
+	//Tile = pTestMapMeshData->Instantiate();
+	//Tile->FrustumCheck(false);
+	//
+	//Tile->Transform()->SetLocalPos(Vec3(-2500.f, -50.f, -2500.f));
+	//Tile->Transform()->SetLocalScale(Vec3(3.f, 3.f, 1.f));
+	//Tile->Transform()->SetLocalRot(Vec3(XMConvertToRadians(90.0f), 0.f, 0.f));
+
+	//FindLayer(L"Map")->AddGameObject(Tile);
+
+
+	//// ====================
+	//// Map 오브젝트 생성
+	//// ====================
+	//Ptr<CMeshData> pMapMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Assembly_Map.mdat", L"MeshData\\Assembly_Map.mdat");
+	//CGameObject* pMap = new CGameObject;
+
+	//pMap->SetName(L"Assembly_Map");
+	//pMap = pMapMeshData->Instantiate();
+	//pMap->FrustumCheck(false);
+	//pMap->MeshRender()->SetDynamicShadow(true);
+
+	//pMap->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	//pMap->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	//pMap->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
+
+	//FindLayer(L"Map")->AddGameObject(pMap);
+
+	//// ====================
+	//// Skybox 오브젝트 생성
+	//// ====================
+
+	//Ptr<CTexture> pSkyboxTex = CResMgr::GetInst()->Load<CTexture>(L"SB", L"Texture\\Skybox\\Deep Dusk Equirect.png");
+
+	//CGameObject* pSkybox = new CGameObject;
+	//pSkybox->SetName(L"SkyBox");
+	//pSkybox->FrustumCheck(false);
+	//pSkybox->AddComponent(new CTransform);
+	//pSkybox->AddComponent(new CMeshRender);
+
+	//pSkybox->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh"));
+	//pSkybox->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"SkyboxMtrl"));
+	//pSkybox->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pSkyboxTex.GetPointer());
+
+	//FindLayer(L"Default")->AddGameObject(pSkybox, false);
 }
 
 void CAssemblyAreaScene::init()
@@ -269,25 +545,25 @@ void CAssemblyAreaScene::init()
 
 	//Ptr<CMeshData> pAS_NPCMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Monster\\FM_Idle.fbx");
 	//pAS_NPCMeshData->Save(pAS_NPCMeshData->GetPath());
-	Ptr<CMeshData> pAS_NPCMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FM_Idle.mdat", L"MeshData\\FM_Idle.mdat");
+	//Ptr<CMeshData> pAS_NPCMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FM_Idle.mdat", L"MeshData\\FM_Idle.mdat");
 
-	CGameObject* pAS_NPC = new CGameObject;
+	//CGameObject* pAS_NPC = new CGameObject;
 
-	pAS_NPC = pAS_NPCMeshData->Instantiate();
-	pAS_NPC->SetName(L"AS_NPC_1");
-	pAS_NPC->FrustumCheck(false);
+	//pAS_NPC = pAS_NPCMeshData->Instantiate();
+	//pAS_NPC->SetName(L"AS_NPC_1");
+	//pAS_NPC->FrustumCheck(false);
 
-	pAS_NPC->Transform()->SetLocalPos(Vec3(300.f, 0.f, 1600.f));
-	pAS_NPC->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
-	pAS_NPC->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
+	//pAS_NPC->Transform()->SetLocalPos(Vec3(300.f, 0.f, 1600.f));
+	//pAS_NPC->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//pAS_NPC->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 
-	//pTest->AddComponent(new CCollider2D);
-	//pTest->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	//pTest->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	//pTest->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
-	//pTest->Collider2D()->SetOffsetRot(Vec3(0.f, 0.f, XMConvertToRadians(-180.f)));
+	////pTest->AddComponent(new CCollider2D);
+	////pTest->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+	////pTest->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	////pTest->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+	////pTest->Collider2D()->SetOffsetRot(Vec3(0.f, 0.f, XMConvertToRadians(-180.f)));
 
-	FindLayer(L"NPC")->AddGameObject(pAS_NPC);
+	//FindLayer(L"NPC")->AddGameObject(pAS_NPC);
 
 	// 검 테스트
 
@@ -306,4 +582,33 @@ void CAssemblyAreaScene::init()
 	//ptest->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
 
 	//FindLayer(L"NPC")->AddGameObject(ptest);
+
+	/*Ptr<CMeshData> pTestMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_Lv1_Idle.mdat", L"MeshData\\Monster_Lv1_Idle.mdat");
+
+	CGameObject* ptest = new CGameObject;
+
+	ptest = pTestMeshData->Instantiate();
+	ptest->SetName(L"mtest");
+	ptest->FrustumCheck(false);
+
+	ptest->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	ptest->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	ptest->Transform()->SetLocalRot(Vec3(XMConvertToRadians(90.f), 0.f, 0.f));
+
+	ptest->AddComponent(new CMonsterScript);
+
+	CMonsterScript* MonsterScript = ptest->GetScript<CMonsterScript>();
+
+	MonsterScript->SetMonsterAnimationData(pTestMeshData->GetMesh(), 0, 0, 55);			
+
+	pTestMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_Lv1_Run.mdat", L"MeshData\\Monster_Lv1_Run.mdat");
+	MonsterScript->SetMonsterAnimationData(pTestMeshData->GetMesh(), 1, 0, 21);			
+
+	pTestMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_Lv1_Hit.mdat", L"MeshData\\Monster_Lv1_Hit.mdat");
+	MonsterScript->SetMonsterAnimationData(pTestMeshData->GetMesh(), 2, 0, 29);		
+
+	pTestMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_Lv1_Attack.mdat", L"MeshData\\Monster_Lv1_Attack.mdat");
+	MonsterScript->SetMonsterAnimationData(pTestMeshData->GetMesh(), 3, 0, 45);			
+
+	FindLayer(L"NPC")->AddGameObject(ptest);*/
 }
