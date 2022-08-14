@@ -33,21 +33,13 @@ void CFire::update()
 		m_NoiseBuffer.frameTime = 0.f;
 	MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::FLOAT_0, &m_NoiseBuffer.frameTime);
 
-	for (auto client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(2)->GetParentObj())
+	for (auto player : CSceneMgr::GetInst()->GetCurScene()->GetLayer(2)->GetParentObj())
 	{
-		client->GetScript<CToolCamScript>();
-		m_pCamera = client;
-	
-		angle=atan2(this->Transform()->GetLocalPos().x - client->Transform()->GetLocalPos().x, this->Transform()->GetLocalPos().z - client->Transform()->GetLocalPos().z)* (180 / XM_PI);
-		rotation = (float)angle * 0.0174532925f;
-		XMMATRIX tempMAt = XMLoadFloat4x4(&this->Transform()->GetWorldMat());
-		tempMAt=XMMatrixRotationY(rotation);
-		/*XMMatrixTranslation();
-		XMMatrixMultiply();*/
-		
+		m_pPlayer = player;
 	
 	}
 
+	Vec3 PlayerRot = m_pPlayer->Transform()->GetLocalRot() ;
 	m_fcreate_time += DT;
 	if (m_fcreate_time >= 4.f)
 	{
@@ -65,12 +57,12 @@ void CFire::update()
 
 
 
-	localPos += WorldDir * Temp;
+	localPos += -WorldDir * Temp;
 
 
 	
 	Transform()->SetLocalPos(localPos);
-	Transform()->SetLocalRot(vRot);
+	Transform()->SetLocalRot(PlayerRot );
 
 
 }

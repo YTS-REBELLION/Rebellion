@@ -65,7 +65,7 @@ void CPlayerScript::init()
 	pSwordObject->AddComponent(new CSwordScript);
 	CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
 	pSwordObject->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, GetObj(), 25);
-
+	pSwordObject->MeshRender()->SetDynamicShadow(true);
 	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pSwordObject, false);
 	GetObj()->AddChild(pSwordObject);
 	Ptr<CTexture> pS_astrostone = CResMgr::GetInst()->Load<CTexture>(L"Astrostone", L"Texture\\Icon\\S_astrostone.png");
@@ -1152,7 +1152,7 @@ void CPlayerScript::MegaSlash()
 	////  오브젝트 생성
 	//// ====================
 	CGameObject* m_pSwordStrike = new CGameObject;
-	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
+	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sjuriken1.fbx");
 	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
 	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
 
@@ -1289,19 +1289,7 @@ void CPlayerScript::Swing()
 
 
 
-	CGameObject* pObject = new CGameObject;
-	pObject->SetName(L"Particle");
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CParticleSystem);
-	pObject->Particlesystem()->SetFrequency(2.f);
-	pObject->Particlesystem()->SetType(false);
-	pObject->Particlesystem()->SetMaxParticle(10);
-	pObject->AddComponent(new CParticleScript);
-	pObject->GetScript<CParticleScript>()->SetLifeTime(pObject->Particlesystem()->GetMaxLifeTime());
-	pObject->FrustumCheck(false);
-	Vec3 particlePos = Vec3(200.f, 300.f, 100.f);
-	pObject->Transform()->SetLocalPos(particlePos);
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(pObject);
+	
 
 }
 
@@ -1311,9 +1299,8 @@ void CPlayerScript::Sting()
 	////  오브젝트 생성
 	//// ====================
 	CGameObject* m_pSwordStrike = new CGameObject;
-	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
-	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
-	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
+	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sjuriken1.fbx");
+	
 
 
 	m_pSwordStrike = pPMeshData->Instantiate();
@@ -1342,9 +1329,8 @@ void CPlayerScript::FireBall()
 	////  오브젝트 생성
 	//// ====================
 	CGameObject* m_pSwordStrike = new CGameObject;
-	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
-	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
-	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
+	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sjuriken1.fbx");
+	
 
 
 	m_pSwordStrike = pPMeshData->Instantiate();
@@ -1371,9 +1357,8 @@ void CPlayerScript::FireBall()
 void CPlayerScript::UnleashedPower()
 {
 	CGameObject* m_pSwordStrike = new CGameObject;
-	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
-	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
-	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
+	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sjuriken1.fbx");
+	
 
 
 	m_pSwordStrike = pPMeshData->Instantiate();
@@ -1524,9 +1509,8 @@ void CPlayerScript::Meteor()
 
 
 	CGameObject* m_pSwordStrike = new CGameObject;
-	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
-	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
-	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
+	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sjuriken1.fbx");
+
 
 
 	m_pSwordStrike = pPMeshData->Instantiate();

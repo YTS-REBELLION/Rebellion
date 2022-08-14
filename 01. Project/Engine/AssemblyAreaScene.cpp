@@ -78,7 +78,7 @@ void CAssemblyAreaScene::CreateMap()
 	pMap->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 	pMap->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pMap->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
-
+	pMap->MeshRender()->SetDynamicShadow(true);
 	FindLayer(L"Map")->AddGameObject(pMap);
 
 	// ====================
@@ -115,7 +115,7 @@ void CAssemblyAreaScene::init()
 	GetLayer(7)->SetName(L"NPC");
 	GetLayer(8)->SetName(L"Player_Skill");
 
-	CreateMap();
+	
 
 	// ====================
 	// 3D Light Object Ãß°¡
@@ -283,7 +283,7 @@ void CAssemblyAreaScene::init()
 
 
 
-	
+	CreateMap();
 
 
 

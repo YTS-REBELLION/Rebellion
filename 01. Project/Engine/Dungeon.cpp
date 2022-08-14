@@ -45,6 +45,8 @@ void CDungeonScene::init()
 	GetLayer(6)->SetName(L"Monster");
 	GetLayer(7)->SetName(L"Boss");
 	GetLayer(8)->SetName(L"Player_Skill");
+	GetLayer(9)->SetName(L"Camera");
+	GetLayer(10)->SetName(L"Monster_Skill");
 	// ====================
 	// 3D Light Object 추가
 	// ====================
@@ -115,8 +117,8 @@ void CDungeonScene::init()
 	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 4, 0, 75);							// AniData Index 3
 	g_net.SetAniData(pMeshData->GetMesh());
 
-	Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl");
-	pPlayer->MeshRender()->SetMaterial(pMtrl, 0);
+	/*Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl");
+	pPlayer->MeshRender()->SetMaterial(pMtrl, 0);*/
 	pPlayer->MeshRender()->SetDynamicShadow(true);
 	FindLayer(L"Player")->AddGameObject(pPlayer);
 
@@ -138,7 +140,8 @@ void CDungeonScene::init()
 
 	CToolCamScript* PlayerCamScript = pMainCam->GetScript<CToolCamScript>();
 	PlayerCamScript->SetCameraToPlayer(pPlayer);
-	FindLayer(L"Default")->AddGameObject(pMainCam);
+	PlayerCamScript->Save_Camera(PlayerCamScript);
+	FindLayer(L"Camera")->AddGameObject(pMainCam);
 
 	// UI Camera
 	CGameObject* pUICam = new CGameObject;
@@ -186,6 +189,27 @@ void CDungeonScene::init()
 	}
 
 
+
+	// Distortion Object 만들기
+	// 텔포포탈
+	CGameObject* pObject = new CGameObject;
+	pObject->SetName(L"PostEffect");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	
+	// Material 값 셋팅
+	Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionObjMtrl");
+	
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CircleMesh"));
+	pObject->MeshRender()->SetMaterial(pMtrl2, 0);
+	pObject->Transform()->SetLocalScale(Vec3(500.f, 500.f, 500.f));
+	pObject->Transform()->SetLocalRot(Vec3(0.0f, 0.f, 0.0f));
+	pObject->Transform()->SetLocalPos(Vec3(100,100,100));
+
+	FindLayer(L"Default")->AddGameObject(pObject);
+
+
+
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player_Skill");
@@ -193,6 +217,6 @@ void CDungeonScene::init()
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Sword");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Player");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Player_Skill");
-
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Monster_Skill"); 
 
 }

@@ -48,7 +48,12 @@ public:
 	
 	//void Fix_Mouse();
 	//void Mouse_Move();
+	void Save_Camera(CToolCamScript* camera) {
+		m_pCamera = camera;
+	};
+	CToolCamScript* m_pCamera;
 
+	CToolCamScript* Get_SaveCamera() { return m_pCamera; }
 public:
 	CLONE(CToolCamScript);
 

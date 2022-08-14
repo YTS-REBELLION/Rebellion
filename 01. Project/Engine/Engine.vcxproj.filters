@@ -586,7 +586,6 @@
     <FxCompile Include="trail.fx">
       <Filter>ShaderCode</Filter>
     </FxCompile>
-    <FxCompile Include="fire.fx" />
     <FxCompile Include="posteffect.fx">
       <Filter>ShaderCode</Filter>
     </FxCompile>
@@ -594,6 +593,9 @@
       <Filter>ShaderCode</Filter>
     </FxCompile>
     <FxCompile Include="rain.fx">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="fire.fx">
       <Filter>ShaderCode</Filter>
     </FxCompile>
   </ItemGroup>
