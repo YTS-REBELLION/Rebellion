@@ -9,6 +9,8 @@
 #include "Transform.h"
 #include "Collider2D.h"
 
+#include"ParticleScript.h"
+#include"ParticleSystem.h"
 
 CCollisionMgr::CCollisionMgr()
 	: m_LayerCheck{}
@@ -71,6 +73,21 @@ void CCollisionMgr::CheckCollisionLayer(int _iLayerIdx1, int _iLyaerIdx2)
 
 void CCollisionMgr::CollisionLayer(const CLayer * _pLayer1, const CLayer * _pLayer2)
 {
+
+
+
+
+	if (m_bColCheck)
+	{
+		m_fColCheckTime += DT;
+		if (m_fColCheckTime >= 2.f)
+		{
+			m_fColCheckTime = 0.f;
+			m_bColCheck = false;
+			
+		}
+	}
+
 	const vector<CGameObject*>& vecObj1 = _pLayer1->GetObjects();
 	const vector<CGameObject*>& vecObj2 = _pLayer2->GetObjects();
 
@@ -123,6 +140,7 @@ void CCollisionMgr::CollisionLayer(const CLayer * _pLayer1, const CLayer * _pLay
 					{
 						pCollider1->OnCollision(pCollider2);
 						pCollider2->OnCollision(pCollider1);
+						m_bColCheck = true;
 					}					
 				}
 				// 처음 충돌했다
@@ -409,9 +427,29 @@ bool CCollisionMgr::CollisionSphere(CCollider2D* _pCollider1, CCollider2D* _pCol
 	float Radius1 = (_pCollider1->Transform()->GetLocalScale().x * _pCollider1->Collider2D()->GetOffsetScale().x);
 	float Radius2 = (_pCollider2->Transform()->GetLocalScale().x * _pCollider2->Collider2D()->GetOffsetScale().x);
 	float temp = Length(Center2 - Center1);
+
+
+
+
+
 	if ((Radius1 + Radius2) >= temp)
 	{
 		cout << "CollisionSphere" << endl;
+
+		CGameObject* pObject = new CGameObject;
+		pObject->SetName(L"Particle");
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CParticleSystem);
+		pObject->Particlesystem()->SetFrequency(2.f);
+		pObject->Particlesystem()->SetType(false);
+		pObject->Particlesystem()->SetMaxParticle(10);
+		pObject->AddComponent(new CParticleScript);
+		pObject->GetScript<CParticleScript>()->SetLifeTime(pObject->Particlesystem()->GetMaxLifeTime());
+		pObject->FrustumCheck(false);
+		Vec3 particlePos = Center2;
+		pObject->Transform()->SetLocalPos(particlePos);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(pObject);
+
 
 		return true;
 	}

@@ -35,20 +35,20 @@
 
 void CDungeonScene::CreateMap()
 {
-	Ptr<CMeshData> pMapMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Dungeon_Map.mdat", L"MeshData\\Dungeon_Map.mdat");
+	//Ptr<CMeshData> pMapMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Dungeon_Map.mdat", L"MeshData\\Dungeon_Map.mdat");
 
-	CGameObject* Map = new CGameObject;
+	//CGameObject* Map = new CGameObject;
 
-	Map->SetName(L"Map_Object");
-	Map = pMapMeshData->Instantiate();
-	Map->FrustumCheck(false);
+	//Map->SetName(L"Map_Object");
+	//Map = pMapMeshData->Instantiate();
+	//Map->FrustumCheck(false);
 
-	// Transform 설정
-	Map->Transform()->SetLocalPos(Vec3(0.f, -2.f, 0.f));
-	Map->Transform()->SetLocalScale(Vec3(2.3f, 2.3f, 2.0f));
-	Map->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.0f), XMConvertToRadians(180.0f), 0.f));
-	Map->MeshRender()->SetDynamicShadow(true);
-	FindLayer(L"Map")->AddGameObject(Map);
+	//// Transform 설정
+	//Map->Transform()->SetLocalPos(Vec3(0.f, -2.f, 0.f));
+	//Map->Transform()->SetLocalScale(Vec3(2.3f, 2.3f, 2.0f));
+	//Map->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.0f), XMConvertToRadians(180.0f), 0.f));
+	//Map->MeshRender()->SetDynamicShadow(true);
+	//FindLayer(L"Map")->AddGameObject(Map);
 
 
 	// 맵 콜라이더 만들기
@@ -83,6 +83,8 @@ void CDungeonScene::init()
 	GetLayer(4)->SetName(L"Portal");
 	GetLayer(5)->SetName(L"UI");
 	GetLayer(6)->SetName(L"Monster");
+	GetLayer(7)->SetName(L"NPC");
+	GetLayer(8)->SetName(L"Player_Skill");
 
 	CreateMap();
 
@@ -220,9 +222,9 @@ void CDungeonScene::init()
 	}
 
 
-	/*CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player_Skill");*/
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player_Skill");
 
 	/*CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Sword");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Player");

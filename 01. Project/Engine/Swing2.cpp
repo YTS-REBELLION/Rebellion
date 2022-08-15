@@ -27,7 +27,7 @@ void CSwing2::awake()
 void CSwing2::update()
 {
 
-	for (auto client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
+	for (auto client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(2)->GetParentObj())
 	{
 		if (client->GetScript<CPlayerScript>()->GetMain())
 			m_pPlayer = client;

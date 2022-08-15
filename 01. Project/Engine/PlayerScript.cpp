@@ -65,7 +65,7 @@ void CPlayerScript::init()
 	pSwordObject->AddComponent(new CSwordScript);
 	CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
 	pSwordObject->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, GetObj(), 25);
-
+	pSwordObject->MeshRender()->SetDynamicShadow(true);
 	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Sword", pSwordObject, false);
 	GetObj()->AddChild(pSwordObject);
 	Ptr<CTexture> pS_astrostone = CResMgr::GetInst()->Load<CTexture>(L"Astrostone", L"Texture\\Icon\\S_astrostone.png");
@@ -1162,7 +1162,7 @@ void CPlayerScript::MegaSlash()
 
 
 	m_pSwordStrike->AddComponent(new CCollider2D);
-	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(300.f, 300.f, 300.f));
 
@@ -1195,7 +1195,7 @@ void CPlayerScript::Swing()
 
 
 	m_pSwordStrike->AddComponent(new CCollider2D);
-	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
 
@@ -1221,7 +1221,7 @@ void CPlayerScript::Swing()
 
 
 	m_pSwordStrike->AddComponent(new CCollider2D);
-	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
 
@@ -1247,7 +1247,7 @@ void CPlayerScript::Swing()
 
 
 	m_pSwordStrike->AddComponent(new CCollider2D);
-	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
 
@@ -1273,7 +1273,7 @@ void CPlayerScript::Swing()
 
 
 	m_pSwordStrike->AddComponent(new CCollider2D);
-	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
 
@@ -1282,19 +1282,7 @@ void CPlayerScript::Swing()
 
 
 
-	CGameObject* pObject = new CGameObject;
-	pObject->SetName(L"Particle");
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CParticleSystem);
-	pObject->Particlesystem()->SetFrequency(2.f);
-	pObject->Particlesystem()->SetType(false);
-	pObject->Particlesystem()->SetMaxParticle(10);
-	pObject->AddComponent(new CParticleScript);
-	pObject->GetScript<CParticleScript>()->SetLifeTime(pObject->Particlesystem()->GetMaxLifeTime());
-	pObject->FrustumCheck(false);
-	Vec3 particlePos = Vec3(200.f, 300.f, 100.f);
-	pObject->Transform()->SetLocalPos(particlePos);
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(pObject);
+	
 
 }
 
@@ -1321,7 +1309,7 @@ void CPlayerScript::Sting()
 
 
 	m_pSwordStrike->AddComponent(new CCollider2D);
-	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
@@ -1336,8 +1324,7 @@ void CPlayerScript::FireBall()
 	//// ====================
 	CGameObject* m_pSwordStrike = new CGameObject;
 	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
-	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
-	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
+	
 
 
 	m_pSwordStrike = pPMeshData->Instantiate();
@@ -1381,7 +1368,7 @@ void CPlayerScript::UnleashedPower()
 
 
 	m_pSwordStrike->AddComponent(new CCollider2D);
-	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
@@ -1405,7 +1392,7 @@ void CPlayerScript::UnleashedPower()
 
 
 	m_pSwordStrike->AddComponent(new CCollider2D);
-	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
@@ -1429,7 +1416,7 @@ void CPlayerScript::UnleashedPower()
 
 
 	m_pSwordStrike->AddComponent(new CCollider2D);
-	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
@@ -1453,7 +1440,7 @@ void CPlayerScript::UnleashedPower()
 
 
 	m_pSwordStrike->AddComponent(new CCollider2D);
-	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
@@ -1477,7 +1464,7 @@ void CPlayerScript::UnleashedPower()
 
 
 	m_pSwordStrike->AddComponent(new CCollider2D);
-	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
@@ -1534,7 +1521,7 @@ void CPlayerScript::Meteor()
 
 
 	m_pSwordStrike->AddComponent(new CCollider2D);
-	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
