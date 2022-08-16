@@ -5,7 +5,7 @@
 #include "Animator3D.h"
 #include "PlayerScript.h"
 #include "SwordScript.h"
-
+#include"Sting.h"
 CMonsterScript::CMonsterScript()
 	: CScript((UINT)SCRIPT_TYPE::MONSTERSCRIPT)
 	, m_pOriginMtrl(nullptr)
@@ -113,6 +113,30 @@ void CMonsterScript::update()
 	}
 	else if (!m_Is_Move && m_Is_Attack) {
 		AnimationPlay(MONSTER_ANI_TYPE::ATTACK);
+		CGameObject* m_pSwordStrike = new CGameObject;
+		Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sjuriken1.fbx");
+
+
+
+		m_pSwordStrike = pPMeshData->Instantiate();
+		m_pSwordStrike->SetName(L"Sword_Col");
+		m_pSwordStrike->FrustumCheck(false);
+
+
+		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
+		m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+		m_pSwordStrike->Transform()->SetLocalScale(Vec3(0.1f, 0.1f, 0.1f));
+		m_pSwordStrike->AddComponent(new CSting);
+
+
+		m_pSwordStrike->AddComponent(new CCollider2D);
+		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(2000.f, 2000.f, 2000.f));
+
+		// AddGameObject
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
+
 	}
 	else
 		AnimationPlay(MONSTER_ANI_TYPE::HIT);

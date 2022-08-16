@@ -85,6 +85,8 @@ void CDungeonScene::init()
 	GetLayer(6)->SetName(L"Monster");
 	GetLayer(7)->SetName(L"NPC");
 	GetLayer(8)->SetName(L"Player_Skill");
+	GetLayer(9)->SetName(L"Monster_Skill");
+	
 
 	CreateMap();
 
@@ -122,7 +124,7 @@ void CDungeonScene::init()
 
 	pPlayer->AddComponent(new CCollider2D);
 	pPlayer->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	pPlayer->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pPlayer->Collider2D()->SetOffsetPos(Vec3(0.f, 100.f, 0.f));
 	pPlayer->Collider2D()->SetOffsetScale(Vec3(70.f, 70.f, 70.f));
 	pPlayer->Collider2D()->SetOffsetRot(Vec3(0.f, 0.f, XMConvertToRadians(-180.f)));
 
@@ -153,8 +155,7 @@ void CDungeonScene::init()
 	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 4, 0, 75);							// AniData Index 3
 	g_net.SetAniData(pMeshData->GetMesh());
 
-	Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl");
-	pPlayer->MeshRender()->SetMaterial(pMtrl, 0);
+	
 	pPlayer->MeshRender()->SetDynamicShadow(true);
 	FindLayer(L"Player")->AddGameObject(pPlayer);
 
@@ -222,13 +223,15 @@ void CDungeonScene::init()
 	}
 
 
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Sword");
+	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Sword", L"Monster");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player_Skill");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player_Skill", L"Monster");
 
 	/*CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Sword");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Player");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Player_Skill");*/
+
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster_Skill", L"Player");
 
 
 }

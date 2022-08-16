@@ -27,6 +27,7 @@ public:
 	void CheckCollisionLayer(const wstring& _strLayerName1, const wstring& _strLayerName2);
 	void CheckCollisionLayer(int _iLayerIdx1, int _iLyaerIdx2);
 	bool m_bColCheck = false;
+	bool m_bColCheck2 = false;
 	float m_fColCheckTime = 0.f;
 private:
 	void CollisionLayer(const CLayer* _pLayer1, const CLayer* _pLayer2);

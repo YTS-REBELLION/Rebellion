@@ -26,7 +26,7 @@ void CSting::awake()
 void CSting::update()
 {
 	m_fcreate_time += DT;
-	if (m_fcreate_time >= 1.f)
+	if (m_fcreate_time >= 0.2f)
 	{
 		GetObj()->SetDead();
 	}

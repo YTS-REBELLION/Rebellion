@@ -73,21 +73,21 @@ void CCollisionMgr::CheckCollisionLayer(int _iLayerIdx1, int _iLyaerIdx2)
 
 void CCollisionMgr::CollisionLayer(const CLayer * _pLayer1, const CLayer * _pLayer2)
 {
-
-
-
-
+	
 	if (m_bColCheck)
 	{
+		m_bColCheck2 = true;
 		m_fColCheckTime += DT;
-		if (m_fColCheckTime >= 2.f)
+		if (m_fColCheckTime >= 0.5f)
 		{
-			m_fColCheckTime = 0.f;
+			m_bColCheck2 = false;
+			m_fColCheckTime = 0;
 			m_bColCheck = false;
-			
 		}
 	}
 
+	
+	
 	const vector<CGameObject*>& vecObj1 = _pLayer1->GetObjects();
 	const vector<CGameObject*>& vecObj2 = _pLayer2->GetObjects();
 
@@ -132,15 +132,22 @@ void CCollisionMgr::CollisionLayer(const CLayer * _pLayer1, const CLayer * _pLay
 				{
 					if (IsDead)
 					{
-						pCollider1->OnCollisionExit(pCollider2);
-						pCollider2->OnCollisionExit(pCollider1);
-						iter->second = false;
+						if (!m_bColCheck2)
+						{
+							m_bColCheck = true;
+							pCollider1->OnCollisionExit(pCollider2);
+							pCollider2->OnCollisionExit(pCollider1);
+							iter->second = false;
+						}
 					}
 					else
 					{
-						pCollider1->OnCollision(pCollider2);
-						pCollider2->OnCollision(pCollider1);
-						m_bColCheck = true;
+						if (!m_bColCheck2)
+						{
+							m_bColCheck = true;
+							pCollider1->OnCollision(pCollider2);
+							pCollider2->OnCollision(pCollider1);
+						}
 					}					
 				}
 				// 처음 충돌했다
@@ -148,16 +155,20 @@ void CCollisionMgr::CollisionLayer(const CLayer * _pLayer1, const CLayer * _pLay
 				{
 					if (IsDead)
 						continue;
-					pCollider1->OnCollisionEnter(pCollider2);
-					pCollider2->OnCollisionEnter(pCollider1);
+					if (!m_bColCheck2)
+					{
+						m_bColCheck = true;
+						pCollider1->OnCollisionEnter(pCollider2);
+						pCollider2->OnCollisionEnter(pCollider1);
 
-					if (m_mapCol.end() == iter)
-					{
-						m_mapCol.insert(make_pair(id.ID, true));
-					}
-					else
-					{
-						iter->second = true;
+						if (m_mapCol.end() == iter)
+						{
+							m_mapCol.insert(make_pair(id.ID, true));
+						}
+						else
+						{
+							iter->second = true;
+						}
 					}
 				}
 			}
@@ -173,6 +184,7 @@ void CCollisionMgr::CollisionLayer(const CLayer * _pLayer1, const CLayer * _pLay
 			}
 		}
 	}
+
 }
 
 bool CCollisionMgr::IsCollision(CCollider2D * _pCollider1, CCollider2D * _pCollider2)

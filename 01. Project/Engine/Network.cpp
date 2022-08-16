@@ -284,7 +284,7 @@ void CNetwork::ProcessPacket(char* ptr)
 				GameObject.find(id)->second->GetScript<CMonsterScript>()->SetID(id);
 				GameObject.find(id)->second->GetScript<CMonsterScript>()->SetHP(100);
 				GameObject.find(id)->second->GetScript<CMonsterScript>()->SetLerpPos(Vec3(packet->x, packet->y, packet->z));
-
+				GameObject.find(id)->second->MeshRender()->SetDynamicShadow(true);
 				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", GameObject.find(id)->second, false);
 
 			}

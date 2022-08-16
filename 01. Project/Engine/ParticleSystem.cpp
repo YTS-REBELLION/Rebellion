@@ -22,8 +22,8 @@ CParticleSystem::CParticleSystem()
 	, m_fMaxSpeed(50.f)
 	, m_fStartScale(30.f)
 	, m_fEndScale(10.f)
-	, m_vStartColor(Vec4(0.2f, 0.2f, 0.8f, 1.4f))
-	, m_vEndColor(Vec4(0.6f, 0.6f, 0.8f, 1.0f))
+	, m_vStartColor(Vec4(0.8f, 0.2f, 0.2f, 1.4f))
+	, m_vEndColor(Vec4(0.8f, 0.6f, 0.6f, 1.0f))
 	, m_bType(true)
 {
 	// 구조화 버퍼 생성

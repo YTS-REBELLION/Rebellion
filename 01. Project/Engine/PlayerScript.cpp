@@ -329,6 +329,7 @@ void CPlayerScript::update()
 		{
 			GetObj()->Animator3D()->SetClipTime(3, 0.f);
 			SetAttack();
+
 		}
 
 		if (KEY_TAB(KEY_TYPE::KEY_2))
@@ -411,6 +412,34 @@ void CPlayerScript::update()
 		{
 			AnimationPlay(PLAYER_ANI_TYPE::ATTACK);
 			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
+
+			CGameObject* m_pSwordStrike = new CGameObject;
+			Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sjuriken1.fbx");
+
+
+
+			m_pSwordStrike = pPMeshData->Instantiate();
+			m_pSwordStrike->SetName(L"Sword_Col");
+			m_pSwordStrike->FrustumCheck(false);
+
+
+			m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
+			m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+			m_pSwordStrike->Transform()->SetLocalScale(Vec3(0.1f, 0.1f, 0.1f));
+			m_pSwordStrike->AddComponent(new CSting);
+
+
+			m_pSwordStrike->AddComponent(new CCollider2D);
+			m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+			m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+			m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(2000.f, 2000.f, 2000.f));
+
+			// AddGameObject
+			CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
+
+
+			
+
 		}
 		else if (GetSkill())
 		{
@@ -847,6 +876,16 @@ void CPlayerScript::update()
 		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
 		//pManaobj = pObject;
 
+		if (m_bColCheck)
+		{
+			Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl");
+			this->MeshRender()->SetMaterial(pMtrl, 0);
+		}
+
+		if (!m_bColCheck)
+		{
+		
+		}
 
 		if (m_bMeteor2)
 		{
