@@ -360,7 +360,6 @@ void CPlayerScript::update()
 			}
 			else if (KEY_AWAY(KEY_TYPE::KEY_LSHIFT)) isDash(false);
 
-			cout << GetObj()->Transform()->GetLocalPos().x << ", " << GetObj()->Transform()->GetLocalPos().z << endl;
 
 		}
 		else if (KEY_HOLD(KEY_TYPE::KEY_S))

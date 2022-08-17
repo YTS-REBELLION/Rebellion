@@ -185,14 +185,12 @@ void CNetwork::ProcessPacket(char* ptr)
 	case SC_PACKET_PUT_OBJECT: {
 		sc_packet_put_object* packet = reinterpret_cast<sc_packet_put_object*>(ptr);
 		int id = packet->id;
-		cout << id << "<- 객체 생성" << endl;
 		if (id == g_myid) {
 			//내꺼 만들기
 		}
 		else {
 			if (CheckType(id) == OBJECT_TYPE::PLAYER) {
 				// 다른 사람
-				cout << "플레이어 생성" << endl;
 				Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Idle.mdat", L"MeshData\\Player_FM_Idle.mdat");
 
 				CGameObject* pObject = new CGameObject;
@@ -240,7 +238,6 @@ void CNetwork::ProcessPacket(char* ptr)
 			}
 			else if (CheckType(id) == OBJECT_TYPE::FM_MONSTER) {
 				//// 몬스터
-				cout << id << "<- 몬스터 생성" << endl;
 				CGameObject* pMonster = new CGameObject;
 				Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Idle.mdat", L"MeshData\\Monster_FM_Idle.mdat");
 				GameObject.emplace(id, pMonster);
@@ -774,7 +771,6 @@ void CNetwork::Send_LogIn_Packet()
 	strcpy_s(name, packet.name);
 	g_myid++;
 
-	std::cout << "CS_LOGIN PACKET : " << g_myid << std::endl;
 
 	Send_Packet(&packet);
 
