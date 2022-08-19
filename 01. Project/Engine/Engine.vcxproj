@@ -252,6 +252,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="Somethings.h" />
     <ClInclude Include="Sound.h" />
+    <ClInclude Include="SoundMgr.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Sting.h" />
     <ClInclude Include="struct.h" />
@@ -355,6 +356,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="SimpleMath.cpp" />
     <ClCompile Include="Somethings.cpp" />
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="SoundMgr.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

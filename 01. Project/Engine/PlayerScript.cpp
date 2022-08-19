@@ -22,6 +22,8 @@
 #include"ParticleSystem.h"
 #include "SwordAttackAreaScript.h"
 #include"ParticleScript.h"
+#include "SoundMgr.h"
+
 
 bool isReckoning = false;
 CPlayerScript::CPlayerScript()
@@ -338,6 +340,7 @@ void CPlayerScript::update()
 		else if (KEY_AWAY(KEY_TYPE::KEY_SPACE))
 		{
 			SetAttack();
+			PlaySound_(Sound_Type::HIT);
 			pSwordColObject->SetActive(false);
 		}
 
@@ -1731,4 +1734,9 @@ void CPlayerScript::QuestDone(QUEST questNum)
 	m_pQuestComplete = pObject;
 
 
+}
+void CPlayerScript::PlaySound_(const Sound_Type& sound)
+{
+	g_SoundList.find(sound)->second->Play(1);
+	
 }

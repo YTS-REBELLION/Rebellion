@@ -22,7 +22,7 @@ public:
 private:
 	FMOD::Sound*			m_pSound;
 	list<FMOD::Channel*>	m_listChannel;
-	
+	float m_fvolum = 0.0f;
 
 
 public:
@@ -33,7 +33,7 @@ public:
 	void RemoveChannel(FMOD::Channel* _pTargetChannel);
 
 public:
-	virtual void Load(const wstring& _strFilePath);
+	virtual void Load(const wstring& _strFilePath, const Sound_Type& type);
 
 public:
 	CSound();

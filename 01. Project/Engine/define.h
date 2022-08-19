@@ -1,5 +1,6 @@
 #pragma once
 
+
 #define SINGLE(type) private: type(); ~type();\
 public:\
 static type* GetInst()\
@@ -403,4 +404,12 @@ enum class MONSTER_MOVE
 	START,
 	STOP,
 	RESTART
+};
+
+enum class Sound_Type
+{
+	BGM,
+	BGM2,
+	HIT,
+	END
 };

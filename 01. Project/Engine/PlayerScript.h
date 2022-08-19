@@ -208,6 +208,8 @@ public:
 	bool GetSkillStrat(int _index) { return m_bSkill_Start[_index]; }
 
 	void isDash(bool _type) { m_bDash = _type; };
+	// sound
+	void PlaySound_(const Sound_Type& sound);
 public:
 	CLONE(CPlayerScript);
 

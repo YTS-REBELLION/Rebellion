@@ -68,7 +68,7 @@ void CSound::Play(int _iRoopCount, bool _bOverlap)
 
 	m_listChannel.push_back(pChannel);
 
-	Stop();
+	//Stop();
 }
 
 void CSound::Stop()
@@ -95,13 +95,16 @@ void CSound::RemoveChannel(FMOD::Channel * _pTargetChannel)
 	}
 }
 
-void CSound::Load(const wstring& _strFilePath)
+void CSound::Load(const wstring& _strFilePath, const Sound_Type& type)
 {
 	string path(_strFilePath.begin(), _strFilePath.end());
+	//if (type == Sound_Type::BGM)m_fvolum = 0.7f;
+	//else m_fvolum = 0.5f;
+	//list<FMOD::Channel*>::iterator iter = m_listChannel.begin();
+	//(*iter)->setVolume(m_fvolum);
 
 	if (FMOD_OK != g_pFMOD->createSound(path.c_str(), FMOD_DEFAULT, nullptr, &m_pSound))
 	{
 		assert(nullptr);
 	}
 }
-
