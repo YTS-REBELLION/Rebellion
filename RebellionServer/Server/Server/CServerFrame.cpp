@@ -850,19 +850,19 @@ void CServerFrame::AggroMove(int npc_id)
 					_objects[npc_id].GetMyType());
 			}
 		}
-		else {
-			_objects[i].ClientLock();
-			if (0 != _objects[i].DungeonGetViewListCount(npc_id)) {
-				_objects[i].DungeonEraseViewList(npc_id);
-				//CAS(&_objects[npc_id]._status, ST_ACTIVE, ST_SLEEP);
-				_objects[i].ClientUnLock();
-				cout << "혹시 어그로무브 리브? 2" << endl;
-				_sender->SendLeaveObjectPacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetMyType());
-			}
-			else {
-				_objects[i].ClientUnLock();
-			}
-		}
+		//else {
+		//	_objects[i].ClientLock();
+		//	if (0 != _objects[i].DungeonGetViewListCount(npc_id)) {
+		//		_objects[i].DungeonEraseViewList(npc_id);
+		//		//CAS(&_objects[npc_id]._status, ST_ACTIVE, ST_SLEEP);
+		//		_objects[i].ClientUnLock();
+		//		cout << "혹시 어그로무브 리브? 2" << endl;
+		//		_sender->SendLeaveObjectPacket(_objects[i].GetSocket(), npc_id, _objects[npc_id].GetMyType());
+		//	}
+		//	else {
+		//		_objects[i].ClientUnLock();
+		//	}
+		//}
 
 	}
 	
@@ -1118,26 +1118,26 @@ void CServerFrame::Do_move_Dungeon(const short& id, const char& dir, Vec3& local
 	}
 
 
-	for (auto& op : oldViewList) {		// Object가 시야에서 벗어났을 때.
-		if (0 == newViewList.count(op)) {
-			_objects[id].ClientLock();
-			_objects[id].DungeonEraseViewList(op);
-			_objects[id].ClientUnLock();
-			cout << "혹시 두 무브 던전 리브? 1" << endl;
-			_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), op, _objects[op].GetMyType());
-			if (false == IsPlayer(op)) continue;
-			_objects[op].ClientLock();
-			if (0 != _objects[op].DungeonGetViewListCount(id)) {
-				_objects[op].DungeonEraseViewList(id);
-				_objects[op].ClientUnLock();
-				cout << "혹시 두 무브 던전 리브? 2" << endl;
-				_sender->SendLeaveObjectPacket(_objects[op].GetSocket(), id, _objects[id].GetMyType());
-			}
-			else {
-				_objects[op].ClientUnLock();
-			}
-		}
-	}
+	//for (auto& op : oldViewList) {		// Object가 시야에서 벗어났을 때.
+	//	if (0 == newViewList.count(op)) {
+	//		_objects[id].ClientLock();
+	//		_objects[id].DungeonEraseViewList(op);
+	//		_objects[id].ClientUnLock();
+	//		cout << "혹시 두 무브 던전 리브? 1" << endl;
+	//		_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), op, _objects[op].GetMyType());
+	//		if (false == IsPlayer(op)) continue;
+	//		_objects[op].ClientLock();
+	//		if (0 != _objects[op].DungeonGetViewListCount(id)) {
+	//			_objects[op].DungeonEraseViewList(id);
+	//			_objects[op].ClientUnLock();
+	//			cout << "혹시 두 무브 던전 리브? 2" << endl;
+	//			_sender->SendLeaveObjectPacket(_objects[op].GetSocket(), id, _objects[id].GetMyType());
+	//		}
+	//		else {
+	//			_objects[op].ClientUnLock();
+	//		}
+	//	}
+	//}
 
 	_elapsedTime = curTime - _prevTime;
 
