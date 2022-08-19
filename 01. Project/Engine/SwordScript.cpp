@@ -37,7 +37,7 @@ void CSwordScript::Set_Sword_To_Fbx()
 		Vec4 qRot = m_pTargetBone->vecKeyFrame[m_pTargetObject->Animator3D()->GetFrameIdx()].qRot;
 		Vec3 vRot;
 
-		cout << "Main : " << m_pTargetBone->vecKeyFrame.size() << endl;
+		//cout << "Main : " << m_pTargetBone->vecKeyFrame.size() << endl;
 		switch (m_eType)
 		{
 		case PERSON_OBJ_TYPE::WARRIOR_PLAYER: {
@@ -69,7 +69,7 @@ void CSwordScript::Set_Sword_To_Fbx()
 		//Vec4 qRot = m_pTargetBone->vecKeyFrame[m_pTargetObject->Animator3D()->GetFrameIdx()].qRot;
 		Vec3 vRot;
 
-		cout << "Other : " << m_pTargetBone->vecKeyFrame.size() << endl;
+		//cout << "Other : " << m_pTargetBone->vecKeyFrame.size() << endl;
 		switch (m_eType)
 		{
 		case PERSON_OBJ_TYPE::WARRIOR_PLAYER: {
