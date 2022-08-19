@@ -161,7 +161,7 @@ void CNetwork::ProcessPacket(char* ptr)
 		std::cout << "플레이어의 위치 x : " << p->x << ", z : " << p->z << endl;
 
 		g_myid = p->id;
-		m_pObj->Transform()->SetLocalPos(Vec3(p->x, p->y, p->z));
+		m_pObj->Transform()->SetLocalPos(Vec3(p->x, 0.f, p->z));
 
 		GameObject.emplace(g_myid, m_pObj);
 		GameObject.find(g_myid)->second->SetID(g_myid);
@@ -169,10 +169,7 @@ void CNetwork::ProcessPacket(char* ptr)
 		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetMain();
 		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->SetID(g_myid);
 		GameObject.find(g_myid)->second->GetScript<CPlayerScript>()->Transform()->SetLocalPos(Vec3(p->x, p->y, p->z));
-
-
 		break;
-
 	}
 
 	case SC_PACKET_LOGIN_FAIL: {
@@ -193,7 +190,7 @@ void CNetwork::ProcessPacket(char* ptr)
 			if (CheckType(id) == OBJECT_TYPE::PLAYER) {
 				// 다른 사람
 				cout << "플레이어 생성" << endl;
-				Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Idle.mdat", L"MeshData\\Player_FM_Idle.mdat");
+				Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FM_Idle.mdat", L"MeshData\\FM_Idle.mdat");
 
 				CGameObject* pObject = new CGameObject;
 				GameObject.emplace(id, pObject);
@@ -203,40 +200,54 @@ void CNetwork::ProcessPacket(char* ptr)
 				GameObject.find(id)->second->SetName(L"FM_Player");
 				GameObject.find(id)->second->FrustumCheck(false);
 				GameObject.find(id)->second->Transform()->SetLocalPos(Vec3(packet->x, packet->y, packet->z));
-				GameObject.find(id)->second->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-				GameObject.find(id)->second->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), 0.f, 0.f));
+				GameObject.find(id)->second->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+				GameObject.find(id)->second->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 
 				GameObject.find(id)->second->AddComponent(new CCollider2D);
 				GameObject.find(id)->second->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-				GameObject.find(id)->second->Collider2D()->SetOffsetPos(Vec3(0.f, 100.f, 0.f));
-				GameObject.find(id)->second->Collider2D()->SetOffsetScale(Vec3(100.f, 200.f, 100.f));
+				GameObject.find(id)->second->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+				GameObject.find(id)->second->Collider2D()->SetOffsetScale(Vec3(10.f, 10.f, 10.f));
 
 				// 플레이어 스크립트 붙여주기.
 				GameObject.find(id)->second->AddComponent(new CPlayerScript);
 				CPlayerScript* PlayerScript = GameObject.find(id)->second->GetScript<CPlayerScript>();
-
 				GameObject.find(id)->second->GetScript<CPlayerScript>()->init();
-				GameObject.find(id)->second->GetScript<CPlayerScript>()->SetID(id);
+
 				//GameObject.find(id)->second->GetScript<CPlayerScript>()->SetTarget(false);
 
-				PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 0, 0, 55);
+				PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 0, 0, 100);
 
-				pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Walk.mdat", L"MeshData\\Player_FM_Walk.mdat");
-				PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 1, 0, 30);
+				pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FP_Walk.mdat", L"MeshData\\FP_Walk.mdat");
+				PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 1, 0, 36);
 
-				pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Run.mdat", L"MeshData\\Player_FM_Run.mdat");
-				PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 2, 0, 22);
+				pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FP_Run.mdat", L"MeshData\\FP_Run.mdat");
+				PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 2, 0, 21);
 
-				pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Attack.mdat", L"MeshData\\Player_FM_Attack.mdat");
+				pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FP_Attack.mdat", L"MeshData\\FP_Attack.mdat");
 				PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 3, 0, 45);
 
-				pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Skill_1.mdat", L"MeshData\\Player_FM_Skill_1.mdat");
-				PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 4, 0, 75);
+				//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Skill_1.mdat", L"MeshData\\Player_FM_Skill_1.mdat");
+				//PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 4, 0, 75);
 
-				pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Die.mdat", L"MeshData\\Player_FM_Die.mdat");
-				PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 5, 0, 100);
+				//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Die.mdat", L"MeshData\\Player_FM_Die.mdat");
+				//PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 5, 0, 100);
+
+				GameObject.find(id)->second->GetScript<CPlayerScript>()->SetID(id);
 
 				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", GameObject.find(id)->second, false);
+
+				Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
+
+				CGameObject* pSword = new CGameObject;
+
+				pSword = pSwordMeshData->Instantiate();
+				pSword->SetName(L"FP_Weapon");
+				pSword->FrustumCheck(false);
+				pSword->Transform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
+				pSword->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
+				pSword->AddComponent(new CSwordScript);
+				pSword->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, GameObject.find(id)->second, 17);
+				GameObject.find(id)->second->AddChild(pSword);
 			}
 			else if (CheckType(id) == OBJECT_TYPE::FM_MONSTER) {
 				//// 몬스터
@@ -255,7 +266,7 @@ void CNetwork::ProcessPacket(char* ptr)
 				GameObject.find(id)->second->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), 0.f, 0.f));
 
 				GameObject.find(id)->second->AddComponent(new CCollider2D);
-				GameObject.find(id)->second->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+				GameObject.find(id)->second->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
 				GameObject.find(id)->second->Collider2D()->SetOffsetPos(Vec3(0.f, 100.f, 0.f));
 				GameObject.find(id)->second->Collider2D()->SetOffsetScale(Vec3(20.f, 20.f, 20.f));
 				GameObject.find(id)->second->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(-180.f), 0.f, 0.f));

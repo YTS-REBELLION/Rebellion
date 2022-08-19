@@ -20,7 +20,7 @@
 #include "GameObject.h"
 
 #include"ParticleSystem.h"
-
+#include "SwordAttackAreaScript.h"
 #include"ParticleScript.h"
 
 bool isReckoning = false;
@@ -39,35 +39,42 @@ CPlayerScript::~CPlayerScript()
 }
 
 void CPlayerScript::init()
-{
-	// ===================
-	// Sword 파일 로드
-	// ===================
-	CGameObject* pSwordObject = new CGameObject;
+{	
+	//Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
 
-	Ptr<CMeshData>pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Sword.mdat", L"MeshData\\Player_Sword.mdat");
-	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
+	//CGameObject* pSword = new CGameObject;
 
-	pSwordObject = pMeshData->Instantiate();
-	pSwordObject->SetName(L"Player_Sword");
-	pSwordObject->FrustumCheck(false);
-	//pSwordObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-	pSwordObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	pSwordObject->AddComponent(new CCollider2D);
-	pSwordObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	pSwordObject->Collider2D()->SetOffsetPos(Vec3(0.f, 50.f, 0.f));
-	pSwordObject->Collider2D()->SetOffsetScale(Vec3(20.f, 140.f, 20.f));
+	//pSword = pSwordMeshData->Instantiate();
+	//pSword->SetName(L"FP_Weapon");
+	//pSword->FrustumCheck(false);
+	//pSword->Transform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
+	//pSword->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
+	//pSword->AddComponent(new CSwordScript);
+	//pSword->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, GetObj(), 17);
+	//GetObj()->AddChild(pSword);
+	////CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Sword", pSword, false);
+	////CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Sword")->AddGameObject(pSword);
 
-	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
-	pSwordObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, SwordObject.GetPointer());
+	CGameObject* pSwordCol = new CGameObject;
+	pSwordCol->SetName(L"SwordCol");
+	pSwordCol->AddComponent(new CCollider2D);
+	pSwordCol->AddComponent(new CTransform);
+	pSwordCol->AddComponent(new CMeshRender);
+	pSwordCol->Transform()->SetLocalPos(GetObj()->Transform()->GetLocalPos());
+	pSwordCol->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pSwordCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pSwordCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	pSwordCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+	pSwordCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+	pSwordCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pSwordCol->AddComponent(new CSwordAttackAreaScript);
+	pSwordCol->GetScript<CSwordAttackAreaScript>()->SetPlayer(GetObj());
+	pSwordCol->SetActive(false);
+	GetObj()->GetScript<CPlayerScript>()->SetColPlayer(pSwordCol);
+	
+	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Sword", pSwordCol, false);
 
 
-	pSwordObject->AddComponent(new CSwordScript);
-	CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
-	pSwordObject->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, GetObj(), 25);
-	pSwordObject->MeshRender()->SetDynamicShadow(true);
-	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Sword", pSwordObject, false);
-	GetObj()->AddChild(pSwordObject);
 	Ptr<CTexture> pS_astrostone = CResMgr::GetInst()->Load<CTexture>(L"Astrostone", L"Texture\\Icon\\S_astrostone.png");
 	Ptr<CTexture> pS_Blood_splash = CResMgr::GetInst()->Load<CTexture>(L"Bloodsplash", L"Texture\\Icon\\S_Blood_splash.png");
 	Ptr<CTexture> pS_Blue_firework = CResMgr::GetInst()->Load<CTexture>(L"Blue_firework", L"Texture\\Icon\\S_Blue_firework.png");
@@ -190,9 +197,6 @@ void CPlayerScript::init()
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
 
-
-
-
 	pObject = new CGameObject;
 	pObject->SetName(L"HpUi");
 	pObject->FrustumCheck(false);
@@ -300,11 +304,11 @@ void CPlayerScript::update()
 	Vec3 vDirUp = Transform()->GetLocalDir(DIR_TYPE::UP);
 	Vec3 vDirRight = Transform()->GetLocalDir(DIR_TYPE::RIGHT);
 
-	Transform()->SetWorldDir(DIR_TYPE::FRONT, vDirFront);
-	Transform()->SetLocalDir(DIR_TYPE::FRONT, vDirFront);
+	Transform()->SetWorldDir(DIR_TYPE::FRONT, vDirUp);
+	Transform()->SetLocalDir(DIR_TYPE::FRONT, vDirUp);
 
-	Transform()->SetWorldDir(DIR_TYPE::UP, -vDirUp);
-	Transform()->SetLocalDir(DIR_TYPE::UP, -vDirUp);
+	Transform()->SetWorldDir(DIR_TYPE::UP, vDirFront);
+	Transform()->SetLocalDir(DIR_TYPE::UP, vDirFront);
 
 	Transform()->SetWorldDir(DIR_TYPE::RIGHT, -vDirRight);
 	Transform()->SetLocalDir(DIR_TYPE::RIGHT, -vDirRight);
@@ -329,7 +333,12 @@ void CPlayerScript::update()
 		{
 			GetObj()->Animator3D()->SetClipTime(3, 0.f);
 			SetAttack();
-
+			pSwordColObject->SetActive(true);
+		}
+		else if (KEY_AWAY(KEY_TYPE::KEY_SPACE))
+		{
+			SetAttack();
+			pSwordColObject->SetActive(false);
 		}
 
 		if (KEY_TAB(KEY_TYPE::KEY_2))
@@ -361,10 +370,9 @@ void CPlayerScript::update()
 			}
 			else if (KEY_AWAY(KEY_TYPE::KEY_LSHIFT)) isDash(false);
 
-			cout << GetObj()->Transform()->GetLocalPos().x << ", " << GetObj()->Transform()->GetLocalPos().z << endl;
-
 		}
-		else if (KEY_HOLD(KEY_TYPE::KEY_S))
+
+		/*else if (KEY_HOLD(KEY_TYPE::KEY_S))
 		{
 			localPos -= WorldDir * m_fSpeed * DT;
 
@@ -402,7 +410,7 @@ void CPlayerScript::update()
 				AnimationPlay(PLAYER_ANI_TYPE::WALK);
 				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 			};
-		}
+		}*/
 		else if (KEY_HOLD(KEY_TYPE::KEY_NUM3))
 		{
 			AnimationPlay(PLAYER_ANI_TYPE::DIE);
@@ -413,33 +421,30 @@ void CPlayerScript::update()
 			AnimationPlay(PLAYER_ANI_TYPE::ATTACK);
 			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
 
-			CGameObject* m_pSwordStrike = new CGameObject;
-			Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sjuriken1.fbx");
+			/*if (GetObj()->Animator3D()->GetCliTime(3) < GetObj()->Animator3D()->GetAnimClip(3).dTimeLength -)*/
+			//pSwordColObject->MeshRender()->SetActive(true);
+			//pSwordColObject->Collider2D()->SetActive(true);
+			//pSwordColObject->Transform()->SetLocalPos(vDirFront + GetObj()->Transform()->GetLocalPos());
+			//CGameObject* m_pSwordStrike = new CGameObject;
+			//Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sjuriken1.fbx");
+
+			//m_pSwordStrike = pPMeshData->Instantiate();
+			//m_pSwordStrike->SetName(L"Sword_Col");
+			//m_pSwordStrike->FrustumCheck(false);
 
 
+			//m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
+			//m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+			//m_pSwordStrike->Transform()->SetLocalScale(Vec3(0.1f, 0.1f, 0.1f));
+			//m_pSwordStrike->AddComponent(new CSting);
 
-			m_pSwordStrike = pPMeshData->Instantiate();
-			m_pSwordStrike->SetName(L"Sword_Col");
-			m_pSwordStrike->FrustumCheck(false);
+			//m_pSwordStrike->AddComponent(new CCollider2D);
+			//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+			//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+			//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(2000.f, 2000.f, 2000.f));
 
-
-			m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
-			m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-			m_pSwordStrike->Transform()->SetLocalScale(Vec3(0.1f, 0.1f, 0.1f));
-			m_pSwordStrike->AddComponent(new CSting);
-
-
-			m_pSwordStrike->AddComponent(new CCollider2D);
-			m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-			m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-			m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(2000.f, 2000.f, 2000.f));
-
-			// AddGameObject
-			CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
-
-
-			
-
+			//// AddGameObject
+			//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 		}
 		else if (GetSkill())
 		{
@@ -461,7 +466,6 @@ void CPlayerScript::update()
 			}
 		}
 		else AnimationPlay(PLAYER_ANI_TYPE::IDLE);
-
 		//if (KEY_AWAY(KEY_TYPE::KEY_3))
 		//{
 		//	cout << "메가슬레시!" << endl;
@@ -903,6 +907,7 @@ void CPlayerScript::update()
 		if (!m_bColCheck)
 		{
 			Transform()->SetLocalPos(localPos);
+			//pSwordColObject->Transform()->SetLocalPos(localPos);
 		}
 		else
 		{
@@ -962,6 +967,7 @@ void CPlayerScript::update()
 				}
 				localPos.y = 0.0f;
 			}
+			//pSwordColObject->Transform()->SetLocalPos(localPos);
 			Transform()->SetLocalPos(localPos);
 		}
 	}
@@ -1088,17 +1094,10 @@ void CPlayerScript::OnCollision(CCollider2D* _pOther)
 		)
 	{
 		m_bColCheck = true;
-		SetColObj(_pOther);
+		//SetColObj(_pOther);
 		Vec3 dir_vec = m_pColObj->Transform()->GetLocalDir(DIR_TYPE::RIGHT);
 		//cout << "충돌" << endl;
-
-
 	}
-
-
-
-
-
 }
 
 void CPlayerScript::OnCollisionExit(CCollider2D* _pOther)

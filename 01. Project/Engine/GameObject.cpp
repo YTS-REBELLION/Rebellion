@@ -331,6 +331,7 @@ void CGameObject::SetActive(bool _bTrue)
 			event.wParam = (DWORD_PTR)this;
 
 			CEventMgr::GetInst()->AddEvent(event);
+			m_bActive = false;
 		}
 	}
 	else
@@ -338,12 +339,12 @@ void CGameObject::SetActive(bool _bTrue)
 		if (_bTrue)
 		{
 			// 활성화
-			// 비활성화
 			tEvent event = {};
 			event.eType = EVENT_TYPE::ACTIVATE_GAMEOBJECT;
 			event.wParam = (DWORD_PTR)this;
 
 			CEventMgr::GetInst()->AddEvent(event);
+			m_bActive = true;
 		}
 	}
 }

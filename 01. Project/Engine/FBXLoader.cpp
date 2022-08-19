@@ -65,12 +65,12 @@ void CFBXLoader::LoadFbx(const wstring & _strPath)
 
 	m_pImporter->Import(m_pScene);
 
-	/*FbxAxisSystem originAxis = FbxAxisSystem::eMax;
-	originAxis = m_pScene->GetGlobalSettings().GetAxisSystem();
-	FbxAxisSystem DesireAxis = FbxAxisSystem::DirectX;
-	DesireAxis.ConvertScene(m_pScene);
-	originAxis = m_pScene->GetGlobalSettings().GetAxisSystem();*/
-
+	//FbxAxisSystem originAxis = FbxAxisSystem::eMax;
+	//originAxis = m_pScene->GetGlobalSettings().GetAxisSystem();
+	//FbxAxisSystem DesireAxis = FbxAxisSystem::DirectX;
+	//DesireAxis.ConvertScene(m_pScene);
+	//originAxis = m_pScene->GetGlobalSettings().GetAxisSystem();
+	
 	m_pScene->GetGlobalSettings().SetAxisSystem(FbxAxisSystem::Max);
 
 	// Bone 정보 읽기
@@ -732,8 +732,8 @@ void CFBXLoader::LoadOffsetMatrix(FbxCluster * _pCluster
 	matReflect[3] = V3;
 
 	FbxAMatrix matOffset;
-	matOffset = matClusterLinkTrans.Inverse() * matClusterTrans * _matNodeTransform;
-	matOffset = matReflect * matOffset * matReflect;
+	matOffset = matClusterLinkTrans.Inverse() *  matClusterTrans* _matNodeTransform;
+	matOffset = matReflect * matOffset  * matReflect;
 
 	m_vecBone[_iBoneIdx]->matOffset = matOffset;
 }

@@ -13,8 +13,6 @@ public:
 
 private:
 
-
-
 	CGameObject* m_pQuestComplete = nullptr;
 	CGameObject* m_pQuestBoxExplane1 = nullptr;
 	CGameObject* m_pQuestBoxExplane2 = nullptr;
@@ -127,6 +125,9 @@ private:
 	float ftempmp = 0.f;
 
 	bool questStart = false;
+
+	CGameObject* pSwordColObject = nullptr;
+
 public:
 	virtual void awake();
 	virtual void update();
@@ -202,8 +203,8 @@ public:
 	void SetID(const int& id) { m_iID = id; }
 
 	CCollider2D* m_pColObj;
-	void SetColObj(CCollider2D* _obj) { m_pColObj = _obj; }
-
+	void SetColPlayer(CGameObject* _obj) { pSwordColObject = _obj; }
+	CGameObject* GetColSSA() { return pSwordColObject; }
 	bool GetSkillStrat(int _index) { return m_bSkill_Start[_index]; }
 
 	void isDash(bool _type) { m_bDash = _type; };

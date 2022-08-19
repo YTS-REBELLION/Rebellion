@@ -27,7 +27,6 @@ public:
 public:
 	void SetActive(bool _bTrue);
 	bool IsActive() { return m_bActive; }
-
 public:
 	COMPONENT_TYPE GetComponentType() { return m_eComType; }
 	CGameObject* GetObj() { return m_pObject; }

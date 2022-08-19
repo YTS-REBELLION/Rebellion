@@ -74,20 +74,18 @@ void CCollisionMgr::CheckCollisionLayer(int _iLayerIdx1, int _iLyaerIdx2)
 void CCollisionMgr::CollisionLayer(const CLayer * _pLayer1, const CLayer * _pLayer2)
 {
 	
-	if (m_bColCheck)
-	{
-		m_bColCheck2 = true;
-		m_fColCheckTime += DT;
-		if (m_fColCheckTime >= 0.5f)
-		{
-			m_bColCheck2 = false;
-			m_fColCheckTime = 0;
-			m_bColCheck = false;
-		}
-	}
+	//if (m_bColCheck)
+	//{
+	//	m_bColCheck2 = true;
+	//	m_fColCheckTime += DT;
+	//	if (m_fColCheckTime >= 0.5f)
+	//	{
+	//		m_bColCheck2 = false;
+	//		m_fColCheckTime = 0;
+	//		m_bColCheck = false;
+	//	}
+	//}
 
-	
-	
 	const vector<CGameObject*>& vecObj1 = _pLayer1->GetObjects();
 	const vector<CGameObject*>& vecObj2 = _pLayer2->GetObjects();
 
@@ -210,7 +208,7 @@ bool CCollisionMgr::IsCollision(CCollider2D * _pCollider1, CCollider2D * _pColli
 	}
 	else if (COLLIDER2D_TYPE::BOX == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::SPHERE == _pCollider2->GetColliderType())
 	{
-		
+		return CollisionRectCircle(_pCollider1, _pCollider2);
 	}
 	else if (COLLIDER2D_TYPE::SPHERE == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::BOX == _pCollider2->GetColliderType())
 	{
@@ -433,20 +431,16 @@ bool CCollisionMgr::CollisionRectCircle(CCollider2D* _pCollider1, CCollider2D* _
 
 bool CCollisionMgr::CollisionSphere(CCollider2D* _pCollider1, CCollider2D* _pCollider2)
 {
-	Vec3 Center1 = _pCollider1->Transform()->GetLocalPos();
-	Vec3 Center2 = _pCollider2->Transform()->GetLocalPos();
+	Vec3 Center1 = Vec3(_pCollider1->Transform()->GetLocalPos().x, 0.f, _pCollider1->Transform()->GetLocalPos().z);
+	Vec3 Center2 = Vec3(_pCollider2->Transform()->GetLocalPos().x, 0.f, _pCollider2->Transform()->GetLocalPos().z);
 
 	float Radius1 = (_pCollider1->Transform()->GetLocalScale().x * _pCollider1->Collider2D()->GetOffsetScale().x);
 	float Radius2 = (_pCollider2->Transform()->GetLocalScale().x * _pCollider2->Collider2D()->GetOffsetScale().x);
 	float temp = Length(Center2 - Center1);
 
-
-
-
-
 	if ((Radius1 + Radius2) >= temp)
 	{
-		cout << "CollisionSphere" << endl;
+		/*cout << "CollisionSphere" << endl;
 
 		CGameObject* pObject = new CGameObject;
 		pObject->SetName(L"Particle");
@@ -460,7 +454,7 @@ bool CCollisionMgr::CollisionSphere(CCollider2D* _pCollider1, CCollider2D* _pCol
 		pObject->FrustumCheck(false);
 		Vec3 particlePos = Center2;
 		pObject->Transform()->SetLocalPos(particlePos);
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(pObject);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(pObject);*/
 
 
 		return true;

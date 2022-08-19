@@ -223,6 +223,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="MeshRender.h" />
     <ClInclude Include="Meteor.h" />
     <ClInclude Include="Miro.h" />
+    <ClInclude Include="MonsterColScript.h" />
     <ClInclude Include="MonsterScript.h" />
     <ClInclude Include="MRT.h" />
     <ClInclude Include="M_MonsterScript.h" />
@@ -260,6 +261,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="Swing3.h" />
     <ClInclude Include="Swing4.h" />
     <ClInclude Include="Sword.h" />
+    <ClInclude Include="SwordAttackAreaScript.h" />
     <ClInclude Include="SwordScript.h" />
     <ClInclude Include="SwordStrike.h" />
     <ClInclude Include="targetver.h" />
@@ -324,6 +326,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="MeshRender.cpp" />
     <ClCompile Include="Meteor.cpp" />
     <ClCompile Include="Miro.cpp" />
+    <ClCompile Include="MonsterColScript.cpp" />
     <ClCompile Include="MonsterScript.cpp" />
     <ClCompile Include="MRT.cpp" />
     <ClCompile Include="M_MonsterScript.cpp" />
@@ -365,6 +368,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="Swing3.cpp" />
     <ClCompile Include="Swing4.cpp" />
     <ClCompile Include="Sword.cpp" />
+    <ClCompile Include="SwordAttackAreaScript.cpp" />
     <ClCompile Include="SwordScript.cpp" />
     <ClCompile Include="SwordStrike.cpp" />
     <ClCompile Include="TestScript.cpp" />

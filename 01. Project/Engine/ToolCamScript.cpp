@@ -113,11 +113,7 @@ void CToolCamScript::SetFreeCamera()
 		Camera()->SetScale(fScale);
 	}
 
-	if (KEY_HOLD(KEY_TYPE::KEY_NUM2))
-	{
-		fScale += m_fScaleSpeed * DT;
-		Camera()->SetScale(fScale);
-	}
+
 
 	if (KEY_HOLD(KEY_TYPE::KEY_RBTN))
 	{
@@ -140,19 +136,14 @@ void CToolCamScript::SetPlayerFixedCamera()
 	CTransform* vPlayerPos = m_pPlayer->Transform();
 	
 	// 공통
-	float fDistance = 500.f; //200.f;
+	float fDistance = 800.f; //200.f;
 
-	vPos = vPlayerPos->GetLocalPos() - (vPlayerPos->GetWorldDir(DIR_TYPE::FRONT) * fDistance);
-	vPos.y = vPlayerPos->GetLocalPos().y + 200.f;
+	//vPos = vPlayerPos->GetLocalPos();
+	vPos = vPlayerPos->GetLocalPos() - (fDistance * vPlayerPos->GetWorldDir(DIR_TYPE::UP));
+	vPos.y = vPlayerPos->GetLocalPos().y + 200;
 
-	//if (m_pPlayer->GetScript<CPlayerScript>()->GetAttack())
-	//{
-	//	//vPos.x += uid(dre);
-	//	//vPos.y += uid(dre);
-	//	vPos.z += uid(dre);
-	//}
 	Transform()->SetLocalPos(vPos);
-	Transform()->SetLocalRot(vPlayerPos->GetLocalRot() + Vec3(XMConvertToRadians(185.f), XM_PI, 0.f));
+	Transform()->SetLocalRot(vPlayerPos->GetLocalRot() + Vec3(XMConvertToRadians(90.f), XM_PI, 0.f));
 }
 
 void CToolCamScript::SetCenematic0()
@@ -289,23 +280,3 @@ void CToolCamScript::SetCenematicBoss()
 
 	Transform()->SetLocalPos(vPos);
 }
-
-//void CToolCamScript::Fix_Mouse()
-//{
-//	POINT   ptMouse{ 800 >> 1, 600 >> 1 };
-//
-//	ClientToScreen(CRenderMgr::GetInst()->GetHwnd(), &ptMouse);
-//	SetCursorPos(ptMouse.x, ptMouse.y);
-//}
-//
-//void CToolCamScript::Mouse_Move()
-//{
-//	// 마우스 좌표	
-//
-//	m_ptOldMouse = m_ptMouse;
-//	GetCursorPos(&m_ptMouse);
-//	ScreenToClient(CRenderMgr::GetInst()->GetHwnd(), &m_ptMouse);
-//
-//	m_vDragDir = Vec2((float)(m_ptMouse.x - m_ptOldMouse.x) * 0.05f, (float)(m_ptOldMouse.y - m_ptMouse.y) * 0.05f);
-//
-//}

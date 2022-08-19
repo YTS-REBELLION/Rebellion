@@ -31,11 +31,12 @@
 #include "MonsterScript.h"
 #include "SwordScript.h"
 #include "ToolCamScript.h"
-#include"Fire.h"
-#include"ParticleSystem.h"
-#include"ParticleScript.h"
-#include"Boss.h"
+#include "Fire.h"
+#include "ParticleSystem.h"
+#include "ParticleScript.h"
+#include "Boss.h"
 
+#include "MonsterColScript.h"
 
 void CAssemblyAreaScene::CreateMap()
 {
@@ -416,8 +417,8 @@ void CAssemblyAreaScene::init()
 {
 	cout << "집결지 컴백" << endl;
 	GetLayer(0)->SetName(L"Default");
-	GetLayer(1)->SetName(L"Sword");
-	GetLayer(2)->SetName(L"Player");
+	GetLayer(1)->SetName(L"Player");
+	GetLayer(2)->SetName(L"Sword");
 	GetLayer(3)->SetName(L"House");
 	GetLayer(4)->SetName(L"Map");
 	GetLayer(5)->SetName(L"Portal");
@@ -448,7 +449,9 @@ void CAssemblyAreaScene::init()
 	// Player 파일 로드
 	// ===================
 
-	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Idle.mdat", L"MeshData\\Player_FM_Idle.mdat");
+	//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\FM_Player\\FP_Idle.fbx");
+	//pMeshData->Save(pMeshData->GetPath());
+	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FM_Idle.mdat", L"MeshData\\FM_Idle.mdat");
 
 	CGameObject* pPlayer = new CGameObject;
 
@@ -457,16 +460,13 @@ void CAssemblyAreaScene::init()
 	pPlayer->FrustumCheck(false);
 
 	pPlayer->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-	pPlayer->Transform()->SetLocalScale(Vec3(1.0f, 1.0f, 1.0f));
-	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), XMConvertToRadians(180.f), 0.f));
-	
-	pPlayer->MeshRender()->SetDynamicShadow(true);
-
+	pPlayer->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 	pPlayer->AddComponent(new CCollider2D);
 	pPlayer->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	pPlayer->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	pPlayer->Collider2D()->SetOffsetScale(Vec3(70.f, 70.f, 70.f));
-	pPlayer->Collider2D()->SetOffsetRot(Vec3(0.f, 0.f, XMConvertToRadians(-180.f)));
+	pPlayer->Collider2D()->SetOffsetScale(Vec3(10.f, 10.f, 10.f));
+	pPlayer->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(90.f), 0.f, 0.f));
 
 	// 플레이어 스크립트 붙여주기.
 	pPlayer->AddComponent(new CPlayerScript);
@@ -474,37 +474,96 @@ void CAssemblyAreaScene::init()
 	CPlayerScript* PlayerScript = pPlayer->GetScript<CPlayerScript>();
 	pPlayer->GetScript<CPlayerScript>()->init();
 
-	// 플레이어 애니메이션
-	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 0, 0, 55);							// AniData Index 0
+	//// 플레이어 애니메이션
+	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 0, 0, 100);
 	g_net.SetAniData(pMeshData->GetMesh());
 
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Walk.mdat", L"MeshData\\Player_FM_Walk.mdat");
-	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 1, 0, 30);							// AniData Index 1
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FP_Walk.mdat", L"MeshData\\FP_Walk.mdat");
+	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 1, 0, 36);
 	g_net.SetAniData(pMeshData->GetMesh());
 
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Run.mdat", L"MeshData\\Player_FM_Run.mdat");
-	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 2, 0, 22);						// AniData Index 2
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FP_Run.mdat", L"MeshData\\FP_Run.mdat");
+	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 2, 0, 21);
 	g_net.SetAniData(pMeshData->GetMesh());
 
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Attack.mdat", L"MeshData\\Player_FM_Attack.mdat");
-	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 3, 0, 45);							// AniData Index 3
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FP_Attack.mdat", L"MeshData\\FP_Attack.mdat");
+	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 3, 0, 45);
 	g_net.SetAniData(pMeshData->GetMesh());
 
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Skill_1.mdat", L"MeshData\\Player_FM_Skill_1.mdat");
-	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 4, 0, 75);							// AniData Index 3
-	g_net.SetAniData(pMeshData->GetMesh());
+	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Skill_1.mdat", L"MeshData\\Player_FM_Skill_1.mdat");
+	//PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 4, 0, 75);							// AniData Index 3
+	//g_net.SetAniData(pMeshData->GetMesh());
 
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Die.mdat", L"MeshData\\Player_FM_Die.mdat");
-	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 5, 0, 100);
-	g_net.SetAniData(pMeshData->GetMesh());
-
-	//Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl");
-	//pPlayer->MeshRender()->SetMaterial(pMtrl, 0);
-	pPlayer->MeshRender()->SetDynamicShadow(true);
+	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Die.mdat", L"MeshData\\Player_FM_Die.mdat");
+	//PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 5, 0, 100);
+	//g_net.SetAniData(pMeshData->GetMesh());
 
 	FindLayer(L"Player")->AddGameObject(pPlayer);
-	
+
 	g_net.SetObj(pPlayer);
+
+	Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
+
+	CGameObject* pSword = new CGameObject;
+
+	pSword = pSwordMeshData->Instantiate();
+	pSword->SetName(L"FP_Weapon");
+	pSword->FrustumCheck(false);
+	pSword->Transform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
+	pSword->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
+	pSword->AddComponent(new CSwordScript);
+	pSword->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, pPlayer, 17);
+	pPlayer->AddChild(pSword);
+	//CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Sword", pSword, false);
+	//FindLayer(L"Sword")->AddGameObject(pSword);
+
+	// ===================
+	// Sword 파일 로드
+	// ===================
+	//CGameObject* pSword = new CGameObject;
+
+	//Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Sword.mdat", L"MeshData\\Player_Sword.mdat");
+	//Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
+
+	//pSword = pSwordMeshData->Instantiate();
+	//pSword->SetName(L"Player_Sword");
+	//pSword->FrustumCheck(false);
+	//pSword->Transform()->SetLocalPos(Vec3(0.f, 100.f, 0.f));
+	//pSword->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+
+	//pSword->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pSwordTex.GetPointer());
+
+	////pSword->AddComponent(new CSwordScript);
+	////CSwordScript* SwordScript = pSword->GetScript<CSwordScript>();
+	////pSword->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, pPlayer, 25);
+
+	//FindLayer(L"Sword")->AddGameObject(pSword);
+	//pPlayer->AddChild(pSword);
+
+	//Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"TransparencyMtrl");
+	//Ptr<CTexture> pTransparency = CResMgr::GetInst()->FindRes<CTexture>(L"Transparency");
+
+	//CGameObject* pSwordCol = new CGameObject;
+	//pSwordCol->SetName(L"SwordCol");
+	//pSwordCol->AddComponent(new CCollider2D);
+	//pSwordCol->AddComponent(new CTransform);
+	//pSwordCol->AddComponent(new CMeshRender);
+	//pSwordCol->Transform()->SetLocalPos(pSword->Transform()->GetLocalPos());
+	//pSwordCol->Transform()->SetLocalScale(pSword->Transform()->GetLocalScale());
+	//pSwordCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	//pSwordCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	////pSwordCol->MeshRender()->SetMaterial(pMtrl);
+ 	//pSwordCol->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pTransparency.GetPointer());
+	//pSwordCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+	//pSwordCol->Collider2D()->SetOffsetScale(Vec3(10.f, 10.f, 10.f));      // 80.f, 200.f, 80.f ?????
+	//pSwordCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	//pSwordCol->AddComponent(new CSwordAttackAreaScript);
+	//pSwordCol->GetScript<CSwordAttackAreaScript>()->SetPlayer(pPlayer);
+
+	//pColObj->GetScript<CPlayerColScript>()->SetPlayer(pObject);
+	//pObject->GetScript<CPlayerScript>()->SetColPlayer(pColObj);
+
+	//FindLayer(L"Sword")->AddGameObject(pSwordCol, false);
 
 	//Main Camera
 	CGameObject* pMainCam = new CGameObject;
@@ -570,7 +629,7 @@ void CAssemblyAreaScene::init()
 	// NPC 로드
 	// ===================
 
-	//Ptr<CMeshData> pAS_NPCMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Monster\\FM_Idle.fbx");
+	//Ptr<CMeshData> pAS_NPCMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Idle (8).fbx");
 	//pAS_NPCMeshData->Save(pAS_NPCMeshData->GetPath());
 	Ptr<CMeshData> pAS_NPCMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FM_Idle.mdat", L"MeshData\\FM_Idle.mdat");
 
@@ -580,26 +639,22 @@ void CAssemblyAreaScene::init()
 	pAS_NPC->SetName(L"AS_NPC_1");
 	pAS_NPC->FrustumCheck(false);
 
-	pAS_NPC->Transform()->SetLocalPos(Vec3(300.f, 0.f, 1600.f));
+	pAS_NPC->Transform()->SetLocalPos(Vec3(300.f, 100.f, 1000.f));
 	pAS_NPC->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 	pAS_NPC->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
-	//pAS_NPC->MeshRender()->SetMaterial(pMtrl, 0);
-	//pAS_NPC->MeshRender()->SetMaterial(pMtrl, 1);
-	//pAS_NPC->MeshRender()->SetMaterial(pMtrl, 2);
-	//pAS_NPC->MeshRender()->SetMaterial(pMtrl, 3);
-	//pTest->AddComponent(new CCollider2D);
-	//pTest->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	//pTest->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	//pTest->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
-	//pTest->Collider2D()->SetOffsetRot(Vec3(0.f, 0.f, XMConvertToRadians(-180.f)));
-	pAS_NPC->MeshRender()->SetDynamicShadow(true);
+	pAS_NPC->AddComponent(new CCollider2D);
+	pAS_NPC->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+	pAS_NPC->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pAS_NPC->Collider2D()->SetOffsetScale(Vec3(10.f, 10.f, 10.f));
+	pAS_NPC->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(90.f), 0.f, 0.f));
+	//pAS_NPC->MeshRender()->SetDynamicShadow(true);
 	FindLayer(L"NPC")->AddGameObject(pAS_NPC);
 
-	// 검 테스트
+	//// 검 테스트
 
-	//Ptr<CMeshData> ptestMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Monster\\Weapon\\Monster_FM_Weapon.fbx");
-	//ptestMeshData->Save(ptestMeshData->GetPath());
-	////Ptr<CMeshData> ptestMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
+	////Ptr<CMeshData> ptestMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Monster\\Weapon\\Monster_FM_Weapon.fbx");
+	////ptestMeshData->Save(ptestMeshData->GetPath());
+	//Ptr<CMeshData> ptestMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
 
 	//CGameObject* ptest = new CGameObject;
 
@@ -607,7 +662,7 @@ void CAssemblyAreaScene::init()
 	//ptest->SetName(L"Weapon");
 	//ptest->FrustumCheck(false);
 
-	//ptest->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	//ptest->Transform()->SetLocalPos(Vec3(300.f, 0.f, 300.f));
 	//ptest->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	//ptest->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
 
@@ -676,4 +731,60 @@ void CAssemblyAreaScene::init()
 	//	// AddGameObject
 	//	FindLayer(L"UI")->AddGameObject(pObject);
 	//}
+
+	CGameObject* pMonster = new CGameObject;
+	Ptr<CMeshData> pMonsterMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Idle.mdat", L"MeshData\\Monster_FM_Idle.mdat");
+
+	pMonster = pMonsterMeshData->Instantiate();
+	pMonster->SetName(L"FM_Monster");
+	pMonster->FrustumCheck(false);
+
+	pMonster->Transform()->SetLocalPos(Vec3(300.f, 0.f, 0.f));
+	pMonster->Transform()->SetLocalScale(Vec3(4.5f, 4.5f, 4.5f));
+	pMonster->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), 0.f, 0.f));
+
+	// 몬스터 스크립트 붙여주기.
+	pMonster->AddComponent(new CMonsterScript);
+
+	CMonsterScript* MonsterScript = pMonster->GetScript<CMonsterScript>();
+
+	//몬스터 애니메이션
+	MonsterScript->SetMonsterAnimationData(pMonsterMeshData->GetMesh(), 0, 0, 44);
+
+	pMonsterMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Run.mdat", L"MeshData\\Monster_FM_Run.mdat");
+	MonsterScript->SetMonsterAnimationData(pMonsterMeshData->GetMesh(), 1, 0, 21);
+
+	pMonsterMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Hit.mdat", L"MeshData\\Monster_FM_Hit.mdat");
+	MonsterScript->SetMonsterAnimationData(pMonsterMeshData->GetMesh(), 2, 0, 21);
+
+	pMonsterMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Attack.mdat", L"MeshData\\Monster_FM_Attack.mdat");
+	MonsterScript->SetMonsterAnimationData(pMonsterMeshData->GetMesh(), 3, 0, 50);
+
+	pMonsterMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Die.mdat", L"MeshData\\Monster_FM_Die.mdat");
+	MonsterScript->SetMonsterAnimationData(pMonsterMeshData->GetMesh(), 4, 0, 68);
+
+	FindLayer(L"NPC")->AddGameObject(pMonster);
+
+	CGameObject* pMonsterCol = new CGameObject;
+	pMonsterCol->SetName(L"MonsterCol");
+	pMonsterCol->AddComponent(new CCollider2D);
+	pMonsterCol->AddComponent(new CTransform);
+	pMonsterCol->AddComponent(new CMeshRender);
+	pMonsterCol->Transform()->SetLocalPos(pMonster->Transform()->GetLocalPos());
+	pMonsterCol->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pMonsterCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pMonsterCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	
+	pMonsterCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+	pMonsterCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+	pMonsterCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pMonsterCol->AddComponent(new CMonsterColScript);
+	pMonsterCol->GetScript<CMonsterColScript>()->SetMonster(pMonster);
+	//GetObj()->GetScript<CPlayerScript>()->SetColPlayer(pSwordCol);
+
+	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"NPC", pMonsterCol, false);
+
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"NPC");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Sword", L"NPC");
+
 }

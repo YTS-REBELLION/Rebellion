@@ -21,6 +21,7 @@ CCollider2D::CCollider2D()
 	, m_iColID(g_iColID++)
 	, m_iCollisionCount(0)
 	, m_eType(COLLIDER2D_TYPE::BOX)
+	, m_bActive(true)
 {
 	m_pColMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Collider2DMtrl_0");
 	SetColliderType(m_eType);
@@ -59,8 +60,11 @@ void CCollider2D::update()
 
 void CCollider2D::finalupdate()
 {
-	if (!IsActive())
+	if (!GetActvie())
 		return;
+
+	//if (GetObj()->GetName() == L"Sword_Col_Object")
+	//	cout << GetObj()->Collider2D()->MeshRender()->IsActive() << endl;//MeshRender()->IsActive() << endl;
 
 	Vec3 vFinalPos = m_vOffsetPos;
 	vFinalPos = vFinalPos / Transform()->GetWorldScale(); // GetWorldScale() ·Î º¯°æ
@@ -80,10 +84,10 @@ void CCollider2D::finalupdate()
 
 void CCollider2D::render()
 {
-	if (KEY_HOLD(KEY_TYPE::KEY_D))
-	{
-		return;
-	}
+	//if (KEY_HOLD(KEY_TYPE::KEY_D))
+	//{
+	//	return;
+	//}
 	
 	if (!IsActive())
 		return;

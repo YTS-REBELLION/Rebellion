@@ -320,6 +320,12 @@
       <Filter>04. GameObject\Script</Filter>
     </ClInclude>
     <ClInclude Include="BossSkill1.h" />
+    <ClInclude Include="SwordAttackAreaScript.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterColScript.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -557,6 +563,12 @@
       <Filter>04. GameObject\Script</Filter>
     </ClCompile>
     <ClCompile Include="BossSkill1.cpp" />
+    <ClCompile Include="SwordAttackAreaScript.cpp">
+      <Filter>04. GameObject\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterColScript.cpp">
+      <Filter>04. GameObject\Script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="std.fx">

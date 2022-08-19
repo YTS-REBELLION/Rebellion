@@ -86,7 +86,6 @@ void CMonsterScript::update()
 	CMonsterScript* Monster = GetObj()->GetScript<CMonsterScript>();
 	const vector<CGameObject*>& vecObject = CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetObjects();
 
-	//m_fAngle = acosf(Dot(vDirFront, Monster_Dir) / (Length(vDirFront) * Length(Monster_Dir)));
 	Vec3 vRot;
 
 	if (m_isTarget) {
@@ -97,9 +96,7 @@ void CMonsterScript::update()
 				m_pPlayer = client;
 			}
 		}
-
-		m_fAngle = atan2(localPos.x - m_pPlayer->Transform()->GetLocalPos().x, localPos.z - m_pPlayer->Transform()->GetLocalPos().z) * (180 / XM_PI) * 0.0174532925f;//acosf(Dot(vDirFront, Monster_Nor));
-
+		m_fAngle = atan2(localPos.x - m_pPlayer->Transform()->GetLocalPos().x, localPos.z - m_pPlayer->Transform()->GetLocalPos().z) * (180 / XM_PI) * 0.0174532925f;
 	}
 
 
@@ -113,35 +110,42 @@ void CMonsterScript::update()
 	}
 	else if (!m_Is_Move && m_Is_Attack) {
 		AnimationPlay(MONSTER_ANI_TYPE::ATTACK);
-		CGameObject* m_pSwordStrike = new CGameObject;
-		Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sjuriken1.fbx");
+		//CGameObject* m_pSwordStrike = new CGameObject;
+		//Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sjuriken1.fbx");
 
 
 
-		m_pSwordStrike = pPMeshData->Instantiate();
-		m_pSwordStrike->SetName(L"Sword_Col");
-		m_pSwordStrike->FrustumCheck(false);
+		//m_pSwordStrike = pPMeshData->Instantiate();
+		//m_pSwordStrike->SetName(L"Sword_Col");
+		//m_pSwordStrike->FrustumCheck(false);
 
 
-		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
-		m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-		m_pSwordStrike->Transform()->SetLocalScale(Vec3(0.1f, 0.1f, 0.1f));
-		m_pSwordStrike->AddComponent(new CSting);
+		//m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
+		//m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+		//m_pSwordStrike->Transform()->SetLocalScale(Vec3(0.1f, 0.1f, 0.1f));
+		//m_pSwordStrike->AddComponent(new CSting);
 
 
-		m_pSwordStrike->AddComponent(new CCollider2D);
-		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(2000.f, 2000.f, 2000.f));
+		//m_pSwordStrike->AddComponent(new CCollider2D);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(2000.f, 2000.f, 2000.f));
 
-		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
+		//// AddGameObject
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
 
 	}
+	else if (GetHit())
+	{
+		if (GetObj()->Animator3D()->GetCliTime(2) < GetObj()->Animator3D()->GetAnimClip(2).dTimeLength)
+		{
+			AnimationPlay(MONSTER_ANI_TYPE::HIT);
+		}
+	}
 	else
-		AnimationPlay(MONSTER_ANI_TYPE::HIT);
+		AnimationPlay(MONSTER_ANI_TYPE::IDLE);
 
-	if (m_bHit && m_vecAniClipTime[0] < GetObj()->Animator3D()->GetAnimClip(2).dTimeLength)
+	/*if (m_bHit && m_vecAniClipTime[0] < GetObj()->Animator3D()->GetAnimClip(2).dTimeLength)
 	{
 		m_vecAniClipTime[0] += (DT * 1.5f);
 		AnimationPlay(MONSTER_ANI_TYPE::HIT);
@@ -151,8 +155,7 @@ void CMonsterScript::update()
 			GetObj()->Animator3D()->SetClipTime(0, 0.f);
 			m_bHit = false;
 		}
-
-	}
+	}*/
 
 	//UpdateLerpPos();
 }
@@ -236,75 +239,21 @@ void CMonsterScript::SetMonsterPacket(sc_packet_npc_attack* p)
 
 void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 {
-	if (_pOther->GetObj()->GetName() == L"Player_Sword")
+	if (_pOther->GetObj()->GetName() == L"SwordCol")
 	{
-		cout << "검과 충돌1" << endl;
-		m_bHit = true;
-		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true, 0);
-
-	}
-	if (_pOther->GetObj()->GetName() == L"FM_Player")
-	{
-		//cout << "플레이어와 충돌" << endl;
-	}
-	if (_pOther->GetObj()->GetName() == L"FM_Monster")
-	{
-		m_colEnter = true;
-		//cout << "ENTER" << endl;
-		//if (GetObj()->GetScript<CMonsterScript>()->GetID() < _pOther->GetObj()->GetScript<CMonsterScript>()->GetID())
-		//g_net.Send_MobToMobCol_Packet(GetObj()->GetScript<CMonsterScript>()->GetID(), _pOther->GetObj()->GetScript<CMonsterScript>()->GetID(), m_colEnter, MONSTER_MOVE::STOP);
-		//	cout << "충돌체 1 : " << GetObj()->GetScript<CMonsterScript>()->GetID() << " " << "충돌체 2 :" << _pOther->GetObj()->GetScript<CMonsterScript>()->GetID() << endl;
-	}
-	if (_pOther->GetObj()->GetName() == L"FireBall") {
-
+		SetHit();
+		if (GetHit()) {
+			m_fMaxHp -= 100.f;
+			cout << m_fMaxHp << endl;
+		}
 	}
 }
 
 void CMonsterScript::OnCollision(CCollider2D* _pOther)
 {
-	//m_fHp -= 4.f;
-	if (_pOther->GetObj()->GetName() == L"FM_Player")
-	{
-		//cout << "플레이어와 충돌" << endl;
-	}
-	else if (_pOther->GetObj()->GetName() == L"Player_Sword")
-	{
-		cout << "검과 충돌2" << endl;
-		//m_bHit = true;
-		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true, 0);
-
-	}
-	else if (_pOther->GetObj()->GetName() == L"FireBall") {
-		cout << "파이어볼 충돌" << endl;
-		g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true, 1);
-	}
-	//else if (_pOther->GetObj()->GetName() == L"FM_Monster")
-	//{
-	//	//cout << "몬스터 몬스터 충돌?" << endl;
-	//	m_bColCheck = true;
-	//	SetColObj(_pOther);
-	//}
-
-	if (m_fHp < 0.f)
-	{
-		//cout << "몬스터 사망" << endl;
-		GetObj()->SetDead();
-
-	}
 }
 
 void CMonsterScript::OnCollisionExit(CCollider2D* _pOther)
 {
-	if (_pOther->GetObj()->GetName() == L"Player_Sword")
-	{
-		cout << "검과 충돌 해제" << endl;
-	}
-	else if (_pOther->GetObj()->GetName() == L"FM_Monster")
-	{
-		cout << "EXIT" << endl;
-		m_colEnter = false;
-		//if (GetObj()->GetScript<CMonsterScript>()->GetID() < _pOther->GetObj()->GetScript<CMonsterScript>()->GetID())
-		//g_net.Send_MobToMobCol_Packet(GetObj()->GetScript<CMonsterScript>()->GetID(), _pOther->GetObj()->GetScript<CMonsterScript>()->GetID(), m_colEnter, MONSTER_MOVE::START);
-		m_bColCheck = false;
-	}
+	if (_pOther->GetObj()->GetName() == L"SwordCol") SetHit();
 }

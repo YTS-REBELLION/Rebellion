@@ -90,6 +90,12 @@ public:
 	Vec3 GetLerpPos() { return LerpPos; }
 	void UpdateLerpPos();
 
+	void SetHit() {
+		if (m_bHit) m_bHit = false;
+		else m_bHit = true;
+	}
+	bool GetHit() const { return m_bHit; }
+
 	void SetColObj(CCollider2D* _obj) { m_pColObj = _obj; }
 public:
 	CLONE(CMonsterScript);

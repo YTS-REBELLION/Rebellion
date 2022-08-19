@@ -30,11 +30,14 @@ private:
 	COL_PLANE		m_ePlane;
 	//BoundingSphere	m_bBS;
 
-
+	bool			m_bActive;
 public:
 	virtual void update();
 	virtual void finalupdate();
 	void render();
+
+	void SetActive(bool _Type) { m_bActive = _Type; }
+	bool GetActvie() { return m_bActive; }
 
 	void OnCollisionEnter(CCollider2D* _pOther); // 충돌체가 처음 충돌
 	void OnCollision(CCollider2D* _pOther);      // 충돌 중

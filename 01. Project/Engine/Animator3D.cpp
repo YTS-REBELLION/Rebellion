@@ -38,7 +38,7 @@ void CAnimator3D::finalupdate()
 	// 현재 재생중인 Clip 의 시간을 진행한다.
 	if (m_iCurClip == 3 && GetObj()->GetName() == L"FM_Player")
 	{
-		m_vecClipUpdateTime[m_iCurClip] += Double_DT;
+		m_vecClipUpdateTime[m_iCurClip] += Double_DT * 1.3;
 	}
 	else if ( m_iCurClip == 4 && GetObj()->GetName() == L"FM_Player")
 	{
