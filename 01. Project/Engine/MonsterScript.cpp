@@ -89,7 +89,7 @@ void CMonsterScript::update()
 	Vec3 vRot;
 
 	if (m_isTarget) {
-		for (auto& client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(2)->GetParentObj())
+		for (auto& client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
 		{
 			if (client->GetScript<CPlayerScript>()->GetID() == m_targetId)
 			{
@@ -157,7 +157,7 @@ void CMonsterScript::update()
 		}
 	}*/
 
-	//UpdateLerpPos();
+	UpdateLerpPos();
 }
 void CMonsterScript::UpdateLerpPos()
 {
@@ -245,6 +245,7 @@ void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 		if (GetHit()) {
 			m_fMaxHp -= 100.f;
 			cout << m_fMaxHp << endl;
+			g_net.Send_Player2MonsterCol_Packet(GetObj()->GetID(), m_pPlayer->GetID(), true, 0);
 		}
 	}
 }

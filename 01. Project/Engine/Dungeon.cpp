@@ -77,8 +77,8 @@ void CDungeonScene::init()
 {
 	cout << "던전 이닛" << endl;
 	GetLayer(0)->SetName(L"Default");
-	GetLayer(1)->SetName(L"Sword");
-	GetLayer(2)->SetName(L"Player");
+	GetLayer(1)->SetName(L"Player");
+	GetLayer(2)->SetName(L"Sword");
 	GetLayer(3)->SetName(L"Map");
 	GetLayer(4)->SetName(L"Portal");
 	GetLayer(5)->SetName(L"UI");
@@ -88,7 +88,7 @@ void CDungeonScene::init()
 	GetLayer(9)->SetName(L"Monster_Skill");
 	
 
-	CreateMap();
+	//CreateMap();
 
 	// ====================
 	// 3D Light Object 추가
@@ -110,23 +110,21 @@ void CDungeonScene::init()
 	// ===================
 	// Player 파일 로드
 	// ===================
-
-	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Idle.mdat", L"MeshData\\Player_FM_Idle.mdat");
+	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FM_Idle.mdat", L"MeshData\\FM_Idle.mdat");
 
 	CGameObject* pPlayer = new CGameObject;
-
 	pPlayer = pMeshData->Instantiate();
 	pPlayer->SetName(L"FM_Player");
 	pPlayer->FrustumCheck(false);
 
-	pPlayer->Transform()->SetLocalScale(Vec3(1.0f, 1.0f, 1.0f));
-	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), XMConvertToRadians(180.f), 0.f));
-
+	pPlayer->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	pPlayer->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 	pPlayer->AddComponent(new CCollider2D);
 	pPlayer->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	pPlayer->Collider2D()->SetOffsetPos(Vec3(0.f, 100.f, 0.f));
-	pPlayer->Collider2D()->SetOffsetScale(Vec3(70.f, 70.f, 70.f));
-	pPlayer->Collider2D()->SetOffsetRot(Vec3(0.f, 0.f, XMConvertToRadians(-180.f)));
+	pPlayer->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pPlayer->Collider2D()->SetOffsetScale(Vec3(10.f, 10.f, 10.f));
+	pPlayer->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(90.f), 0.f, 0.f));
 
 	// 플레이어 스크립트 붙여주기.
 	pPlayer->AddComponent(new CPlayerScript);
@@ -134,32 +132,46 @@ void CDungeonScene::init()
 	CPlayerScript* PlayerScript = pPlayer->GetScript<CPlayerScript>();
 	pPlayer->GetScript<CPlayerScript>()->init();
 
-	// 플레이어 애니메이션
-	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 0, 0, 55);							// AniData Index 0
+	//// 플레이어 애니메이션
+	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 0, 0, 100);
 	g_net.SetAniData(pMeshData->GetMesh());
 
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Walk.mdat", L"MeshData\\Player_FM_Walk.mdat");
-	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 1, 0, 30);							// AniData Index 1
-	
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FP_Walk.mdat", L"MeshData\\FP_Walk.mdat");
+	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 1, 0, 36);
 	g_net.SetAniData(pMeshData->GetMesh());
 
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Run.mdat", L"MeshData\\Player_FM_Run.mdat");
-	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 2, 0, 22);						// AniData Index 2
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FP_Run.mdat", L"MeshData\\FP_Run.mdat");
+	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 2, 0, 21);
 	g_net.SetAniData(pMeshData->GetMesh());
 
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Attack.mdat", L"MeshData\\Player_FM_Attack.mdat");
-	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 3, 0, 45);							// AniData Index 3
+	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FP_Attack.mdat", L"MeshData\\FP_Attack.mdat");
+	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 3, 0, 45);
 	g_net.SetAniData(pMeshData->GetMesh());
 
-	pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Skill_1.mdat", L"MeshData\\Player_FM_Skill_1.mdat");
-	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 4, 0, 75);							// AniData Index 3
-	g_net.SetAniData(pMeshData->GetMesh());
+	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Skill_1.mdat", L"MeshData\\Player_FM_Skill_1.mdat");
+	//PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 4, 0, 75);							// AniData Index 3
+	//g_net.SetAniData(pMeshData->GetMesh());
 
-	
-	pPlayer->MeshRender()->SetDynamicShadow(true);
+	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Die.mdat", L"MeshData\\Player_FM_Die.mdat");
+	//PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 5, 0, 100);
+	//g_net.SetAniData(pMeshData->GetMesh());
+
 	FindLayer(L"Player")->AddGameObject(pPlayer);
 
 	g_net.SetObj(pPlayer);
+
+	Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
+
+	CGameObject* pSword = new CGameObject;
+
+	pSword = pSwordMeshData->Instantiate();
+	pSword->SetName(L"FP_Weapon");
+	pSword->FrustumCheck(false);
+	pSword->Transform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
+	pSword->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
+	pSword->AddComponent(new CSwordScript);
+	pSword->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, pPlayer, 17);
+	pPlayer->AddChild(pSword);
 
 	//Main Camera
 	CGameObject* pMainCam = new CGameObject;
@@ -223,8 +235,8 @@ void CDungeonScene::init()
 	}
 
 
-	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Sword", L"Monster");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Sword", L"Monster");
+	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Monster");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player_Skill", L"Monster");
 
 	/*CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Sword");

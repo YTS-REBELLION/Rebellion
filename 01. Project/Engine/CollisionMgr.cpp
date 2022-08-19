@@ -440,7 +440,7 @@ bool CCollisionMgr::CollisionSphere(CCollider2D* _pCollider1, CCollider2D* _pCol
 
 	if ((Radius1 + Radius2) >= temp)
 	{
-		/*cout << "CollisionSphere" << endl;
+		cout << "CollisionSphere" << endl;
 
 		CGameObject* pObject = new CGameObject;
 		pObject->SetName(L"Particle");
@@ -454,7 +454,7 @@ bool CCollisionMgr::CollisionSphere(CCollider2D* _pCollider1, CCollider2D* _pCol
 		pObject->FrustumCheck(false);
 		Vec3 particlePos = Center2;
 		pObject->Transform()->SetLocalPos(particlePos);
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(pObject);*/
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(pObject);
 
 
 		return true;

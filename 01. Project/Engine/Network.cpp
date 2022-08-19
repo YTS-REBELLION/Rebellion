@@ -16,6 +16,7 @@
 #include "ToolCamScript.h"
 #include "MonsterScript.h"
 #include "M_MonsterScript.h"
+#include "MonsterColScript.h"
 #include"Boss.h"	
 
 
@@ -210,7 +211,7 @@ void CNetwork::ProcessPacket(char* ptr)
 				// 플레이어 스크립트 붙여주기.
 				GameObject.find(id)->second->AddComponent(new CPlayerScript);
 				CPlayerScript* PlayerScript = GameObject.find(id)->second->GetScript<CPlayerScript>();
-				GameObject.find(id)->second->GetScript<CPlayerScript>()->init();
+				//GameObject.find(id)->second->GetScript<CPlayerScript>()->init();
 
 				//GameObject.find(id)->second->GetScript<CPlayerScript>()->SetTarget(false);
 
@@ -263,11 +264,11 @@ void CNetwork::ProcessPacket(char* ptr)
 				GameObject.find(id)->second->Transform()->SetLocalScale(Vec3(4.5f, 4.5f, 4.5f));
 				GameObject.find(id)->second->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), 0.f, 0.f));
 
-				GameObject.find(id)->second->AddComponent(new CCollider2D);
-				GameObject.find(id)->second->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-				GameObject.find(id)->second->Collider2D()->SetOffsetPos(Vec3(0.f, 100.f, 0.f));
-				GameObject.find(id)->second->Collider2D()->SetOffsetScale(Vec3(20.f, 20.f, 20.f));
-				GameObject.find(id)->second->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(-180.f), 0.f, 0.f));
+				//GameObject.find(id)->second->AddComponent(new CCollider2D);
+				//GameObject.find(id)->second->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+				//GameObject.find(id)->second->Collider2D()->SetOffsetPos(Vec3(0.f, 100.f, 0.f));
+				//GameObject.find(id)->second->Collider2D()->SetOffsetScale(Vec3(20.f, 20.f, 20.f));
+				//GameObject.find(id)->second->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(-180.f), 0.f, 0.f));
 
 				// 몬스터 스크립트 붙여주기.
 				GameObject.find(id)->second->AddComponent(new CMonsterScript);
@@ -296,6 +297,24 @@ void CNetwork::ProcessPacket(char* ptr)
 				GameObject.find(id)->second->MeshRender()->SetDynamicShadow(true);
 				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", GameObject.find(id)->second, false);
 
+				CGameObject* pMonsterCol = new CGameObject;
+				pMonsterCol->SetName(L"MonsterCol");
+				pMonsterCol->AddComponent(new CCollider2D);
+				pMonsterCol->AddComponent(new CTransform);
+				pMonsterCol->AddComponent(new CMeshRender);
+				pMonsterCol->Transform()->SetLocalPos(GameObject.find(id)->second->Transform()->GetLocalPos());
+				pMonsterCol->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+				pMonsterCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+				pMonsterCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+
+				pMonsterCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+				pMonsterCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+				pMonsterCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+				pMonsterCol->AddComponent(new CMonsterColScript);
+				pMonsterCol->GetScript<CMonsterColScript>()->SetMonster(GameObject.find(id)->second);
+				//GetObj()->GetScript<CPlayerScript>()->SetColPlayer(pSwordCol);
+
+				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", pMonsterCol, false);
 			}
 			//else if (CheckType(id) == OBJECT_TYPE::BOSS) {
 			//	//// 몬스터
