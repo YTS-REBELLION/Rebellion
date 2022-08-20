@@ -84,9 +84,9 @@ private:
 	Vec3	CharacterBoxScale = Vec3(100.f, 100.f, 1.f);
 	Vec3	FrameUiScale = Vec3(600.f, 100.f, 1.f);
 	Vec3	HpcoverUiScale = Vec3(500.f, 40.f, 1.f);
-	Vec3	HpUiScale = Vec3(500.f, 40.f, 1.f);
-	float m_fmana = 500.f;
-	Vec3	MpUiScale = Vec3(m_fmana, 40.f, 1.f);
+	
+	
+	
 
 	Ptr<CMeshData> pPMeshData;
 
@@ -127,6 +127,17 @@ private:
 	bool questStart = false;
 
 	CGameObject* pSwordColObject = nullptr;
+
+
+	// ui
+	CGameObject* m_pUi;
+	CGameObject* m_pUnderUi;
+	Vec3 HpUiScale;
+	Vec3 HpUiPos;
+	Vec3 MpUiScale;
+	Vec3 MpUiPos;
+	int m_pSkillMana = 0;
+
 
 public:
 	virtual void awake();

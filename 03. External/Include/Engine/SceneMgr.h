@@ -5,6 +5,7 @@ class CCamera;
 class CGameObject;
 
 
+
 class CSceneMgr
 {
 	SINGLE(CSceneMgr);
@@ -32,9 +33,14 @@ public:
 	Vec3 m_vSaveRot;
 	bool m_bfindcheck = false;
 	vector<CGameObject*> testvec;
+	bool m_bSound01 = true;
+	bool m_bSound02 = false;
+	bool m_bSound03 = false;
+
 
 public:
 	void CreateTargetUI();
 	void CreateMap();
+	void LoadSound();
 };
 
