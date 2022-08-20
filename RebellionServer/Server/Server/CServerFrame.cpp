@@ -480,6 +480,16 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 
 		break;
 	}
+	case CS_PACKET_M2PCOL:
+	{
+		cs_packet_m2p* packet = reinterpret_cast<cs_packet_m2p*>(buf);
+		int player_id = packet->playerId;
+		_objects[player_id].SetCurrentHp(_objects[player_id].GetCurrentHp() - 100.f);
+
+		cout << "플레이어 체력 : " << _objects[player_id].GetCurrentHp() << endl;
+
+		break;
+	}
 	default:
 		printf("Unknown PACKET type [%d]\n", buf[1]);
 	}

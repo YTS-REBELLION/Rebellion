@@ -40,6 +40,8 @@ const char	CS_PACKET_DUNGEON = 17;
 const char	CS_PACKET_DIETEST = 18;
 const char	CS_PACKET_SKILL = 19;
 const char	CS_PACKET_BOSSMAP = 20;
+const char	CS_PACKET_M2PCOL = 21;
+
 
 const char  SC_PACKET_LOGIN_OK = 1;
 const char  SC_PACKET_LOGIN_FAIL = 2;
@@ -415,5 +417,11 @@ struct cs_packet_skill {
 	int id;
 	bool isSkill;
 	PLAYER_ANI_TYPE anitype;
+};
+struct cs_packet_m2p {
+	char size;
+	char type;
+	int playerId;
+	bool isCol;
 };
 #pragma pack(pop)

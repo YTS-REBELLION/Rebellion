@@ -454,9 +454,6 @@ void CNetwork::ProcessPacket(char* ptr)
 
 		if (other_id == g_myid)
 		{
-			if (packet->status)
-				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->AnimationPlay(other_id, PLAYER_ANI_TYPE::WALK);
-			GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 		}
 		else
 		{
@@ -993,6 +990,16 @@ void CNetwork::Send_PlayerDieTest_Packet(const int& id)
 	packet.id = id;
 
 	Send_Packet(&packet);
+
+}
+
+void CNetwork::Send_Mon2Player_Packet(const int& playerId, bool isCol)
+{
+	cs_packet_m2p packet;
+	packet.size = sizeof(packet);
+	packet.type = CS_PACKET_M2PCOL;
+	packet.playerId = playerId;
+	packet.isCol = isCol;
 
 }
 

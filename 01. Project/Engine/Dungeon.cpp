@@ -237,6 +237,8 @@ void CDungeonScene::init()
 
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Sword", L"Monster");
 	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Monster");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player");
+
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player_Skill", L"Monster");
 
 	/*CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Sword");
