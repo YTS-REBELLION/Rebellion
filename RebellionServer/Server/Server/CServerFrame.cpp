@@ -326,9 +326,9 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 	}
 	case CS_PACKET_P2MCOL: {
 		cs_packet_player2monstercol* packet = reinterpret_cast<cs_packet_player2monstercol*>(buf);
-		int monsterId = packet->id;
-		int pid = packet->playerId;
-
+		int monsterId = packet->playerId;
+		int pid = packet->id;
+		cout << monsterId << ", " << pid << endl;
 		switch (packet->attackType) {
 		case 0: {
 			
@@ -355,12 +355,13 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 
 		unordered_set<int> old_viewList = _objects[id].GetViewList();
 
-
+		cout<<"아이디 " << monsterId << " 체력 : " << _objects[monsterId].GetCurrentHp() << endl;
 
 		if (_objects[monsterId].GetCurrentHp() <= 0) {
 			_objects[monsterId]._status = ST_FREE;
 			++monsterdieCnt;
-			_sender->SendMonsterDiePacket(_objects[id].GetSocket(), monsterId);
+			//_sender->SendMonsterDiePacket(_objects[id].GetSocket(), monsterId);
+			_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), monsterId, _objects[monsterId].GetMyType());
 			cout << "몬스터 잡기 : " << monsterdieCnt << endl;
 		}
 
