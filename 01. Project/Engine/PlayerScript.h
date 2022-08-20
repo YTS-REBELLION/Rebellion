@@ -82,10 +82,15 @@ private:
 	CGameObject* pManaobj;
 
 	Vec3	CharacterBoxScale = Vec3(100.f, 100.f, 1.f);
-	Vec3	FrameUiScale = Vec3(600.f, 100.f, 1.f);
+	Vec3	FrameUiScale = Vec3(500.f, 100.f, 1.f);
 	Vec3	HpcoverUiScale = Vec3(500.f, 40.f, 1.f);
 	
-	
+	bool m_bSkillCool01 = false;
+	float m_fSkillCool01 = 0.f;
+	bool m_bSkillCool02 = false;
+	float m_fSkillCool02 = 0.f;
+	bool m_bSkillCool03 = false;
+	float m_fSkillCool03 = 0.f;
 	
 
 	Ptr<CMeshData> pPMeshData;
