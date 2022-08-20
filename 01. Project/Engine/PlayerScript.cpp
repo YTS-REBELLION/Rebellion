@@ -375,15 +375,6 @@ void CPlayerScript::update()
 				g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
 			}
 		}
-
-		/*else if (KEY_HOLD(KEY_TYPE::KEY_W) && KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
-		{
-			isDash(true);
-			cout << "메인 클라 : " << GetID() << "는 여기 들어와서 뛰는중." << endl;
-			AnimationPlay(PLAYER_ANI_TYPE::RUN);
-			g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
-		}
-		else if (KEY_AWAY(KEY_TYPE::KEY_LSHIFT)) isDash(false);*/
 		/*else if (KEY_HOLD(KEY_TYPE::KEY_S))
 		{
 			localPos -= WorldDir * m_fSpeed * DT;
