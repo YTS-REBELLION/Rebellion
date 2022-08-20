@@ -333,12 +333,17 @@ void CPlayerScript::update()
 		{
 			GetObj()->Animator3D()->SetClipTime(3, 0.f);
 			SetAttack();
+
 			pSwordColObject->SetActive(true);
+			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
+
 		}
 		else if (KEY_AWAY(KEY_TYPE::KEY_SPACE))
 		{
 			SetAttack();
 			pSwordColObject->SetActive(false);
+			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
+
 		}
 
 		if (KEY_TAB(KEY_TYPE::KEY_2))
@@ -419,7 +424,7 @@ void CPlayerScript::update()
 		else if (KEY_HOLD(KEY_TYPE::KEY_SPACE))
 		{
 			AnimationPlay(PLAYER_ANI_TYPE::ATTACK);
-			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
+			//g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
 
 			/*if (GetObj()->Animator3D()->GetCliTime(3) < GetObj()->Animator3D()->GetAnimClip(3).dTimeLength -)*/
 			//pSwordColObject->MeshRender()->SetActive(true);
