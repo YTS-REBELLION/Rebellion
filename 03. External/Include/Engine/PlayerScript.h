@@ -41,6 +41,7 @@ private:
 	Ptr<CMaterial>		m_pOriginMtrl;
 	Ptr<CMaterial>		m_pCloneMtrl;
 	vector<Ptr<CMesh>>	m_pAniData;
+	vector<Ptr<CMesh>>	m_pOhter_AniData;
 	Vec3				m_vecPlayerDir;
 	float				m_fSpeed = PLAYER_SPEED;
 	bool				m_bAttack;
@@ -63,7 +64,7 @@ private:
 	DeadReckoning* m_DeadReckoner;
 
 	vector<tMTAnimClip>			m_pVecAnimClip;
-
+	vector<tMTAnimClip>			m_pOhter_VecAnimClip;
 
 	bool				m_bMeteor = false;
 	bool				m_bMeteor2 = false;
@@ -128,6 +129,8 @@ private:
 
 	CGameObject* pSwordColObject = nullptr;
 
+	PLAYER_ANI_TYPE m_sAniType;
+
 public:
 	virtual void awake();
 	virtual void update();
@@ -135,9 +138,10 @@ public:
 	void init();
 
 	void SetPlayerAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame);
+	void SetPlayerAnimationData(Ptr<CMesh> AniDate, int other_id, const int& i, const UINT& _StartFrame, const UINT& _EndFrame);
 
 	void SetPlayerAnimation(const int& i);
-	void SetPlayerAnimation(int other_id, int i);
+	void SetPlayerAnimation(int other_id, const int& i);
 
 	void AnimationPlay(const PLAYER_ANI_TYPE& type);
 	void AnimationPlay(int other_id, const PLAYER_ANI_TYPE& type);
@@ -208,6 +212,8 @@ public:
 	bool GetSkillStrat(int _index) { return m_bSkill_Start[_index]; }
 
 	void isDash(bool _type) { m_bDash = _type; };
+
+	void SetOtherPlayerAniType(const PLAYER_ANI_TYPE& type) { m_sAniType = type; }
 public:
 	CLONE(CPlayerScript);
 

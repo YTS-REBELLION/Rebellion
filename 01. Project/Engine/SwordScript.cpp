@@ -33,12 +33,14 @@ void CSwordScript::Set_Sword_To_Fbx()
 {
 	//if (m_pTargetObject->GetScript<CPlayerScript>()->GetMain())
 	{
+		//m_pTargetBone->vecKeyFrame.size()
 		Vec3 vTrans = m_pTargetBone->vecKeyFrame[m_pTargetObject->Animator3D()->GetFrameIdx()].vTranslate;
 		Vec4 qRot = m_pTargetBone->vecKeyFrame[m_pTargetObject->Animator3D()->GetFrameIdx()].qRot;
 		Vec3 vRot;
 		int id = m_pTargetObject->GetScript<CPlayerScript>()->GetID();
 
-		cout <<"ID :" << id << ",  Main : " << m_pTargetBone->vecKeyFrame.size() << endl;
+		//cout << m_pTargetObject->Animator3D()->GetFrameIdx() << endl;
+		//cout <<"ID :" << id << ",  Main : " << m_pTargetBone->vecKeyFrame.size() << endl;
 		switch (m_eType)
 		{
 		case PERSON_OBJ_TYPE::WARRIOR_PLAYER: {
