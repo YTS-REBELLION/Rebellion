@@ -292,7 +292,6 @@ void CNetwork::ProcessPacket(char* ptr)
 				MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 4, 0, 68);
 
 				GameObject.find(id)->second->GetScript<CMonsterScript>()->SetID(id);
-				GameObject.find(id)->second->GetScript<CMonsterScript>()->SetHP(100);
 				GameObject.find(id)->second->GetScript<CMonsterScript>()->SetLerpPos(Vec3(packet->x, packet->y, packet->z));
 				GameObject.find(id)->second->MeshRender()->SetDynamicShadow(true);
 				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", GameObject.find(id)->second, false);
@@ -312,6 +311,8 @@ void CNetwork::ProcessPacket(char* ptr)
 				pMonsterCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 				pMonsterCol->AddComponent(new CMonsterColScript);
 				pMonsterCol->GetScript<CMonsterColScript>()->SetMonster(GameObject.find(id)->second);
+				GameObject.find(id)->second->GetScript<CMonsterScript>()->SetColMonster(pMonsterCol);
+
 				//GetObj()->GetScript<CPlayerScript>()->SetColPlayer(pSwordCol);
 
 				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", pMonsterCol, false);
@@ -410,10 +411,12 @@ void CNetwork::ProcessPacket(char* ptr)
 		sc_packet_leave* packet = reinterpret_cast<sc_packet_leave*>(ptr);
 		int id = packet->id;
 		cout << "leave id : " << id << endl;
+
+
 		if (CheckType(id) == OBJECT_TYPE::FM_MONSTER) {
 			GameObject.find(id)->second->GetScript<CMonsterScript>()->GetObj()->SetDead();
+			GameObject.find(id)->second->GetScript<CMonsterScript>()->GetColMonster()->SetActive(false);
 			GameObject.erase(id);
-
 		}
 		else if (CheckType(id) == OBJECT_TYPE::M_MONSTER) {
 			GameObject.find(id)->second->GetScript<CM_MonsterScript>()->GetObj()->SetDead();
@@ -451,9 +454,6 @@ void CNetwork::ProcessPacket(char* ptr)
 
 		if (other_id == g_myid)
 		{
-			if (packet->status)
-				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->AnimationPlay(other_id, PLAYER_ANI_TYPE::WALK);
-			GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 		}
 		else
 		{
@@ -990,6 +990,16 @@ void CNetwork::Send_PlayerDieTest_Packet(const int& id)
 	packet.id = id;
 
 	Send_Packet(&packet);
+
+}
+
+void CNetwork::Send_Mon2Player_Packet(const int& playerId, bool isCol)
+{
+	cs_packet_m2p packet;
+	packet.size = sizeof(packet);
+	packet.type = CS_PACKET_M2PCOL;
+	packet.playerId = playerId;
+	packet.isCol = isCol;
 
 }
 

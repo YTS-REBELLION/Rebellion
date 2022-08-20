@@ -36,7 +36,7 @@ static type* GetInst()\
 #define MAX_LAYER 32
 #define PLAYER_SPEED 300.f
 #define MONSTER_SPEED 10000.f
-#define LV1_MONSTER_HP 1000.f
+#define LV1_MONSTER_HP 200.f
 #define LV2_MONSTER_HP 1200.f
 #define LV3_MONSTER_HP 1400.f
 #define LV4_MONSTER_HP 1600.f

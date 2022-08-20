@@ -440,7 +440,6 @@ bool CCollisionMgr::CollisionSphere(CCollider2D* _pCollider1, CCollider2D* _pCol
 
 	if ((Radius1 + Radius2) >= temp)
 	{
-		cout << "CollisionSphere" << endl;
 
 		CGameObject* pObject = new CGameObject;
 		pObject->SetName(L"Particle");

@@ -245,7 +245,7 @@ void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 		if (GetHit()) {
 			m_fMaxHp -= 100.f;
 			cout << m_fMaxHp << endl;
-			g_net.Send_Player2MonsterCol_Packet(GetObj()->GetID(), m_pPlayer->GetID(), true, 0);
+			g_net.Send_Player2MonsterCol_Packet(GetObj()->GetID(), GetID(), true, 0);
 		}
 	}
 }

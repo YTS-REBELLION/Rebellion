@@ -333,12 +333,17 @@ void CPlayerScript::update()
 		{
 			GetObj()->Animator3D()->SetClipTime(3, 0.f);
 			SetAttack();
+
 			pSwordColObject->SetActive(true);
+			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
+
 		}
 		else if (KEY_AWAY(KEY_TYPE::KEY_SPACE))
 		{
 			SetAttack();
 			pSwordColObject->SetActive(false);
+			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
+
 		}
 
 		if (KEY_TAB(KEY_TYPE::KEY_2))
@@ -419,7 +424,7 @@ void CPlayerScript::update()
 		else if (KEY_HOLD(KEY_TYPE::KEY_SPACE))
 		{
 			AnimationPlay(PLAYER_ANI_TYPE::ATTACK);
-			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
+			//g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
 
 			/*if (GetObj()->Animator3D()->GetCliTime(3) < GetObj()->Animator3D()->GetAnimClip(3).dTimeLength -)*/
 			//pSwordColObject->MeshRender()->SetActive(true);
@@ -1084,6 +1089,23 @@ void CPlayerScript::AnimationPlay(int other_id, const PLAYER_ANI_TYPE& type)
 
 void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
 {
+	//if (_pOther->GetObj()->GetName() == L"M_Monster"
+	//	|| _pOther->GetObj()->GetName() == L"M_Monster2"
+	//	|| _pOther->GetObj()->GetName() == L"Map Object"
+	//	)
+	//{
+	//	m_bColCheck = true;
+	//	//SetColObj(_pOther);
+	//	Vec3 dir_vec = m_pColObj->Transform()->GetLocalDir(DIR_TYPE::RIGHT);
+	//	//cout << "충돌" << endl;
+	//}
+
+	if (_pOther->GetObj()->GetName() == L"FM_Monster") {
+
+		g_net.Send_Mon2Player_Packet(GetObj()->GetID(), true);
+
+
+	}
 }
 
 void CPlayerScript::OnCollision(CCollider2D* _pOther)
@@ -1091,12 +1113,15 @@ void CPlayerScript::OnCollision(CCollider2D* _pOther)
 	if (_pOther->GetObj()->GetName() == L"M_Monster"
 		|| _pOther->GetObj()->GetName() == L"M_Monster2"
 		|| _pOther->GetObj()->GetName() == L"Map Object"
+		|| _pOther->GetObj()->GetName() == L"FM_Monster"
 		)
 	{
 		m_bColCheck = true;
 		//SetColObj(_pOther);
 		Vec3 dir_vec = m_pColObj->Transform()->GetLocalDir(DIR_TYPE::RIGHT);
-		//cout << "충돌" << endl;
+		g_net.Send_Mon2Player_Packet(GetObj()->GetID(), true);
+
+		cout << "충돌" << endl;
 	}
 }
 
