@@ -211,7 +211,7 @@ void CNetwork::ProcessPacket(char* ptr)
 				// 플레이어 스크립트 붙여주기.
 				GameObject.find(id)->second->AddComponent(new CPlayerScript);
 				CPlayerScript* PlayerScript = GameObject.find(id)->second->GetScript<CPlayerScript>();
-				//GameObject.find(id)->second->GetScript<CPlayerScript>()->init();
+				GameObject.find(id)->second->GetScript<CPlayerScript>()->init();
 
 				//GameObject.find(id)->second->GetScript<CPlayerScript>()->SetTarget(false);
 
