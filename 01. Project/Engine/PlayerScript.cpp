@@ -359,13 +359,11 @@ void CPlayerScript::update()
 			if (!m_bDash) {
 				localPos += WorldDir * m_fSpeed * DT;
 
-				cout << "메인 클라 : " << GetID() << "는 여기 들어와서 걷는다." << endl;
 				AnimationPlay(PLAYER_ANI_TYPE::WALK);
 				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 			}
 			else {
 				localPos += WorldDir * m_fSpeed * 2.0f * DT;
-				cout << "메인 클라 : " << GetID() << "는 여기 들어와서 뛰는중." << endl;
 				AnimationPlay(PLAYER_ANI_TYPE::RUN);
 				g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
 			}

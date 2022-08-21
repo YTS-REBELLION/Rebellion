@@ -428,7 +428,7 @@ void CAssemblyAreaScene::init()
 	GetLayer(7)->SetName(L"NPC");
 	GetLayer(8)->SetName(L"Player_Skill");
 
-	//CreateMap();
+	CreateMap();
 
 	// ====================
 	// 3D Light Object Ãß°¡
