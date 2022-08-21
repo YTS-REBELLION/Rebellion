@@ -363,7 +363,7 @@ void CAssemblyAreaScene::init()
 	pPlayerCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
 
 	pPlayerCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	pPlayerCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+	pPlayerCol->Collider2D()->SetOffsetScale(Vec3(70.f, 70.f, 70.f));
 	pPlayerCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	pPlayerCol->AddComponent(new CPlayerColScript);
 	pPlayerCol->GetScript<CPlayerColScript>()->SetPlayer(pPlayer);

@@ -362,10 +362,19 @@ bool CCollisionMgr::CollisionRectCircle(CCollider2D* _pCollider1, CCollider2D* _
 	float top		= _pCollider2->GetObj()->Transform()->GetLocalPos().z - (_pCollider2->Transform()->GetLocalScale().z * _pCollider2->Collider2D()->GetOffsetScale().z) / 2;
 	float bottom	= _pCollider2->GetObj()->Transform()->GetLocalPos().z + (_pCollider2->Transform()->GetLocalScale().z * _pCollider2->Collider2D()->GetOffsetScale().z) / 2;
 
-	if (left <= CenterX && CenterX < right || top <= CenterZ && CenterZ < bottom)
+	if ((left <= CenterX && CenterX < right))
 	{
 		if ((left - Radius < CenterX && CenterX < right + Radius) &&
 			(top - Radius < CenterZ && CenterZ < bottom + Radius)) {
+
+			return true;
+		}
+	}
+	else if ((top <= CenterZ && CenterZ < bottom))
+	{
+		if ((left - Radius < CenterX && CenterX < right + Radius) &&
+			(top - Radius < CenterZ && CenterZ < bottom + Radius)) {
+
 			return true;
 		}
 	}

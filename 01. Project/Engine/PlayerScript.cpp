@@ -931,6 +931,7 @@ void CPlayerScript::update()
 
 		if (GetMapCol())
 		{
+			localPos -= WorldDir * m_fSpeed * 1.1f * DT;
 			Transform()->SetLocalPos(localPos);
 		}
 		else Transform()->SetLocalPos(localPos);
@@ -1111,6 +1112,8 @@ void CPlayerScript::OnCollision(CCollider2D* _pOther)
 void CPlayerScript::OnCollisionExit(CCollider2D* _pOther)
 {
 	if (_pOther->GetObj()->GetName() == L"MonsterSwordCol") SetHit(false);
+
+	if (_pOther->GetObj()->GetName() == L"Map_Wall") SetMapCol(false);
 }
 
 void CPlayerScript::SwordStrike()
@@ -1215,25 +1218,22 @@ void CPlayerScript::MegaSlash()
 void CPlayerScript::Swing()
 {
 	//플레이어 따라오는 표창
-//// ====================
-////  오브젝트 생성
-//// ====================
+	//// ====================
+	////  오브젝트 생성
+	//// ====================
 	CGameObject* m_pSwordStrike = new CGameObject;
 	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sjuriken1.fbx");
-
-
 
 	m_pSwordStrike = pPMeshData->Instantiate();
 	m_pSwordStrike->SetName(L"Swing");
 	m_pSwordStrike->FrustumCheck(false);
-
 
 	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 100,100,100 });
 	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
 	m_pSwordStrike->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
 	m_pSwordStrike->AddComponent(new CSwing);
 
-
+	m_pSwordStrike->GetScript<CSwing>()->SetPlayer(GetObj());
 	m_pSwordStrike->AddComponent(new CCollider2D);
 	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));

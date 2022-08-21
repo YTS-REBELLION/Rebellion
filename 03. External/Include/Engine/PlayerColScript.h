@@ -15,7 +15,7 @@ public:
     CPlayerColScript();
     virtual ~CPlayerColScript();
     void SetPlayer(CGameObject* _pObj) { m_pPlayer = _pObj; }
-    CGameObject* GetPlayerr() { return m_pPlayer; }
+    CGameObject* GetPlayer() { return m_pPlayer; }
     void SetPos(const Vec3& _Pos) { m_vCalPos = _Pos; }
     void SetRot(const Vec3& _Rot) { m_vCalRot = _Rot; }
 

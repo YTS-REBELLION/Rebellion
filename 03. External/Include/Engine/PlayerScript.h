@@ -150,7 +150,7 @@ private:
 
 
 	PLAYER_ANI_TYPE m_sAniType;
-
+	COL_PLANE m_eCol_Plane;
 public:
 	virtual void awake();
 	virtual void update();
@@ -240,6 +240,8 @@ public:
 	void PlaySound_(const Sound_Type& sound);
 
 	void SetOtherPlayerAniType(const PLAYER_ANI_TYPE& type) { m_sAniType = type; }
+
+	void SetColPlane(COL_PLANE _eType) { m_eCol_Plane = _eType; }
 public:
 	CLONE(CPlayerScript);
 

@@ -156,24 +156,24 @@ void CBossMap::init()
 	pPlayer->AddChild(pSword);
 	pSword->MeshRender()->SetDynamicShadow(true);
 
-	CGameObject* pPlayerCol = new CGameObject;
-	pPlayerCol->SetName(L"PlayerCol");
-	pPlayerCol->AddComponent(new CCollider2D);
-	pPlayerCol->AddComponent(new CTransform);
-	pPlayerCol->AddComponent(new CMeshRender);
-	pPlayerCol->Transform()->SetLocalPos(pPlayer->Transform()->GetLocalPos());
-	pPlayerCol->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	pPlayerCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pPlayerCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	//CGameObject* pPlayerCol = new CGameObject;
+	//pPlayerCol->SetName(L"PlayerCol");
+	//pPlayerCol->AddComponent(new CCollider2D);
+	//pPlayerCol->AddComponent(new CTransform);
+	//pPlayerCol->AddComponent(new CMeshRender);
+	//pPlayerCol->Transform()->SetLocalPos(pPlayer->Transform()->GetLocalPos());
+	//pPlayerCol->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	//pPlayerCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	//pPlayerCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
 
-	pPlayerCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	pPlayerCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
-	pPlayerCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	pPlayerCol->AddComponent(new CPlayerColScript);
-	pPlayerCol->GetScript<CPlayerColScript>()->SetPlayer(pPlayer);
-	pPlayer->GetScript<CPlayerScript>()->SetColPlayer(pPlayerCol);
+	//pPlayerCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+	//pPlayerCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+	//pPlayerCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	//pPlayerCol->AddComponent(new CPlayerColScript);
+	//pPlayerCol->GetScript<CPlayerColScript>()->SetPlayer(pPlayer);
+	//pPlayer->GetScript<CPlayerScript>()->SetColPlayer(pPlayerCol);
 
-	FindLayer(L"Player")->AddGameObject(pPlayerCol);
+	//FindLayer(L"Player")->AddGameObject(pPlayerCol);
 
 
 	//Main Camera
