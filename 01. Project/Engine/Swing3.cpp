@@ -37,7 +37,7 @@ void CSwing3::update()
 
 
 	Vec3 WorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-	Vec3 localPos = Transform()->GetLocalPos();
+	//Vec3 localPos = Transform()->GetLocalPos();
 
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
 	Vec3 vRot = Transform()->GetLocalRot();
@@ -45,7 +45,7 @@ void CSwing3::update()
 	vRot.y += DT;
 
 
-	Transform()->SetLocalPos(localPos);
+	Transform()->SetLocalPos(m_pPlayer->Transform()->GetLocalPos() + Vec3{ -100,100,-100 });
 	Transform()->SetLocalRot(vRot);
 
 

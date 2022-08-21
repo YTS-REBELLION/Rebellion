@@ -39,24 +39,132 @@
 
 void CBossMap::CreateMap()
 {
-
+	// 1 
 	CGameObject* pObject = new CGameObject;
 	pObject->SetName(L"Map_Wall");
 	pObject->AddComponent(new CTransform);
 	pObject->AddComponent(new CMeshRender);
-	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Transform()->SetLocalPos(Vec3(-5.1f, 50.f, -1304.f));
 	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	pObject->AddComponent(new CCollider2D);
 	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
 	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	pObject->Collider2D()->SetOffsetScale(Vec3(100.f, 500.f, 800.f));
-	// MeshRender 설정
+	pObject->Collider2D()->SetOffsetScale(Vec3(2500.f, 100.f, 200.f));
 	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
 	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-
-	// AddGameObject
 	FindLayer(L"Map")->AddGameObject(pObject);
+
+
+	// 2
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(-1420.f, 50.f, -11.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(200.f, 100.f, 2500.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
+
+	// 3
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(-30.f, 50.f, 1560.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(2500.f, 100.f, 200.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
+
+	// 4
+	pObject = new CGameObject;
+	pObject->SetName(L"Map_Wall");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	pObject->Transform()->SetLocalPos(Vec3(1430.f, 50.f, 53.f));
+	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pObject->AddComponent(new CCollider2D);
+	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pObject->Collider2D()->SetOffsetScale(Vec3(200.f, 100.f, 2500.f));
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	FindLayer(L"Map")->AddGameObject(pObject);
+
+
+	// ====================
+	// Map 오브젝트 생성
+	// ====================
+	Ptr<CMeshData> pMapMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Castle.mdat", L"MeshData\\Castle.mdat");
+	CGameObject* pMap = new CGameObject;
+
+	pMap->SetName(L"Castle");
+	pMap = pMapMeshData->Instantiate();
+	pMap->FrustumCheck(false);
+	pMap->MeshRender()->SetDynamicShadow(true);
+
+	pMap->Transform()->SetLocalPos(Vec3(0.f, 200.f, 0.f));
+	pMap->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
+	pMap->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
+
+	FindLayer(L"Map")->AddGameObject(pMap);
+
+	// ====================
+	// Skybox 오브젝트 생성
+	// ====================
+
+	Ptr<CTexture> pSkyboxTex = CResMgr::GetInst()->Load<CTexture>(L"SB", L"Texture\\Skybox\\Deep Dusk Equirect.png");
+
+	CGameObject* pSkybox = new CGameObject;
+	pSkybox->SetName(L"SkyBox");
+	pSkybox->FrustumCheck(false);
+	pSkybox->AddComponent(new CTransform);
+	pSkybox->AddComponent(new CMeshRender);
+
+	pSkybox->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh"));
+	pSkybox->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"SkyboxMtrl"));
+	pSkybox->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pSkyboxTex.GetPointer());
+
+	FindLayer(L"Default")->AddGameObject(pSkybox, false);
+
+	
+
+	Ptr<CTexture> pColor = CResMgr::GetInst()->Load<CTexture>(L"Tile", L"Texture\\Tile\\TILE_01.tga");
+	Ptr<CTexture> pNormal = CResMgr::GetInst()->Load<CTexture>(L"Tile_n", L"Texture\\Tile\\TILE_01_N.tga");
+	for (int j = 0; j < 5; ++j)
+	{
+		for (int i = 0; i < 5; ++i)
+		{
+			CGameObject* pObject = new CGameObject;
+			pObject->SetName(L"Map Object");
+			pObject->AddComponent(new CTransform);
+			pObject->AddComponent(new CMeshRender);
+
+			// Transform 설정
+			pObject->Transform()->SetLocalPos(Vec3(i * 1000.f - 2000.f, 0.f, j * 1000.f - 1000.f));
+			pObject->Transform()->SetLocalScale(Vec3(1000.f, 1000.f, 1.f));
+			pObject->Transform()->SetLocalRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
+
+			// MeshRender 설정
+			pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+			pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
+			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
+
+			// AddGameObject
+			FindLayer(L"Default")->AddGameObject(pObject);
+
+		}
+	}
 }
 
 void CBossMap::init()
@@ -72,6 +180,8 @@ void CBossMap::init()
 	GetLayer(7)->SetName(L"Player_Skill");
 	GetLayer(8)->SetName(L"Monster_Skill");
 
+
+	CreateMap();
 	// ====================
 	// 3D Light Object 추가
 	// ====================
@@ -156,7 +266,7 @@ void CBossMap::init()
 	pPlayer->AddChild(pSword);
 	pSword->MeshRender()->SetDynamicShadow(true);
 
-	CGameObject* pPlayerCol = new CGameObject;
+	/*CGameObject* pPlayerCol = new CGameObject;
 	pPlayerCol->SetName(L"PlayerCol");
 	pPlayerCol->AddComponent(new CCollider2D);
 	pPlayerCol->AddComponent(new CTransform);
@@ -173,7 +283,7 @@ void CBossMap::init()
 	pPlayerCol->GetScript<CPlayerColScript>()->SetPlayer(pPlayer);
 	pPlayer->GetScript<CPlayerScript>()->SetColPlayer(pPlayerCol);
 
-	FindLayer(L"Player")->AddGameObject(pPlayerCol);
+	FindLayer(L"Player")->AddGameObject(pPlayerCol);*/
 
 
 	//Main Camera
@@ -204,33 +314,17 @@ void CBossMap::init()
 
 	FindLayer(L"Default")->AddGameObject(pUICam);
 
-	Ptr<CTexture> pColor = CResMgr::GetInst()->Load<CTexture>(L"Tile", L"Texture\\Tile\\TILE_01.tga");
-	Ptr<CTexture> pNormal = CResMgr::GetInst()->Load<CTexture>(L"Tile_n", L"Texture\\Tile\\TILE_01_N.tga");
+	
 
-	for (int j = 0; j < 5; ++j)
-	{
-		for (int i = 0; i < 5; ++i)
-		{
-			CGameObject* pObject = new CGameObject;
-			pObject->SetName(L"Map Object");
-			pObject->AddComponent(new CTransform);
-			pObject->AddComponent(new CMeshRender);
+	
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"PlayerSword", L"Monster");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"MonsterSword", L"Player");
 
-			// Transform 설정
-			pObject->Transform()->SetLocalPos(Vec3(i * 1000.f - 2000.f, 0.f, j * 1000.f - 1000.f));
-			pObject->Transform()->SetLocalScale(Vec3(1000.f, 1000.f, 1.f));
-			pObject->Transform()->SetLocalRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player_Skill", L"Monster");
 
-			// MeshRender 설정
-			pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-			pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
-			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
+	/*CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Sword");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Player");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Player_Skill");*/
 
-			// AddGameObject
-			FindLayer(L"Default")->AddGameObject(pObject);
-
-		}
-	}
-
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster_Skill", L"Player");
 }

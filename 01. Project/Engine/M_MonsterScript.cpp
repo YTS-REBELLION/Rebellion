@@ -198,7 +198,7 @@ void CM_MonsterScript::update()
 			break;
 		case End:
 			break;
-		default:
+		Monster_Skill:
 			break;
 		}
 
@@ -324,12 +324,12 @@ void CM_MonsterScript::Skill1()
 
 
 		//m_pSwordStrike->AddComponent(new CCollider2D);
-		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 		//// AddGameObject
-		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
 
 
 
@@ -346,12 +346,12 @@ void CM_MonsterScript::Skill1()
 
 
 		//m_pSwordStrike->AddComponent(new CCollider2D);
-		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 		//// AddGameObject
-		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
 
 
 		//m_pSwordStrike = new CGameObject;
@@ -367,12 +367,12 @@ void CM_MonsterScript::Skill1()
 
 
 		//m_pSwordStrike->AddComponent(new CCollider2D);
-		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 		//// AddGameObject
-		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
 
 
 		//m_pSwordStrike = new CGameObject;
@@ -388,12 +388,12 @@ void CM_MonsterScript::Skill1()
 
 
 		//m_pSwordStrike->AddComponent(new CCollider2D);
-		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 		//// AddGameObject
-		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
 
 
 			// ====================
@@ -419,11 +419,11 @@ void CM_MonsterScript::Skill1()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(0.6f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 		pObject = new CGameObject;
 		pObject->SetName(L"FireTest2");
@@ -443,11 +443,11 @@ void CM_MonsterScript::Skill1()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(0.6f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 		pObject = new CGameObject;
 		pObject->SetName(L"FireTest3");
@@ -467,11 +467,11 @@ void CM_MonsterScript::Skill1()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(0.6f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 
 
@@ -493,11 +493,11 @@ void CM_MonsterScript::Skill1()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(0.6f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 
 
@@ -519,11 +519,11 @@ void CM_MonsterScript::Skill1()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(0.6f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 
 
@@ -545,11 +545,11 @@ void CM_MonsterScript::Skill1()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(0.6f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 
 		pObject = new CGameObject;
@@ -568,11 +568,11 @@ void CM_MonsterScript::Skill1()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(0.6f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 
 		pObject = new CGameObject;
@@ -591,11 +591,11 @@ void CM_MonsterScript::Skill1()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(0.6f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 		pObject = new CGameObject;
 		pObject->SetName(L"FireTest9");
@@ -613,11 +613,11 @@ void CM_MonsterScript::Skill1()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(0.6f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 
 
@@ -649,12 +649,12 @@ void CM_MonsterScript::Skill2()
 
 
 		//m_pSwordStrike->AddComponent(new CCollider2D);
-		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 		//// AddGameObject
-		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
 
 
 		//m_pSwordStrike = new CGameObject;
@@ -673,12 +673,12 @@ void CM_MonsterScript::Skill2()
 
 
 		//m_pSwordStrike->AddComponent(new CCollider2D);
-		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 		//// AddGameObject
-		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
 
 		//m_pSwordStrike = new CGameObject;
 
@@ -696,12 +696,12 @@ void CM_MonsterScript::Skill2()
 
 
 		//m_pSwordStrike->AddComponent(new CCollider2D);
-		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 		//// AddGameObject
-		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
 
 		//m_pSwordStrike = new CGameObject;
 
@@ -719,12 +719,12 @@ void CM_MonsterScript::Skill2()
 
 
 		//m_pSwordStrike->AddComponent(new CCollider2D);
-		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 		//// AddGameObject
-		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
 
 
 
@@ -742,12 +742,12 @@ void CM_MonsterScript::Skill2()
 
 
 		//m_pSwordStrike->AddComponent(new CCollider2D);
-		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 		//// AddGameObject
-		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
 
 
 
@@ -765,12 +765,12 @@ void CM_MonsterScript::Skill2()
 
 
 		//m_pSwordStrike->AddComponent(new CCollider2D);
-		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 		//// AddGameObject
-		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
 
 		//m_pSwordStrike = new CGameObject;
 
@@ -786,12 +786,12 @@ void CM_MonsterScript::Skill2()
 
 
 		//m_pSwordStrike->AddComponent(new CCollider2D);
-		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 		//// AddGameObject
-		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
 
 		//m_pSwordStrike = new CGameObject;
 
@@ -807,12 +807,12 @@ void CM_MonsterScript::Skill2()
 
 
 		//m_pSwordStrike->AddComponent(new CCollider2D);
-		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 		//// AddGameObject
-		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
 
 
 		//m_pSwordStrike = new CGameObject;
@@ -829,12 +829,12 @@ void CM_MonsterScript::Skill2()
 
 
 		//m_pSwordStrike->AddComponent(new CCollider2D);
-		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 
 		//// AddGameObject
-		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(m_pSwordStrike);
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
 
 	// ====================
 	// Fire 오브젝트 생성
@@ -859,11 +859,11 @@ pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise
 pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 pObject->GetScript<CFire>()->init();
 pObject->AddComponent(new CCollider2D);
-pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 // AddGameObject
-CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 pObject = new CGameObject;
 pObject->SetName(L"FireTest2");
@@ -883,11 +883,11 @@ pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise
 pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 pObject->GetScript<CFire>()->init();
 pObject->AddComponent(new CCollider2D);
-pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 // AddGameObject
-CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 pObject = new CGameObject;
 pObject->SetName(L"FireTest3");
@@ -907,11 +907,11 @@ pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise
 pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 pObject->GetScript<CFire>()->init();
 pObject->AddComponent(new CCollider2D);
-pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 // AddGameObject
-CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 
 
@@ -933,11 +933,11 @@ pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise
 pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 pObject->GetScript<CFire>()->init();
 pObject->AddComponent(new CCollider2D);
-pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 // AddGameObject
-CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 
 
@@ -959,11 +959,11 @@ pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise
 pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 pObject->GetScript<CFire>()->init();
 pObject->AddComponent(new CCollider2D);
-pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 // AddGameObject
-CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 
 
@@ -985,11 +985,11 @@ pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise
 pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 pObject->GetScript<CFire>()->init();
 pObject->AddComponent(new CCollider2D);
-pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 // AddGameObject
-CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 
 pObject = new CGameObject;
@@ -1008,11 +1008,11 @@ pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise
 pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 pObject->GetScript<CFire>()->init();
 pObject->AddComponent(new CCollider2D);
-pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 // AddGameObject
-CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 
 pObject = new CGameObject;
@@ -1031,11 +1031,11 @@ pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise
 pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 pObject->GetScript<CFire>()->init();
 pObject->AddComponent(new CCollider2D);
-pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 // AddGameObject
-CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 pObject = new CGameObject;
 pObject->SetName(L"FireTest9");
@@ -1053,11 +1053,11 @@ pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise
 pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 pObject->GetScript<CFire>()->init();
 pObject->AddComponent(new CCollider2D);
-pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 // AddGameObject
-CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 
 		MonSkill2Check = false;
@@ -1092,11 +1092,11 @@ void CM_MonsterScript::Skill3()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 		pObject = new CGameObject;
 		pObject->SetName(L"FireTest2");
@@ -1116,11 +1116,11 @@ void CM_MonsterScript::Skill3()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 		pObject = new CGameObject;
 		pObject->SetName(L"FireTest3");
@@ -1140,11 +1140,11 @@ void CM_MonsterScript::Skill3()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 
 
@@ -1166,11 +1166,11 @@ void CM_MonsterScript::Skill3()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 		
 
@@ -1192,11 +1192,11 @@ void CM_MonsterScript::Skill3()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 
 
@@ -1218,11 +1218,11 @@ void CM_MonsterScript::Skill3()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 
 		pObject = new CGameObject;
@@ -1241,11 +1241,11 @@ void CM_MonsterScript::Skill3()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 
 		pObject = new CGameObject;
@@ -1264,11 +1264,11 @@ void CM_MonsterScript::Skill3()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 		pObject = new CGameObject;
 		pObject->SetName(L"FireTest9");
@@ -1286,11 +1286,11 @@ void CM_MonsterScript::Skill3()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		pObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
 		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
 		m_fskillTime = 0.f;
 		MonSkill1Check = false;
