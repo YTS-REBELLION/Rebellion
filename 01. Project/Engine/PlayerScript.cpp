@@ -293,6 +293,9 @@ void CPlayerScript::awake()
 void CPlayerScript::update()
 {
 	
+	cout << "플레이어x:" << Transform()->GetLocalPos().x << endl;
+	cout << "플레이어y:" << Transform()->GetLocalPos().y << endl;
+	cout << "플레이어z:" << Transform()->GetLocalPos().z << endl;
 
 	// Z-up To Y-up
 	Vec3 vDirFront = Transform()->GetLocalDir(DIR_TYPE::FRONT);
