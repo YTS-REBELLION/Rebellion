@@ -33,7 +33,7 @@ void CFire::update()
 		m_NoiseBuffer.frameTime = 0.f;
 	MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::FLOAT_0, &m_NoiseBuffer.frameTime);
 
-	for (auto player : CSceneMgr::GetInst()->GetCurScene()->GetLayer(2)->GetParentObj())
+	for (auto player : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
 	{
 		m_pPlayer = player;
 

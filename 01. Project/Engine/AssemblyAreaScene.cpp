@@ -351,7 +351,9 @@ void CAssemblyAreaScene::CreateMap()
 	// ==================
 	// Map 오브젝트 생성
 	// ==================
-	
+
+	//g_SoundList.find(Sound_Type::BGM)->second->Play(0);
+
 	for (int j = 0; j < 5; ++j)
 	{
 		for (int i = 0; i < 5; ++i)
@@ -497,7 +499,7 @@ void CAssemblyAreaScene::init()
 	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Die.mdat", L"MeshData\\Player_FM_Die.mdat");
 	//PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 5, 0, 100);
 	//g_net.SetAniData(pMeshData->GetMesh());
-
+	PlayerScript->MeshRender()->SetDynamicShadow(true);
 	FindLayer(L"Player")->AddGameObject(pPlayer);
 
 	g_net.SetObj(pPlayer);
@@ -514,6 +516,7 @@ void CAssemblyAreaScene::init()
 	pSword->AddComponent(new CSwordScript);
 	pSword->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, pPlayer, 17);
 	pPlayer->AddChild(pSword);
+	pSword->MeshRender()->SetDynamicShadow(true);
 	//CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Sword", pSword, false);
 	//FindLayer(L"Sword")->AddGameObject(pSword);
 

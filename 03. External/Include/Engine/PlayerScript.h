@@ -82,11 +82,16 @@ private:
 	CGameObject* pManaobj;
 
 	Vec3	CharacterBoxScale = Vec3(100.f, 100.f, 1.f);
-	Vec3	FrameUiScale = Vec3(600.f, 100.f, 1.f);
+	Vec3	FrameUiScale = Vec3(500.f, 100.f, 1.f);
 	Vec3	HpcoverUiScale = Vec3(500.f, 40.f, 1.f);
-	Vec3	HpUiScale = Vec3(500.f, 40.f, 1.f);
-	float m_fmana = 500.f;
-	Vec3	MpUiScale = Vec3(m_fmana, 40.f, 1.f);
+	
+	bool m_bSkillCool01 = false;
+	float m_fSkillCool01 = 0.f;
+	bool m_bSkillCool02 = false;
+	float m_fSkillCool02 = 0.f;
+	bool m_bSkillCool03 = false;
+	float m_fSkillCool03 = 0.f;
+	
 
 	Ptr<CMeshData> pPMeshData;
 
@@ -127,6 +132,17 @@ private:
 	bool questStart = false;
 
 	CGameObject* pSwordColObject = nullptr;
+
+
+	// ui
+	CGameObject* m_pUi;
+	CGameObject* m_pUnderUi;
+	Vec3 HpUiScale;
+	Vec3 HpUiPos;
+	Vec3 MpUiScale;
+	Vec3 MpUiPos;
+	int m_pSkillMana = 0;
+
 
 public:
 	virtual void awake();
@@ -208,6 +224,8 @@ public:
 	bool GetSkillStrat(int _index) { return m_bSkill_Start[_index]; }
 
 	void isDash(bool _type) { m_bDash = _type; };
+	// sound
+	void PlaySound_(const Sound_Type& sound);
 public:
 	CLONE(CPlayerScript);
 

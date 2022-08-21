@@ -1,4 +1,8 @@
 #include "stdafx.h"
+
+
+#include "SoundMgr.h"
+#include "Sound.h"
 #include "SceneMgr.h"
 
 #include "Scene.h"
@@ -59,6 +63,9 @@
 #include "AssemblyAreaScene.h"
 #include "Dungeon.h"
 
+unordered_map<Sound_Type, CSound*> g_SoundList;
+
+
 CScene* CSceneMgr::GetCurScene()
 {
 	return m_pCurScene;
@@ -87,6 +94,7 @@ void CSceneMgr::ChangeScene(SCENE_TYPE _Type)
 		m_pCurScene = new CAssemblyAreaScene;
 		break;
 	case SCENE_TYPE::DUNGEON:
+		m_bSound02 = true;
 		m_pCurScene = new CDungeonScene;
 		break;
 	case SCENE_TYPE::END:
@@ -114,6 +122,31 @@ CSceneMgr::~CSceneMgr()
 	SAFE_DELETE(m_pCurScene);
 }
 
+void CSceneMgr::LoadSound()
+{
+	for (int i = 0; i < 3; i++)
+	{
+		CSound* temp = new CSound;
+		wstring strFullPath = CPathMgr::GetResPath();
+		switch ((Sound_Type)i)
+		{
+		case Sound_Type::BGM:
+			strFullPath += L"Sound\\vol3_04_Chang Chun.mp3";
+			break;
+		case Sound_Type::BGM2:
+			strFullPath += L"Sound\\vol3_03_Frost Jail Plateau.mp3";
+			break;
+		case Sound_Type::HIT:
+			strFullPath += L"Sound\\sword.wav";
+			break;
+		
+		default:
+			break;
+		}
+		temp->Load(strFullPath, (Sound_Type)i);
+		g_SoundList.emplace((Sound_Type)i, temp);
+	}
+}
 
 void CSceneMgr::CreateTargetUI()
 {
@@ -155,6 +188,7 @@ void CSceneMgr::CreateTargetUI()
 
 void CSceneMgr::init()
 {
+	LoadSound();
 	//m_arrScene[(UINT)SCENE_TYPE::LOGIN] = new CLogin;
 	m_arrScene[(UINT)SCENE_TYPE::ASSEMBLY] = new CAssemblyAreaScene;
 	//m_arrScene[(UINT)SCENE_TYPE::DUNGEON] = new CDungeonScene;
@@ -169,6 +203,15 @@ void CSceneMgr::init()
 void CSceneMgr::update()
 {		
 	m_pCurScene->update();
+	if (m_bSound01)
+	{
+		g_SoundList.find(Sound_Type::BGM)->second->Play(0);
+	}
+	if (m_bSound01&& m_bSound02)
+	{
+		g_SoundList.find(Sound_Type::BGM)->second->Stop();
+		g_SoundList.find(Sound_Type::BGM2)->second->Play(0);
+	}
 	m_pCurScene->lateupdate();
 
 	// rendermgr 카메라 초기화
