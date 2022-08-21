@@ -42,6 +42,7 @@ CPlayerScript::~CPlayerScript()
 
 void CPlayerScript::init()
 {	
+	cout << "이닛 " << endl;
 	//Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
 
 	//CGameObject* pSword = new CGameObject;
@@ -292,6 +293,9 @@ void CPlayerScript::awake()
 void CPlayerScript::update()
 {
 	
+	cout << "플레이어x:" << Transform()->GetLocalPos().x << endl;
+	cout << "플레이어y:" << Transform()->GetLocalPos().y << endl;
+	cout << "플레이어z:" << Transform()->GetLocalPos().z << endl;
 
 	// Z-up To Y-up
 	Vec3 vDirFront = Transform()->GetLocalDir(DIR_TYPE::FRONT);
@@ -502,11 +506,12 @@ void CPlayerScript::update()
 			m_bSkillCool03 = true;
 		}
 
-		if (KEY_AWAY(KEY_TYPE::KEY_8))
+		if (KEY_AWAY(KEY_TYPE::KEY_8) && !m_bSkillCool04)
 		{
 			UnleashedPower();
 			fdamage = 20.f;
 			m_pSkillMana = 10;
+			m_bSkillCool04 = true;
 
 		}
 		if (m_bSkillCool01)
@@ -536,6 +541,16 @@ void CPlayerScript::update()
 				m_bSkillCool03 = false;
 			}
 		}
+		if (m_bSkillCool04)
+		{
+			m_fSkillCool04 += DT;
+			if (m_fSkillCool04 > 5.f)
+			{
+				m_fSkillCool04 = 0.f;
+				m_bSkillCool04 = false;
+			}
+		}
+
 
 		if (KEY_HOLD(KEY_TYPE::KEY_LBTN))
 		{
@@ -725,6 +740,7 @@ void CPlayerScript::update()
 				if (m_iClearCnt == QUEST::SECOND && m_Q_Cnt == 3)
 				{
 					m_pQuestBox2_3->SetDead();
+					//m_bQuest_02_clear = true;
 					m_Q_Cnt = 0;
 
 					tResolution res = CRenderMgr::GetInst()->GetResolution();
@@ -903,7 +919,7 @@ void CPlayerScript::update()
 		m_pSkillMana = 0;
 		//
 
-		if (m_bColCheck)
+		/*if (m_bColCheck)
 		{
 			Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl");
 			this->MeshRender()->SetMaterial(pMtrl, 0);
@@ -912,7 +928,7 @@ void CPlayerScript::update()
 		if (!m_bColCheck)
 		{
 
-		}
+		}*/
 
 		if (m_bMeteor2)
 		{
@@ -1466,13 +1482,13 @@ void CPlayerScript::FireBall()
 
 void CPlayerScript::UnleashedPower()
 {
+
+	Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
 	CGameObject* m_pSwordStrike = new CGameObject;
-	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
-	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
-	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
+	
 
 
-	m_pSwordStrike = pPMeshData->Instantiate();
+	m_pSwordStrike = pSwordMeshData->Instantiate();
 	m_pSwordStrike->SetName(L"UnleashedPower");
 	m_pSwordStrike->FrustumCheck(false);
 
@@ -1496,7 +1512,7 @@ void CPlayerScript::UnleashedPower()
 
 
 
-	m_pSwordStrike = pPMeshData->Instantiate();
+	m_pSwordStrike = pSwordMeshData->Instantiate();
 	m_pSwordStrike->SetName(L"UnleashedPower");
 	m_pSwordStrike->FrustumCheck(false);
 
@@ -1520,7 +1536,7 @@ void CPlayerScript::UnleashedPower()
 
 
 
-	m_pSwordStrike = pPMeshData->Instantiate();
+	m_pSwordStrike = pSwordMeshData->Instantiate();
 	m_pSwordStrike->SetName(L"UnleashedPower");
 	m_pSwordStrike->FrustumCheck(false);
 
@@ -1544,7 +1560,7 @@ void CPlayerScript::UnleashedPower()
 
 
 
-	m_pSwordStrike = pPMeshData->Instantiate();
+	m_pSwordStrike = pSwordMeshData->Instantiate();
 	m_pSwordStrike->SetName(L"UnleashedPower");
 	m_pSwordStrike->FrustumCheck(false);
 
@@ -1568,7 +1584,7 @@ void CPlayerScript::UnleashedPower()
 
 
 
-	m_pSwordStrike = pPMeshData->Instantiate();
+	m_pSwordStrike = pSwordMeshData->Instantiate();
 	m_pSwordStrike->SetName(L"UnleashedPower");
 	m_pSwordStrike->FrustumCheck(false);
 
@@ -1618,14 +1634,14 @@ void CPlayerScript::Meteor()
 
 
 
+	Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
 
+	
 	CGameObject* m_pSwordStrike = new CGameObject;
-	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
-	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
-	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
+	
 
 
-	m_pSwordStrike = pPMeshData->Instantiate();
+	m_pSwordStrike = pSwordMeshData->Instantiate();
 	m_pSwordStrike->SetName(L"Meteor");
 	m_pSwordStrike->FrustumCheck(false);
 
@@ -1634,13 +1650,10 @@ void CPlayerScript::Meteor()
 	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
 	m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	m_pSwordStrike->AddComponent(new CMeteor);
-
-
 	m_pSwordStrike->AddComponent(new CCollider2D);
 	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
-
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 

@@ -355,12 +355,10 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 
 		unordered_set<int> old_viewList = _objects[id].GetViewList();
 
-		cout<<"아이디 " << monsterId << " 체력 : " << _objects[monsterId].GetCurrentHp() << endl;
-
 		if (_objects[monsterId].GetCurrentHp() <= 0) {
 			_objects[monsterId]._status = ST_FREE;
 			++monsterdieCnt;
-			//_sender->SendMonsterDiePacket(_objects[id].GetSocket(), monsterId);
+			_sender->SendMonsterDiePacket(_objects[id].GetSocket(), monsterdieCnt);
 			_sender->SendLeaveObjectPacket(_objects[id].GetSocket(), monsterId, _objects[monsterId].GetMyType());
 			cout << "몬스터 잡기 : " << monsterdieCnt << endl;
 		}
@@ -369,8 +367,8 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		if (monsterdieCnt == 3 && !isSecondQuestDone)
 		{
 			for(int i = 0; i<_acceptNumber;++i){
-				cout << "두번째 퀘스트 완료 패킷 전송 " << endl;
-				_sender->SendQuestDonePacket(_objects[i].GetSocket(), i, QUEST::SECOND, true);
+				cout << "세번째 퀘스트 완료 패킷 전송 " << endl;
+				_sender->SendQuestDonePacket(_objects[i].GetSocket(), i, QUEST::THIRD, true);
 				isSecondQuestDone = true;
 			}
 		}

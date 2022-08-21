@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Meteor.h"
-
-
+#include"ParticleSystem.h"
+#include"ParticleScript.h"
 CMeteor::CMeteor()
 	: CScript((UINT)SCRIPT_TYPE::SWORDSCRIPT)
 	, m_pOriginMtrl(nullptr)
@@ -41,7 +41,57 @@ void CMeteor::update()
 
 	localPos.y -= 150 * DT;
 
-	
+
+
+	if (m_fcreate_time >= 0.f)
+	{
+		CGameObject* pObject = new CGameObject;
+		pObject->SetName(L"Particle");
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CParticleSystem);
+		pObject->Particlesystem()->SetFrequency(2.f);
+		pObject->Particlesystem()->SetType(false);
+		pObject->Particlesystem()->SetMaxParticle(10);
+		pObject->Particlesystem()->SetMaxScale(150);
+		pObject->AddComponent(new CParticleScript);
+
+		pObject->FrustumCheck(false);
+		Vec3 particlePos = localPos;
+		pObject->Transform()->SetLocalPos(Vec3{ particlePos.x,particlePos.y+150.f,particlePos.z});
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
+
+		pObject = new CGameObject;
+		pObject->SetName(L"Particle");
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CParticleSystem);
+		pObject->Particlesystem()->SetFrequency(2.f);
+		pObject->Particlesystem()->SetType(false);
+		pObject->Particlesystem()->SetMaxParticle(10);
+		pObject->Particlesystem()->SetMaxScale(200);
+		pObject->AddComponent(new CParticleScript);
+
+		pObject->FrustumCheck(false);
+		particlePos = localPos;
+		pObject->Transform()->SetLocalPos(Vec3{ particlePos.x,particlePos.y,particlePos.z });
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
+		pObject = new CGameObject;
+		pObject->SetName(L"Particle");
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CParticleSystem);
+		pObject->Particlesystem()->SetFrequency(2.f);
+		pObject->Particlesystem()->SetType(false);
+		pObject->Particlesystem()->SetMaxParticle(10);
+		pObject->Particlesystem()->SetMaxScale(100);
+		pObject->AddComponent(new CParticleScript);
+
+		pObject->FrustumCheck(false);
+		particlePos = localPos;
+		pObject->Transform()->SetLocalPos(Vec3{ particlePos.x,particlePos.y,particlePos.z });
+		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
+	}
 
 	Transform()->SetLocalPos(localPos);
 	Transform()->SetLocalRot(vRot);
