@@ -34,6 +34,7 @@
 #include "ToolCamScript.h"
 #include "Network.h"
 
+#include "PlayerColScript.h"
 #include"Boss.h"
 
 void CBossMap::CreateMap()
@@ -63,15 +64,13 @@ void CBossMap::init()
 	cout << "보스맵 이닛" << endl;
 	GetLayer(0)->SetName(L"Default");
 	GetLayer(1)->SetName(L"Player");
-	GetLayer(2)->SetName(L"Sword");
-	GetLayer(3)->SetName(L"Map");
-	GetLayer(4)->SetName(L"Portal");
-	GetLayer(5)->SetName(L"UI");
-	GetLayer(6)->SetName(L"Monster");
-	GetLayer(7)->SetName(L"NPC");
-	GetLayer(8)->SetName(L"Player_Skill");
-	GetLayer(9)->SetName(L"Monster_Skill");
-	GetLayer(10)->SetName(L"Boss");
+	GetLayer(2)->SetName(L"PlayerSword");
+	GetLayer(3)->SetName(L"Monster");
+	GetLayer(4)->SetName(L"MonsterSword");
+	GetLayer(5)->SetName(L"Map");
+	GetLayer(6)->SetName(L"UI");
+	GetLayer(7)->SetName(L"Player_Skill");
+	GetLayer(8)->SetName(L"Monster_Skill");
 
 	// ====================
 	// 3D Light Object 추가
@@ -95,31 +94,19 @@ void CBossMap::init()
 	// Player 파일 로드
 	// ===================
 
+	//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\FM_Player\\FP_Idle.fbx");
+	//pMeshData->Save(pMeshData->GetPath());
 	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FM_Idle.mdat", L"MeshData\\FM_Idle.mdat");
 
-
 	CGameObject* pPlayer = new CGameObject;
-
-
-	//pPlayer = g_net.GetObj();
-	//pPlayer->GetScript<CPlayerScript>()->SetMain();
-	//pPlayer->Transform()->SetLocalPos(Vec3(200.f, 0.f, 200.f));
 
 	pPlayer = pMeshData->Instantiate();
 	pPlayer->SetName(L"FM_Player");
 	pPlayer->FrustumCheck(false);
 
+	pPlayer->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 	pPlayer->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
-
-
-	pPlayer->AddComponent(new CCollider2D);
-	pPlayer->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	pPlayer->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	pPlayer->Collider2D()->SetOffsetScale(Vec3(10.f, 10.f, 10.f));
-
-	pPlayer->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(90.f), 0.f, 0.f));
-
 
 	// 플레이어 스크립트 붙여주기.
 	pPlayer->AddComponent(new CPlayerScript);
@@ -143,10 +130,50 @@ void CBossMap::init()
 	PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 3, 0, 45);
 	g_net.SetAniData(pMeshData->GetMesh());
 
+	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Skill_1.mdat", L"MeshData\\Player_FM_Skill_1.mdat");
+	//PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 4, 0, 75);							// AniData Index 3
+	//g_net.SetAniData(pMeshData->GetMesh());
+
+	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Die.mdat", L"MeshData\\Player_FM_Die.mdat");
+	//PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 5, 0, 100);
+	//g_net.SetAniData(pMeshData->GetMesh());
+	PlayerScript->MeshRender()->SetDynamicShadow(true);
 	FindLayer(L"Player")->AddGameObject(pPlayer);
 
-
 	g_net.SetObj(pPlayer);
+
+	Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
+
+	CGameObject* pSword = new CGameObject;
+
+	pSword = pSwordMeshData->Instantiate();
+	pSword->SetName(L"FP_Weapon");
+	pSword->FrustumCheck(false);
+	pSword->Transform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
+	pSword->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
+	pSword->AddComponent(new CSwordScript);
+	pSword->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, pPlayer, 17);
+	pPlayer->AddChild(pSword);
+	pSword->MeshRender()->SetDynamicShadow(true);
+
+	CGameObject* pPlayerCol = new CGameObject;
+	pPlayerCol->SetName(L"PlayerCol");
+	pPlayerCol->AddComponent(new CCollider2D);
+	pPlayerCol->AddComponent(new CTransform);
+	pPlayerCol->AddComponent(new CMeshRender);
+	pPlayerCol->Transform()->SetLocalPos(pPlayer->Transform()->GetLocalPos());
+	pPlayerCol->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pPlayerCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pPlayerCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+
+	pPlayerCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+	pPlayerCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+	pPlayerCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pPlayerCol->AddComponent(new CPlayerColScript);
+	pPlayerCol->GetScript<CPlayerColScript>()->SetPlayer(pPlayer);
+	pPlayer->GetScript<CPlayerScript>()->SetColPlayer(pPlayerCol);
+
+	FindLayer(L"Player")->AddGameObject(pPlayerCol);
 
 
 	//Main Camera
@@ -159,7 +186,7 @@ void CBossMap::init()
 	pMainCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
 	pMainCam->Camera()->SetFar(100000.f);
 	pMainCam->Camera()->SetLayerAllCheck();
-	pMainCam->Camera()->SetLayerCheck(5, false);
+	pMainCam->Camera()->SetLayerCheck(6, false);
 
 	CToolCamScript* PlayerCamScript = pMainCam->GetScript<CToolCamScript>();
 	PlayerCamScript->SetCameraToPlayer(pPlayer);
@@ -173,7 +200,7 @@ void CBossMap::init()
 
 	pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHGRAPHIC);
 	pUICam->Camera()->SetFar(100.f);
-	pUICam->Camera()->SetLayerCheck(5, true);
+	pUICam->Camera()->SetLayerCheck(6, true);
 
 	FindLayer(L"Default")->AddGameObject(pUICam);
 
@@ -205,46 +232,5 @@ void CBossMap::init()
 
 		}
 	}
-
-
-		//// Monster 파일 로드
-		//// ===================
-		//CGameObject* pMonster = new CGameObject;
-		////pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Monster\\Monster_M_Idle.fbx");
-		////pMeshData->Save(pMeshData->GetPath());
-		//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Idle.mdat", L"MeshData\\Monster_M_Idle.mdat");
-	
-		//pMonster = pMeshData->Instantiate();
-		//pMonster->SetName(L"M_Monster");
-		//pMonster->FrustumCheck(false);
-		//pMonster->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-		//pMonster->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
-		//pMonster->Transform()->SetLocalRot(Vec3(XMConvertToRadians(90.f),0.f, XMConvertToRadians(-90.f)));
-		////pMonster->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
-		//pMonster->AddComponent(new CCollider2D);
-		//pMonster->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-		//pMonster->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		//pMonster->Collider2D()->SetOffsetScale(Vec3(20.f, 20.f, 20.f));
-		//pMonster->Collider2D()->SetOffsetRot(Vec3(0.f, XMConvertToRadians(90.f), XMConvertToRadians(90.f)));
-	
-		//// 몬스터 스크립트 붙여주기.
-		//pMonster->AddComponent(new CBoss);
-	
-		//CBoss* M_MonsterScript = pMonster->GetScript<CBoss>();
-		//pMonster->GetScript<CBoss>()->init();
-	
-		//////몬스터 애니메이션
-		//M_MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 0, 0, 55);								// AniData Index 0
-	
-		//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Walk.mdat", L"MeshData\\Monster_M_Walk.mdat");
-		//M_MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 1, 0, 41);								// AniData Index 1
-	
-		//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Hit.mdat", L"MeshData\\Monster_M_Hit.mdat");
-		//M_MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 2, 0, 53);								// AniData Index 2
-	
-		//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Attack.mdat", L"MeshData\\Monster_M_Attack.mdat");
-		//M_MonsterScript->SetMonsterAnimationData(pMeshData->GetMesh(), 3, 0, 53);								// AniData Index 3
-		//
-		//FindLayer(L"Monster")->AddGameObject(pMonster);
 
 }

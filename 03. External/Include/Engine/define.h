@@ -357,6 +357,10 @@ enum class PLAYER_ANI_TYPE
 	SKILL_1,
 	SKILL_2,
 	SKILL_3,
+	SKILL_5,
+	SKILL_6,
+	SKILL_7,
+	SKILL_8,
 	DIE,
 
 };

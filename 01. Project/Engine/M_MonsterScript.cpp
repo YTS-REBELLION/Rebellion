@@ -30,40 +30,13 @@ CM_MonsterScript::~CM_MonsterScript()
 
 void CM_MonsterScript::init()
 {
-	// ===================
-	// Sword 파일 로드
-	// ===================
-	CGameObject* pSwordObject = new CGameObject;
-	
-	//Ptr<CMeshData> pMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Monster\\Monster_M_Sword4.fbx");
-	//pMeshData->Save(pMeshData->GetPath());
-	Ptr<CMeshData>pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Sword4.mdat", L"MeshData\\Monster_M_Sword4.mdat");
-
-	pSwordObject = pMeshData->Instantiate();
-	pSwordObject->SetName(L"M_Monster_Sword");
-	pSwordObject->FrustumCheck(false);
-	pSwordObject->Transform()->SetLocalScale(Vec3(0.7f, 0.7f, 0.7f));
-	pSwordObject->AddComponent(new CCollider2D);
-	pSwordObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pSwordObject->Collider2D()->SetOffsetPos(Vec3(0.f, 80.f, 0.f));
-	pSwordObject->Collider2D()->SetOffsetScale(Vec3(7.f, 50.f, 7.f));
-
-	pSwordObject->AddComponent(new CSwordScript);
-	CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
-	pSwordObject->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::M_MONSTER, GetObj(), 12);
-
-	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", pSwordObject, false);
-	GetObj()->AddChild(pSwordObject);
-
 	Ptr<CTexture> pBossName = CResMgr::GetInst()->Load<CTexture>(L"BossName", L"Texture\\HpUi\\BossName_ingkells.png");
 	Ptr<CTexture> pBossHp = CResMgr::GetInst()->Load<CTexture>(L"BossHp", L"Texture\\HpUi\\BossHp_2.png");
-
 
 	tResolution res = CRenderMgr::GetInst()->GetResolution();
 	CGameObject* pObject = new CGameObject;
 	Vec3 NameUiScale = { 100,100,1 };
 	Vec3 FrameUiScale = { 500,40,1 };
-
 
 	//체력 UI
 	pObject = new CGameObject;
@@ -180,21 +153,6 @@ void CM_MonsterScript::update()
 		else
 			AnimationPlay(MONSTER_ANI_TYPE::IDLE);
 
-		/*if (m_bHit && m_vecAniClipTime[0] < GetObj()->Animator3D()->GetAnimClip(2).dTimeLength)
-		{
-			AnimationPlay(MONSTER_ANI_TYPE::HIT);
-			m_vecAniClipTime[0] += (DT * 1.5f);
-			if (m_vecAniClipTime[0] > GetObj()->Animator3D()->GetAnimClip(2).dTimeLength)
-			{
-				m_vecAniClipTime[0] = 0.0f;
-				GetObj()->Animator3D()->SetClipTime(0, 0.f);
-				m_bHit = false;
-			}
-
-		}*/
-
-
-
 		m_fskillTime += DT;
 
 		if (m_fskillTime < 5.f)
@@ -227,7 +185,6 @@ void CM_MonsterScript::update()
 
 		UpdateLerpPos();
 
-
 		switch (m_skill)
 		{
 		case MonSkill1:
@@ -244,24 +201,6 @@ void CM_MonsterScript::update()
 		default:
 			break;
 		}
-
-		/*if (!m_bColCheck)
-			Transform()->SetLocalPos(localPos);
-		else
-		{
-			if (m_pColObj->GetObj()->GetName() == L"M_Monster2")
-			{
-				Vec3 Col_Pos_1 = localPos;
-				Vec3 Col_Pos_2 = m_pColObj->Transform()->GetLocalPos();
-				Vec3 CNormal = Col_Pos_2 - Col_Pos_1;
-				CNormal.Normalize();
-				localPos += CNormal * m_fSpeed * DT;
-			}
-
-			Transform()->SetLocalPos(localPos);
-
-		}*/
-
 
 	}
 }
@@ -355,59 +294,12 @@ void CM_MonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 
 void CM_MonsterScript::OnCollision(CCollider2D* _pOther)
 {
-	//m_fHp -= 4.f;
-	//if (_pOther->GetObj()->GetName() == L"Player1")
-	//{
-	//	//cout << "플레이어와 충돌" << endl;
-	//}
-	//else if (_pOther->GetObj()->GetName() == L"Player_Sword")
-	//{
-	//	//cout << "검과 충돌" << endl;
-	//	//m_bHit = true;
-	//	g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true, 0);
 
-	//}
-	////else if (_pOther->GetObj()->GetName() == L"Map Object")
-	////{
-	////	//cout << "벽 몬스터 충돌" << endl;
-	////	//m_bColCheck = true;
-	////	//SetColObj(_pOther);
-	//////}
-	////else if (_pOther->GetObj()->GetName() == L"FM_MONSTER") {
-	////	cout << "몬스터와 몬스터 충돌" << endl;
-
-	////}
-	//else if (_pOther->GetObj()->GetName() == L"M_Monster2")
-	//{
-	//	cout << "몬스터 몬스터 충돌" << endl;
-	//	m_bColCheck = true;
-	//	SetColObj(_pOther);
-	//}
-
-	//if (m_fHp < 0.f)
-	//{
-	//	cout << "몬스터 사망" << endl;
-	//	GetObj()->SetDead();
-
-	//}
 }
 
 void CM_MonsterScript::OnCollisionExit(CCollider2D* _pOther)
 {
-	//if (_pOther->GetObj()->GetName() == L"Player_Sword")
-	//{
-	//	//cout << "검과 충돌 해제" << endl;
-	//}
-	//else if (_pOther->GetObj()->GetName() == L"Map Object")
-	//{
-	//	cout << "벽 몬스터 충돌" << endl;
-	//	m_bColCheck = false;
-	//}
-	//else if (_pOther->GetObj()->GetName() == L"M_Monster2")
-	//{
-	//	//cout << "몬스터 몬스터 충돌" << endl;
-	//	m_bColCheck = false;
-	//}
+
 }
 void CM_MonsterScript::Skill1()
 {
