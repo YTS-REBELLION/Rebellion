@@ -42,6 +42,7 @@ CPlayerScript::~CPlayerScript()
 
 void CPlayerScript::init()
 {	
+	cout << "РЬДж " << endl;
 	//Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
 
 	//CGameObject* pSword = new CGameObject;
@@ -724,6 +725,7 @@ void CPlayerScript::update()
 				if (m_iClearCnt == QUEST::SECOND && m_Q_Cnt == 3)
 				{
 					m_pQuestBox2_3->SetDead();
+					//m_bQuest_02_clear = true;
 					m_Q_Cnt = 0;
 
 					tResolution res = CRenderMgr::GetInst()->GetResolution();
