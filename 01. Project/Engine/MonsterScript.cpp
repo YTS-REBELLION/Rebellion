@@ -5,7 +5,9 @@
 #include "Animator3D.h"
 #include "PlayerScript.h"
 #include "SwordScript.h"
+#include "SwordAttackAreaScript.h"
 #include"Sting.h"
+
 CMonsterScript::CMonsterScript()
 	: CScript((UINT)SCRIPT_TYPE::MONSTERSCRIPT)
 	, m_pOriginMtrl(nullptr)
@@ -28,29 +30,24 @@ CMonsterScript::~CMonsterScript()
 
 void CMonsterScript::init()
 {
-	// ===================
-	// Sword 파일 로드
-	// ===================
-	CGameObject* pSwordObject = new CGameObject;
+	CGameObject* pSwordCol = new CGameObject;
+	pSwordCol->SetName(L"MonsterSwordCol");
+	pSwordCol->AddComponent(new CCollider2D);
+	pSwordCol->AddComponent(new CTransform);
+	pSwordCol->AddComponent(new CMeshRender);
+	pSwordCol->Transform()->SetLocalPos(GetObj()->Transform()->GetLocalPos());
+	pSwordCol->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pSwordCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pSwordCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	pSwordCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+	pSwordCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+	pSwordCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pSwordCol->AddComponent(new CSwordAttackAreaScript);
+	pSwordCol->GetScript<CSwordAttackAreaScript>()->Set_Object(GetObj());
+	pSwordCol->SetActive(false);
+	GetObj()->GetScript<CMonsterScript>()->SetColSSA(pSwordCol);
 
-	Ptr<CMeshData>pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
-
-	pSwordObject = pMeshData->Instantiate();
-	pSwordObject->SetName(L"FM_Monster_Sword");
-	pSwordObject->FrustumCheck(false);
-	pSwordObject->Transform()->SetLocalScale(Vec3(0.25f, 0.25f, 0.25f));
-	pSwordObject->AddComponent(new CCollider2D);
-
-	pSwordObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pSwordObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	pSwordObject->Collider2D()->SetOffsetScale(Vec3(1.f, 1.f, 1.f));
-
-	pSwordObject->AddComponent(new CSwordScript);
-	CSwordScript* SwordScript = pSwordObject->GetScript<CSwordScript>();
-	pSwordObject->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::FM_MONSTER, GetObj(), 18);
-
-	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", pSwordObject, false);
-	GetObj()->AddChild(pSwordObject);
+	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"MonsterSword", pSwordCol, false);
 }
 
 void CMonsterScript::awake()
@@ -109,31 +106,12 @@ void CMonsterScript::update()
 
 	}
 	else if (!m_Is_Move && m_Is_Attack) {
-		AnimationPlay(MONSTER_ANI_TYPE::ATTACK);
-		//CGameObject* m_pSwordStrike = new CGameObject;
-		//Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sjuriken1.fbx");
-
-
-
-		//m_pSwordStrike = pPMeshData->Instantiate();
-		//m_pSwordStrike->SetName(L"Sword_Col");
-		//m_pSwordStrike->FrustumCheck(false);
-
-
-		//m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
-		//m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-		//m_pSwordStrike->Transform()->SetLocalScale(Vec3(0.1f, 0.1f, 0.1f));
-		//m_pSwordStrike->AddComponent(new CSting);
-
-
-		//m_pSwordStrike->AddComponent(new CCollider2D);
-		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(2000.f, 2000.f, 2000.f));
-
-		//// AddGameObject
-		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
-
+		if (GetObj()->Animator3D()->GetCliTime(3) > 0.75f)
+		{
+			pSwordColObject->SetActive(true);
+		}
+		else if (GetObj()->Animator3D()->GetCliTime(3) == 0.f)
+			pSwordColObject->SetActive(false);
 	}
 	else if (GetHit())
 	{
@@ -144,18 +122,6 @@ void CMonsterScript::update()
 	}
 	else
 		AnimationPlay(MONSTER_ANI_TYPE::IDLE);
-
-	/*if (m_bHit && m_vecAniClipTime[0] < GetObj()->Animator3D()->GetAnimClip(2).dTimeLength)
-	{
-		m_vecAniClipTime[0] += (DT * 1.5f);
-		AnimationPlay(MONSTER_ANI_TYPE::HIT);
-		if (m_vecAniClipTime[0] > GetObj()->Animator3D()->GetAnimClip(2).dTimeLength)
-		{
-			m_vecAniClipTime[0] = 0.0f;
-			GetObj()->Animator3D()->SetClipTime(0, 0.f);
-			m_bHit = false;
-		}
-	}*/
 
 	UpdateLerpPos();
 }
@@ -219,6 +185,30 @@ void CMonsterScript::AnimationPlay(const MONSTER_ANI_TYPE& type)
 	{
 		GetObj()->Animator3D()->SetCurClip(3);
 		SetMonsterAnimation(3);
+	}
+}
+
+void CMonsterScript::AnimationPlay(int other_id, const MONSTER_ANI_TYPE& type)
+{
+	if (type == MONSTER_ANI_TYPE::IDLE)
+	{
+		GameObject.find(other_id)->second->Animator3D()->SetCurClip(0);
+		SetMonsterAnimation(other_id, 0);
+	}
+	if (type == MONSTER_ANI_TYPE::WALK)
+	{
+		GameObject.find(other_id)->second->Animator3D()->SetCurClip(1);
+		SetMonsterAnimation(other_id, 1);
+	}
+	if (type == MONSTER_ANI_TYPE::HIT)
+	{
+		GameObject.find(other_id)->second->Animator3D()->SetCurClip(2);
+		SetMonsterAnimation(other_id, 2);
+	}
+	if (type == MONSTER_ANI_TYPE::ATTACK)
+	{
+		GameObject.find(other_id)->second->Animator3D()->SetCurClip(3);
+		SetMonsterAnimation(other_id, 3);
 	}
 }
 

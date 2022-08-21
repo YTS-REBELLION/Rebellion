@@ -78,12 +78,12 @@ void CDungeonScene::init()
 	cout << "ДјРќ РЬДж" << endl;
 	GetLayer(0)->SetName(L"Default");
 	GetLayer(1)->SetName(L"Player");
-	GetLayer(2)->SetName(L"Sword");
-	GetLayer(3)->SetName(L"Map");
-	GetLayer(4)->SetName(L"Portal");
-	GetLayer(5)->SetName(L"UI");
-	GetLayer(6)->SetName(L"Monster");
-	GetLayer(7)->SetName(L"NPC");
+	GetLayer(2)->SetName(L"PlayerSword");
+	GetLayer(3)->SetName(L"Monster");
+	GetLayer(4)->SetName(L"MonsterSword");
+	GetLayer(5)->SetName(L"Map");
+	GetLayer(6)->SetName(L"Portal");
+	GetLayer(7)->SetName(L"UI");
 	GetLayer(8)->SetName(L"Player_Skill");
 	GetLayer(9)->SetName(L"Monster_Skill");
 	
@@ -183,7 +183,7 @@ void CDungeonScene::init()
 	pMainCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
 	pMainCam->Camera()->SetFar(100000.f);
 	pMainCam->Camera()->SetLayerAllCheck();
-	pMainCam->Camera()->SetLayerCheck(5, false);
+	pMainCam->Camera()->SetLayerCheck(7, false);
 
 	CToolCamScript* PlayerCamScript = pMainCam->GetScript<CToolCamScript>();
 	PlayerCamScript->SetCameraToPlayer(pPlayer);
@@ -197,7 +197,7 @@ void CDungeonScene::init()
 
 	pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHGRAPHIC);
 	pUICam->Camera()->SetFar(100.f);
-	pUICam->Camera()->SetLayerCheck(5, true);
+	pUICam->Camera()->SetLayerCheck(7, true);
 	
 	FindLayer(L"Default")->AddGameObject(pUICam);
 
@@ -235,9 +235,8 @@ void CDungeonScene::init()
 	}
 
 
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Sword", L"Monster");
-	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Monster");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"PlayerSword", L"Monster");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"MonsterSword", L"Player");
 
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player_Skill", L"Monster");
 

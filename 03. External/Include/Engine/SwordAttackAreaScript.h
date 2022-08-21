@@ -8,14 +8,14 @@ class CSwordAttackAreaScript :
 private:
     Vec3 m_vCalPos;
     Vec3 m_vCalRot;
-    CGameObject* m_pPlayer;
+    CGameObject* m_pObject;
 public:
 
     virtual void update();
     CSwordAttackAreaScript();
     virtual ~CSwordAttackAreaScript();
-    void SetPlayer(CGameObject* _pObj) { m_pPlayer = _pObj; }
-    CGameObject* GetPlayer() { return m_pPlayer; }
+    void Set_Object(CGameObject* _pObj) { m_pObject = _pObj; }
+    CGameObject* Get_Object() { return m_pObject; }
     void SetPos(const Vec3& _Pos) { m_vCalPos = _Pos; }
     void SetRot(const Vec3& _Rot) { m_vCalRot = _Rot; }
 

@@ -48,7 +48,7 @@ private:
 	CCollider2D* m_pColObj;
 	bool		m_bColCheck = false;
 	CGameObject* pMonsterColObject = nullptr;
-
+	CGameObject* pSwordColObject = nullptr;
 
 public:
 	void init();
@@ -59,7 +59,7 @@ public:
 	void SetMonsterAnimation(const int& i);
 	void SetMonsterAnimation(int other_id, const int& i);
 	void AnimationPlay(const MONSTER_ANI_TYPE& type);
-
+	void AnimationPlay(int other_id, const MONSTER_ANI_TYPE& type);
 	Ptr<CMesh> GetAniData(const int& type) { return m_pAniData[(int)type]; }
 
 	void SetMain() { m_isMain = true; };
@@ -101,6 +101,9 @@ public:
 	void SetColObj(CCollider2D* _obj) { m_pColObj = _obj; }
 	void SetColMonster(CGameObject* _obj) { pMonsterColObject = _obj; }
 	CGameObject* GetColMonster() { return pMonsterColObject; }
+
+	void SetColSSA(CGameObject* _obj) { pSwordColObject = _obj; }
+	CGameObject* GetColSSA() { return pSwordColObject; }
 public:
 	CLONE(CMonsterScript);
 

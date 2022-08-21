@@ -58,7 +58,7 @@ void CPlayerScript::init()
 	////CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Sword")->AddGameObject(pSword);
 
 	CGameObject* pSwordCol = new CGameObject;
-	pSwordCol->SetName(L"SwordCol");
+	pSwordCol->SetName(L"PlayerSwordCol");
 	pSwordCol->AddComponent(new CCollider2D);
 	pSwordCol->AddComponent(new CTransform);
 	pSwordCol->AddComponent(new CMeshRender);
@@ -70,11 +70,11 @@ void CPlayerScript::init()
 	pSwordCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 	pSwordCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	pSwordCol->AddComponent(new CSwordAttackAreaScript);
-	pSwordCol->GetScript<CSwordAttackAreaScript>()->SetPlayer(GetObj());
+	pSwordCol->GetScript<CSwordAttackAreaScript>()->Set_Object(GetObj());
 	pSwordCol->SetActive(false);
 	GetObj()->GetScript<CPlayerScript>()->SetColPlayer(pSwordCol);
 	
-	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Sword", pSwordCol, false);
+	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"PlayerSword", pSwordCol, false);
 
 
 	Ptr<CTexture> pS_astrostone = CResMgr::GetInst()->Load<CTexture>(L"Astrostone", L"Texture\\Icon\\S_astrostone.png");
@@ -327,15 +327,13 @@ void CPlayerScript::update()
 		{
 			GetObj()->Animator3D()->SetClipTime(3, 0.f);
 			SetAttack();
-
-			pSwordColObject->SetActive(true);
+			PlaySound_(Sound_Type::HIT);
 			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
 
 		}
 		else if (KEY_AWAY(KEY_TYPE::KEY_SPACE))
 		{
 			SetAttack();
-			PlaySound_(Sound_Type::HIT);
 			pSwordColObject->SetActive(false);
 			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
 		}
@@ -415,6 +413,9 @@ void CPlayerScript::update()
 		else if (KEY_HOLD(KEY_TYPE::KEY_SPACE))
 		{
 			AnimationPlay(PLAYER_ANI_TYPE::ATTACK);
+
+			if (GetObj()->Animator3D()->GetCliTime(3) > 0.65f)
+				pSwordColObject->SetActive(true);
 			//g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
 
 			/*if (GetObj()->Animator3D()->GetCliTime(3) < GetObj()->Animator3D()->GetAnimClip(3).dTimeLength -)*/
@@ -865,13 +866,13 @@ void CPlayerScript::update()
 		HpUiScale = m_pUi->Transform()->GetLocalScale();
 		HpUiPos = m_pUi->Transform()->GetLocalPos();
 
-		//HpUiScale.x -= (DT);//충돌할시 *데미지
-		//HpUiPos.x -= (DT) / 2.f;
+		if (GetHit()) {
+			HpUiScale.x -= DT;//충돌할시 *데미지
+			HpUiPos.x -= DT / 2.f;
+		}
 
 		m_pUi->Transform()->SetLocalScale(Vec3(HpUiScale.x, HpUiScale.y, HpUiScale.z));
 		m_pUi->Transform()->SetLocalPos(Vec3(HpUiPos.x, HpUiPos.y, HpUiPos.z));
-
-		//
 
 		//마나감소ui
 		MpUiScale = m_pUnderUi->Transform()->GetLocalScale();
@@ -998,17 +999,16 @@ void CPlayerScript::update()
 		{
 		case PLAYER_ANI_TYPE::IDLE:
 			AnimationPlay(GetID(), PLAYER_ANI_TYPE::IDLE);
-			cout << GetID() << " Idle" << endl;
 			break;
 		case PLAYER_ANI_TYPE::WALK:
 			AnimationPlay(GetID(), PLAYER_ANI_TYPE::WALK);
-			cout << GetID() << " Walk" << endl;
 			break;
 		case PLAYER_ANI_TYPE::RUN:
 			AnimationPlay(GetID(), PLAYER_ANI_TYPE::RUN);
-			cout << GetID() << " Run" << endl;
 			break;
 		case PLAYER_ANI_TYPE::ATTACK:
+			if (GetObj()->Animator3D()->GetCliTime(3) > 0.65f)
+				pSwordColObject->SetActive(true);
 			AnimationPlay(GetID(), PLAYER_ANI_TYPE::ATTACK);
 			break;
 		case PLAYER_ANI_TYPE::SKILL_1:
@@ -1042,6 +1042,7 @@ void CPlayerScript::SetPlayerAnimationData(Ptr<CMesh> AniDate, const int& i, con
 
 	GetObj()->Animator3D()->SetAnimClip(&m_pVecAnimClip);
 }
+
 void CPlayerScript::SetPlayerAnimationData(Ptr<CMesh> AniDate, int other_id, const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
 {
 	m_pOhter_AniData.push_back(AniDate);
@@ -1152,23 +1153,10 @@ void CPlayerScript::AnimationPlay(int other_id, const PLAYER_ANI_TYPE& type)
 
 void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
 {
-	//if (_pOther->GetObj()->GetName() == L"M_Monster"
-	//	|| _pOther->GetObj()->GetName() == L"M_Monster2"
-	//	|| _pOther->GetObj()->GetName() == L"Map Object"
-	//	)
-	//{
-	//	m_bColCheck = true;
-	//	//SetColObj(_pOther);
-	//	Vec3 dir_vec = m_pColObj->Transform()->GetLocalDir(DIR_TYPE::RIGHT);
-	//	//cout << "충돌" << endl;
-	//}
+	if (_pOther->GetObj()->GetName() == L"FM_Monster") g_net.Send_Mon2Player_Packet(GetObj()->GetID(), true);
 
-	if (_pOther->GetObj()->GetName() == L"FM_Monster") {
-
-		g_net.Send_Mon2Player_Packet(GetObj()->GetID(), true);
-
-
-	}
+	if (_pOther->GetObj()->GetName() == L"MonsterSwordCol") SetHit(true);
+		
 }
 
 void CPlayerScript::OnCollision(CCollider2D* _pOther)
@@ -1197,6 +1185,8 @@ void CPlayerScript::OnCollisionExit(CCollider2D* _pOther)
 	{
 		m_bColCheck = false;
 	}
+
+	if (_pOther->GetObj()->GetName() == L"MonsterSwordCol") SetHit(false);
 }
 
 void CPlayerScript::SwordStrike()

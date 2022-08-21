@@ -126,7 +126,8 @@ private:
 
 
 	Ptr<CTexture> pQuestComplete = CResMgr::GetInst()->Load<CTexture>(L"QuestComplete", L"Texture\\Quest\\QuestComplete.png");
-	bool				m_bDash = false;
+	bool	m_bDash = false;
+	bool	m_bHit = false;
 	float fdamage = 0.f;
 	float ftempmp = 0.f;
 
@@ -182,19 +183,14 @@ public:
 		}
 		else m_bAttack = true;
 	}
-	bool GetAttack() const { return m_bAttack; }
 	void SetSkill() {
 		if (m_bSkill) {
 			m_bSkill = false;
 		}
 		else m_bSkill = true;
 	}
-	void SetCol() {
-		if (m_bCol) {
-			m_bCol = false;
-		}
-		else m_bCol = true;
-	}
+	void SetHit(bool _type) { m_bHit = _type; }
+
 	void SetQuestStart(bool isStart) { questStart = isStart; }
 	void SetQuestCnt(QUEST questId) { m_iClearCnt = questId; }
 	void SetQuestView(bool isQuest) { m_questView = isQuest; }
@@ -213,7 +209,7 @@ public:
 
 	bool GetAttack() { return m_bAttack; }
 	bool GetSkill() { return m_bSkill; }
-	bool GetCol() { return m_bCol; }
+	bool GetHit() { return m_bHit; }
 	float GetSpeed() { return m_fSpeed; }
 
 	Vec3 Get_PlayerPos() { return this->Transform()->GetLocalPos(); }
