@@ -366,7 +366,7 @@ bool CCollisionMgr::CollisionRectCircle(CCollider2D* _pCollider1, CCollider2D* _
 	{
 		if ((left - Radius < CenterX && CenterX < right + Radius) &&
 			(top - Radius < CenterZ && CenterZ < bottom + Radius)) {
-
+			_pCollider2->SetPlane(COL_PLANE::X_PLANE);
 			return true;
 		}
 	}
@@ -374,7 +374,7 @@ bool CCollisionMgr::CollisionRectCircle(CCollider2D* _pCollider1, CCollider2D* _
 	{
 		if ((left - Radius < CenterX && CenterX < right + Radius) &&
 			(top - Radius < CenterZ && CenterZ < bottom + Radius)) {
-
+			_pCollider2->SetPlane(COL_PLANE::Z_PLANE);
 			return true;
 		}
 	}

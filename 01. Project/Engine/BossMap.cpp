@@ -65,12 +65,14 @@ void CBossMap::init()
 	GetLayer(0)->SetName(L"Default");
 	GetLayer(1)->SetName(L"Player");
 	GetLayer(2)->SetName(L"PlayerSword");
-	GetLayer(3)->SetName(L"Monster");
-	GetLayer(4)->SetName(L"MonsterSword");
-	GetLayer(5)->SetName(L"Map");
-	GetLayer(6)->SetName(L"UI");
-	GetLayer(7)->SetName(L"Player_Skill");
-	GetLayer(8)->SetName(L"Monster_Skill");
+	GetLayer(3)->SetName(L"PlayerCollider");
+	GetLayer(4)->SetName(L"Monster");
+	GetLayer(5)->SetName(L"MonsterSword");
+	GetLayer(6)->SetName(L"MonsterCollider");
+	GetLayer(7)->SetName(L"Map");
+	GetLayer(8)->SetName(L"UI");
+	GetLayer(9)->SetName(L"Player_Skill");
+	GetLayer(10)->SetName(L"Monster_Skill");
 
 	// ====================
 	// 3D Light Object Ãß°¡
@@ -137,7 +139,7 @@ void CBossMap::init()
 	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Die.mdat", L"MeshData\\Player_FM_Die.mdat");
 	//PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 5, 0, 100);
 	//g_net.SetAniData(pMeshData->GetMesh());
-	PlayerScript->MeshRender()->SetDynamicShadow(true);
+
 	FindLayer(L"Player")->AddGameObject(pPlayer);
 
 	g_net.SetObj(pPlayer);
@@ -156,25 +158,24 @@ void CBossMap::init()
 	pPlayer->AddChild(pSword);
 	pSword->MeshRender()->SetDynamicShadow(true);
 
-	//CGameObject* pPlayerCol = new CGameObject;
-	//pPlayerCol->SetName(L"PlayerCol");
-	//pPlayerCol->AddComponent(new CCollider2D);
-	//pPlayerCol->AddComponent(new CTransform);
-	//pPlayerCol->AddComponent(new CMeshRender);
-	//pPlayerCol->Transform()->SetLocalPos(pPlayer->Transform()->GetLocalPos());
-	//pPlayerCol->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	//pPlayerCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	//pPlayerCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	CGameObject* pPlayerCol = new CGameObject;
+	pPlayerCol->SetName(L"PlayerCol");
+	pPlayerCol->AddComponent(new CCollider2D);
+	pPlayerCol->AddComponent(new CTransform);
+	pPlayerCol->AddComponent(new CMeshRender);
+	pPlayerCol->Transform()->SetLocalPos(pPlayer->Transform()->GetLocalPos());
+	pPlayerCol->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pPlayerCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pPlayerCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
 
-	//pPlayerCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	//pPlayerCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
-	//pPlayerCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	//pPlayerCol->AddComponent(new CPlayerColScript);
-	//pPlayerCol->GetScript<CPlayerColScript>()->SetPlayer(pPlayer);
-	//pPlayer->GetScript<CPlayerScript>()->SetColPlayer(pPlayerCol);
+	pPlayerCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+	pPlayerCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+	pPlayerCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pPlayerCol->AddComponent(new CPlayerColScript);
+	pPlayerCol->GetScript<CPlayerColScript>()->SetPlayer(pPlayer);
+	pPlayer->GetScript<CPlayerScript>()->SetColPlayer(pPlayerCol);
 
-	//FindLayer(L"Player")->AddGameObject(pPlayerCol);
-
+	FindLayer(L"PlayerCollider")->AddGameObject(pPlayerCol);
 
 	//Main Camera
 	CGameObject* pMainCam = new CGameObject;
@@ -186,7 +187,7 @@ void CBossMap::init()
 	pMainCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
 	pMainCam->Camera()->SetFar(100000.f);
 	pMainCam->Camera()->SetLayerAllCheck();
-	pMainCam->Camera()->SetLayerCheck(6, false);
+	pMainCam->Camera()->SetLayerCheck(8, false);
 
 	CToolCamScript* PlayerCamScript = pMainCam->GetScript<CToolCamScript>();
 	PlayerCamScript->SetCameraToPlayer(pPlayer);
@@ -200,7 +201,7 @@ void CBossMap::init()
 
 	pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHGRAPHIC);
 	pUICam->Camera()->SetFar(100.f);
-	pUICam->Camera()->SetLayerCheck(6, true);
+	pUICam->Camera()->SetLayerCheck(8, true);
 
 	FindLayer(L"Default")->AddGameObject(pUICam);
 

@@ -267,7 +267,7 @@ void CNetwork::ProcessPacket(char* ptr)
 				pPlayerCol->GetScript<CPlayerColScript>()->SetPlayer(GameObject.find(id)->second);
 				GameObject.find(id)->second->GetScript<CPlayerScript>()->SetColPlayer(pPlayerCol);
 
-				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pPlayerCol, false);
+				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"PlayerCollider", pPlayerCol, false);
 			}
 			else if (CheckType(id) == OBJECT_TYPE::FM_MONSTER) {
 				//// ¸ó½ºÅÍ
@@ -340,9 +340,7 @@ void CNetwork::ProcessPacket(char* ptr)
 				pMonsterCol->GetScript<CMonsterColScript>()->SetMonster(GameObject.find(id)->second);
 				GameObject.find(id)->second->GetScript<CMonsterScript>()->SetColMonster(pMonsterCol);
 
-				//GetObj()->GetScript<CPlayerScript>()->SetColPlayer(pSwordCol);
-
-				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", pMonsterCol, false);
+				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"MonsterCollider", pMonsterCol, false);
 			}
 			else if (CheckType(id) == OBJECT_TYPE::BOSS) {
 

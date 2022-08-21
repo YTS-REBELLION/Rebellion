@@ -32,6 +32,7 @@
 #include "SwordScript.h"
 #include "ToolCamScript.h"
 #include "Network.h"
+#include "PlayerColScript.h"
 
 void CDungeonScene::CreateMap()
 {
@@ -47,7 +48,7 @@ void CDungeonScene::CreateMap()
 	Map->Transform()->SetLocalPos(Vec3(0.f, -2.f, 0.f));
 	Map->Transform()->SetLocalScale(Vec3(2.3f, 2.3f, 2.0f));
 	Map->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.0f), XMConvertToRadians(180.0f), 0.f));
-	Map->MeshRender()->SetDynamicShadow(true);
+	//Map->MeshRender()->SetDynamicShadow(true);
 	FindLayer(L"Map")->AddGameObject(Map);
 
 
@@ -79,15 +80,16 @@ void CDungeonScene::init()
 	GetLayer(0)->SetName(L"Default");
 	GetLayer(1)->SetName(L"Player");
 	GetLayer(2)->SetName(L"PlayerSword");
-	GetLayer(3)->SetName(L"Monster");
-	GetLayer(4)->SetName(L"MonsterSword");
-	GetLayer(5)->SetName(L"Map");
-	GetLayer(6)->SetName(L"UI");
-	GetLayer(7)->SetName(L"Player_Skill");
-	GetLayer(8)->SetName(L"Monster_Skill");
+	GetLayer(3)->SetName(L"PlayerCollider");
+	GetLayer(4)->SetName(L"Monster");
+	GetLayer(5)->SetName(L"MonsterSword");
+	GetLayer(6)->SetName(L"MonsterCollider");
+	GetLayer(7)->SetName(L"Map");
+	GetLayer(8)->SetName(L"UI");
+	GetLayer(9)->SetName(L"Player_Skill");
+	GetLayer(10)->SetName(L"Monster_Skill");
 	
-
-	//CreateMap();
+	CreateMap();
 
 	// ====================
 	// 3D Light Object 추가
@@ -122,10 +124,6 @@ void CDungeonScene::init()
 	pPlayer->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 	pPlayer->AddComponent(new CCollider2D);
-	pPlayer->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	pPlayer->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	pPlayer->Collider2D()->SetOffsetScale(Vec3(10.f, 10.f, 10.f));
-	pPlayer->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(90.f), 0.f, 0.f));
 
 	// 플레이어 스크립트 붙여주기.
 	pPlayer->AddComponent(new CPlayerScript);
@@ -174,6 +172,25 @@ void CDungeonScene::init()
 	pSword->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, pPlayer, 17);
 	pPlayer->AddChild(pSword);
 
+	CGameObject* pPlayerCol = new CGameObject;
+	pPlayerCol->SetName(L"PlayerCol");
+	pPlayerCol->AddComponent(new CCollider2D);
+	pPlayerCol->AddComponent(new CTransform);
+	pPlayerCol->AddComponent(new CMeshRender);
+	pPlayerCol->Transform()->SetLocalPos(pPlayer->Transform()->GetLocalPos());
+	pPlayerCol->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pPlayerCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pPlayerCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+
+	pPlayerCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+	pPlayerCol->Collider2D()->SetOffsetScale(Vec3(70.f, 70.f, 70.f));
+	pPlayerCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pPlayerCol->AddComponent(new CPlayerColScript);
+	pPlayerCol->GetScript<CPlayerColScript>()->SetPlayer(pPlayer);
+	pPlayer->GetScript<CPlayerScript>()->SetColPlayer(pPlayerCol);
+
+	FindLayer(L"PlayerCollider")->AddGameObject(pPlayerCol);
+
 	//Main Camera
 	CGameObject* pMainCam = new CGameObject;
 	pMainCam->SetName(L"MainCam");
@@ -184,7 +201,7 @@ void CDungeonScene::init()
 	pMainCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
 	pMainCam->Camera()->SetFar(100000.f);
 	pMainCam->Camera()->SetLayerAllCheck();
-	pMainCam->Camera()->SetLayerCheck(6, false);
+	pMainCam->Camera()->SetLayerCheck(8, false);
 
 	CToolCamScript* PlayerCamScript = pMainCam->GetScript<CToolCamScript>();
 	PlayerCamScript->SetCameraToPlayer(pPlayer);
@@ -198,7 +215,7 @@ void CDungeonScene::init()
 
 	pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHGRAPHIC);
 	pUICam->Camera()->SetFar(100.f);
-	pUICam->Camera()->SetLayerCheck(6, true);
+	pUICam->Camera()->SetLayerCheck(8, true);
 	
 	FindLayer(L"Default")->AddGameObject(pUICam);
 
@@ -236,16 +253,11 @@ void CDungeonScene::init()
 	}
 
 
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"PlayerSword", L"Monster");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"MonsterSword", L"Player");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"PlayerSword", L"MonsterCollider");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"MonsterSword", L"PlayerCollider");
+
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"PlayerCollider", L"Map");
 
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player_Skill", L"Monster");
-
-	/*CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Sword");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Player");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Player_Skill");*/
-
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster_Skill", L"Player");
-
-
 }

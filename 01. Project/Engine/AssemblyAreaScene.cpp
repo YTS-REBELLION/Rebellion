@@ -260,7 +260,7 @@ void CAssemblyAreaScene::init()
 	GetLayer(0)->SetName(L"Default");
 	GetLayer(1)->SetName(L"Player");
 	GetLayer(2)->SetName(L"PlayerSword");
-	GetLayer(3)->SetName(L"House");
+	GetLayer(3)->SetName(L"PlayerCollider");
 	GetLayer(4)->SetName(L"Map");
 	GetLayer(5)->SetName(L"Portal");
 	GetLayer(6)->SetName(L"UI");
@@ -334,7 +334,7 @@ void CAssemblyAreaScene::init()
 	//PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 5, 0, 100);
 	//g_net.SetAniData(pMeshData->GetMesh());
 	PlayerScript->MeshRender()->SetDynamicShadow(true);
-	FindLayer(L"Player")->AddGameObject(pPlayer);
+	FindLayer(L"PlayerCollider")->AddGameObject(pPlayer);
 
 	g_net.SetObj(pPlayer);
 
@@ -400,41 +400,10 @@ void CAssemblyAreaScene::init()
 	
 	FindLayer(L"UI")->AddGameObject(pUICam);
 
-	//CGameObject* pObject = nullptr;
-
-	//Ptr<CTexture> pfFire01 = CResMgr::GetInst()->Load<CTexture>(L"Fire01", L"Texture\\Explosion\\fire01.dds");
-	//Ptr<CTexture> pfNoise01 = CResMgr::GetInst()->Load<CTexture>(L"Noise01", L"Texture\\Explosion\\noise01.dds");
-	//Ptr<CTexture> pfAlpha01 = CResMgr::GetInst()->Load<CTexture>(L"Alpha01", L"Texture\\Explosion\\alpha01.dds");
-	//// ====================
-	//// Fire 오브젝트 생성
-	//// ====================
-
-	//pObject = new CGameObject;
-	//pObject->SetName(L"FireTest");
-	//pObject->FrustumCheck(false);
-	//pObject->AddComponent(new CTransform);
-	//pObject->AddComponent(new CMeshRender);
-	//pObject->AddComponent(new CFire);
-
-
-	//pObject->Transform()->SetLocalPos(Vec3(200, 200, 200));
-	//pObject->Transform()->SetLocalScale(Vec3(200.f, 200.f, 1.f));
-	//// MeshRender 설정
-	//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	//pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"FireMtrl"));
-	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pfFire01.GetPointer());
-	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pfNoise01.GetPointer());
-	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
-	//pObject->GetScript<CFire>()->init();
-	//// AddGameObject
-	//FindLayer(L"Default")->AddGameObject(pObject);
 
 	// ===================
 	// NPC 로드
 	// ===================
-
-	//Ptr<CMeshData> pAS_NPCMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\Idle (8).fbx");
-	//pAS_NPCMeshData->Save(pAS_NPCMeshData->GetPath());
 	Ptr<CMeshData> pAS_NPCMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FM_Idle.mdat", L"MeshData\\FM_Idle.mdat");
 
 	CGameObject* pAS_NPC = new CGameObject;
@@ -481,42 +450,7 @@ void CAssemblyAreaScene::init()
 	pTestMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_Lv1_Attack.mdat", L"MeshData\\Monster_Lv1_Attack.mdat");
 	MonsterScript->SetMonsterAnimationData(pTestMeshData->GetMesh(), 3, 0, 45);			
 
-	FindLayer(L"NPC")->AddGameObject(ptest);*/
-
-	//Vec3 vScale(150.f, 150.f, 1.f);
-
-	//Ptr<CTexture> arrTex[5] = { CResMgr::GetInst()->FindRes<CTexture>(L"DiffuseTargetTex")
-	//	, CResMgr::GetInst()->FindRes<CTexture>(L"NormalTargetTex")
-	//	, CResMgr::GetInst()->FindRes<CTexture>(L"PositionTargetTex")
-	//	, CResMgr::GetInst()->FindRes<CTexture>(L"DiffuseLightTargetTex")
-	//	, CResMgr::GetInst()->FindRes<CTexture>(L"SpecularLightTargetTex") };
-
-	//for (UINT i = 0; i < 5; ++i)
-	//{
-	//	CGameObject* pObject = new CGameObject;
-	//	pObject->SetName(L"UI Object");
-	//	pObject->FrustumCheck(false);	// 절두체 컬링 사용하지 않음
-	//	pObject->AddComponent(new CTransform);
-	//	pObject->AddComponent(new CMeshRender);
-
-	//	// Transform 설정
-	//	tResolution res = CRenderMgr::GetInst()->GetResolution();
-
-	//	pObject->Transform()->SetLocalPos(Vec3(-(res.fWidth / 2.f) + (vScale.x / 2.f) + (i * vScale.x)
-	//		, (res.fHeight / 2.f) - (vScale.y / 2.f)
-	//		, 1.f));
-
-	//	pObject->Transform()->SetLocalScale(vScale);
-
-	//	// MeshRender 설정
-	//	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	//	Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
-	//	pObject->MeshRender()->SetMaterial(pMtrl->Clone());
-	//	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, arrTex[i].GetPointer());
-
-	//	// AddGameObject
-	//	FindLayer(L"UI")->AddGameObject(pObject);
-	//}
+	FindLayer(L"NPC")->AddGameObject(ptest);*/	
 
 	CGameObject* pObject = new CGameObject;
 	pObject->SetName(L"PostEffect");
@@ -531,5 +465,5 @@ void CAssemblyAreaScene::init()
 	pObject->Transform()->SetLocalPos(Vec3(0, 10, 1700));
 	FindLayer(L"Portal")->AddGameObject(pObject);
 
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Map");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"PlayerCollider", L"Map");
 }

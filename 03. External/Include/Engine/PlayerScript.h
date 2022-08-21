@@ -242,6 +242,7 @@ public:
 	void SetOtherPlayerAniType(const PLAYER_ANI_TYPE& type) { m_sAniType = type; }
 
 	void SetColPlane(COL_PLANE _eType) { m_eCol_Plane = _eType; }
+	COL_PLANE GetColPlane() { return m_eCol_Plane; }
 public:
 	CLONE(CPlayerScript);
 

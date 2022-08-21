@@ -60,7 +60,7 @@ private:
 	bool				m_isMain;
 
 	bool				m_bMapCol = false;
-
+	bool				m_bNextMapCol = false;
 	DeadReckoning* m_DeadReckoner;
 
 	vector<tMTAnimClip>			m_pVecAnimClip;
@@ -151,6 +151,9 @@ private:
 
 	PLAYER_ANI_TYPE m_sAniType;
 	COL_PLANE m_eCol_Plane;
+
+	CCollider2D* m_pColObj;
+
 public:
 	virtual void awake();
 	virtual void update();
@@ -194,6 +197,7 @@ public:
 	}
 	void SetHit(bool _type) { m_bHit = _type; }
 	void SetMapCol(bool _type) { m_bMapCol = _type; }
+	void SetNextMapCol(bool _type) { m_bNextMapCol = _type; }
 
 	void SetQuestStart(bool isStart) { questStart = isStart; }
 	void SetQuestCnt(QUEST questId) { m_iClearCnt = questId; }
@@ -212,11 +216,11 @@ public:
 	void Delete_Meteor();
 	void Set_MagicJin(CGameObject* p) { pMagicJinpp = p; };
 
-
 	bool GetAttack() { return m_bAttack; }
 	bool GetSkill() { return m_bSkill; }
 	bool GetHit() { return m_bHit; }
 	bool GetMapCol() { return m_bMapCol; }
+	void GetNextMapCol(bool _type) { m_bNextMapCol = _type; }
 	float GetSpeed() { return m_fSpeed; }
 
 	Vec3 Get_PlayerPos() { return this->Transform()->GetLocalPos(); }
@@ -224,8 +228,6 @@ public:
 
 	int GetID() { return m_iID; }
 	void SetID(const int& id) { m_iID = id; }
-
-	CCollider2D* m_pColObj;
 
 	void SetColPlayer(CGameObject* _obj) { pPlayerColObject = _obj; }
 	CGameObject* GetColPlayer() { return pPlayerColObject; }
@@ -242,6 +244,12 @@ public:
 	void SetOtherPlayerAniType(const PLAYER_ANI_TYPE& type) { m_sAniType = type; }
 
 	void SetColPlane(COL_PLANE _eType) { m_eCol_Plane = _eType; }
+	COL_PLANE GetColPlane() { return m_eCol_Plane; }
+
+	void SetColObj(CCollider2D* _obj) { m_pColObj = _obj; }
+	CCollider2D* GetColObj() { return m_pColObj; }
+
+	bool NextPosColCheak(Vec3 _objPos, CCollider2D* _colobj);
 public:
 	CLONE(CPlayerScript);
 

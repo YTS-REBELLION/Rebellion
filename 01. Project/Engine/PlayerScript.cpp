@@ -26,6 +26,7 @@
 
 
 bool isReckoning = false;
+
 CPlayerScript::CPlayerScript()
 	: CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
 	, m_pOriginMtrl(nullptr)
@@ -207,10 +208,6 @@ void CPlayerScript::init()
 		}
 	}
 
-	
-
-
-
 	//스킬 UI
 
 
@@ -330,6 +327,7 @@ void CPlayerScript::update()
 			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
 
 		}
+
 		else if (KEY_AWAY(KEY_TYPE::KEY_SPACE))
 		{
 			SetAttack();
@@ -347,12 +345,15 @@ void CPlayerScript::update()
 			questStart = true;
 			g_net.Send_Dungeon_Packet(true);
 		}
+
 		if(KEY_TAB(KEY_TYPE::KEY_LSHIFT)) isDash(true);
+
 		else if (KEY_AWAY(KEY_TYPE::KEY_LSHIFT)) isDash(false);
 
 		if (KEY_HOLD(KEY_TYPE::KEY_W))
 		{
 			system_clock::time_point start = system_clock::now();
+
 			if (!m_bDash) {
 				localPos += WorldDir * m_fSpeed * DT;
 
@@ -365,45 +366,7 @@ void CPlayerScript::update()
 				g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
 			}
 		}
-		/*else if (KEY_HOLD(KEY_TYPE::KEY_S))
-		{
-			localPos -= WorldDir * m_fSpeed * DT;
 
-			system_clock::time_point start = system_clock::now();
-			m_eDir = COL_DIR::BACK;
-
-			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
-			{
-				localPos -= WorldDir * m_fSpeed * DT;
-				AnimationPlay(PLAYER_ANI_TYPE::RUN);
-				g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
-			}
-			else {
-				AnimationPlay(PLAYER_ANI_TYPE::WALK);
-				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
-
-			};
-		}
-
-		else if (KEY_HOLD(KEY_TYPE::KEY_A))
-		{
-			WorldDir = playerTrans->GetWorldDir(DIR_TYPE::RIGHT);
-			localPos -= WorldDir * m_fSpeed * DT;
-
-			system_clock::time_point start = system_clock::now();
-			m_eDir = COL_DIR::LEFT;
-
-			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
-			{
-				localPos -= WorldDir * m_fSpeed * DT;
-				AnimationPlay(PLAYER_ANI_TYPE::RUN);
-				g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
-			}
-			else {
-				AnimationPlay(PLAYER_ANI_TYPE::WALK);
-				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
-			};
-		}*/
 		else if (KEY_HOLD(KEY_TYPE::KEY_NUM3))
 		{
 			AnimationPlay(PLAYER_ANI_TYPE::DIE);
@@ -415,33 +378,8 @@ void CPlayerScript::update()
 
 			if (GetObj()->Animator3D()->GetCliTime(3) > 0.65f)
 				pSwordColObject->SetActive(true);
-			//g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
-
-			/*if (GetObj()->Animator3D()->GetCliTime(3) < GetObj()->Animator3D()->GetAnimClip(3).dTimeLength -)*/
-			//pSwordColObject->MeshRender()->SetActive(true);
-			//pSwordColObject->Collider2D()->SetActive(true);
-			//pSwordColObject->Transform()->SetLocalPos(vDirFront + GetObj()->Transform()->GetLocalPos());
-			//CGameObject* m_pSwordStrike = new CGameObject;
-			//Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Sjuriken1.fbx");
-
-			//m_pSwordStrike = pPMeshData->Instantiate();
-			//m_pSwordStrike->SetName(L"Sword_Col");
-			//m_pSwordStrike->FrustumCheck(false);
-
-
-			//m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
-			//m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-			//m_pSwordStrike->Transform()->SetLocalScale(Vec3(0.1f, 0.1f, 0.1f));
-			//m_pSwordStrike->AddComponent(new CSting);
-
-			//m_pSwordStrike->AddComponent(new CCollider2D);
-			//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-			//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-			//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(2000.f, 2000.f, 2000.f));
-
-			//// AddGameObject
-			//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 		}
+
 		else if (GetSkill())
 		{
 			if (GetObj()->Animator3D()->GetCliTime(4) < GetObj()->Animator3D()->GetAnimClip(4).dTimeLength - 0.05f)
@@ -461,6 +399,7 @@ void CPlayerScript::update()
 				g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_1, GetSkill());
 			}
 		}
+
 		else AnimationPlay(PLAYER_ANI_TYPE::IDLE);
 		//if (KEY_AWAY(KEY_TYPE::KEY_3))
 		//{
@@ -512,6 +451,7 @@ void CPlayerScript::update()
 			g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_8, true);
 
 		}
+
 		if (m_bSkillCool01)
 		{
 			m_fSkillCool01 += DT;
@@ -521,6 +461,7 @@ void CPlayerScript::update()
 				m_bSkillCool01 = false;
 			}
 		}
+
 		if (m_bSkillCool02)
 		{
 			m_fSkillCool02 += DT;
@@ -530,6 +471,7 @@ void CPlayerScript::update()
 				m_bSkillCool02 = false;
 			}
 		}
+
 		if (m_bSkillCool03)
 		{
 			m_fSkillCool03 += DT;
@@ -539,6 +481,7 @@ void CPlayerScript::update()
 				m_bSkillCool03 = false;
 			}
 		}
+
 		if (m_bSkillCool04)
 		{
 			m_fSkillCool04 += DT;
@@ -554,7 +497,6 @@ void CPlayerScript::update()
 		{
 			vRot.y += vDrag.x * DT * 0.5f;
 			g_net.Send_Rotate_Packet(g_myid, vRot);
-			player->Transform()->SetLocalRot(vRot);
 		}
 
 		if ((KEY_AWAY(KEY_TYPE::KEY_W) || KEY_AWAY(KEY_TYPE::KEY_A) || KEY_AWAY(KEY_TYPE::KEY_S) || KEY_AWAY(KEY_TYPE::KEY_D)))
@@ -929,13 +871,47 @@ void CPlayerScript::update()
 			Delete_Meteor();
 		}
 
+		Vec3 NextLocalPos = localPos + WorldDir * m_fSpeed * 5.0f * DT;
+
 		if (GetMapCol())
 		{
-			localPos -= WorldDir * m_fSpeed * 1.1f * DT;
-			Transform()->SetLocalPos(localPos);
+			switch (m_eCol_Plane)
+			{
+			case COL_PLANE::X_PLANE:
+				if (KEY_HOLD(KEY_TYPE::KEY_W))
+				{
+					localPos.x += WorldDir.x;
+					if (!m_bDash) {
+						if (NextPosColCheak(NextLocalPos, GetColObj())) localPos.z -= WorldDir.z * m_fSpeed * DT;
+						else localPos.z += WorldDir.z * m_fSpeed * DT;
+					}
+					else {
+						if (NextPosColCheak(NextLocalPos, GetColObj())) localPos.z -= WorldDir.z * m_fSpeed * 2.0f * DT;
+						else localPos.z += WorldDir.z * m_fSpeed * DT;
+					}
+				}
+				break;
+			case COL_PLANE::Z_PLANE:
+				if (KEY_HOLD(KEY_TYPE::KEY_W))
+				{
+					localPos.z += WorldDir.z;
+					if (!m_bDash) {
+						if (NextPosColCheak(NextLocalPos, GetColObj())) localPos.x -= WorldDir.x * m_fSpeed * DT;
+						else localPos.x += WorldDir.x * m_fSpeed * DT;
+					}
+					else {
+						if (NextPosColCheak(NextLocalPos, GetColObj())) localPos.x -= WorldDir.x * m_fSpeed * 2.0f * DT;
+						else localPos.x += WorldDir.x * m_fSpeed * DT;
+					}
+				}
+				break;
+			default:
+				break;
+			}
 		}
-		else Transform()->SetLocalPos(localPos);
 
+		Transform()->SetLocalPos(localPos);
+		Transform()->SetLocalRot(vRot);
 	}
 	else
 	{
@@ -1101,8 +1077,52 @@ void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
 
 	if (_pOther->GetObj()->GetName() == L"MonsterSwordCol") SetHit(true);
 
-	if (_pOther->GetObj()->GetName() == L"Map_Wall") SetMapCol(true);
-		
+	if (_pOther->GetObj()->GetName() == L"Map_Wall")
+	{
+		SetColPlane(_pOther->GetPlane());
+		SetColObj(_pOther);
+		SetMapCol(true);
+	}
+}
+
+bool CPlayerScript::NextPosColCheak(Vec3 _objPos, CCollider2D* _colobj)
+{
+	float CenterX = _objPos.x;
+	float CenterZ = _objPos.z;
+	float Radius = GetColPlayer()->Transform()->GetLocalScale().x * GetColPlayer()->Collider2D()->GetOffsetScale().x;
+
+	// left		: -x
+	// right	: x
+	// top		: z
+	// bottom	: -z
+
+	float left = _colobj->GetObj()->Transform()->GetLocalPos().x - (_colobj->Transform()->GetLocalScale().x * _colobj->Collider2D()->GetOffsetScale().x) / 2;
+	float right = _colobj->GetObj()->Transform()->GetLocalPos().x + (_colobj->Transform()->GetLocalScale().x * _colobj->Collider2D()->GetOffsetScale().x) / 2;
+	float top = _colobj->GetObj()->Transform()->GetLocalPos().z - (_colobj->Transform()->GetLocalScale().z * _colobj->Collider2D()->GetOffsetScale().z) / 2;
+	float bottom = _colobj->GetObj()->Transform()->GetLocalPos().z + (_colobj->Transform()->GetLocalScale().z * _colobj->Collider2D()->GetOffsetScale().z) / 2;
+
+	if ((left <= CenterX && CenterX < right) || (top <= CenterZ && CenterZ < bottom))
+	{
+		if ((left - Radius < CenterX && CenterX < right + Radius) &&
+			(top - Radius < CenterZ && CenterZ < bottom + Radius)) {
+			return true;
+		}
+	}
+	else {
+		// 사각형 좌상단이 원 안에 있는지
+		if (Radius >= Vec3::Distance(Vec3(CenterX, 0.f, CenterZ), Vec3(left, 0.f, top))) return true;
+
+		// 사각형 좌하단이 원 안에 있는지
+		if (Radius >= Vec3::Distance(Vec3(CenterX, 0.f, CenterZ), Vec3(left, 0.f, bottom))) return true;
+
+		// 사각형 우상단이 원 안에 있는지
+		if (Radius >= Vec3::Distance(Vec3(CenterX, 0.f, CenterZ), Vec3(right, 0.f, top))) return true;
+
+		// 사각형 우하단이 원 안에 있는지
+		if (Radius >= Vec3::Distance(Vec3(CenterX, 0.f, CenterZ), Vec3(right, 0.f, bottom))) return true;
+	}
+	
+	return false;
 }
 
 void CPlayerScript::OnCollision(CCollider2D* _pOther)
