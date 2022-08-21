@@ -156,7 +156,7 @@ void CDungeonScene::init()
 	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Die.mdat", L"MeshData\\Player_FM_Die.mdat");
 	//PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 5, 0, 100);
 	//g_net.SetAniData(pMeshData->GetMesh());
-
+	PlayerScript->MeshRender()->SetDynamicShadow(true);
 	FindLayer(L"Player")->AddGameObject(pPlayer);
 
 	g_net.SetObj(pPlayer);
@@ -173,7 +173,7 @@ void CDungeonScene::init()
 	pSword->AddComponent(new CSwordScript);
 	pSword->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, pPlayer, 17);
 	pPlayer->AddChild(pSword);
-
+	pSword->MeshRender()->SetDynamicShadow(true);
 	//Main Camera
 	CGameObject* pMainCam = new CGameObject;
 	pMainCam->SetName(L"MainCam");

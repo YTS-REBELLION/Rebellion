@@ -52,8 +52,8 @@ void CMeteor::update()
 		pObject->AddComponent(new CParticleSystem);
 		pObject->Particlesystem()->SetFrequency(2.f);
 		pObject->Particlesystem()->SetType(false);
-		pObject->Particlesystem()->SetMaxParticle(10);
-		pObject->Particlesystem()->SetMaxScale(150);
+		pObject->Particlesystem()->SetMaxParticle(2);
+		pObject->Particlesystem()->SetMaxScale(50);
 		pObject->AddComponent(new CParticleScript);
 
 		pObject->FrustumCheck(false);
@@ -68,8 +68,8 @@ void CMeteor::update()
 		pObject->AddComponent(new CParticleSystem);
 		pObject->Particlesystem()->SetFrequency(2.f);
 		pObject->Particlesystem()->SetType(false);
-		pObject->Particlesystem()->SetMaxParticle(10);
-		pObject->Particlesystem()->SetMaxScale(200);
+		pObject->Particlesystem()->SetMaxParticle(2);
+		pObject->Particlesystem()->SetMaxScale(150);
 		pObject->AddComponent(new CParticleScript);
 
 		pObject->FrustumCheck(false);
@@ -83,13 +83,13 @@ void CMeteor::update()
 		pObject->AddComponent(new CParticleSystem);
 		pObject->Particlesystem()->SetFrequency(2.f);
 		pObject->Particlesystem()->SetType(false);
-		pObject->Particlesystem()->SetMaxParticle(10);
+		pObject->Particlesystem()->SetMaxParticle(2);
 		pObject->Particlesystem()->SetMaxScale(100);
 		pObject->AddComponent(new CParticleScript);
 
 		pObject->FrustumCheck(false);
 		particlePos = localPos;
-		pObject->Transform()->SetLocalPos(Vec3{ particlePos.x,particlePos.y,particlePos.z });
+		pObject->Transform()->SetLocalPos(Vec3{ particlePos.x,particlePos.y+75,particlePos.z });
 		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
 
 	}
