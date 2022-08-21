@@ -28,12 +28,6 @@ void CSwing3::awake()
 void CSwing3::update()
 {
 
-	for (auto client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
-	{
-		if (client->GetScript<CPlayerScript>()->GetMain())
-			m_pPlayer = client;
-	}
-
 
 	m_fcreate_time += DT;
 	if (m_fcreate_time >= 3.f)
@@ -43,7 +37,7 @@ void CSwing3::update()
 
 
 	Vec3 WorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-	Vec3 localPos = m_pPlayer->Transform()->GetLocalPos() + Vec3{ -100,100,-100 };
+	Vec3 localPos = Transform()->GetLocalPos();
 
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
 	Vec3 vRot = Transform()->GetLocalRot();

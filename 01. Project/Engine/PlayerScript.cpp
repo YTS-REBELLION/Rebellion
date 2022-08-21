@@ -476,6 +476,7 @@ void CPlayerScript::update()
 			fdamage = 20.f;
 			m_pSkillMana = 10;
 			m_bSkillCool01 = true;
+			g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_5, true);
 
 		}
 
@@ -484,7 +485,7 @@ void CPlayerScript::update()
 			
 			cout << "파이어볼!" << endl;
 			FireBall();
-			g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_2, true);
+			g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_6, true);
 			//g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_2, false);
 			fdamage = 20.f;
 			m_pSkillMana = 10;
@@ -499,6 +500,8 @@ void CPlayerScript::update()
 			fdamage = 20.f;
 			m_pSkillMana = 10;
 			m_bSkillCool03 = true;
+			g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_7, true);
+
 		}
 
 		if (KEY_AWAY(KEY_TYPE::KEY_8) && !m_bSkillCool04)
@@ -506,7 +509,7 @@ void CPlayerScript::update()
 			UnleashedPower();
 			fdamage = 20.f;
 			m_pSkillMana = 10;
-			m_bSkillCool04 = true;
+			g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_8, true);
 
 		}
 		if (m_bSkillCool01)
@@ -1225,7 +1228,7 @@ void CPlayerScript::Swing()
 	m_pSwordStrike->FrustumCheck(false);
 
 
-	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
+	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 100,100,100 });
 	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
 	m_pSwordStrike->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
 	m_pSwordStrike->AddComponent(new CSwing);
@@ -1251,7 +1254,7 @@ void CPlayerScript::Swing()
 	m_pSwordStrike->FrustumCheck(false);
 
 
-	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
+	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 100,100,-100 });
 	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
 	m_pSwordStrike->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
 	m_pSwordStrike->AddComponent(new CSwing2);
@@ -1277,7 +1280,7 @@ void CPlayerScript::Swing()
 	m_pSwordStrike->FrustumCheck(false);
 
 
-	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
+	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ -100,100,-100 });
 	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
 	m_pSwordStrike->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
 	m_pSwordStrike->AddComponent(new CSwing3);
@@ -1303,7 +1306,7 @@ void CPlayerScript::Swing()
 	m_pSwordStrike->FrustumCheck(false);
 
 
-	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
+	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ -100,100,100 });
 	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
 	m_pSwordStrike->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
 	m_pSwordStrike->AddComponent(new CSwing4);
@@ -1543,7 +1546,9 @@ void CPlayerScript::Meteor()
 
 	
 	CGameObject* m_pSwordStrike = new CGameObject;
-	
+	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
+	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
+	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
 
 
 	m_pSwordStrike = pSwordMeshData->Instantiate();
@@ -1664,6 +1669,7 @@ void CPlayerScript::QuestInit(QUEST questNum)
 	}
 	case QUEST::THIRD: {
 		cout << "세번째 퀘스트" << endl;
+		//m_pQuestBoxExplane5->SetDead();
 		//m_pQuestComplete->SetDead();
 		//m_pQuestComplete->SetDead();
 		tResolution res = CRenderMgr::GetInst()->GetResolution();
@@ -1725,6 +1731,119 @@ void CPlayerScript::QuestDone(QUEST questNum)
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
 	m_pQuestComplete = pObject;
+
+
+}
+void CPlayerScript::QuestExplane(QUEST questNum, int count)
+{
+	switch (questNum) {
+	case QUEST::SECOND:
+	{
+		if (count == 1) {
+			cout << "count == 1" << endl;
+			m_pQuestBoxExplane2->SetDead();
+
+			tResolution res = CRenderMgr::GetInst()->GetResolution();
+
+			Vec3	QuestBoxinScale = Vec3(200, 54, 1.f);
+			CGameObject* pObject = new CGameObject;
+
+			pObject = new CGameObject;
+			pObject->SetName(L"QuestBoxExplane");
+			pObject->FrustumCheck(false);
+			pObject->AddComponent(new CTransform);
+			pObject->AddComponent(new CMeshRender);
+
+			pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f), 0.f, 1.f));
+			pObject->Transform()->SetLocalScale(QuestBoxinScale);
+
+			//MeshRender 설정
+
+			pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+			Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+			pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuestexplane2_1.GetPointer());
+
+			// AddGameObject
+			CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+			m_pQuestBoxExplane3 = pObject;
+
+		}
+		else if (count == 2) {
+			cout << "count == 2" << endl;
+
+			m_pQuestBoxExplane3->SetDead();
+
+			tResolution res = CRenderMgr::GetInst()->GetResolution();
+
+			Vec3	QuestBoxinScale = Vec3(200, 54, 1.f);
+			CGameObject* pObject = new CGameObject;
+
+			pObject = new CGameObject;
+			pObject->SetName(L"QuestBoxExplane");
+			pObject->FrustumCheck(false);
+			pObject->AddComponent(new CTransform);
+			pObject->AddComponent(new CMeshRender);
+
+			pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f), 0.f, 1.f));
+			pObject->Transform()->SetLocalScale(QuestBoxinScale);
+
+			//MeshRender 설정
+
+			pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+			Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+			pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuestexplane2_2.GetPointer());
+
+			// AddGameObject
+			CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+			m_pQuestBoxExplane4 = pObject;
+
+		}
+		else if (count == 3) {
+			cout << "count == 3" << endl;
+
+			m_pQuestBoxExplane4->SetDead();
+
+			tResolution res = CRenderMgr::GetInst()->GetResolution();
+
+			Vec3	QuestBoxinScale = Vec3(200, 54, 1.f);
+			CGameObject* pObject = new CGameObject;
+
+			pObject = new CGameObject;
+			pObject->SetName(L"QuestBoxExplane");
+			pObject->FrustumCheck(false);
+			pObject->AddComponent(new CTransform);
+			pObject->AddComponent(new CMeshRender);
+
+			pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f), 0.f, 1.f));
+			pObject->Transform()->SetLocalScale(QuestBoxinScale);
+
+			//MeshRender 설정
+
+			pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+
+			Ptr<CMaterial> pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+			pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pQuestexplane2_3.GetPointer());
+
+			// AddGameObject
+			CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+			m_pQuestBoxExplane5 = pObject;
+
+		}
+
+
+
+		break;
+	}
+	}
+
+
+
+
 
 
 }

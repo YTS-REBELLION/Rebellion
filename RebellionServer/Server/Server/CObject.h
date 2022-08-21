@@ -41,7 +41,7 @@ class CObject
 
 	std::unordered_set<int> _viewLists;
 	unordered_set<int>		_dungeonViewLists;
-
+	unordered_set<int>		_bossViewLists;
 	bool			_isAttack;
 	
 	bool			_isHeal;
@@ -64,6 +64,8 @@ class CObject
 	Vec3			_nextPos[3];
 	
 	bool			_dungeonEnter = false;
+	bool			_bossmapEnter = false;
+
 	unordered_set<int> _dungeonViewList;
 	bool			_m2mCol;
 
@@ -166,6 +168,15 @@ public:
 		_dungeonViewLists.erase(id);
 	}
 
+	unordered_set<int> BossMapGetViewList() const { return _bossViewLists; }
+	size_t BossMapGetViewListCount(int id) const { return _bossViewLists.count(id); }
+	void BossMapClearViewList() { _bossViewLists.clear(); }
+	void BossMapInsertViewList(int id) {
+		_bossViewLists.insert(id);
+	}
+	void BossMapEraseViewList(int id) {
+		_bossViewLists.erase(id);
+	}
 
 	bool GetIsAttack() const { return _isAttack; }
 	void SetIsAttack(bool b) { _isAttack = b; }
@@ -204,6 +215,8 @@ public:
 	void SetDunGeonEnter(bool isEnter) { _dungeonEnter = isEnter; }
 	bool GetDunGeonEnter() const { return _dungeonEnter; }
 
+	void SetBossMapEnter(bool isEnter) { _bossmapEnter = isEnter; }
+	bool GetBossMapEnter() const { return _bossmapEnter; }
 
 	void SetMonsterCol(bool isCol) { _m2mCol = isCol; }
 	bool GetMonsterCol() const { return _m2mCol; }

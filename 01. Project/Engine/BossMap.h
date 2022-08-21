@@ -1,5 +1,3 @@
-
-
 #pragma once
 #include "Scene.h"
 
@@ -12,4 +10,9 @@ class CBossMap :
 {
 public:
 	virtual void init();
+
+	void CreateMap();
 };
+
+#pragma once
+#include "Scene.h"

@@ -48,18 +48,31 @@ void CSender::SendLoginFailPacket(SOCKET s)
 	SendPacket(s, &packet);
 }
 
-void CSender::SendLeaveObjectPacket(SOCKET s, int id, int objType)
+void CSender::SendLeaveObjectPacket(SOCKET s, int playerId,int monsterid, int monsterdieCnt)
 {
 	////printf("%d¹ø Leave º¸³¿ / Å¸ÀÔ: %d\n", id, objType);
 
 	sc_packet_leave packet;
-	packet.id = id;
-	packet.objectType = objType;
+	packet.id = monsterid;
+	packet.playerId = playerId;
+	packet.monsterdieCnt = monsterdieCnt;
 	packet.size = sizeof(packet);
 	packet.type = SC_PACKET_LEAVE_OBJECT;
 
 	SendPacket(s, &packet);
 }
+
+
+void CSender::SendLeaveObjectPacket(SOCKET s, int playerId)
+{
+	sc_packet_leave packet;
+	packet.playerId = playerId;
+	packet.size = sizeof(packet);
+	packet.type = SC_PACKET_LEAVE_OBJECT;
+
+	SendPacket(s, &packet);
+}
+
 
 void CSender::SendNPCAttackPacket(SOCKET s, int id, float x, float z,bool isAttack)
 {
@@ -210,12 +223,12 @@ void CSender::SendRunPacket(SOCKET s, int id,Vec3 pos, bool isRun)
 	SendPacket(s, &packet);
 }
 
-void CSender::SendMonsterDiePacket(SOCKET s, const int& monsterid)
+void CSender::SendMonsterDiePacket(SOCKET s, const int& playerId,const int& monsterid)
 {
 	sc_packet_monsterdie packet;
 	packet.id = monsterid;
 	packet.type = SC_PACKET_MONSTERDIE;
-
+	packet.playerId = playerId;
 	packet.size = sizeof(packet);
 	SendPacket(s, &packet);
 
@@ -301,6 +314,19 @@ void CSender::SendSkillPacket(SOCKET s, const int& id, PLAYER_ANI_TYPE anitype, 
 	packet.anitype = anitype;
 	packet.isSkill = isSkill;
 	SendPacket(s, &packet);
+
+}
+
+void CSender::SendBossMapPacket(SOCKET s, const int& playerId, bool isEnter)
+{
+	sc_packet_bossmap packet;
+	packet.size = sizeof(packet);
+	packet.id = playerId;
+	packet.type = SC_PACKET_BOSSMAP;
+	packet.isEnter = isEnter;
+
+	SendPacket(s, &packet);
+
 
 }
 

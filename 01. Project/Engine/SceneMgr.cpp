@@ -61,6 +61,7 @@
 
 #include "LoginScene.h"
 #include "AssemblyAreaScene.h"
+#include "BossMap.h"
 #include "Dungeon.h"
 
 unordered_map<Sound_Type, CSound*> g_SoundList;
@@ -96,6 +97,9 @@ void CSceneMgr::ChangeScene(SCENE_TYPE _Type)
 	case SCENE_TYPE::DUNGEON:
 		m_bSound02 = true;
 		m_pCurScene = new CDungeonScene;
+		break;
+	case SCENE_TYPE::BOSSMAP:
+		m_pCurScene = new CBossMap;
 		break;
 	case SCENE_TYPE::END:
 		assert(false);
