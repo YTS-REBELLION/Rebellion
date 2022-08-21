@@ -82,10 +82,9 @@ void CDungeonScene::init()
 	GetLayer(3)->SetName(L"Monster");
 	GetLayer(4)->SetName(L"MonsterSword");
 	GetLayer(5)->SetName(L"Map");
-	GetLayer(6)->SetName(L"Portal");
-	GetLayer(7)->SetName(L"UI");
-	GetLayer(8)->SetName(L"Player_Skill");
-	GetLayer(9)->SetName(L"Monster_Skill");
+	GetLayer(6)->SetName(L"UI");
+	GetLayer(7)->SetName(L"Player_Skill");
+	GetLayer(8)->SetName(L"Monster_Skill");
 	
 
 	//CreateMap();
@@ -183,7 +182,7 @@ void CDungeonScene::init()
 	pMainCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
 	pMainCam->Camera()->SetFar(100000.f);
 	pMainCam->Camera()->SetLayerAllCheck();
-	pMainCam->Camera()->SetLayerCheck(7, false);
+	pMainCam->Camera()->SetLayerCheck(6, false);
 
 	CToolCamScript* PlayerCamScript = pMainCam->GetScript<CToolCamScript>();
 	PlayerCamScript->SetCameraToPlayer(pPlayer);
@@ -197,7 +196,7 @@ void CDungeonScene::init()
 
 	pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHGRAPHIC);
 	pUICam->Camera()->SetFar(100.f);
-	pUICam->Camera()->SetLayerCheck(7, true);
+	pUICam->Camera()->SetLayerCheck(6, true);
 	
 	FindLayer(L"Default")->AddGameObject(pUICam);
 

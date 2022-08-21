@@ -36,6 +36,7 @@
 #include "ParticleScript.h"
 #include "Boss.h"
 
+#include "PlayerColScript.h"
 #include "MonsterColScript.h"
 
 void CAssemblyAreaScene::CreateMap()
@@ -302,11 +303,6 @@ void CAssemblyAreaScene::init()
 	pPlayer->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 	pPlayer->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
-	pPlayer->AddComponent(new CCollider2D);
-	pPlayer->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	pPlayer->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	pPlayer->Collider2D()->SetOffsetScale(Vec3(10.f, 10.f, 10.f));
-	pPlayer->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(90.f), 0.f, 0.f));
 
 	// 플레이어 스크립트 붙여주기.
 	pPlayer->AddComponent(new CPlayerScript);
@@ -355,56 +351,26 @@ void CAssemblyAreaScene::init()
 	pSword->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, pPlayer, 17);
 	pPlayer->AddChild(pSword);
 	pSword->MeshRender()->SetDynamicShadow(true);
-	//CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Sword", pSword, false);
-	//FindLayer(L"Sword")->AddGameObject(pSword);
 
-	// ===================
-	// Sword 파일 로드
-	// ===================
-	//CGameObject* pSword = new CGameObject;
+	CGameObject* pPlayerCol = new CGameObject;
+	pPlayerCol->SetName(L"PlayerCol");
+	pPlayerCol->AddComponent(new CCollider2D);
+	pPlayerCol->AddComponent(new CTransform);
+	pPlayerCol->AddComponent(new CMeshRender);
+	pPlayerCol->Transform()->SetLocalPos(pPlayer->Transform()->GetLocalPos());
+	pPlayerCol->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pPlayerCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pPlayerCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
 
-	//Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_Sword.mdat", L"MeshData\\Player_Sword.mdat");
-	//Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
+	pPlayerCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+	pPlayerCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+	pPlayerCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pPlayerCol->AddComponent(new CPlayerColScript);
+	pPlayerCol->GetScript<CPlayerColScript>()->SetPlayer(pPlayer);
+	pPlayer->GetScript<CPlayerScript>()->SetColPlayer(pPlayerCol);
 
-	//pSword = pSwordMeshData->Instantiate();
-	//pSword->SetName(L"Player_Sword");
-	//pSword->FrustumCheck(false);
-	//pSword->Transform()->SetLocalPos(Vec3(0.f, 100.f, 0.f));
-	//pSword->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	FindLayer(L"Player")->AddGameObject(pPlayerCol);
 
-	//pSword->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pSwordTex.GetPointer());
-
-	////pSword->AddComponent(new CSwordScript);
-	////CSwordScript* SwordScript = pSword->GetScript<CSwordScript>();
-	////pSword->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, pPlayer, 25);
-
-	//FindLayer(L"Sword")->AddGameObject(pSword);
-	//pPlayer->AddChild(pSword);
-
-	//Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"TransparencyMtrl");
-	//Ptr<CTexture> pTransparency = CResMgr::GetInst()->FindRes<CTexture>(L"Transparency");
-
-	//CGameObject* pSwordCol = new CGameObject;
-	//pSwordCol->SetName(L"SwordCol");
-	//pSwordCol->AddComponent(new CCollider2D);
-	//pSwordCol->AddComponent(new CTransform);
-	//pSwordCol->AddComponent(new CMeshRender);
-	//pSwordCol->Transform()->SetLocalPos(pSword->Transform()->GetLocalPos());
-	//pSwordCol->Transform()->SetLocalScale(pSword->Transform()->GetLocalScale());
-	//pSwordCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	//pSwordCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-	////pSwordCol->MeshRender()->SetMaterial(pMtrl);
- 	//pSwordCol->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pTransparency.GetPointer());
-	//pSwordCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	//pSwordCol->Collider2D()->SetOffsetScale(Vec3(10.f, 10.f, 10.f));      // 80.f, 200.f, 80.f ?????
-	//pSwordCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	//pSwordCol->AddComponent(new CSwordAttackAreaScript);
-	//pSwordCol->GetScript<CSwordAttackAreaScript>()->SetPlayer(pPlayer);
-
-	//pColObj->GetScript<CPlayerColScript>()->SetPlayer(pObject);
-	//pObject->GetScript<CPlayerScript>()->SetColPlayer(pColObj);
-
-	//FindLayer(L"Sword")->AddGameObject(pSwordCol, false);
 
 	//Main Camera
 	CGameObject* pMainCam = new CGameObject;
@@ -552,59 +518,6 @@ void CAssemblyAreaScene::init()
 	//	FindLayer(L"UI")->AddGameObject(pObject);
 	//}
 
-	//CGameObject* pMonster = new CGameObject;
-	//Ptr<CMeshData> pMonsterMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Idle.mdat", L"MeshData\\Monster_FM_Idle.mdat");
-
-	//pMonster = pMonsterMeshData->Instantiate();
-	//pMonster->SetName(L"FM_Monster");
-	//pMonster->FrustumCheck(false);
-
-	//pMonster->Transform()->SetLocalPos(Vec3(300.f, 0.f, 0.f));
-	//pMonster->Transform()->SetLocalScale(Vec3(4.5f, 4.5f, 4.5f));
-	//pMonster->Transform()->SetLocalRot(Vec3(XMConvertToRadians(180.f), 0.f, 0.f));
-
-	//// 몬스터 스크립트 붙여주기.
-	//pMonster->AddComponent(new CMonsterScript);
-
-	//CMonsterScript* MonsterScript = pMonster->GetScript<CMonsterScript>();
-
-	////몬스터 애니메이션
-	//MonsterScript->SetMonsterAnimationData(pMonsterMeshData->GetMesh(), 0, 0, 44);
-
-	//pMonsterMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Run.mdat", L"MeshData\\Monster_FM_Run.mdat");
-	//MonsterScript->SetMonsterAnimationData(pMonsterMeshData->GetMesh(), 1, 0, 21);
-
-	//pMonsterMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Hit.mdat", L"MeshData\\Monster_FM_Hit.mdat");
-	//MonsterScript->SetMonsterAnimationData(pMonsterMeshData->GetMesh(), 2, 0, 21);
-
-	//pMonsterMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Attack.mdat", L"MeshData\\Monster_FM_Attack.mdat");
-	//MonsterScript->SetMonsterAnimationData(pMonsterMeshData->GetMesh(), 3, 0, 50);
-
-	//pMonsterMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Die.mdat", L"MeshData\\Monster_FM_Die.mdat");
-	//MonsterScript->SetMonsterAnimationData(pMonsterMeshData->GetMesh(), 4, 0, 68);
-
-	//FindLayer(L"NPC")->AddGameObject(pMonster);
-
-	//CGameObject* pMonsterCol = new CGameObject;
-	//pMonsterCol->SetName(L"MonsterCol");
-	//pMonsterCol->AddComponent(new CCollider2D);
-	//pMonsterCol->AddComponent(new CTransform);
-	//pMonsterCol->AddComponent(new CMeshRender);
-	//pMonsterCol->Transform()->SetLocalPos(pMonster->Transform()->GetLocalPos());
-	//pMonsterCol->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	//pMonsterCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	//pMonsterCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-	//
-	//pMonsterCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	//pMonsterCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
-	//pMonsterCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	//pMonsterCol->AddComponent(new CMonsterColScript);
-	//pMonsterCol->GetScript<CMonsterColScript>()->SetMonster(pMonster);
-	////GetObj()->GetScript<CPlayerScript>()->SetColPlayer(pSwordCol);
-
-	//CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"NPC", pMonsterCol, false);
-
-
 	CGameObject* pObject = new CGameObject;
 	pObject->SetName(L"PostEffect");
 	pObject->AddComponent(new CTransform);
@@ -615,10 +528,8 @@ void CAssemblyAreaScene::init()
 	pObject->MeshRender()->SetMaterial(pMtrl, 0);
 	pObject->Transform()->SetLocalScale(Vec3(300.f, 700.f, 300.f));
 	//pObject->Transform()->SetLocalRot(Vec3(0.0f, -XM_PI, 0.0f));
-	pObject->Transform()->SetLocalPos(Vec3(0,10,1700));
-	FindLayer(L"Default")->AddGameObject(pObject);
+	pObject->Transform()->SetLocalPos(Vec3(0, 10, 1700));
+	FindLayer(L"Portal")->AddGameObject(pObject);
 
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"NPC");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Sword", L"NPC");
-
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Map");
 }

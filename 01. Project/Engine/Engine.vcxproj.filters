@@ -329,6 +329,9 @@
     <ClInclude Include="SoundMgr.h">
       <Filter>Manager</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerColScript.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -574,6 +577,9 @@
     </ClCompile>
     <ClCompile Include="SoundMgr.cpp">
       <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerColScript.cpp">
+      <Filter>04. GameObject\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -229,12 +229,10 @@ void CMonsterScript::SetMonsterPacket(sc_packet_npc_attack* p)
 
 void CMonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 {
-	if (_pOther->GetObj()->GetName() == L"SwordCol")
+	if (_pOther->GetObj()->GetName() == L"PlayerSwordCol")
 	{
 		SetHit();
 		if (GetHit()) {
-			m_fMaxHp -= 100.f;
-			cout << m_fMaxHp << endl;
 			g_net.Send_Player2MonsterCol_Packet(GetObj()->GetID(), GetID(), true, 0);
 		}
 	}
@@ -246,5 +244,5 @@ void CMonsterScript::OnCollision(CCollider2D* _pOther)
 
 void CMonsterScript::OnCollisionExit(CCollider2D* _pOther)
 {
-	if (_pOther->GetObj()->GetName() == L"SwordCol") SetHit();
+	if (_pOther->GetObj()->GetName() == L"PlayerSwordCol") SetHit();
 }

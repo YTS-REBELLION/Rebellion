@@ -17,6 +17,8 @@
 #include "ToolCamScript.h"
 #include "MonsterScript.h"
 #include "M_MonsterScript.h"
+
+#include "PlayerColScript.h"
 #include "MonsterColScript.h"
 #include"Boss.h"	
 
@@ -207,11 +209,6 @@ void CNetwork::ProcessPacket(char* ptr)
 				GameObject.find(id)->second->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 				GameObject.find(id)->second->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 
-				GameObject.find(id)->second->AddComponent(new CCollider2D);
-				GameObject.find(id)->second->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-				GameObject.find(id)->second->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-				GameObject.find(id)->second->Collider2D()->SetOffsetScale(Vec3(10.f, 10.f, 10.f));
-
 				// 플레이어 스크립트 붙여주기.
 				GameObject.find(id)->second->AddComponent(new CPlayerScript);
 				CPlayerScript* PlayerScript = GameObject.find(id)->second->GetScript<CPlayerScript>();
@@ -252,6 +249,25 @@ void CNetwork::ProcessPacket(char* ptr)
 				pSword->AddComponent(new CSwordScript);
 				pSword->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, GameObject.find(id)->second, 17);
 				GameObject.find(id)->second->AddChild(pSword);
+
+				CGameObject* pPlayerCol = new CGameObject;
+				pPlayerCol->SetName(L"PlayerCol");
+				pPlayerCol->AddComponent(new CCollider2D);
+				pPlayerCol->AddComponent(new CTransform);
+				pPlayerCol->AddComponent(new CMeshRender);
+				pPlayerCol->Transform()->SetLocalPos(GameObject.find(id)->second->Transform()->GetLocalPos());
+				pPlayerCol->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+				pPlayerCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+				pPlayerCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+
+				pPlayerCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+				pPlayerCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+				pPlayerCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+				pPlayerCol->AddComponent(new CPlayerColScript);
+				pPlayerCol->GetScript<CPlayerColScript>()->SetPlayer(GameObject.find(id)->second);
+				GameObject.find(id)->second->GetScript<CPlayerScript>()->SetColPlayer(pPlayerCol);
+
+				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", pPlayerCol, false);
 			}
 			else if (CheckType(id) == OBJECT_TYPE::FM_MONSTER) {
 				//// 몬스터

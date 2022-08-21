@@ -59,7 +59,7 @@ private:
 
 	bool				m_isMain;
 
-	bool				m_bColCheck = false;
+	bool				m_bMapCol = false;
 
 	DeadReckoning* m_DeadReckoner;
 
@@ -135,6 +135,7 @@ private:
 
 	bool questStart = false;
 
+	CGameObject* pPlayerColObject = nullptr;
 	CGameObject* pSwordColObject = nullptr;
 
 
@@ -192,6 +193,7 @@ public:
 		else m_bSkill = true;
 	}
 	void SetHit(bool _type) { m_bHit = _type; }
+	void SetMapCol(bool _type) { m_bMapCol = _type; }
 
 	void SetQuestStart(bool isStart) { questStart = isStart; }
 	void SetQuestCnt(QUEST questId) { m_iClearCnt = questId; }
@@ -212,6 +214,7 @@ public:
 	bool GetAttack() { return m_bAttack; }
 	bool GetSkill() { return m_bSkill; }
 	bool GetHit() { return m_bHit; }
+	bool GetMapCol() { return m_bMapCol; }
 	float GetSpeed() { return m_fSpeed; }
 
 	Vec3 Get_PlayerPos() { return this->Transform()->GetLocalPos(); }
@@ -221,8 +224,13 @@ public:
 	void SetID(const int& id) { m_iID = id; }
 
 	CCollider2D* m_pColObj;
-	void SetColPlayer(CGameObject* _obj) { pSwordColObject = _obj; }
+
+	void SetColPlayer(CGameObject* _obj) { pPlayerColObject = _obj; }
+	CGameObject* GetColPlayer() { return pPlayerColObject; }
+
+	void SetColSSA(CGameObject* _obj) { pSwordColObject = _obj; }
 	CGameObject* GetColSSA() { return pSwordColObject; }
+
 	bool GetSkillStrat(int _index) { return m_bSkill_Start[_index]; }
 
 	void isDash(bool _type) { m_bDash = _type; };

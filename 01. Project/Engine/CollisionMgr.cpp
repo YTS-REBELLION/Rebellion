@@ -73,19 +73,6 @@ void CCollisionMgr::CheckCollisionLayer(int _iLayerIdx1, int _iLyaerIdx2)
 
 void CCollisionMgr::CollisionLayer(const CLayer * _pLayer1, const CLayer * _pLayer2)
 {
-	
-	//if (m_bColCheck)
-	//{
-	//	m_bColCheck2 = true;
-	//	m_fColCheckTime += DT;
-	//	if (m_fColCheckTime >= 0.5f)
-	//	{
-	//		m_bColCheck2 = false;
-	//		m_fColCheckTime = 0;
-	//		m_bColCheck = false;
-	//	}
-	//}
-
 	const vector<CGameObject*>& vecObj1 = _pLayer1->GetObjects();
 	const vector<CGameObject*>& vecObj2 = _pLayer2->GetObjects();
 
@@ -190,15 +177,7 @@ bool CCollisionMgr::IsCollision(CCollider2D * _pCollider1, CCollider2D * _pColli
 	if (!_pCollider1->IsActive() || !_pCollider1->GetObj()->IsActive() || !_pCollider2->IsActive() || !_pCollider2->GetObj()->IsActive())
 		return false;
 
-	if (COLLIDER2D_TYPE::RECT == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::RECT == _pCollider2->GetColliderType())
-	{
-		return CollisionRect(_pCollider1, _pCollider2);
-	}
-	else if (COLLIDER2D_TYPE::CIRCLE == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::CIRCLE == _pCollider2->GetColliderType())
-	{
-		return CollisionCircle(_pCollider1, _pCollider2);
-	}
-	else if (COLLIDER2D_TYPE::BOX == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::BOX == _pCollider2->GetColliderType())
+	if (COLLIDER2D_TYPE::BOX == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::BOX == _pCollider2->GetColliderType())
 	{
 		return CollisionCube(_pCollider1, _pCollider2);
 	}
@@ -214,24 +193,6 @@ bool CCollisionMgr::IsCollision(CCollider2D * _pCollider1, CCollider2D * _pColli
 	{
 		return CollisionRectCircle(_pCollider1, _pCollider2);
 	}
-	else if (COLLIDER2D_TYPE::MESH == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::MESH == _pCollider2->GetColliderType())
-	{
-		return CollisionSphere(_pCollider1, _pCollider2);
-	}
-	else if (COLLIDER2D_TYPE::MESH == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::BOX == _pCollider2->GetColliderType())
-	{
-
-		//return CollisionSphere(_pCollider1, _pCollider2);
-	}
-	else if (COLLIDER2D_TYPE::BOX == _pCollider1->GetColliderType() && COLLIDER2D_TYPE::MESH == _pCollider2->GetColliderType())
-	{
-		//return CollisionSphere(_pCollider1, _pCollider2);
-	}
-	else
-	{
-		return CollisionRectCircle(_pCollider1, _pCollider2);
-	}
-
 	return false;
 }
 
@@ -383,49 +344,87 @@ bool CCollisionMgr::CollisionCircle(CCollider2D * _pCollider1, CCollider2D * _pC
 
 bool CCollisionMgr::CollisionRectCircle(CCollider2D* _pCollider1, CCollider2D* _pCollider2)
 {
-	float pos[4] = 
-	{   
-		(_pCollider2->Transform()->GetLocalPos().x + (_pCollider2->Transform()->GetLocalScale().x * _pCollider2->Collider2D()->GetOffsetScale().x) / 2),		// max_x
-		(_pCollider2->Transform()->GetLocalPos().x - (_pCollider2->Transform()->GetLocalScale().x * _pCollider2->Collider2D()->GetOffsetScale().x) / 2),		// min_x
-		(_pCollider2->Transform()->GetLocalPos().z + (_pCollider2->Transform()->GetLocalScale().z * _pCollider2->Collider2D()->GetOffsetScale().z) / 2),		// max_z	
-		(_pCollider2->Transform()->GetLocalPos().z - (_pCollider2->Transform()->GetLocalScale().z * _pCollider2->Collider2D()->GetOffsetScale().z) / 2),		// min_z
-	};
-	int X_Zone = (_pCollider1->Transform()->GetLocalPos().x < pos[1]) ? 0 :
-		(_pCollider1->Transform()->GetLocalPos().x > pos[0]) ? 2 : 1;
+	// _pCollider1 = circle
+	// _pCollider2 = rect
+	/*if (_pCollider1->GetObj()->GetName() == L"PlayerCol")
+		cout << "너 여기로 들어오니?" << endl;*/
+	float CenterX = _pCollider1->GetObj()->Transform()->GetLocalPos().x;
+	float CenterZ = _pCollider1->GetObj()->Transform()->GetLocalPos().z;
+	float Radius = _pCollider1->GetObj()->Transform()->GetLocalScale().x *_pCollider1->Collider2D()->GetOffsetScale().x;
 
-	int Z_Zone = (_pCollider1->Transform()->GetLocalPos().z < pos[3]) ? 0 :
-		(_pCollider1->Transform()->GetLocalPos().z > pos[2]) ? 2 : 1;
+	// left		: -x
+	// right	: x
+	// top		: z
+	// bottom	: -z
 
-	int N_Zone = X_Zone + 3 * Z_Zone;
+	float left		= _pCollider2->GetObj()->Transform()->GetLocalPos().x - (_pCollider2->Transform()->GetLocalScale().x * _pCollider2->Collider2D()->GetOffsetScale().x) / 2;
+	float right		= _pCollider2->GetObj()->Transform()->GetLocalPos().x + (_pCollider2->Transform()->GetLocalScale().x * _pCollider2->Collider2D()->GetOffsetScale().x) / 2;
+	float top		= _pCollider2->GetObj()->Transform()->GetLocalPos().z - (_pCollider2->Transform()->GetLocalScale().z * _pCollider2->Collider2D()->GetOffsetScale().z) / 2;
+	float bottom	= _pCollider2->GetObj()->Transform()->GetLocalPos().z + (_pCollider2->Transform()->GetLocalScale().z * _pCollider2->Collider2D()->GetOffsetScale().z) / 2;
 
-	switch (N_Zone)
+	if (left <= CenterX && CenterX < right || top <= CenterZ && CenterZ < bottom)
 	{
-	case 1:
-	case 7:
-	{
-		float disZ = fabsf(_pCollider1->Transform()->GetLocalPos().z - _pCollider2->Transform()->GetLocalPos().z);
-		_pCollider2->SetPlane(COL_PLANE::X_PLANE);
-		if (disZ <= (_pCollider1->Transform()->GetLocalScale().z * _pCollider1->Collider2D()->GetOffsetScale().z) +
-			(_pCollider2->Transform()->GetLocalScale().z * _pCollider2->Collider2D()->GetOffsetScale().z) / 2)
+		if ((left - Radius < CenterX && CenterX < right + Radius) &&
+			(top - Radius < CenterZ && CenterZ < bottom + Radius)) {
 			return true;
-		break;
+		}
 	}
-	case 3:
-	case 5:
-	{
-		float disX = fabsf(_pCollider1->Transform()->GetLocalPos().x - _pCollider2->Transform()->GetLocalPos().x);
-		_pCollider2->SetPlane(COL_PLANE::Z_PLANE);
-		if (disX <= (_pCollider1->Transform()->GetLocalScale().x * _pCollider1->Collider2D()->GetOffsetScale().x) +
-			(_pCollider2->Transform()->GetLocalScale().x * _pCollider2->Collider2D()->GetOffsetScale().x) / 2)
-			return true;
-		break;
+	else {
+		// 사각형 좌상단이 원 안에 있는지
+		if(Radius >= Vec3::Distance(Vec3(CenterX, 0.f, CenterZ), Vec3(left, 0.f, top))) return true;
+
+		// 사각형 좌하단이 원 안에 있는지
+		if (Radius >= Vec3::Distance(Vec3(CenterX, 0.f, CenterZ), Vec3(left, 0.f, bottom))) return true;
+
+		// 사각형 우상단이 원 안에 있는지
+		if (Radius >= Vec3::Distance(Vec3(CenterX, 0.f, CenterZ), Vec3(right, 0.f, top))) return true;
+
+		// 사각형 우하단이 원 안에 있는지
+		if (Radius >= Vec3::Distance(Vec3(CenterX, 0.f, CenterZ), Vec3(right, 0.f, bottom))) return true;
 	}
-	case 4:
-		return true;
-		break;
-	default:
-		break;
-	}
+	//float pos[4] = 
+	//{   
+	//	(_pCollider2->Transform()->GetLocalPos().x + (_pCollider2->Transform()->GetLocalScale().x * _pCollider2->Collider2D()->GetOffsetScale().x) / 2),		// max_x
+	//	(_pCollider2->Transform()->GetLocalPos().x - (_pCollider2->Transform()->GetLocalScale().x * _pCollider2->Collider2D()->GetOffsetScale().x) / 2),		// min_x
+	//	(_pCollider2->Transform()->GetLocalPos().z + (_pCollider2->Transform()->GetLocalScale().z * _pCollider2->Collider2D()->GetOffsetScale().z) / 2),		// max_z	
+	//	(_pCollider2->Transform()->GetLocalPos().z - (_pCollider2->Transform()->GetLocalScale().z * _pCollider2->Collider2D()->GetOffsetScale().z) / 2),		// min_z
+	//};
+	//int X_Zone = (_pCollider1->Transform()->GetLocalPos().x < pos[1]) ? 0 :
+	//	(_pCollider1->Transform()->GetLocalPos().x > pos[0]) ? 2 : 1;
+
+	//int Z_Zone = (_pCollider1->Transform()->GetLocalPos().z < pos[3]) ? 0 :
+	//	(_pCollider1->Transform()->GetLocalPos().z > pos[2]) ? 2 : 1;
+
+	//int N_Zone = X_Zone + 3 * Z_Zone;
+
+	//switch (N_Zone)
+	//{
+	//case 1:
+	//case 7:
+	//{
+	//	float disZ = fabsf(_pCollider1->Transform()->GetLocalPos().z - _pCollider2->Transform()->GetLocalPos().z);
+	//	_pCollider2->SetPlane(COL_PLANE::X_PLANE);
+	//	if (disZ <= (_pCollider1->Transform()->GetLocalScale().z * _pCollider1->Collider2D()->GetOffsetScale().z) +
+	//		(_pCollider2->Transform()->GetLocalScale().z * _pCollider2->Collider2D()->GetOffsetScale().z) / 2)
+	//		return true;
+	//	break;
+	//}
+	//case 3:
+	//case 5:
+	//{
+	//	float disX = fabsf(_pCollider1->Transform()->GetLocalPos().x - _pCollider2->Transform()->GetLocalPos().x);
+	//	_pCollider2->SetPlane(COL_PLANE::Z_PLANE);
+	//	if (disX <= (_pCollider1->Transform()->GetLocalScale().x * _pCollider1->Collider2D()->GetOffsetScale().x) +
+	//		(_pCollider2->Transform()->GetLocalScale().x * _pCollider2->Collider2D()->GetOffsetScale().x) / 2)
+	//		return true;
+	//	break;
+	//}
+	//case 4:
+	//	return true;
+	//	break;
+	//default:
+	//	break;
+	//}
 	return false;
 }
 

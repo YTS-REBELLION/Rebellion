@@ -73,7 +73,7 @@ void CPlayerScript::init()
 	pSwordCol->AddComponent(new CSwordAttackAreaScript);
 	pSwordCol->GetScript<CSwordAttackAreaScript>()->Set_Object(GetObj());
 	pSwordCol->SetActive(false);
-	GetObj()->GetScript<CPlayerScript>()->SetColPlayer(pSwordCol);
+	GetObj()->GetScript<CPlayerScript>()->SetColSSA(pSwordCol);
 	
 	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"PlayerSword", pSwordCol, false);
 
@@ -292,11 +292,6 @@ void CPlayerScript::awake()
 
 void CPlayerScript::update()
 {
-	
-	cout << "플레이어x:" << Transform()->GetLocalPos().x << endl;
-	cout << "플레이어y:" << Transform()->GetLocalPos().y << endl;
-	cout << "플레이어z:" << Transform()->GetLocalPos().z << endl;
-
 	// Z-up To Y-up
 	Vec3 vDirFront = Transform()->GetLocalDir(DIR_TYPE::FRONT);
 	Vec3 vDirUp = Transform()->GetLocalDir(DIR_TYPE::UP);
@@ -917,18 +912,6 @@ void CPlayerScript::update()
 		m_pUnderUi->Transform()->SetLocalPos(Vec3(MpUiPos.x, MpUiPos.y, MpUiPos.z));
 
 		m_pSkillMana = 0;
-		//
-
-		/*if (m_bColCheck)
-		{
-			Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl");
-			this->MeshRender()->SetMaterial(pMtrl, 0);
-		}
-
-		if (!m_bColCheck)
-		{
-
-		}*/
 
 		if (m_bMeteor2)
 		{
@@ -943,71 +926,12 @@ void CPlayerScript::update()
 			Delete_Meteor();
 		}
 
-		if (!m_bColCheck)
+		if (GetMapCol())
 		{
 			Transform()->SetLocalPos(localPos);
 		}
-		else
-		{
-			Vec3 dir_p_f = GetObj()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-			if (m_pColObj->GetObj()->GetName() == L"Map Object")
-			{
+		else Transform()->SetLocalPos(localPos);
 
-				switch (m_pColObj->GetPlane())
-				{
-				case COL_PLANE::Z_PLANE:
-					cout << "여기1 " << endl;
-					localPos.z -= dir_p_f.z * m_fSpeed * DT;
-					break;
-				case COL_PLANE::X_PLANE:
-					cout << "여기2 " << endl;
-					localPos.x -= dir_p_f.x * m_fSpeed * DT;
-					break;
-				default:
-					break;
-				}
-			}
-
-			if (m_pColObj->GetObj()->GetName() == L"M_Monster"
-				|| m_pColObj->GetObj()->GetName() == L"M_Monster2"
-				)
-			{
-				Vec3 Col_Pos_1 = localPos;
-				Vec3 Col_Pos_2 = m_pColObj->Transform()->GetLocalPos();
-				Vec3 CNormal_1 = Col_Pos_2 - Col_Pos_1;
-				CNormal_1.Normalize();
-				Vec3 CNormal_2 = -CNormal_1;
-				Vec3 Dir = WorldDir + CNormal_1;
-				Dir.Normalize();
-				int a = 0;
-
-				Vec3 Reflect_vec = WorldDir + 2 * CNormal_2 * (Dot(-WorldDir, CNormal_2));
-
-				switch (m_eDir)
-				{
-				case COL_DIR::FRONT:
-
-					Dot(-WorldDir, CNormal_2) >= 0 ?
-						localPos += Reflect_vec * m_fSpeed * DT :
-						localPos += WorldDir * m_fSpeed * DT;
-					break;
-				case COL_DIR::BACK:
-					Dot(-WorldDir, CNormal_2) >= 0 ?
-						localPos -= WorldDir * m_fSpeed * DT :
-						localPos -= Reflect_vec * m_fSpeed * DT;
-					break;
-				case COL_DIR::RIGHR:
-					break;
-				case COL_DIR::LEFT:
-					break;
-				default:
-					break;
-				}
-				localPos.y = 0.0f;
-			}
-			//pSwordColObject->Transform()->SetLocalPos(localPos);
-			Transform()->SetLocalPos(localPos);
-		}
 	}
 	else
 	{
@@ -1169,39 +1093,20 @@ void CPlayerScript::AnimationPlay(int other_id, const PLAYER_ANI_TYPE& type)
 
 void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
 {
-	if (_pOther->GetObj()->GetName() == L"FM_Monster") g_net.Send_Mon2Player_Packet(GetObj()->GetID(), true);
+	//if (_pOther->GetObj()->GetName() == L"FM_Monster") g_net.Send_Mon2Player_Packet(GetObj()->GetID(), true);
 
 	if (_pOther->GetObj()->GetName() == L"MonsterSwordCol") SetHit(true);
+
+	if (_pOther->GetObj()->GetName() == L"Map_Wall") SetMapCol(true);
 		
 }
 
 void CPlayerScript::OnCollision(CCollider2D* _pOther)
 {
-	if (_pOther->GetObj()->GetName() == L"M_Monster"
-		|| _pOther->GetObj()->GetName() == L"M_Monster2"
-		|| _pOther->GetObj()->GetName() == L"Map Object"
-		|| _pOther->GetObj()->GetName() == L"FM_Monster"
-		)
-	{
-		m_bColCheck = true;
-		//SetColObj(_pOther);
-		Vec3 dir_vec = m_pColObj->Transform()->GetLocalDir(DIR_TYPE::RIGHT);
-		g_net.Send_Mon2Player_Packet(GetObj()->GetID(), true);
-
-		cout << "충돌" << endl;
-	}
 }
 
 void CPlayerScript::OnCollisionExit(CCollider2D* _pOther)
 {
-	if (_pOther->GetObj()->GetName() == L"M_Monster"
-		|| _pOther->GetObj()->GetName() == L"M_Monster2"
-		|| _pOther->GetObj()->GetName() == L"Map Object"
-		|| _pOther->GetObj()->GetName() == L"FM_Monster")
-	{
-		m_bColCheck = false;
-	}
-
 	if (_pOther->GetObj()->GetName() == L"MonsterSwordCol") SetHit(false);
 }
 

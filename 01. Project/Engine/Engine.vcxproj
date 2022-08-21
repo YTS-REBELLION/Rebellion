@@ -232,6 +232,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="ParticleScript.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="PathMgr.h" />
+    <ClInclude Include="PlayerColScript.h" />
     <ClInclude Include="PlayerScript.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Ptr.h" />
@@ -336,6 +337,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="ParticleScript.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="PathMgr.cpp" />
+    <ClCompile Include="PlayerColScript.cpp" />
     <ClCompile Include="PlayerScript.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Quest.cpp">
