@@ -40,7 +40,7 @@ void CSwing::update()
 
 	vRot.y += DT;
 
-	Transform()->SetLocalPos(m_pPlayer->Transform()->GetLocalPos());
+	Transform()->SetLocalPos(m_pPlayer->Transform()->GetLocalPos() + Vec3{ 100,100,100 });
 	Transform()->SetLocalRot(vRot);
 
 

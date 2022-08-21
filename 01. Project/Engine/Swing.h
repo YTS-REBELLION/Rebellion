@@ -1,6 +1,3 @@
-
-
-
 #pragma once
 #include "Script.h"
 
@@ -11,7 +8,7 @@ private:
 	Ptr<CMaterial>		m_pOriginMtrl;
 	Ptr<CMaterial>		m_pCloneMtrl;
 
-	CGameObject*	m_pPlayer;
+	CGameObject* m_pPlayer;
 public:
 	virtual void awake();
 	virtual void update();

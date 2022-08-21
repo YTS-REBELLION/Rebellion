@@ -415,5 +415,6 @@ enum class Sound_Type
 	BGM,
 	BGM2,
 	HIT,
+	BGM3,
 	END
 };

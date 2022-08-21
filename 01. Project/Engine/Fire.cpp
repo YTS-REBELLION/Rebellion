@@ -38,7 +38,6 @@ void CFire::update()
 		m_pPlayer = player;
 
 	}
-
 	Vec3 PlayerRot = m_pPlayer->Transform()->GetLocalRot();
 	m_fcreate_time += DT;
 	if (m_fcreate_time >= 4.f)
@@ -62,7 +61,7 @@ void CFire::update()
 
 
 	Transform()->SetLocalPos(localPos);
-	Transform()->SetLocalRot(PlayerRot);
+	Transform()->SetLocalRot(PlayerRot+Vec3(XMConvertToRadians(90.f),XM_PI,0.f));
 
 
 }

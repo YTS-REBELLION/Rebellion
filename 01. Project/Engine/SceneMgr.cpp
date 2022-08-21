@@ -99,6 +99,7 @@ void CSceneMgr::ChangeScene(SCENE_TYPE _Type)
 		m_pCurScene = new CDungeonScene;
 		break;
 	case SCENE_TYPE::BOSSMAP:
+		m_bSound03 = true;
 		m_pCurScene = new CBossMap;
 		break;
 	case SCENE_TYPE::END:
@@ -128,7 +129,7 @@ CSceneMgr::~CSceneMgr()
 
 void CSceneMgr::LoadSound()
 {
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		CSound* temp = new CSound;
 		wstring strFullPath = CPathMgr::GetResPath();
@@ -143,6 +144,10 @@ void CSceneMgr::LoadSound()
 		case Sound_Type::HIT:
 			strFullPath += L"Sound\\sword.wav";
 			break;
+		case Sound_Type::BGM3:
+			strFullPath += L"Sound\\vol1_14_Faten.mp3";
+			break;
+			
 		
 		default:
 			break;
@@ -215,6 +220,11 @@ void CSceneMgr::update()
 	{
 		g_SoundList.find(Sound_Type::BGM)->second->Stop();
 		g_SoundList.find(Sound_Type::BGM2)->second->Play(0);
+	}
+	if (m_bSound02 && m_bSound03)
+	{
+		g_SoundList.find(Sound_Type::BGM2)->second->Stop();
+		g_SoundList.find(Sound_Type::BGM3)->second->Play(0);
 	}
 	m_pCurScene->lateupdate();
 

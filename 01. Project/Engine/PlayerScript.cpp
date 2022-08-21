@@ -307,12 +307,14 @@ void CPlayerScript::update()
 	Vec3 localPos = GetObj()->Transform()->GetLocalPos();
 	Vec3 localRot = GetObj()->Transform()->GetLocalRot();
 	CTransform* playerTrans = Transform();
-
+	
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
 	Vec3 vRot = Transform()->GetLocalRot();
 
 	CPlayerScript* player = GetObj()->GetScript<CPlayerScript>();
-
+	cout << "플레이어posX" << localPos.x << endl;
+	cout << "플레이어posY" << localPos.y << endl;
+	cout << "플레이어posZ" << localPos.z << endl;
 	if (m_isMain) {
 		if ((KEY_TAB(KEY_TYPE::KEY_W) || KEY_TAB(KEY_TYPE::KEY_A) || KEY_TAB(KEY_TYPE::KEY_S) || KEY_TAB(KEY_TYPE::KEY_D)))
 		{
@@ -1248,17 +1250,18 @@ void CPlayerScript::Swing()
 	m_pSwordStrike->SetName(L"Swing");
 	m_pSwordStrike->FrustumCheck(false);
 
-	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 100,100,100 });
+
+	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
 	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
 	m_pSwordStrike->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
 	m_pSwordStrike->AddComponent(new CSwing);
-
 	m_pSwordStrike->GetScript<CSwing>()->SetPlayer(GetObj());
+
 	m_pSwordStrike->AddComponent(new CCollider2D);
 	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
-
+	m_pSwordStrike->MeshRender()->SetDynamicShadow(true);
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
@@ -1274,17 +1277,17 @@ void CPlayerScript::Swing()
 	m_pSwordStrike->FrustumCheck(false);
 
 
-	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 100,100,-100 });
+	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() );
 	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
 	m_pSwordStrike->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
 	m_pSwordStrike->AddComponent(new CSwing2);
-
+	m_pSwordStrike->GetScript<CSwing2>()->SetPlayer(GetObj());
 
 	m_pSwordStrike->AddComponent(new CCollider2D);
 	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
-
+	m_pSwordStrike->MeshRender()->SetDynamicShadow(true);
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
@@ -1300,17 +1303,17 @@ void CPlayerScript::Swing()
 	m_pSwordStrike->FrustumCheck(false);
 
 
-	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ -100,100,-100 });
+	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos());
 	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
 	m_pSwordStrike->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
 	m_pSwordStrike->AddComponent(new CSwing3);
-
+	m_pSwordStrike->GetScript<CSwing3>()->SetPlayer(GetObj());
 
 	m_pSwordStrike->AddComponent(new CCollider2D);
 	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
-
+	m_pSwordStrike->MeshRender()->SetDynamicShadow(true);
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
@@ -1326,17 +1329,17 @@ void CPlayerScript::Swing()
 	m_pSwordStrike->FrustumCheck(false);
 
 
-	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ -100,100,100 });
+	m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() );
 	m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
 	m_pSwordStrike->Transform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
 	m_pSwordStrike->AddComponent(new CSwing4);
-
+	m_pSwordStrike->GetScript<CSwing4>()->SetPlayer(GetObj());
 
 	m_pSwordStrike->AddComponent(new CCollider2D);
 	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(30.f, 30.f, 30.f));
-
+	m_pSwordStrike->MeshRender()->SetDynamicShadow(true);
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
@@ -1383,11 +1386,11 @@ void CPlayerScript::FireBall()
 	////  오브젝트 생성
 	//// ====================
 	CGameObject* m_pSwordStrike = new CGameObject;
-	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
+	Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
 	
 
 
-	m_pSwordStrike = pPMeshData->Instantiate();
+	m_pSwordStrike = pSwordMeshData->Instantiate();
 	m_pSwordStrike->SetName(L"FireBall");
 	m_pSwordStrike->FrustumCheck(false);
 
@@ -1402,7 +1405,7 @@ void CPlayerScript::FireBall()
 	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
-
+	m_pSwordStrike->MeshRender()->SetDynamicShadow(true);
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
@@ -1431,7 +1434,7 @@ void CPlayerScript::UnleashedPower()
 	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
-
+	m_pSwordStrike->MeshRender()->SetDynamicShadow(true);
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
@@ -1455,7 +1458,7 @@ void CPlayerScript::UnleashedPower()
 	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
-
+	m_pSwordStrike->MeshRender()->SetDynamicShadow(true);
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
@@ -1479,7 +1482,7 @@ void CPlayerScript::UnleashedPower()
 	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
-
+	m_pSwordStrike->MeshRender()->SetDynamicShadow(true);
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
@@ -1503,7 +1506,7 @@ void CPlayerScript::UnleashedPower()
 	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
-
+	m_pSwordStrike->MeshRender()->SetDynamicShadow(true);
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
@@ -1527,7 +1530,7 @@ void CPlayerScript::UnleashedPower()
 	m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
-
+	m_pSwordStrike->MeshRender()->SetDynamicShadow(true);
 	// AddGameObject
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 }
@@ -1566,9 +1569,7 @@ void CPlayerScript::Meteor()
 
 	
 	CGameObject* m_pSwordStrike = new CGameObject;
-	Ptr<CMeshData> pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Player\\asdq.fbx");
-	Ptr<CTexture> pSwordTex = CResMgr::GetInst()->Load<CTexture>(L"Sword", L"Texture\\Player\\Ax.png");
-	Ptr<CTexture> SwordObject = CResMgr::GetInst()->FindRes<CTexture>(L"Sword");
+	
 
 
 	m_pSwordStrike = pSwordMeshData->Instantiate();
@@ -1585,6 +1586,7 @@ void CPlayerScript::Meteor()
 	m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 	// AddGameObject
+	m_pSwordStrike->MeshRender()->SetDynamicShadow(true);
 	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Player_Skill")->AddGameObject(m_pSwordStrike);
 
 
