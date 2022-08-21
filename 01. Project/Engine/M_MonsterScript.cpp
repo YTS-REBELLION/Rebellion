@@ -349,7 +349,7 @@ void CM_MonsterScript::Skill1()
 		pObject->AddComponent(new CCollider2D);
 		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		pObject->Collider2D()->SetOffsetScale(Vec3(0.6f, 1.f, 1.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(0.5f, 0.5f, 100.f));
 		// AddGameObject
 		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
@@ -373,7 +373,7 @@ void CM_MonsterScript::Skill1()
 		pObject->AddComponent(new CCollider2D);
 		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		pObject->Collider2D()->SetOffsetScale(Vec3(0.6f, 1.f, 1.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(0.5f, 0.5f, 100.f));
 		// AddGameObject
 		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
@@ -397,7 +397,7 @@ void CM_MonsterScript::Skill1()
 		pObject->AddComponent(new CCollider2D);
 		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		pObject->Collider2D()->SetOffsetScale(Vec3(0.6f, 1.f, 1.f));
+		pObject->Collider2D()->SetOffsetScale(Vec3(0.5f, 0.5f, 100.f));
 		// AddGameObject
 		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 			

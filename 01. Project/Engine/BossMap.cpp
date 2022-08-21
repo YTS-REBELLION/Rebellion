@@ -315,9 +315,6 @@ void CBossMap::init()
 
 	FindLayer(L"Default")->AddGameObject(pUICam);
 
-	
-
-	
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"PlayerSword", L"Monster");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"MonsterSword", L"Player");
 

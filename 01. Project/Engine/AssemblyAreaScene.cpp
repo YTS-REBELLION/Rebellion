@@ -333,8 +333,7 @@ void CAssemblyAreaScene::init()
 	//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Die.mdat", L"MeshData\\Player_FM_Die.mdat");
 	//PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 5, 0, 100);
 	//g_net.SetAniData(pMeshData->GetMesh());
-	PlayerScript->MeshRender()->SetDynamicShadow(true);
-	FindLayer(L"PlayerCollider")->AddGameObject(pPlayer);
+	FindLayer(L"Player")->AddGameObject(pPlayer);
 
 	g_net.SetObj(pPlayer);
 
@@ -369,7 +368,7 @@ void CAssemblyAreaScene::init()
 	pPlayerCol->GetScript<CPlayerColScript>()->SetPlayer(pPlayer);
 	pPlayer->GetScript<CPlayerScript>()->SetColPlayer(pPlayerCol);
 
-	FindLayer(L"Player")->AddGameObject(pPlayerCol);
+	FindLayer(L"PlayerCollider")->AddGameObject(pPlayerCol);
 
 
 	//Main Camera
