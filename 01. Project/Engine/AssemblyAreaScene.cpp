@@ -625,6 +625,20 @@ void CAssemblyAreaScene::init()
 
 	//CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"NPC", pMonsterCol, false);
 
+
+	CGameObject* pObject = new CGameObject;
+	pObject->SetName(L"PostEffect");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	// Material °ª ¼ÂÆÃ
+	Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl");
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(pMtrl, 0);
+	pObject->Transform()->SetLocalScale(Vec3(300.f, 700.f, 300.f));
+	//pObject->Transform()->SetLocalRot(Vec3(0.0f, -XM_PI, 0.0f));
+	pObject->Transform()->SetLocalPos(Vec3(0,10,1700));
+	FindLayer(L"Default")->AddGameObject(pObject);
+
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"NPC");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Sword", L"NPC");
 

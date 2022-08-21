@@ -92,6 +92,8 @@ private:
 	float m_fSkillCool02 = 0.f;
 	bool m_bSkillCool03 = false;
 	float m_fSkillCool03 = 0.f;
+	bool m_bSkillCool04 = false;
+	float m_fSkillCool04 = 0.f;
 	
 
 	Ptr<CMeshData> pPMeshData;

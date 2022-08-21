@@ -104,7 +104,7 @@ VS_DS_CHAR_OUTPUT VS_DistortionCharacter(VS_DS_CHAR_INPUT _input)
 
 float4 PS_DistortionCharacter(VS_DS_CHAR_OUTPUT _input) : SV_Target
 {
-   return float4(1.f,0.0f,0.0f,0.0f);
+   //return float4(1.f,0.0f,0.0f,0.0f);
 
     float2 vScreenUV = float2(_input.vOutPos.x / g_vResolution.x, _input.vOutPos.y / g_vResolution.y);
 
