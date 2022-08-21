@@ -8,6 +8,7 @@
 #include "Camera.h"
 
 #include "Transform.h"
+#include "Animator3D.h"
 #include "MeshRender.h"
 //#include "Collider.h"     
 
@@ -211,20 +212,20 @@ void CNetwork::ProcessPacket(char* ptr)
 				// 플레이어 스크립트 붙여주기.
 				GameObject.find(id)->second->AddComponent(new CPlayerScript);
 				CPlayerScript* PlayerScript = GameObject.find(id)->second->GetScript<CPlayerScript>();
-				//GameObject.find(id)->second->GetScript<CPlayerScript>()->init();
+				GameObject.find(id)->second->GetScript<CPlayerScript>()->init();
 
 				//GameObject.find(id)->second->GetScript<CPlayerScript>()->SetTarget(false);
 
-				PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 0, 0, 100);
+				PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), id, 0, 0, 100);
 
 				pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FP_Walk.mdat", L"MeshData\\FP_Walk.mdat");
-				PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 1, 0, 36);
+				PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), id, 1, 0, 36);
 
 				pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FP_Run.mdat", L"MeshData\\FP_Run.mdat");
-				PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 2, 0, 21);
+				PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), id, 2, 0, 21);
 
 				pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FP_Attack.mdat", L"MeshData\\FP_Attack.mdat");
-				PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 3, 0, 45);
+				PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), id, 3, 0, 45);
 
 				//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Player_FM_Skill_1.mdat", L"MeshData\\Player_FM_Skill_1.mdat");
 				//PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 4, 0, 75);
@@ -462,8 +463,9 @@ void CNetwork::ProcessPacket(char* ptr)
 				GameObject.find(other_id)->second->Transform()->SetLocalPos(packet->localPos);
 				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetBisFrist(true);
 
-				if (packet->status)
-					GameObject.find(other_id)->second->GetScript<CPlayerScript>()->AnimationPlay(other_id, PLAYER_ANI_TYPE::WALK);
+				if (packet->status) {
+					GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetOtherPlayerAniType(PLAYER_ANI_TYPE::WALK);
+				}
 			}
 			else if (CheckType(other_id) == OBJECT_TYPE::FM_MONSTER)
 			{
@@ -494,15 +496,17 @@ void CNetwork::ProcessPacket(char* ptr)
 		if (CheckType(other_id) == OBJECT_TYPE::PLAYER) {
 			if (other_id == g_myid)
 			{
-				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->AnimationPlay(other_id, PLAYER_ANI_TYPE::IDLE);
+				//GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetOtherPlayerAniType(PLAYER_ANI_TYPE::IDLE);
+				//GameObject.find(other_id)->second->GetScript<CPlayerScript>()->AnimationPlay(other_id, PLAYER_ANI_TYPE::IDLE);
 			}
 			else
 			{
-				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->AnimationPlay(other_id, PLAYER_ANI_TYPE::IDLE);
+				GameObject.find(other_id)->second->GetScript<CPlayerScript>()->SetOtherPlayerAniType(PLAYER_ANI_TYPE::IDLE);
+				//GameObject.find(other_id)->second->GetScript<CPlayerScript>()->AnimationPlay(other_id, PLAYER_ANI_TYPE::IDLE);
 			}
 		}
+		break;
 	}
-					   break;
 	case SC_PACKET_ROTATE: {
 		sc_packet_rotate* packet = reinterpret_cast<sc_packet_rotate*>(ptr);
 
@@ -517,10 +521,11 @@ void CNetwork::ProcessPacket(char* ptr)
 		}
 		else {
 			if (packet->isAttack) {
-				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::ATTACK);
+				GameObject.find(id)->second->Animator3D()->SetClipTime(3, 0.f);
+				GameObject.find(id)->second->GetScript<CPlayerScript>()->SetOtherPlayerAniType(PLAYER_ANI_TYPE::ATTACK);
 			}
 			else {
-				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::IDLE);
+				GameObject.find(id)->second->GetScript<CPlayerScript>()->SetOtherPlayerAniType(PLAYER_ANI_TYPE::IDLE);
 			}
 		}
 
@@ -536,10 +541,10 @@ void CNetwork::ProcessPacket(char* ptr)
 			if (packet->isRun) {
 				GameObject.find(id)->second->Transform()->SetLocalPos(packet->pos);
 
-				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::RUN);
+				GameObject.find(id)->second->GetScript<CPlayerScript>()->SetOtherPlayerAniType(PLAYER_ANI_TYPE::RUN);
 			}
 			else {
-				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::IDLE);
+				GameObject.find(id)->second->GetScript<CPlayerScript>()->SetOtherPlayerAniType(PLAYER_ANI_TYPE::IDLE);
 			}
 		}
 		break;

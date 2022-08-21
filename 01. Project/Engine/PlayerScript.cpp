@@ -338,7 +338,6 @@ void CPlayerScript::update()
 			PlaySound_(Sound_Type::HIT);
 			pSwordColObject->SetActive(false);
 			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
-
 		}
 
 		if (KEY_TAB(KEY_TYPE::KEY_2))
@@ -351,27 +350,26 @@ void CPlayerScript::update()
 			questStart = true;
 			g_net.Send_Dungeon_Packet(true);
 		}
-
+		if(KEY_TAB(KEY_TYPE::KEY_LSHIFT)) isDash(true);
+		else if (KEY_AWAY(KEY_TYPE::KEY_LSHIFT)) isDash(false);
 
 		if (KEY_HOLD(KEY_TYPE::KEY_W))
 		{
 			system_clock::time_point start = system_clock::now();
-			if (!m_bColCheck)
-				localPos += WorldDir * (m_bDash ? m_fSpeed * 2.0f : m_fSpeed) * DT;
+			if (!m_bDash) {
+				localPos += WorldDir * m_fSpeed * DT;
 
-			AnimationPlay(PLAYER_ANI_TYPE::WALK);
-			g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
-
-			if (KEY_HOLD(KEY_TYPE::KEY_LSHIFT))
-			{
-				isDash(true);
+				cout << "메인 클라 : " << GetID() << "는 여기 들어와서 걷는다." << endl;
+				AnimationPlay(PLAYER_ANI_TYPE::WALK);
+				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
+			}
+			else {
+				localPos += WorldDir * m_fSpeed * 2.0f * DT;
+				cout << "메인 클라 : " << GetID() << "는 여기 들어와서 뛰는중." << endl;
 				AnimationPlay(PLAYER_ANI_TYPE::RUN);
 				g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
 			}
-			else if (KEY_AWAY(KEY_TYPE::KEY_LSHIFT)) isDash(false);
-
 		}
-
 		/*else if (KEY_HOLD(KEY_TYPE::KEY_S))
 		{
 			localPos -= WorldDir * m_fSpeed * DT;
@@ -914,7 +912,7 @@ void CPlayerScript::update()
 
 		if (!m_bColCheck)
 		{
-		
+
 		}
 
 		if (m_bMeteor2)
@@ -933,7 +931,6 @@ void CPlayerScript::update()
 		if (!m_bColCheck)
 		{
 			Transform()->SetLocalPos(localPos);
-			//pSwordColObject->Transform()->SetLocalPos(localPos);
 		}
 		else
 		{
@@ -997,6 +994,37 @@ void CPlayerScript::update()
 			Transform()->SetLocalPos(localPos);
 		}
 	}
+	else
+	{
+		switch (m_sAniType)
+		{
+		case PLAYER_ANI_TYPE::IDLE:
+			AnimationPlay(GetID(), PLAYER_ANI_TYPE::IDLE);
+			cout << GetID() << " Idle" << endl;
+			break;
+		case PLAYER_ANI_TYPE::WALK:
+			AnimationPlay(GetID(), PLAYER_ANI_TYPE::WALK);
+			cout << GetID() << " Walk" << endl;
+			break;
+		case PLAYER_ANI_TYPE::RUN:
+			AnimationPlay(GetID(), PLAYER_ANI_TYPE::RUN);
+			cout << GetID() << " Run" << endl;
+			break;
+		case PLAYER_ANI_TYPE::ATTACK:
+			AnimationPlay(GetID(), PLAYER_ANI_TYPE::ATTACK);
+			break;
+		case PLAYER_ANI_TYPE::SKILL_1:
+			break;
+		case PLAYER_ANI_TYPE::SKILL_2:
+			break;
+		case PLAYER_ANI_TYPE::SKILL_3:
+			break;
+		case PLAYER_ANI_TYPE::DIE:
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 
@@ -1016,6 +1044,22 @@ void CPlayerScript::SetPlayerAnimationData(Ptr<CMesh> AniDate, const int& i, con
 
 	GetObj()->Animator3D()->SetAnimClip(&m_pVecAnimClip);
 }
+void CPlayerScript::SetPlayerAnimationData(Ptr<CMesh> AniDate, int other_id, const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
+{
+	m_pOhter_AniData.push_back(AniDate);
+
+	tMTAnimClip* tNewAnimClip = new tMTAnimClip;
+	tNewAnimClip->iStartFrame = _StartFrame;
+	tNewAnimClip->iEndFrame = _EndFrame;
+	tNewAnimClip->iFrameLength = _EndFrame - _StartFrame;
+	tNewAnimClip->dStartTime = (double)_StartFrame / (double)30;
+	tNewAnimClip->dEndTime = (double)_EndFrame / (double)30;
+	tNewAnimClip->dTimeLength = tNewAnimClip->dEndTime - tNewAnimClip->dStartTime;
+
+	m_pOhter_VecAnimClip.push_back(*tNewAnimClip);
+
+	GameObject.find(other_id)->second->Animator3D()->SetAnimClip(&m_pOhter_VecAnimClip);
+}
 
 void CPlayerScript::SetPlayerAnimation(const int& i)
 {
@@ -1024,12 +1068,12 @@ void CPlayerScript::SetPlayerAnimation(const int& i)
 	GetObj()->MeshRender()->SetMesh(m_pAniData[i]);
 }
 
-void CPlayerScript::SetPlayerAnimation(int other_id, int i)
+void CPlayerScript::SetPlayerAnimation(int other_id, const int& i)
 {
 	//if (m_pAniData.size() == 0)	return;
-	GameObject.find(other_id)->second->Animator3D()->SetBones(m_pAniData[i]->GetBones());
-	GameObject.find(other_id)->second->Animator3D()->SetAnimClip(&m_pVecAnimClip);
-	GameObject.find(other_id)->second->MeshRender()->SetMesh(m_pAniData[i]);
+	GameObject.find(other_id)->second->Animator3D()->SetBones(m_pOhter_AniData[i]->GetBones());
+	GameObject.find(other_id)->second->Animator3D()->SetAnimClip(&m_pOhter_VecAnimClip);
+	GameObject.find(other_id)->second->MeshRender()->SetMesh(m_pOhter_AniData[i]);
 }
 
 void CPlayerScript::SetOtherMovePacket(sc_packet_move* p, const float& rtt)
@@ -1078,27 +1122,27 @@ void CPlayerScript::AnimationPlay(int other_id, const PLAYER_ANI_TYPE& type)
 {
 	if (type == PLAYER_ANI_TYPE::IDLE)
 	{
-		GetObj()->Animator3D()->SetCurClip(0);
+		GameObject.find(other_id)->second->Animator3D()->SetCurClip(0);
 		SetPlayerAnimation(other_id, 0);
 	}
 	if (type == PLAYER_ANI_TYPE::WALK)
 	{
-		GetObj()->Animator3D()->SetCurClip(1);
+		GameObject.find(other_id)->second->Animator3D()->SetCurClip(1);
 		SetPlayerAnimation(other_id, 1);
 	}
 	if (type == PLAYER_ANI_TYPE::RUN)
 	{
-		GetObj()->Animator3D()->SetCurClip(2);
+		GameObject.find(other_id)->second->Animator3D()->SetCurClip(2);
 		SetPlayerAnimation(other_id, 2);
 	}
 	if (type == PLAYER_ANI_TYPE::ATTACK)
 	{
-		GetObj()->Animator3D()->SetCurClip(3);
+		GameObject.find(other_id)->second->Animator3D()->SetCurClip(3);
 		SetPlayerAnimation(other_id, 3);
 	}
 	if (type == PLAYER_ANI_TYPE::SKILL_1)
 	{
-		GetObj()->Animator3D()->SetCurClip(4);
+		GameObject.find(other_id)->second->Animator3D()->SetCurClip(4);
 		SetPlayerAnimation(other_id, 4);
 	}
 	if (type == PLAYER_ANI_TYPE::DIE)

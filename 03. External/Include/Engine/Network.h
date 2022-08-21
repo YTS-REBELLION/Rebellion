@@ -67,6 +67,8 @@ public:
 	void Send_Dungeon_Packet(bool isEnter);
 	void Send_bossmap_Packet(bool isEnter);
 	void Send_PlayerDieTest_Packet(const int& id);
+	void Send_Mon2Player_Packet(const int& playerId, bool isCol);
+
 
 	void Send_MobToMobCol_Packet(const int& monsterId, const int& other_monsterId, bool isCol, MONSTER_MOVE moveType);
 	void Send_Teleport_Packet(const int& playerId, Vec3 localPos);

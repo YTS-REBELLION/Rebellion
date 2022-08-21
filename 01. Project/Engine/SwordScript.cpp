@@ -31,13 +31,16 @@ void CSwordScript::update()
 
 void CSwordScript::Set_Sword_To_Fbx()
 {
-	if (m_pTargetObject->GetScript<CPlayerScript>()->GetMain())
+	//if (m_pTargetObject->GetScript<CPlayerScript>()->GetMain())
 	{
+		//m_pTargetBone->vecKeyFrame.size()
 		Vec3 vTrans = m_pTargetBone->vecKeyFrame[m_pTargetObject->Animator3D()->GetFrameIdx()].vTranslate;
 		Vec4 qRot = m_pTargetBone->vecKeyFrame[m_pTargetObject->Animator3D()->GetFrameIdx()].qRot;
 		Vec3 vRot;
+		int id = m_pTargetObject->GetScript<CPlayerScript>()->GetID();
 
-		//cout << "Main : " << m_pTargetBone->vecKeyFrame.size() << endl;
+		//cout << m_pTargetObject->Animator3D()->GetFrameIdx() << endl;
+		//cout <<"ID :" << id << ",  Main : " << m_pTargetBone->vecKeyFrame.size() << endl;
 		switch (m_eType)
 		{
 		case PERSON_OBJ_TYPE::WARRIOR_PLAYER: {
@@ -62,38 +65,38 @@ void CSwordScript::Set_Sword_To_Fbx()
 		Transform()->SetQuaternion(qRot);
 		Transform()->SetLocalRot(vRot);
 	}
+	//else
+	//{
+	//	//Vec3 vTrans = m_pTargetBone->vecKeyFrame[m_pTargetObject->Animator3D()->GetFrameIdx()].vTranslate;
+	//	//Vec4 qRot = m_pTargetBone->vecKeyFrame[m_pTargetObject->Animator3D()->GetFrameIdx()].qRot;
+	//	Vec3 vRot;
 
-	else
-	{
-		//Vec3 vTrans = m_pTargetBone->vecKeyFrame[m_pTargetObject->Animator3D()->GetFrameIdx()].vTranslate;
-		//Vec4 qRot = m_pTargetBone->vecKeyFrame[m_pTargetObject->Animator3D()->GetFrameIdx()].qRot;
-		Vec3 vRot;
+	//	int id = m_pTargetObject->GetScript<CPlayerScript>()->GetID();
+	//	cout << "ID :" << id << ",  Other : " << m_pTargetBone->vecKeyFrame.size() << endl;
+	//	switch (m_eType)
+	//	{
+	//	case PERSON_OBJ_TYPE::WARRIOR_PLAYER: {
+	//		vRot = Vec3(0.f, 0.f, XMConvertToRadians(-90.f));
+	//		break;
+	//	}
+	//	case PERSON_OBJ_TYPE::WIZARD_PLAYER:
+	//		break;
+	//	case PERSON_OBJ_TYPE::M_MONSTER:
+	//		vRot = Vec3(0.f, 0.f, XMConvertToRadians(90.f));
+	//		break;
+	//	case PERSON_OBJ_TYPE::FM_MONSTER:
+	//		vRot = Vec3(0.f, 0.f, XMConvertToRadians(45.f));
+	//		break;
+	//	case PERSON_OBJ_TYPE::BOSS:
+	//		break;
+	//	default:
+	//		break;
+	//	}
 
-		//cout << "Other : " << m_pTargetBone->vecKeyFrame.size() << endl;
-		switch (m_eType)
-		{
-		case PERSON_OBJ_TYPE::WARRIOR_PLAYER: {
-			vRot = Vec3(0.f, 0.f, XMConvertToRadians(-90.f));
-			break;
-		}
-		case PERSON_OBJ_TYPE::WIZARD_PLAYER:
-			break;
-		case PERSON_OBJ_TYPE::M_MONSTER:
-			vRot = Vec3(0.f, 0.f, XMConvertToRadians(90.f));
-			break;
-		case PERSON_OBJ_TYPE::FM_MONSTER:
-			vRot = Vec3(0.f, 0.f, XMConvertToRadians(45.f));
-			break;
-		case PERSON_OBJ_TYPE::BOSS:
-			break;
-		default:
-			break;
-		}
-
-		//Transform()->SetLocalPos(vTrans);
-		//Transform()->SetQuaternion(qRot);
-		Transform()->SetLocalRot(vRot);
-	}
+	//	//Transform()->SetLocalPos(vTrans);
+	//	//Transform()->SetQuaternion(qRot);
+	//	Transform()->SetLocalRot(vRot);
+	//}
 }
 
 void CSwordScript::Set_FM_Player()

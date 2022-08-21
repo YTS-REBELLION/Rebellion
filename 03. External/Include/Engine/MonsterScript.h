@@ -47,6 +47,8 @@ private:
 
 	CCollider2D* m_pColObj;
 	bool		m_bColCheck = false;
+	CGameObject* pMonsterColObject = nullptr;
+
 
 public:
 	void init();
@@ -97,6 +99,8 @@ public:
 	bool GetHit() const { return m_bHit; }
 
 	void SetColObj(CCollider2D* _obj) { m_pColObj = _obj; }
+	void SetColMonster(CGameObject* _obj) { pMonsterColObject = _obj; }
+	CGameObject* GetColMonster() { return pMonsterColObject; }
 public:
 	CLONE(CMonsterScript);
 
