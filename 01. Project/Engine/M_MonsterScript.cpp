@@ -10,7 +10,7 @@
 #include"Fire.h"
 
 CM_MonsterScript::CM_MonsterScript()
-	: CScript((UINT)SCRIPT_TYPE::MONSTERSCRIPT)
+	: CScript((UINT)SCRIPT_TYPE::BOSSMONSTERSCRIPT)
 	, m_pOriginMtrl(nullptr)
 	, m_pCloneMtrl(nullptr)
 	, m_Is_Move(false)

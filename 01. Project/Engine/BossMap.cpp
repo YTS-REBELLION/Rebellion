@@ -109,7 +109,7 @@ void CBossMap::init()
 	pPlayer->SetName(L"FM_Player");
 	pPlayer->FrustumCheck(false);
 
-	pPlayer->Transform()->SetLocalScale(Vec3(1.0f, 1.0f, 1.0f));
+	pPlayer->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 
 

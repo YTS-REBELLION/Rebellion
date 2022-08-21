@@ -84,7 +84,7 @@ private:
 	int d_myid;
 	int monsterdie = 0;
 	friend class CLayer;
-	
+	bool isBossCreate = false;
 };
 
 

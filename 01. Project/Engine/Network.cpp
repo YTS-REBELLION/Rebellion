@@ -320,8 +320,12 @@ void CNetwork::ProcessPacket(char* ptr)
 				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", pMonsterCol, false);
 			}
 			else if (CheckType(id) == OBJECT_TYPE::BOSS) {
+
 				//// 몬스터
-				cout << "보스 몬스터 생성" << endl;
+				
+				if (isBossCreate) return;
+				else
+					cout << "보스 몬스터 생성" << endl;
 
 				CGameObject* pM_Monster = new CGameObject;
 				Ptr<CMeshData>pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_M_Idle.mdat", L"MeshData\\Monster_M_Idle.mdat");
@@ -365,6 +369,7 @@ void CNetwork::ProcessPacket(char* ptr)
 				GameObject.find(id)->second->GetScript<CM_MonsterScript>()->SetLerpPos(Vec3(packet->x, packet->y, packet->z));
 
 				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Monster", GameObject.find(id)->second, false);
+				isBossCreate = true;
 			}
 		}
 		break;
@@ -547,8 +552,11 @@ void CNetwork::ProcessPacket(char* ptr)
 		// packet -> int targetId, bool isTarget
 		if (packet->monster_id == 141)
 		{
-			GameObject.find(packet->monster_id)->second->GetScript<CM_MonsterScript>()->SetTarget(packet->isTarget);
-			GameObject.find(packet->monster_id)->second->GetScript<CM_MonsterScript>()->SetTargetID(packet->id);
+
+			if (GameObject.find(packet->monster_id)->second->GetScript<CM_MonsterScript>() != nullptr) {
+				GameObject.find(packet->monster_id)->second->GetScript<CM_MonsterScript>()->SetTarget(packet->isTarget);
+				GameObject.find(packet->monster_id)->second->GetScript<CM_MonsterScript>()->SetTargetID(packet->id);
+			}
 		}
 		else {
 			GameObject.find(packet->monster_id)->second->GetScript<CMonsterScript>()->SetTarget(packet->isTarget);

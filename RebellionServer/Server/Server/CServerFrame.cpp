@@ -483,6 +483,13 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		_objects[NPC_ID_START + 40].SetIsAttack(false);
 		_objects[NPC_ID_START + 40].SetDunGeonEnter(false);
 		_objects[NPC_ID_START + 40].SetBossMapEnter(true);
+	
+		
+		for (auto& users : _enterRoom) {
+			_sender->SendPutObjectPacket(_objects[users].GetSocket(), 141,
+				_objects[141].GetPos().x, _objects[141].GetPos().y, _objects[141].GetPos().z,
+				_objects[141].GetMyType());
+		}
 
 
 		for (int i = 0; i < _enterRoom.size(); ++i) {
@@ -780,6 +787,7 @@ void CServerFrame::ActivateNPC(int id)
 				AddTimer(id, EV_BOSS_MOVE, system_clock::now() + 1s);
 		}
 		else {
+			cout << "일반 몬스터 액티베이트" << endl;
 			if (true == CAS(&_objects[id]._status, ST_SLEEP, ST_ACTIVE))
 				AddTimer(id, EV_MONSTER_MOVE, system_clock::now() + 1s);
 		}
@@ -1209,19 +1217,24 @@ void CServerFrame::Do_move_BossMap(const short& id, const char& dir, Vec3& local
 	time_point<system_clock> curTime = system_clock::now();
 	
 	
-	ActivateNPC(141);
+	if (_objects[141]._status == ST_ACTIVE) {
+		_objects[141].SetTargetID(id);
+		_objects[141].SetTarget(true);
+
+
+		_sender->SendTargetPlayerPacket(_objects[id].GetSocket(), _objects[141].GetTargetID(), true, 141);
+	}
+		_objects[id].ClientLock();
+
+		std::unordered_set<int> oldViewList = _objects[id].BossMapGetViewList();
+		_objects[id].ClientUnLock();
+		std::unordered_set<int> newViewList;
 	
+
+	if (ST_SLEEP == _objects[141]._status && fullEnter) {
+		ActivateNPC(141);
+	}
 	
-	/*_objects[141].SetTargetID(id);
-	_objects[141].SetTarget(true);
-	_sender->SendTargetPlayerPacket(_objects[id].GetSocket(), _objects[141].GetTargetID(), true, 141);*/
-
-	_objects[id].ClientLock();
-
-	std::unordered_set<int> oldViewList = _objects[id].BossMapGetViewList();
-	_objects[id].ClientUnLock();
-	std::unordered_set<int> newViewList;
-
 
 	for (auto& cl : _objects) {
 		if (false == IsNear(cl.GetID(), id)) continue;
@@ -1235,8 +1248,10 @@ void CServerFrame::Do_move_BossMap(const short& id, const char& dir, Vec3& local
 	for (auto& np : newViewList) {
 		if (0 == oldViewList.count(np)) {	// Object가 시야에 새로 들어왔을 때.
 			//if (_objects[id]._objectsDie == true) continue;
+
+			if (id == 141) return;
 			_objects[id].ClientLock();
-			_objects[id].InsertViewList(np);
+			_objects[id].BossMapInsertViewList(np);
 			_objects[id].ClientUnLock();
 			cout << "do_move 풋오브 1" << endl;
 			_sender->SendPutObjectPacket(_objects[id].GetSocket(), np,
@@ -1245,8 +1260,8 @@ void CServerFrame::Do_move_BossMap(const short& id, const char& dir, Vec3& local
 
 			if (false == IsPlayer(np)) continue;
 			_objects[np].ClientLock();
-			if (0 == _objects[np].GetViewListCount(id)) {
-				_objects[np].InsertViewList(id);
+			if (0 == _objects[np].BossMapGetViewListCount(id)) {
+				_objects[np].BossMapInsertViewList(id);
 				_objects[np].ClientUnLock();
 				//cout << "do_move 2" << endl;
 				cout << "do_move 풋오브 2" << endl;
@@ -1265,7 +1280,7 @@ void CServerFrame::Do_move_BossMap(const short& id, const char& dir, Vec3& local
 		else {							// Object가 계속 시야에 존재하고 있을 떄.
 			if (false == IsPlayer(np)) continue;
 			_objects[np].ClientLock();
-			if (0 != _objects[np].GetViewListCount(id)) {
+			if (0 != _objects[np].BossMapGetViewListCount(id)) {
 				_objects[np].ClientUnLock();
 				_sender->SendMovePacket(_objects[np].GetSocket(), id, _objects[id].GetPos(),
 					_objects[id].GetLook().x, _objects[id].GetLook().y, _objects[id].GetLook().z, true,
@@ -1273,7 +1288,7 @@ void CServerFrame::Do_move_BossMap(const short& id, const char& dir, Vec3& local
 			}
 			else {
 				_objects[np].ClientUnLock();
-				_objects[np].InsertViewList(id);
+				_objects[np].BossMapInsertViewList(id);
 				//cout << "do_move 3" << endl;
 				cout << "do_move 풋오브 3" << endl;
 
@@ -1292,6 +1307,7 @@ void CServerFrame::BossMove(int npc_id)
 {
 	cout << "보스가 움직인다" << endl;
 	int player_id = _objects[npc_id].GetTargetID();
+
 
 	if (true == IsPlayer(npc_id)) {
 		std::cout << "ID :" << npc_id << " is not NPC!!\n";
@@ -1398,7 +1414,7 @@ void CServerFrame::BossMove(int npc_id)
 				if (cl._objectsDie == true) continue;
 				cl.ClientLock();
 				if (ST_ACTIVE == cl._status) {
-					_sender->SendNPCAttackPacket(cl.GetSocket(), npc_id, Pos.x, Pos.z, true);
+					//_sender->SendNPCAttackPacket(cl.GetSocket(), npc_id, Pos.x, Pos.z, true);
 				}
 				cl.ClientUnLock();
 			}
@@ -1456,12 +1472,11 @@ void CServerFrame::Do_stop(const short& id, const bool& isMoving)
 {
 	
 	unordered_set<int> temp_vl;
-	if (_objects[id].GetDunGeonEnter()) {
-		temp_vl = _objects[id].DungeonGetViewList();
-	}
-	else {
-		temp_vl = _objects[id].GetViewList();
-	}
+
+	if (_objects[id].GetDunGeonEnter()) temp_vl = _objects[id].DungeonGetViewList();
+	else if (_objects[id].GetBossMapEnter()) temp_vl = _objects[id].BossMapGetViewList();
+	else temp_vl = _objects[id].GetViewList();
+
 	unordered_set<int> old_viewList = temp_vl;
     
 
