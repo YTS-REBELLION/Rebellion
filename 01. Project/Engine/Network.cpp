@@ -702,10 +702,10 @@ void CNetwork::ProcessPacket(char* ptr)
 			// 성준아 스킬 해줭
 		case PLAYER_ANI_TYPE::SKILL_1: {
 			GameObject.find(id)->second->GetScript<CPlayerScript>()->SwordStrike();
-			if (packet->isSkill)
+			/*if (packet->isSkill)
 				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::SKILL_1);
 			else
-				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::IDLE);
+				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::IDLE);*/
 
 
 			break;
@@ -713,10 +713,10 @@ void CNetwork::ProcessPacket(char* ptr)
 		case PLAYER_ANI_TYPE::SKILL_2: {
 			GameObject.find(id)->second->GetScript<CPlayerScript>()->FireBall();
 
-			if (packet->isSkill)
+			/*if (packet->isSkill)
 				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::SKILL_1);
 			else
-				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::IDLE);
+				GameObject.find(id)->second->GetScript<CPlayerScript>()->AnimationPlay(id, PLAYER_ANI_TYPE::IDLE);*/
 			break;
 		}
 		}

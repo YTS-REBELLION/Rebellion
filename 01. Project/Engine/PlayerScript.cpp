@@ -485,7 +485,7 @@ void CPlayerScript::update()
 			cout << "파이어볼!" << endl;
 			FireBall();
 			g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_2, true);
-			g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_2, false);
+			//g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_2, false);
 			fdamage = 20.f;
 			m_pSkillMana = 10;
 			m_bSkillCool02 = true;
