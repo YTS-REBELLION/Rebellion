@@ -11,7 +11,8 @@ public:
 public:
 	void SendLoginOkPacket(SOCKET s, int id, float xPos, float yPos, float zPos, short damage, short c_hp, short m_hp, short level, short c_exp, short m_exp);
 	void SendLoginFailPacket(SOCKET s);
-	void SendLeaveObjectPacket(SOCKET s, int id, int objType);
+	void SendLeaveObjectPacket(SOCKET s, int playerId, int monsterid, int monsterdieCnt);
+	void SendLeaveObjectPacket(SOCKET s, int playerId);
 	void SendNPCAttackPacket(SOCKET s, int id, float x, float z,bool isAttack);
 	void SendMovePacket(SOCKET s, int mover, Vec3 localPos, float dx, float dy, float dz, bool status, std::chrono::time_point<std::chrono::system_clock> time);
 	void SendMovePacket(SOCKET s, int mover, Vec3 localPos);
@@ -26,7 +27,7 @@ public:
 	void SendDummyPacket(SOCKET s, int id, unsigned time);
 	void SendRotatePacket(SOCKET s, int mover, Vec3 rotate);
 	void SendRunPacket(SOCKET s, int id, Vec3 pos, bool isRun);
-	void SendMonsterDiePacket(SOCKET s, const int& monsterid);
+	void SendMonsterDiePacket(SOCKET s, const int& playerId, const int& monsterid);
 	void SendMonsterDirPacket(SOCKET s, const int& targetId, const int& id, Vec3 vRot);
 	void SendTargetPlayerPacket(SOCKET s, const int& id, bool isTarget , const int& monster_id);
 
@@ -36,6 +37,8 @@ public:
 	void Send_WaitRoom_Packet(SOCKET s, size_t enterNum);
 	void SendQuestStartPacket(SOCKET s, int id, bool isStart);
 	void SendSkillPacket(SOCKET s, const int& id, PLAYER_ANI_TYPE anitype,bool isSkill);
+
+	void SendBossMapPacket(SOCKET s, const int& playerId, bool isEnter);
 
 private:
 	void SendPacket(SOCKET s, void* buff);

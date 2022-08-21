@@ -197,8 +197,10 @@ public:
 	}
 	void SetQuestStart(bool isStart) { questStart = isStart; }
 	void SetQuestCnt(QUEST questId) { m_iClearCnt = questId; }
+	QUEST GetQuestCnt() { return m_iClearCnt; }
 	void SetQuestView(bool isQuest) { m_questView = isQuest; }
 	void QuestDone(QUEST questNum);
+	void QuestExplane(QUEST questNum, int count);
 
 	void SwordStrike();
 	void MegaSlash();

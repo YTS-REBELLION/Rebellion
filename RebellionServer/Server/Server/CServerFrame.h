@@ -91,7 +91,9 @@ public:
 
 	void ComeBackScene(int id);
 	void Do_move_Dungeon(const short& id, const char& dir, Vec3& localPos, const float& rotate);
+	void Do_move_BossMap(const short& id, const char& dir, Vec3& localPos, const float& rotate);
 
+	void BossMove(int id);
 	int			monsterdieCnt = 0;
 	bool		queststart = false;
 

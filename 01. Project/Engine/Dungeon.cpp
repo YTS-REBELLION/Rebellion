@@ -35,42 +35,42 @@
 
 void CDungeonScene::CreateMap()
 {
-	//Ptr<CMeshData> pMapMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Dungeon_Map.mdat", L"MeshData\\Dungeon_Map.mdat");
+	Ptr<CMeshData> pMapMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Dungeon_Map.mdat", L"MeshData\\Dungeon_Map.mdat");
 
-	//CGameObject* Map = new CGameObject;
+	CGameObject* Map = new CGameObject;
 
-	//Map->SetName(L"Map_Object");
-	//Map = pMapMeshData->Instantiate();
-	//Map->FrustumCheck(false);
+	Map->SetName(L"Map_Object");
+	Map = pMapMeshData->Instantiate();
+	Map->FrustumCheck(false);
 
-	//// Transform 설정
-	//Map->Transform()->SetLocalPos(Vec3(0.f, -2.f, 0.f));
-	//Map->Transform()->SetLocalScale(Vec3(2.3f, 2.3f, 2.0f));
-	//Map->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.0f), XMConvertToRadians(180.0f), 0.f));
-	//Map->MeshRender()->SetDynamicShadow(true);
-	//FindLayer(L"Map")->AddGameObject(Map);
+	// Transform 설정
+	Map->Transform()->SetLocalPos(Vec3(0.f, -2.f, 0.f));
+	Map->Transform()->SetLocalScale(Vec3(2.3f, 2.3f, 2.0f));
+	Map->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.0f), XMConvertToRadians(180.0f), 0.f));
+	Map->MeshRender()->SetDynamicShadow(true);
+	FindLayer(L"Map")->AddGameObject(Map);
 
 
 	// 맵 콜라이더 만들기
 
 	// 더미
-	CGameObject *pObject = new CGameObject;
-	pObject->SetName(L"Map_Wall");
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CMeshRender);
-	// Transform 설정
-	pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-	pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	pObject->AddComponent(new CCollider2D);
-	pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
-	pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	pObject->Collider2D()->SetOffsetScale(Vec3(100.f, 500.f, 800.f));
-	// MeshRender 설정
-	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
-	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	//CGameObject *pObject = new CGameObject;
+	//pObject->SetName(L"Map_Wall");
+	//pObject->AddComponent(new CTransform);
+	//pObject->AddComponent(new CMeshRender);
+	//// Transform 설정
+	//pObject->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	//pObject->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	//pObject->AddComponent(new CCollider2D);
+	//pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::BOX);
+	//pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	//pObject->Collider2D()->SetOffsetScale(Vec3(100.f, 500.f, 800.f));
+	//// MeshRender 설정
+	//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	//pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
 
-	// AddGameObject
-	FindLayer(L"Map")->AddGameObject(pObject);
+	//// AddGameObject
+	//FindLayer(L"Map")->AddGameObject(pObject);
 }
 
 void CDungeonScene::init()
@@ -113,11 +113,13 @@ void CDungeonScene::init()
 	Ptr<CMeshData> pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FM_Idle.mdat", L"MeshData\\FM_Idle.mdat");
 
 	CGameObject* pPlayer = new CGameObject;
+
+
 	pPlayer = pMeshData->Instantiate();
 	pPlayer->SetName(L"FM_Player");
 	pPlayer->FrustumCheck(false);
 
-	pPlayer->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	//pPlayer->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
 	pPlayer->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 	pPlayer->AddComponent(new CCollider2D);
@@ -237,7 +239,7 @@ void CDungeonScene::init()
 
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Sword", L"Monster");
 	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player", L"Monster");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player");
+	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster", L"Player");
 
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player_Skill", L"Monster");
 

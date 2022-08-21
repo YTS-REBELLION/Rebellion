@@ -25,6 +25,7 @@ void CMeteor::awake()
 
 void CMeteor::update()
 {
+
 	m_fcreate_time += DT;
 	if (m_fcreate_time >= 5.f)
 	{

@@ -94,14 +94,21 @@ void CBoss::update()
 	const vector<CGameObject*>& vecObject = CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetObjects();
 	Vec3 vRot;
 
-	for (auto client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
-	{
-		if (client->GetScript<CPlayerScript>()->GetMain())
-			m_pPlayer = client;
+	if (m_isTarget) {
+		for (auto& client : CSceneMgr::GetInst()->GetCurScene()->GetLayer(1)->GetParentObj())
+		{
+			if (client->GetScript<CPlayerScript>()->GetID() == m_targetId)
+			{
+				m_pPlayer = client;
+			}
+		}
+		m_fAngle = atan2(localPos.x - m_pPlayer->Transform()->GetLocalPos().x, localPos.z - m_pPlayer->Transform()->GetLocalPos().z) * (180 / XM_PI) * 0.0174532925f;
 	}
 
-	m_fAngle = atan2(localPos.x - m_pPlayer->Transform()->GetLocalPos().x, localPos.z - m_pPlayer->Transform()->GetLocalPos().z) * (180 / XM_PI) * 0.0174532925f;//acosf(Dot(vDirFront, Monster_Nor));
 
+	vRot = Vec3(localRot.x, m_fAngle, localRot.z);
+
+	Monster->Transform()->SetLocalRot(vRot);
 	//Transform()->SetLocalRot(Vec3(-m_fAngle+ XMConvertToRadians(-90.f), localRot.y, localRot.z));
 
 

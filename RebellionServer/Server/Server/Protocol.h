@@ -49,7 +49,7 @@ const char	SC_PACKET_PLAYER_DIE = 3;
 
 const char  SC_PACKET_PUT_OBJECT = 4;
 const char  SC_PACKET_LEAVE_OBJECT = 5;
-
+const char	SC_PACKET_BOSSMAP = 6;
 const char	SC_PACKET_MOVE = 8;
 const char	SC_PACKET_STOP = 9;
 const char	SC_PACKET_PLAYER_ATTACK = 10;
@@ -133,7 +133,8 @@ struct sc_packet_leave {
 	char size;
 	char type;
 	int id;
-	unsigned char objectType;
+	int playerId;
+	int monsterdieCnt;
 };
 
 struct sc_packet_chat {
@@ -153,7 +154,8 @@ struct sc_packet_stat_change {
 	short m_exp;
 };
 
-struct sc_packet_npc_die {
+struct sc_packet_npc_die 
+{
 	char size;
 	char type;
 	int id;
@@ -226,6 +228,7 @@ struct sc_packet_monsterdie {
 	char size;
 	char type;
 	int id;
+	int playerId;
 	
 };
 struct sc_packet_monsterdir {
@@ -272,6 +275,12 @@ struct sc_packet_skill {
 	int id;
 	bool isSkill;
 	PLAYER_ANI_TYPE anitype;
+};
+struct sc_packet_bossmap {
+	char size;
+	char type;
+	int id;
+	bool isEnter;
 };
 //---------------------------------------
 
