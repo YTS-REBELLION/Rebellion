@@ -287,36 +287,6 @@ void CDungeonScene::init()
 
 	Ptr<CTexture> pColor = CResMgr::GetInst()->Load<CTexture>(L"Tile", L"Texture\\Tile\\TILE_01.tga");
 	Ptr<CTexture> pNormal = CResMgr::GetInst()->Load<CTexture>(L"Tile_n", L"Texture\\Tile\\TILE_01_N.tga");
-	// ==================
-	// Map 오브젝트 생성
-	// ==================
-
-	for (int j = 0; j < 5; ++j)
-	{
-		for (int i = 0; i < 5; ++i)
-		{
-			CGameObject* pObject = new CGameObject;
-			pObject->SetName(L"Map Object");
-			pObject->AddComponent(new CTransform);
-			pObject->AddComponent(new CMeshRender);
-
-			// Transform 설정
-			pObject->Transform()->SetLocalPos(Vec3(i * 1000.f - 2000.f, 0.f, j * 1000.f - 1000.f));
-			pObject->Transform()->SetLocalScale(Vec3(1000.f, 1000.f, 1.f));
-			pObject->Transform()->SetLocalRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
-
-			// MeshRender 설정
-			pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-			pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
-			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
-
-			// AddGameObject
-			FindLayer(L"Default")->AddGameObject(pObject);
-
-		}
-	}
-
 
 	CGameObject* pPortalObject = new CGameObject;
 	pPortalObject->SetName(L"PostEffect");
@@ -341,8 +311,4 @@ void CDungeonScene::init()
 
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player_Skill", L"Monster");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster_Skill", L"Player");
-
-
-
-
 }

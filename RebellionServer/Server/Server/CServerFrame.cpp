@@ -1750,31 +1750,31 @@ void CServerFrame::CreateMonster()
 	}
 
 	// LV1
-	_objects[NPC_ID_START].SetPos(Vec3(150.f, 0.f, 1200.f));
-	_objects[NPC_ID_START + 1].SetPos(Vec3(-120.f, 0.f, 1600.f));
-	_objects[NPC_ID_START + 2].SetPos(Vec3(-150.f, 0.f, 2050.f));
+	_objects[NPC_ID_START].SetPos(Vec3(86.f, 0.f, 870.f));
+	_objects[NPC_ID_START + 1].SetPos(Vec3(40.f, 0.f, 600.f));
+	_objects[NPC_ID_START + 2].SetPos(Vec3(50.f, 0.f, 1270.f));
 	//
 	//LV2
-	_objects[NPC_ID_START + 3].SetPos(Vec3(-3650.f, 0.f, 3450.f));
-	_objects[NPC_ID_START + 4].SetPos(Vec3(-2800.f, 0.f, 3750.f));
-	_objects[NPC_ID_START + 5].SetPos(Vec3(-3000.f, 0.f, 3450.f));
-	_objects[NPC_ID_START + 6].SetPos(Vec3(-3450.f, 0.f, 3600.f));
+	_objects[NPC_ID_START + 3].SetPos(Vec3(-970.f, 0.f, 2000.f));
+	_objects[NPC_ID_START + 4].SetPos(Vec3(-1150.f, 0.f, 1850.f));
+	_objects[NPC_ID_START + 5].SetPos(Vec3(-1550.f, 0.f, 1900.f));
+	_objects[NPC_ID_START + 6].SetPos(Vec3(-1985.f, 0.f, 1840.f));
 
 	//// 중앙 홀 몬스터
 
 	//// LV3
-	_objects[NPC_ID_START + 7].SetPos(Vec3(-6000.f, 0.f, 3200.f));
-	_objects[NPC_ID_START + 8].SetPos(Vec3(-5800.f, 0.f, 3200.f));
-	_objects[NPC_ID_START + 9].SetPos(Vec3(-5450.f, 0.f, 3500.f));
-	_objects[NPC_ID_START + 10].SetPos(Vec3(-5800.f, 0.f, 3800.f));
-	_objects[NPC_ID_START + 11].SetPos(Vec3(-6000.f, 0.f, 3800.f));
+	_objects[NPC_ID_START + 7].SetPos(Vec3(-2700.f, 0.f, 1700.f));
+	_objects[NPC_ID_START + 8].SetPos(Vec3(-3200.f, 0.f, 1650.f));
+	_objects[NPC_ID_START + 9].SetPos(Vec3(-3350.f, 0.f, 1900.f));
+	_objects[NPC_ID_START + 10].SetPos(Vec3(-2990.f, 0.f, 2170.f));
+	_objects[NPC_ID_START + 11].SetPos(Vec3(-2750.f, 0.f, 2170.f));
 
 	// LV4
-	_objects[NPC_ID_START + 12].SetPos(Vec3(-6200.f, 0.f, 7100.f));
-	_objects[NPC_ID_START + 13].SetPos(Vec3(-6400.f, 0.f, 7500.f));
-	_objects[NPC_ID_START + 14].SetPos(Vec3(-6200.f, 0.f, 7900.f));
-	_objects[NPC_ID_START + 15].SetPos(Vec3(-6400.f, 0.f, 8300.f));
-	_objects[NPC_ID_START + 16].SetPos(Vec3(-6200.f, 0.f, 8700.f));
+	_objects[NPC_ID_START + 12].SetPos(Vec3(-3550.f, 0.f, 3400.f));
+	_objects[NPC_ID_START + 13].SetPos(Vec3(-3550.f, 0.f, 3600.f));
+	_objects[NPC_ID_START + 14].SetPos(Vec3(-3550.f, 0.f, 3800.f));
+	_objects[NPC_ID_START + 15].SetPos(Vec3(-3550.f, 0.f, 4000.f));
+	_objects[NPC_ID_START + 16].SetPos(Vec3(-3550.f, 0.f, 4200.f));
 	//_objects[NPC_ID_START + 15].SetPos(Vec3(400.f, 0.f, 4700.f));
 	//
 	////오른쪽 미로 몬스터

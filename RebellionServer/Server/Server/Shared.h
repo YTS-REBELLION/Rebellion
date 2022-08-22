@@ -2,7 +2,7 @@
 #define MASTER 99'999'999
 #define VEC3_TOWN_ENTRANCE_POS Vec3(-3000.f, 0.f, 5683.f)
 
-constexpr float VIEW_RADIUS = 2500.f;
+constexpr float VIEW_RADIUS = 900.f;
 
 enum class OBJECT_TYPE { PLAYER, MONSTER, NPC };
 
