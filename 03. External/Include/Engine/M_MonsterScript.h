@@ -61,6 +61,11 @@ private:
 	bool MonSkill2Check = false;
 	bool MonSkill3Check = false;
 	bool check = false;
+
+	// ui
+	CGameObject* m_pUi;
+	Vec3 HpUiScale;
+	Vec3 HpUiPos;
 public:
 	virtual void awake();
 	virtual void update();
