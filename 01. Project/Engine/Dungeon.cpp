@@ -88,7 +88,7 @@ void CDungeonScene::init()
 	GetLayer(8)->SetName(L"UI");
 	GetLayer(9)->SetName(L"Player_Skill");
 	GetLayer(10)->SetName(L"Monster_Skill");
-	
+	GetLayer(11)->SetName(L"Portal");
 	CreateMap();
 
 	// ====================
@@ -254,6 +254,22 @@ void CDungeonScene::init()
 	}
 
 
+	CGameObject* pObject = new CGameObject;
+	pObject->SetName(L"PostEffect");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	// Material °ª ¼ÂÆÃ
+	Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl");
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+	pObject->MeshRender()->SetMaterial(pMtrl, 0);
+	pObject->Transform()->SetLocalScale(Vec3(300.f, 700.f, 300.f));
+	//pObject->Transform()->SetLocalRot(Vec3(0.0f, -XM_PI, 0.0f));
+	pObject->Transform()->SetLocalPos(Vec3(3347.f, 10.f, 9337.f));
+	FindLayer(L"Portal")->AddGameObject(pObject);
+
+	
+
+
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"PlayerSword", L"MonsterCollider");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"MonsterSword", L"PlayerCollider");
 
@@ -261,4 +277,8 @@ void CDungeonScene::init()
 
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player_Skill", L"Monster");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster_Skill", L"Player");
+
+
+
+
 }
