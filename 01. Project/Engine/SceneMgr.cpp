@@ -145,7 +145,7 @@ void CSceneMgr::LoadSound()
 			strFullPath += L"Sound\\sword.wav";
 			break;
 		case Sound_Type::BGM3:
-			strFullPath += L"Sound\\vol1_14_Faten.mp3";
+			strFullPath += L"Sound\\vol3_03_Frost Jail Plateau.mp3";
 			break;
 			
 		
