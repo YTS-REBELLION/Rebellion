@@ -36,14 +36,20 @@ static type* GetInst()\
 
 #define MAX_LAYER 32
 #define PLAYER_SPEED 300.f
-#define MONSTER_SPEED 5000.f
-#define LV1_MONSTER_HP 200.f
-#define LV2_MONSTER_HP 1200.f
-#define LV3_MONSTER_HP 1400.f
-#define LV4_MONSTER_HP 1600.f
-#define LV5_MONSTER_HP 1800.f
-#define LV6_MONSTER_HP 2000.f
-#define BOSS_MONSTER_HP 2500.f
+#define MONSTER_SPEED 7000.f
+//#define LV1_MONSTER_HP 200.f
+//#define LV2_MONSTER_HP 250.f
+//#define LV3_MONSTER_HP 300.f
+//#define LV4_MONSTER_HP 350.f
+//#define LV5_MONSTER_HP 400.f
+#define LV1_MONSTER_HP 20.f
+#define LV2_MONSTER_HP 25.f
+#define LV3_MONSTER_HP 30.f
+
+#define LV4_MONSTER_HP 35.f
+#define LV5_MONSTER_HP 40.f
+#define LV6_MONSTER_HP 40.f
+#define BOSS_MONSTER_HP 500.f
 
 
 
@@ -401,7 +407,9 @@ enum class QUEST
 {
 	FIRST = 1,
 	SECOND,
-	THIRD
+	THIRD,
+	FORTH
+	
 };
 enum class MONSTER_MOVE
 {

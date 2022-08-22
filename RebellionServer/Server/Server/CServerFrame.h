@@ -43,6 +43,8 @@ class CServerFrame {
 	int _acceptNumber = 0;
 	bool isQuestDone = false;
 	bool isSecondQuestDone = false;
+	bool isThirdQuestDone = false;
+
 
 	vector<pair<int ,int>> col_id;
 	//vector<int> col_id;
@@ -100,5 +102,6 @@ public:
 	int _enterPlayer;
 
 	bool fullEnter = false;
+	int gameLevel = 1;
 };
 
