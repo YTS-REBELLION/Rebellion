@@ -43,6 +43,7 @@ CNetwork g_net;
 //const char* SERVER_IP = "172.20.10.2";
 //const char* SERVER_IP = "172.30.1.54";
 const char* SERVER_IP = "127.0.0.1";
+//const char* SERVER_IP = "10.30.2.22";
 
 OBJ GameObject;
 

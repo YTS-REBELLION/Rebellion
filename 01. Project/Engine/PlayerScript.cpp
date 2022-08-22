@@ -301,7 +301,7 @@ void CPlayerScript::update()
 	Vec3 vRot = Transform()->GetLocalRot();
 
 	CPlayerScript* player = GetObj()->GetScript<CPlayerScript>();
-	cout << "PosX" << localPos.x << ", " << "PosY" << localPos.y << ", " << "PosZ" << localPos.z << endl;
+	//cout << "PosX" << localPos.x << ", " << "PosY" << localPos.y << ", " << "PosZ" << localPos.z << endl;
 
 	if (m_isMain) {
 		if ((KEY_TAB(KEY_TYPE::KEY_W) || KEY_TAB(KEY_TYPE::KEY_A) || KEY_TAB(KEY_TYPE::KEY_S) || KEY_TAB(KEY_TYPE::KEY_D)))
@@ -325,11 +325,11 @@ void CPlayerScript::update()
 			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
 		}
 
-		if (KEY_TAB(KEY_TYPE::KEY_2))
-		{
-			GetObj()->Animator3D()->SetClipTime(4, 0.f);
-			SetSkill();
-		}
+		//if (KEY_TAB(KEY_TYPE::KEY_2))
+		//{
+		//	GetObj()->Animator3D()->SetClipTime(4, 0.f);
+		//	SetSkill();
+		//}
 
 		if (localPos.z >= 1400.f && !questStart) {
 			questStart = true;
@@ -375,7 +375,7 @@ void CPlayerScript::update()
 				pSwordColObject->SetActive(true);
 		}
 
-		else if (GetSkill())
+		/*else if (GetSkill())
 		{
 			if (GetObj()->Animator3D()->GetCliTime(4) < GetObj()->Animator3D()->GetAnimClip(4).dTimeLength - 0.05f)
 			{
@@ -393,7 +393,7 @@ void CPlayerScript::update()
 				SetSkill();
 				g_net.Send_Skill_Packet(GetObj()->GetID(), PLAYER_ANI_TYPE::SKILL_1, GetSkill());
 			}
-		}
+		}*/
 
 		else AnimationPlay(PLAYER_ANI_TYPE::IDLE);
 		//if (KEY_AWAY(KEY_TYPE::KEY_3))
@@ -962,7 +962,7 @@ void CPlayerScript::update()
 			break;
 		case PLAYER_ANI_TYPE::ATTACK:
 			if (GetObj()->Animator3D()->GetCliTime(3) > 0.65f)
-				pSwordColObject->SetActive(true);
+				GameObject.find(GetID())->second->GetScript<CPlayerScript>()->GetColSSA()->SetActive(true);
 			AnimationPlay(GetID(), PLAYER_ANI_TYPE::ATTACK);
 			break;
 		case PLAYER_ANI_TYPE::SKILL_1:

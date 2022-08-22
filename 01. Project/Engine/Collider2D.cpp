@@ -60,6 +60,7 @@ void CCollider2D::update()
 
 void CCollider2D::finalupdate()
 {
+
 	if (!GetActvie())
 		return;
 
@@ -89,6 +90,7 @@ void CCollider2D::render()
 	//	return;
 	//}
 	
+	return;
 	if (!IsActive())
 		return;
 

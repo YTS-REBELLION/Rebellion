@@ -401,27 +401,27 @@ void CAssemblyAreaScene::init()
 	FindLayer(L"UI")->AddGameObject(pUICam);
 
 
-	// ===================
-	// NPC 로드
-	// ===================
-	Ptr<CMeshData> pAS_NPCMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FM_Idle.mdat", L"MeshData\\FM_Idle.mdat");
+	//// ===================
+	//// NPC 로드
+	//// ===================
+	//Ptr<CMeshData> pAS_NPCMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FM_Idle.mdat", L"MeshData\\FM_Idle.mdat");
 
-	CGameObject* pAS_NPC = new CGameObject;
+	//CGameObject* pAS_NPC = new CGameObject;
 
-	pAS_NPC = pAS_NPCMeshData->Instantiate();
-	pAS_NPC->SetName(L"AS_NPC_1");
-	pAS_NPC->FrustumCheck(false);
+	//pAS_NPC = pAS_NPCMeshData->Instantiate();
+	//pAS_NPC->SetName(L"AS_NPC_1");
+	//pAS_NPC->FrustumCheck(false);
 
-	pAS_NPC->Transform()->SetLocalPos(Vec3(300.f, 100.f, 1000.f));
-	pAS_NPC->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
-	pAS_NPC->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
-	pAS_NPC->AddComponent(new CCollider2D);
-	pAS_NPC->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	pAS_NPC->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	pAS_NPC->Collider2D()->SetOffsetScale(Vec3(10.f, 10.f, 10.f));
-	pAS_NPC->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(90.f), 0.f, 0.f));
-	//pAS_NPC->MeshRender()->SetDynamicShadow(true);
-	FindLayer(L"NPC")->AddGameObject(pAS_NPC);
+	//pAS_NPC->Transform()->SetLocalPos(Vec3(300.f, 100.f, 1000.f));
+	//pAS_NPC->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//pAS_NPC->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
+	//pAS_NPC->AddComponent(new CCollider2D);
+	//pAS_NPC->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+	//pAS_NPC->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	//pAS_NPC->Collider2D()->SetOffsetScale(Vec3(10.f, 10.f, 10.f));
+	//pAS_NPC->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(90.f), 0.f, 0.f));
+	////pAS_NPC->MeshRender()->SetDynamicShadow(true);
+	//FindLayer(L"NPC")->AddGameObject(pAS_NPC);
 
 	/*Ptr<CMeshData> pTestMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_Lv1_Idle.mdat", L"MeshData\\Monster_Lv1_Idle.mdat");
 
