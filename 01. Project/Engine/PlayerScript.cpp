@@ -312,9 +312,9 @@ void CPlayerScript::update()
 	Vec3 vRot = Transform()->GetLocalRot();
 
 	CPlayerScript* player = GetObj()->GetScript<CPlayerScript>();
-	cout << "플레이어posX" << localPos.x << endl;
-	cout << "플레이어posY" << localPos.y << endl;
-	cout << "플레이어posZ" << localPos.z << endl;
+	cout << "플레이어posX : " << localPos.x << endl;
+	cout << "플레이어posY : " << localPos.y << endl;
+	cout << "플레이어posZ : " << localPos.z << endl;
 	if (m_isMain) {
 		if ((KEY_TAB(KEY_TYPE::KEY_W) || KEY_TAB(KEY_TYPE::KEY_A) || KEY_TAB(KEY_TYPE::KEY_S) || KEY_TAB(KEY_TYPE::KEY_D)))
 		{

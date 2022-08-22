@@ -100,5 +100,6 @@ public:
 	int _enterPlayer;
 
 	bool fullEnter = false;
+	int gameLevel = 1;
 };
 

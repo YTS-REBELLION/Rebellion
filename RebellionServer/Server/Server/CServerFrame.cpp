@@ -331,7 +331,6 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 		cs_packet_player2monstercol* packet = reinterpret_cast<cs_packet_player2monstercol*>(buf);
 		int monsterId = packet->playerId;
 		int pid = packet->id;
-		cout << monsterId << ", " << pid << endl;
 		switch (packet->attackType) {
 		case 0: {
 			
@@ -371,21 +370,46 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 
 		if (monsterdieCnt == 3 && !isSecondQuestDone)
 		{
+			
 			for(int i = 0; i<_acceptNumber;++i){
+				// 레벨업
+				_objects[i].SetLevel(2);
+				++gameLevel;
 				cout << "세번째 퀘스트 완료 패킷 전송 " << endl;
 				_sender->SendQuestDonePacket(_objects[i].GetSocket(), i, QUEST::THIRD, true);
 				isSecondQuestDone = true;
 			}
+			monsterdieCnt = 0;
 		}
-
-		if (monsterdieCnt == 14 && !isSecondQuestDone) {
+		if (monsterdieCnt == 4 && gameLevel == 2) {
+			monsterdieCnt = 0;
+			++gameLevel;
+		}
+		if (monsterdieCnt == 5 && gameLevel == 3) {
+			monsterdieCnt = 0;
+			++gameLevel;
+		}
+		if (monsterdieCnt == 5 && gameLevel == 4) {
+			monsterdieCnt = 0;
+			++gameLevel;
+		}
+		if (monsterdieCnt == 5 && gameLevel == 5) {
+			monsterdieCnt = 0;
+			++gameLevel;
+		}
+		if (monsterdieCnt == 6 && gameLevel == 6) {
+			monsterdieCnt = 0;
+			++gameLevel;
+		}
+		/*if (monsterdieCnt == 14 && !isSecondQuestDone) {
+			++gameLevel;
 			for (int i = 0; i < _acceptNumber; ++i) {
-				cout << "두번째 퀘스트 완료 패킷 전송 " << endl;
+				cout << "네번째 퀘스트 완료 패킷 전송 " << endl;
 				_sender->SendQuestDonePacket(_objects[i].GetSocket(), i, QUEST::THIRD, true);
 				isSecondQuestDone = true;
 				
 			}
-		}
+		}*/
 
 
 		break;
@@ -787,9 +811,11 @@ void CServerFrame::ActivateNPC(int id)
 				AddTimer(id, EV_BOSS_MOVE, system_clock::now() + 1s);
 		}
 		else {
-			cout << "일반 몬스터 액티베이트" << endl;
-			if (true == CAS(&_objects[id]._status, ST_SLEEP, ST_ACTIVE))
-				AddTimer(id, EV_MONSTER_MOVE, system_clock::now() + 1s);
+			if (gameLevel == _objects[id].GetLevel()) {
+				cout << _objects[id].GetLevel() << " 레벨 친구들만 일어나" << endl;
+				if (true == CAS(&_objects[id]._status, ST_SLEEP, ST_ACTIVE))
+					AddTimer(id, EV_MONSTER_MOVE, system_clock::now() + 1s);
+			}
 		}
 	}
 
@@ -1662,7 +1688,7 @@ void CServerFrame::CreateMonster()
 {
 	cout << "Initializing Monster" << endl;
 
-	for (int monsterId = NPC_ID_START; monsterId < MONSTER_LV1_ID; ++monsterId) {
+	for (int monsterId = NPC_ID_START; monsterId < NPC_ID_END; ++monsterId) {
 		_objects[monsterId].SetID(monsterId);
 		_objects[monsterId]._status = ST_SLEEP;
 		_objects[monsterId].SetSpeed(MONSTER_SPEED);
@@ -1681,114 +1707,87 @@ void CServerFrame::CreateMonster()
 
 	}
 
-	/*for (int monsterId = MONSTER_LV1_ID; monsterId < MONSTER_LV2_ID; ++monsterId) {
+	for (int monsterId = MONSTER_LV1_ID; monsterId < MONSTER_LV2_ID; ++monsterId) {
 
 		_objects[monsterId].SetCurrentHp(LV2_MONSTER_HP);
 		_objects[monsterId].SetMaxHp(LV2_MONSTER_HP);
 		_objects[monsterId].SetLevel(2);
-		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 10);
+		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 20);
 
 	}
 	for (int monsterId = MONSTER_LV2_ID; monsterId < MONSTER_LV3_ID; ++monsterId) {
 		_objects[monsterId].SetCurrentHp(LV3_MONSTER_HP);
 		_objects[monsterId].SetMaxHp(LV3_MONSTER_HP);
 		_objects[monsterId].SetLevel(3);
-		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 10);
+		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 20);
 	}
 	for (int monsterId = MONSTER_LV3_ID; monsterId < MONSTER_LV4_ID; ++monsterId) {
 		_objects[monsterId].SetCurrentHp(LV4_MONSTER_HP);
 		_objects[monsterId].SetMaxHp(LV4_MONSTER_HP);
 		_objects[monsterId].SetLevel(4);
-		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 10);
+		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 20);
 	}
 	for (int monsterId = MONSTER_LV4_ID; monsterId < MONSTER_LV5_ID; ++monsterId) {
 		_objects[monsterId].SetCurrentHp(LV5_MONSTER_HP);
 		_objects[monsterId].SetMaxHp(LV5_MONSTER_HP);
 		_objects[monsterId].SetLevel(5);
-		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 10);
+		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 20);
 	}
 	for (int monsterId = MONSTER_LV5_ID; monsterId < MONSTER_LV6_ID; ++monsterId) {
 		_objects[monsterId].SetCurrentHp(LV6_MONSTER_HP);
 		_objects[monsterId].SetMaxHp(LV6_MONSTER_HP);
 		_objects[monsterId].SetLevel(6);
-		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 10);
-	}*/
+		_objects[monsterId].SetDamage(_objects[monsterId].GetLevel() * 20);
+	}
 
 	// LV1
 	_objects[NPC_ID_START].SetPos(Vec3(150.f, 0.f, 1200.f));
-	//_objects[NPC_ID_START + 1].SetPos(Vec3(-120.f, 0.f, 1600.f));
-	//_objects[NPC_ID_START + 2].SetPos(Vec3(-150.f, 0.f, 2050.f));
-	//_objects[NPC_ID_START + 3].SetPos(Vec3(160.f, 0.f, 2300.f));
+	_objects[NPC_ID_START + 1].SetPos(Vec3(-120.f, 0.f, 1600.f));
+	_objects[NPC_ID_START + 2].SetPos(Vec3(-150.f, 0.f, 2050.f));
 	//
-	//_objects[NPC_ID_START + 4].SetPos(Vec3(-2250.f, 0.f, 3450.f));
-	//_objects[NPC_ID_START + 5].SetPos(Vec3(-2800.f, 0.f, 3750.f));
-	//_objects[NPC_ID_START + 6].SetPos(Vec3(-3000.f, 0.f, 3450.f));
-	//_objects[NPC_ID_START + 7].SetPos(Vec3(-3450.f, 0.f, 3600.f));
+	//LV2
+	_objects[NPC_ID_START + 3].SetPos(Vec3(-3650.f, 0.f, 3450.f));
+	_objects[NPC_ID_START + 4].SetPos(Vec3(-2800.f, 0.f, 3750.f));
+	_objects[NPC_ID_START + 5].SetPos(Vec3(-3000.f, 0.f, 3450.f));
+	_objects[NPC_ID_START + 6].SetPos(Vec3(-3450.f, 0.f, 3600.f));
 
 	//// 중앙 홀 몬스터
 
-	//// LV2
-	//_objects[NPC_ID_START + 5].SetPos(Vec3(-400.f, 0.f, 4500.f));
-	//_objects[NPC_ID_START + 6].SetPos(Vec3(-200.f, 0.f, 4500.f));
-	//_objects[NPC_ID_START + 7].SetPos(Vec3(200.f, 0.f, 4500.f));
-	//_objects[NPC_ID_START + 8].SetPos(Vec3(400.f, 0.f, 4500.f));
-	//_objects[NPC_ID_START + 9].SetPos(Vec3(-600.f, 0.f, 4500.f));
-	//_objects[NPC_ID_START + 10].SetPos(Vec3(600.f, 0.f, 4500.f));
-	//_objects[NPC_ID_START + 11].SetPos(Vec3(800.f, 0.f, 4500.f));
-	//_objects[NPC_ID_START + 12].SetPos(Vec3(-200.f, 0.f, 4700.f));
-	//_objects[NPC_ID_START + 13].SetPos(Vec3(-400.f, 0.f, 4700.f));
-	//_objects[NPC_ID_START + 14].SetPos(Vec3(200.f, 0.f, 4700.f));
+	//// LV3
+	_objects[NPC_ID_START + 7].SetPos(Vec3(-6000.f, 0.f, 3200.f));
+	_objects[NPC_ID_START + 8].SetPos(Vec3(-5800.f, 0.f, 3200.f));
+	_objects[NPC_ID_START + 9].SetPos(Vec3(-5450.f, 0.f, 3500.f));
+	_objects[NPC_ID_START + 10].SetPos(Vec3(-5800.f, 0.f, 3800.f));
+	_objects[NPC_ID_START + 11].SetPos(Vec3(-6000.f, 0.f, 3800.f));
+
+	// LV4
+	_objects[NPC_ID_START + 12].SetPos(Vec3(-6200.f, 0.f, 7100.f));
+	_objects[NPC_ID_START + 13].SetPos(Vec3(-6400.f, 0.f, 7500.f));
+	_objects[NPC_ID_START + 14].SetPos(Vec3(-6200.f, 0.f, 7900.f));
+	_objects[NPC_ID_START + 15].SetPos(Vec3(-6400.f, 0.f, 8300.f));
+	_objects[NPC_ID_START + 16].SetPos(Vec3(-6200.f, 0.f, 8700.f));
 	//_objects[NPC_ID_START + 15].SetPos(Vec3(400.f, 0.f, 4700.f));
 	//
 	////오른쪽 미로 몬스터
 	////중앙 몬스터
-	//// LV3
-	//_objects[NPC_ID_START + 16].SetPos(Vec3(4000.f, 0.f, 10800.f));
-	//_objects[NPC_ID_START + 17].SetPos(Vec3(3800.f, 0.f, 11000.f));
-	//_objects[NPC_ID_START + 18].SetPos(Vec3(3800.f, 0.f, 11200.f));
-	//_objects[NPC_ID_START + 19].SetPos(Vec3(3800.f, 0.f, 10600.f));
-	//_objects[NPC_ID_START + 20].SetPos(Vec3(3800.f, 0.f, 10400.f));
-	//
+	//// LV5
+	_objects[NPC_ID_START + 17].SetPos(Vec3(-3000.f, 0.f, 7800.f));
+	_objects[NPC_ID_START + 18].SetPos(Vec3(-3000.f, 0.f, 8300.f));
+	_objects[NPC_ID_START + 19].SetPos(Vec3(-3200.f, 0.f, 8700.f));
+	_objects[NPC_ID_START + 20].SetPos(Vec3(-3000.f, 0.f, 8800.f));
+	_objects[NPC_ID_START + 21].SetPos(Vec3(-3000.f, 0.f, 9300.f));
+
 	//
 	//// 북쪽 몬스터
 	//// 중앙 몬스터
-	//// LV5
-	//_objects[NPC_ID_START + 21].SetPos(Vec3(0.f, 0.f, 16700.f));
-	//_objects[NPC_ID_START + 22].SetPos(Vec3(-200.f, 0.f, 16400.f));
-	//_objects[NPC_ID_START + 23].SetPos(Vec3(-400.f, 0.f, 16400.f));
-	//_objects[NPC_ID_START + 24].SetPos(Vec3(200.f, 0.f, 16400.f));
-	//_objects[NPC_ID_START + 25].SetPos(Vec3(400.f, 0.f, 16400.f));
-	//_objects[NPC_ID_START + 26].SetPos(Vec3(-600.f, 0.f, 16400.f));
-	//_objects[NPC_ID_START + 27].SetPos(Vec3(600.f, 0.f, 16400.f));
+	// LV5
+	_objects[NPC_ID_START + 22].SetPos(Vec3(2600.f, 0.f, 9200.f));
+	_objects[NPC_ID_START + 23].SetPos(Vec3(2200.f, 0.f, 9200.f));
+	_objects[NPC_ID_START + 24].SetPos(Vec3(1800.f, 0.f, 9200.f));
+	_objects[NPC_ID_START + 25].SetPos(Vec3(2400.f, 0.f, 9400.f));
+	_objects[NPC_ID_START + 26].SetPos(Vec3(2000.f, 0.f, 9400.f));
+	_objects[NPC_ID_START + 27].SetPos(Vec3(1600.f, 0.f, 9400.f));
 	//
-	//// 북쪽 왼쪽 통로 몬스터
-	//// LV4
-	//_objects[NPC_ID_START + 28].SetPos(Vec3(-1700.f, 0.f, 13600.f));
-	//_objects[NPC_ID_START + 29].SetPos(Vec3(-1300.f, 0.f, 13400.f));
-	//_objects[NPC_ID_START + 30].SetPos(Vec3(-1500.f, 0.f, 13400.f));
-	//_objects[NPC_ID_START + 31].SetPos(Vec3(-1300.f, 0.f, 13800.f));
-	//_objects[NPC_ID_START + 32].SetPos(Vec3(-1500.f, 0.f, 13800.f));
-	//
-	//// 좌측 끝 몬스터
-	//// LV6
-	//_objects[NPC_ID_START + 33].SetPos(Vec3(-6300.f, 0.f, 13500.f));
-	//_objects[NPC_ID_START + 34].SetPos(Vec3(-6100.f, 0.f, 13300.f));
-	//_objects[NPC_ID_START + 35].SetPos(Vec3(-6100.f, 0.f, 13100.f));
-	//_objects[NPC_ID_START + 36].SetPos(Vec3(-6100.f, 0.f, 13700.f));
-	//_objects[NPC_ID_START + 37].SetPos(Vec3(-6100.f, 0.f, 13900.f));
-	//_objects[NPC_ID_START + 38].SetPos(Vec3(-6100.f, 0.f, 14100.f));
-	//_objects[NPC_ID_START + 39].SetPos(Vec3(-6100.f, 0.f, 12900.f));
-
-
-	// 보스 몬스터 아이디 141
-	/*_objects[NPC_ID_START + 40].SetPos(Vec3(300.f, 0.f, 300.f));
-	_objects[NPC_ID_START + 40].SetID(NPC_ID_START + 40);
-	_objects[NPC_ID_START + 40]._status = ST_SLEEP;
-	_objects[NPC_ID_START + 40].SetSpeed(2000.f);
-	_objects[NPC_ID_START + 40].SetMoveType(RANDOM);
-	_objects[NPC_ID_START + 40].SetIsAttack(false);
-	_objects[NPC_ID_START + 40].SetDunGeonEnter(false);
-	_objects[NPC_ID_START + 40].SetBossMapEnter(true);*/
 
 	printf("Monster Initialization finished.\n");
 }
