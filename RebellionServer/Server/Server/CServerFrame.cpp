@@ -233,14 +233,12 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 
 
 		if (_objects[id].GetDunGeonEnter()) {
-			cout << "do_move_dungeon" << endl;
 			Do_move_Dungeon(id, 0, pos, 0.f);
 		}
 		else if (_objects[id].GetBossMapEnter()) {
 			Do_move_BossMap(id, 0, pos, 0.f);
 		}
 		else{
-			cout << "do_move" << endl;
 			Do_move(id, 0, pos, 0.f);
 		}
 
@@ -375,12 +373,13 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 				// 레벨업
 				_objects[i].SetLevel(2);
 				++gameLevel;
-				cout << "세번째 퀘스트 완료 패킷 전송 " << endl;
+				cout << "두번째 퀘스트 완료 패킷 전송 " << endl;
 				_sender->SendQuestDonePacket(_objects[i].GetSocket(), i, QUEST::THIRD, true);
 				isSecondQuestDone = true;
 			}
 			monsterdieCnt = 0;
 		}
+
 		if (monsterdieCnt == 4 && gameLevel == 2) {
 			monsterdieCnt = 0;
 			++gameLevel;
@@ -401,6 +400,19 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 			monsterdieCnt = 0;
 			++gameLevel;
 		}
+		
+		if (monsterdieCnt == 6 && !isThirdQuestDone)
+		{
+			for (int i = 0; i < _acceptNumber; ++i) {
+				++gameLevel;
+				cout << "세번째 퀘스트 완료 패킷 전송 " << endl;
+				_sender->SendQuestDonePacket(_objects[i].GetSocket(), i, QUEST::FORTH, true);
+				isThirdQuestDone = true;
+			}
+			monsterdieCnt = 0;
+		}
+
+
 		/*if (monsterdieCnt == 14 && !isSecondQuestDone) {
 			++gameLevel;
 			for (int i = 0; i < _acceptNumber; ++i) {
@@ -451,7 +463,6 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 			_objects[id].ClearViewList();
 			_objects[id].SetDunGeonEnter(true);
 
-			cout << "CS_PACKET_DUNGEON" << endl;
 			for (auto& users : old_viewList) {
 				_objects[users].SetDunGeonEnter(true);
 				if (users == id) continue;
@@ -469,7 +480,6 @@ void CServerFrame::ProcessPacket(int id, char* buf)
 	}
 	case CS_PACKET_BOSSMAP:
 	{
-		cout << "보스맵 요청" << endl;
 		cs_packet_bossmap* packet = reinterpret_cast<cs_packet_bossmap*>(buf);
 
 		unordered_set<int> old_viewList = _objects[id].GetViewList();
@@ -1238,7 +1248,6 @@ void CServerFrame::Do_move_Dungeon(const short& id, const char& dir, Vec3& local
 
 void CServerFrame::Do_move_BossMap(const short& id, const char& dir, Vec3& localPos, const float& rotate)
 {
-	cout << "do_move 보스맵" << endl;
 	unordered_set<int> vl = _objects[id].BossMapGetViewList();
 	time_point<system_clock> curTime = system_clock::now();
 	

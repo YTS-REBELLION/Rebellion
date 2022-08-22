@@ -699,6 +699,14 @@ void CNetwork::ProcessPacket(char* ptr)
 			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestInit(QUEST::THIRD);
 			break;
 		}
+		case QUEST::FORTH: {
+			cout << "네번째 시작" << endl;
+			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->SetQuestCnt(QUEST::FORTH);
+			GameObject.find(packet->id)->second->GetScript<CPlayerScript>()->QuestInit(QUEST::FORTH);
+
+
+			break;
+		}
 		default: {
 			cout << "하위" << endl;
 			break;

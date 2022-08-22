@@ -48,8 +48,8 @@ static type* GetInst()\
 
 #define LV4_MONSTER_HP 35.f
 #define LV5_MONSTER_HP 40.f
-#define LV6_MONSTER_HP 450.f
-#define BOSS_MONSTER_HP 1000.f
+#define LV6_MONSTER_HP 40.f
+#define BOSS_MONSTER_HP 500.f
 
 
 
@@ -407,7 +407,9 @@ enum class QUEST
 {
 	FIRST = 1,
 	SECOND,
-	THIRD
+	THIRD,
+	FORTH
+	
 };
 enum class MONSTER_MOVE
 {

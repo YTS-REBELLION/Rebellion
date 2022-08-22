@@ -35,6 +35,10 @@ private:
 	CGameObject* m_pQuestBox3_2 = nullptr;
 	CGameObject* m_pQuestBox3_3 = nullptr;
 
+	CGameObject* m_pQuestBox4_1 = nullptr;
+	CGameObject* m_pQuestBox4_2 = nullptr;
+	CGameObject* m_pQuestBox4_3 = nullptr;
+
 	int m_iKillMonCnt = 0;
 
 
@@ -115,16 +119,33 @@ private:
 	Ptr<CTexture> pQuest2_1 = CResMgr::GetInst()->Load<CTexture>(L"Quest2_2", L"Texture\\Quest\\npc2_quest01.png");
 	Ptr<CTexture> pQuest2_2 = CResMgr::GetInst()->Load<CTexture>(L"Quest2_3", L"Texture\\Quest\\npc2_quest02.png");
 
+
 	//Äù½ºÆ®3 png
 
 	Ptr<CTexture> pQuestexplane3_0 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_0", L"Texture\\Quest\\quest03_0.png");
 	Ptr<CTexture> pQuestexplane3_1 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_1", L"Texture\\Quest\\quest03_1.png");
 	Ptr<CTexture> pQuestexplane3_2 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_2", L"Texture\\Quest\\quest03_2.png");
 	Ptr<CTexture> pQuestexplane3_3 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_3", L"Texture\\Quest\\quest03_3.png");
+	Ptr<CTexture> pQuestexplane3_4 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_3", L"Texture\\Quest\\quest03_4.png");
+	Ptr<CTexture> pQuestexplane3_5 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_3", L"Texture\\Quest\\quest03_5.png");
+	Ptr<CTexture> pQuestexplane3_6 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_3", L"Texture\\Quest\\quest03_6.png");
+	Ptr<CTexture> pQuestexplane3_7 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_3", L"Texture\\Quest\\quest03_7.png");
+	Ptr<CTexture> pQuestexplane3_8 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_3", L"Texture\\Quest\\quest03_8.png");
+	Ptr<CTexture> pQuestexplane3_9 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_3", L"Texture\\Quest\\quest03_9.png");
+	Ptr<CTexture> pQuestexplane3_10 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_3", L"Texture\\Quest\\quest03_10.png");
+	Ptr<CTexture> pQuestexplane3_11 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_3", L"Texture\\Quest\\quest03_11.png");
+	Ptr<CTexture> pQuestexplane3_12 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_3", L"Texture\\Quest\\quest03_12.png");
+	Ptr<CTexture> pQuestexplane3_13 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_3", L"Texture\\Quest\\quest03_13.png");
+	Ptr<CTexture> pQuestexplane3_14 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_3", L"Texture\\Quest\\quest03_14.png");
+	Ptr<CTexture> pQuestexplane3_15 = CResMgr::GetInst()->Load<CTexture>(L"QuestExplane3_3", L"Texture\\Quest\\quest03_15.png");
+
+
 
 	Ptr<CTexture> pQuest3_0 = CResMgr::GetInst()->Load<CTexture>(L"Quest3_1", L"Texture\\Quest\\npc3_quest00.png");
-	Ptr<CTexture> pQuest3_1 = CResMgr::GetInst()->Load<CTexture>(L"Quest3_2", L"Texture\\Quest\\npc3_quest01.png");
-	Ptr<CTexture> pQuest3_2 = CResMgr::GetInst()->Load<CTexture>(L"Quest3_3", L"Texture\\Quest\\npc3_quest02.png");
+
+	//
+	Ptr<CTexture> pQuest4_1 = CResMgr::GetInst()->Load<CTexture>(L"Quest2_3", L"Texture\\Quest\\npc4_quest01.png");
+	Ptr<CTexture> pQuest4_2 = CResMgr::GetInst()->Load<CTexture>(L"Quest2_3", L"Texture\\Quest\\quest04_0.png");
 
 
 	Ptr<CTexture> pQuestComplete = CResMgr::GetInst()->Load<CTexture>(L"QuestComplete", L"Texture\\Quest\\QuestComplete.png");
