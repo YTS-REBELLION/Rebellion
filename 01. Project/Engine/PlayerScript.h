@@ -130,6 +130,7 @@ private:
 	Ptr<CTexture> pQuestComplete = CResMgr::GetInst()->Load<CTexture>(L"QuestComplete", L"Texture\\Quest\\QuestComplete.png");
 	bool	m_bDash = false;
 	bool	m_bHit = false;
+	bool	m_bBossSkillHit = false;
 	float fdamage = 0.f;
 	float ftempmp = 0.f;
 
@@ -196,6 +197,7 @@ public:
 		else m_bSkill = true;
 	}
 	void SetHit(bool _type) { m_bHit = _type; }
+	void SetHitBossSkill(bool _type) { m_bBossSkillHit = _type; }
 	void SetMapCol(bool _type) { m_bMapCol = _type; }
 	void SetNextMapCol(bool _type) { m_bNextMapCol = _type; }
 
@@ -219,6 +221,7 @@ public:
 	bool GetAttack() { return m_bAttack; }
 	bool GetSkill() { return m_bSkill; }
 	bool GetHit() { return m_bHit; }
+	bool GetHitBossSkill() { return m_bBossSkillHit; }
 	bool GetMapCol() { return m_bMapCol; }
 	void GetNextMapCol(bool _type) { m_bNextMapCol = _type; }
 	float GetSpeed() { return m_fSpeed; }

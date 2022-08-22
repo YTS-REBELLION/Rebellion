@@ -53,17 +53,10 @@ void CFire::update()
 	Vec3 vRot = Transform()->GetLocalRot();
 	float Temp = 125 * DT;
 
-
-
-
 	localPos += -WorldDir * Temp;
-
-
 
 	Transform()->SetLocalPos(localPos);
 	Transform()->SetLocalRot(PlayerRot+Vec3(XMConvertToRadians(90.f),XM_PI,0.f));
-
-
 }
 
 

@@ -179,6 +179,7 @@ call EngineCopy.bat</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Boss.h" />
+    <ClInclude Include="BossColScript.h" />
     <ClInclude Include="BossFireBall.h" />
     <ClInclude Include="BossMap.h" />
     <ClInclude Include="BossSkill1.h" />
@@ -285,6 +286,7 @@ call EngineCopy.bat</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="BossColScript.cpp" />
     <ClCompile Include="BossFireBall.cpp" />
     <ClCompile Include="BossMap.cpp" />
     <ClCompile Include="BossSkill1.cpp" />

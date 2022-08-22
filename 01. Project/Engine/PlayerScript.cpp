@@ -44,20 +44,6 @@ CPlayerScript::~CPlayerScript()
 void CPlayerScript::init()
 {	
 	cout << "이닛 " << endl;
-	//Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
-
-	//CGameObject* pSword = new CGameObject;
-
-	//pSword = pSwordMeshData->Instantiate();
-	//pSword->SetName(L"FP_Weapon");
-	//pSword->FrustumCheck(false);
-	//pSword->Transform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
-	//pSword->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
-	//pSword->AddComponent(new CSwordScript);
-	//pSword->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::WARRIOR_PLAYER, GetObj(), 17);
-	//GetObj()->AddChild(pSword);
-	////CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Sword", pSword, false);
-	////CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Sword")->AddGameObject(pSword);
 
 	CGameObject* pSwordCol = new CGameObject;
 	pSwordCol->SetName(L"PlayerSwordCol");
@@ -69,7 +55,10 @@ void CPlayerScript::init()
 	pSwordCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 	pSwordCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
 	pSwordCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	pSwordCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+	if (CSceneMgr::GetInst()->GetCurScene()->GetType() == SCENE_TYPE::DUNGEON)
+		pSwordCol->Collider2D()->SetOffsetScale(Vec3(50.f, 50.f, 50.f));
+	else
+		pSwordCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 	pSwordCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	pSwordCol->AddComponent(new CSwordAttackAreaScript);
 	pSwordCol->GetScript<CSwordAttackAreaScript>()->Set_Object(GetObj());
@@ -312,9 +301,8 @@ void CPlayerScript::update()
 	Vec3 vRot = Transform()->GetLocalRot();
 
 	CPlayerScript* player = GetObj()->GetScript<CPlayerScript>();
-	cout << "플레이어posX" << localPos.x << endl;
-	cout << "플레이어posY" << localPos.y << endl;
-	cout << "플레이어posZ" << localPos.z << endl;
+	cout << "PosX" << localPos.x << ", " << "PosY" << localPos.y << ", " << "PosZ" << localPos.z << endl;
+
 	if (m_isMain) {
 		if ((KEY_TAB(KEY_TYPE::KEY_W) || KEY_TAB(KEY_TYPE::KEY_A) || KEY_TAB(KEY_TYPE::KEY_S) || KEY_TAB(KEY_TYPE::KEY_D)))
 		{
@@ -357,13 +345,16 @@ void CPlayerScript::update()
 			system_clock::time_point start = system_clock::now();
 
 			if (!m_bDash) {
-				localPos += WorldDir * m_fSpeed * DT;
-
+				if (CSceneMgr::GetInst()->GetCurScene()->GetType() == SCENE_TYPE::DUNGEON)
+					localPos += WorldDir * m_fSpeed/2.0f * DT;
+				else localPos += WorldDir * m_fSpeed * DT;
 				AnimationPlay(PLAYER_ANI_TYPE::WALK);
 				g_net.Send_Move_Packet(localPos, WorldDir, vRot.y, start, DT);
 			}
 			else {
-				localPos += WorldDir * m_fSpeed * 2.0f * DT;
+				if (CSceneMgr::GetInst()->GetCurScene()->GetType() == SCENE_TYPE::DUNGEON)
+					localPos += WorldDir * m_fSpeed * 1.3f * DT;
+				else localPos += WorldDir * m_fSpeed * 2.0f * DT;
 				AnimationPlay(PLAYER_ANI_TYPE::RUN);
 				g_net.Send_Run_Packet(GetObj()->GetID(), localPos, true);
 			}
@@ -829,6 +820,10 @@ void CPlayerScript::update()
 			HpUiPos.x -= DT / 2.f;
 		}
 
+		if (GetHitBossSkill()) {
+			HpUiScale.x -= 20.f * DT;//충돌할시 *데미지
+			HpUiPos.x -= (20.f * DT) / 2.f;
+		}
 		m_pUi->Transform()->SetLocalScale(Vec3(HpUiScale.x, HpUiScale.y, HpUiScale.z));
 		m_pUi->Transform()->SetLocalPos(Vec3(HpUiPos.x, HpUiPos.y, HpUiPos.z));
 
@@ -1079,6 +1074,12 @@ void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
 
 	if (_pOther->GetObj()->GetName() == L"MonsterSwordCol") SetHit(true);
 
+	if (_pOther->GetObj()->GetName() == L"FireTest" ||
+		_pOther->GetObj()->GetName() == L"FireTest2"||
+		_pOther->GetObj()->GetName() == L"FireTest3"||
+		_pOther->GetObj()->GetName() == L"FireBall"
+		) SetHitBossSkill(true);
+
 	if (_pOther->GetObj()->GetName() == L"Map_Wall")
 	{
 		SetColPlane(_pOther->GetPlane());
@@ -1134,6 +1135,12 @@ void CPlayerScript::OnCollision(CCollider2D* _pOther)
 void CPlayerScript::OnCollisionExit(CCollider2D* _pOther)
 {
 	if (_pOther->GetObj()->GetName() == L"MonsterSwordCol") SetHit(false);
+
+	if (_pOther->GetObj()->GetName() == L"FireTest" ||
+		_pOther->GetObj()->GetName() == L"FireTest2" ||
+		_pOther->GetObj()->GetName() == L"FireTest3" ||
+		_pOther->GetObj()->GetName() == L"FireBall"
+		) SetHitBossSkill(false);
 
 	if (_pOther->GetObj()->GetName() == L"Map_Wall") SetMapCol(false);
 }

@@ -333,6 +333,9 @@
       <Filter>04. GameObject\Script</Filter>
     </ClInclude>
     <ClInclude Include="BossFireBall.h" />
+    <ClInclude Include="BossColScript.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -583,6 +586,9 @@
       <Filter>04. GameObject\Script</Filter>
     </ClCompile>
     <ClCompile Include="BossFireBall.cpp" />
+    <ClCompile Include="BossColScript.cpp">
+      <Filter>04. GameObject\Script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="std.fx">

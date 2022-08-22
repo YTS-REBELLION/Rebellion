@@ -139,9 +139,15 @@ void CToolCamScript::SetPlayerFixedCamera()
 	float fDistance = 800.f; //200.f;
 
 	//vPos = vPlayerPos->GetLocalPos();
-	vPos = vPlayerPos->GetLocalPos() - (fDistance * vPlayerPos->GetWorldDir(DIR_TYPE::UP));
-	vPos.y = vPlayerPos->GetLocalPos().y + 200;
-
+	if (CSceneMgr::GetInst()->GetCurScene()->GetType() == SCENE_TYPE::DUNGEON)
+	{
+		vPos = vPlayerPos->GetLocalPos() - (400 * vPlayerPos->GetWorldDir(DIR_TYPE::UP));
+		vPos.y = vPlayerPos->GetLocalPos().y + 100;
+	}
+	else {
+		vPos = vPlayerPos->GetLocalPos() - (fDistance * vPlayerPos->GetWorldDir(DIR_TYPE::UP));
+		vPos.y = vPlayerPos->GetLocalPos().y + 200;
+	}
 	Transform()->SetLocalPos(vPos);
 	Transform()->SetLocalRot(vPlayerPos->GetLocalRot() + Vec3(XMConvertToRadians(90.f), XM_PI, 0.f));
 }

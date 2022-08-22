@@ -66,6 +66,8 @@ private:
 	CGameObject* m_pUi;
 	Vec3 HpUiScale;
 	Vec3 HpUiPos;
+
+	CGameObject* pMonsterColObject = nullptr;
 public:
 	virtual void awake();
 	virtual void update();
@@ -115,6 +117,9 @@ public:
 	MonSkill m_skill = MonSkill::End;
 
 	void SetColObj(CCollider2D* _obj) { m_pColObj = _obj; }
+
+	void SetColMonster(CGameObject* _obj) { pMonsterColObject = _obj; }
+	CGameObject* GetColMonster() { return pMonsterColObject; }
 public:
 	CLONE(CM_MonsterScript);
 

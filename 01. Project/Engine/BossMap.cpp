@@ -138,8 +138,8 @@ void CBossMap::CreateMap()
 
 	
 
-	Ptr<CTexture> pColor = CResMgr::GetInst()->Load<CTexture>(L"Tile", L"Texture\\Tile\\TILE_01.tga");
-	Ptr<CTexture> pNormal = CResMgr::GetInst()->Load<CTexture>(L"Tile_n", L"Texture\\Tile\\TILE_01_N.tga");
+	Ptr<CTexture> pColor = CResMgr::GetInst()->Load<CTexture>(L"Brick", L"Texture\\Tile\\Brick.png");
+
 	for (int j = 0; j < 5; ++j)
 	{
 		for (int i = 0; i < 5; ++i)
@@ -158,11 +158,9 @@ void CBossMap::CreateMap()
 			pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 			pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
 			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
-			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
 
 			// AddGameObject
 			FindLayer(L"Default")->AddGameObject(pObject);
-
 		}
 	}
 }
@@ -191,13 +189,13 @@ void CBossMap::init()
 	pLight->AddComponent(new CTransform);
 	pLight->AddComponent(new CLight3D);
 
-	pLight->Light3D()->SetLightPos(Vec3(2000.f, 3000.f, 2000.f));
+	pLight->Light3D()->SetLightPos(Vec3(-2000.f, 3000.f, 2000.f));
 
 	pLight->Light3D()->SetLightType(LIGHT_TYPE::DIR);
 	pLight->Light3D()->SetDiffuseColor(Vec3(1.f, 1.f, 1.f));
 	pLight->Light3D()->SetSpecular(Vec3(0.1f, 0.1f, 0.1f));
 	pLight->Light3D()->SetAmbient(Vec3(0.8f, 0.8f, 0.8f));
-	pLight->Light3D()->SetLightDir(Vec3(-1.f, -1.f, -1.f));
+	pLight->Light3D()->SetLightDir(Vec3(1.f, -1.f, -1.f));
 	pLight->Light3D()->SetLightRange(10000.f);
 
 	FindLayer(L"Default")->AddGameObject(pLight);
@@ -220,6 +218,7 @@ void CBossMap::init()
 	pPlayer->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 
+	pPlayer->MeshRender()->SetDynamicShadow(true);
 	// 플레이어 스크립트 붙여주기.
 	pPlayer->AddComponent(new CPlayerScript);
 
@@ -315,14 +314,15 @@ void CBossMap::init()
 
 	FindLayer(L"Default")->AddGameObject(pUICam);
 
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"PlayerSword", L"Monster");
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"MonsterSword", L"Player");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"PlayerSword", L"MonsterCollider");
+	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"MonsterSword", L"Player");
 
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player_Skill", L"Monster");
+	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Player_Skill", L"Monster");
 
 	/*CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Sword");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Player");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Boss", L"Player_Skill");*/
 
-	CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster_Skill", L"Player");
+	CCollisionMgr::GetInst()->CheckCollisionLayer(L"PlayerCollider", L"Monster_Skill");
+	//CCollisionMgr::GetInst()->CheckCollisionLayer(L"Monster_Skill", L"Player");
 }

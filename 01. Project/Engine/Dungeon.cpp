@@ -36,6 +36,8 @@
 
 void CDungeonScene::CreateMap()
 {
+	//Ptr<CMeshData> pMapMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Map\\Dungeon_Map.fbx");
+	//pMapMeshData->Save(pMapMeshData->GetPath());
 	Ptr<CMeshData> pMapMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Dungeon_Map.mdat", L"MeshData\\Dungeon_Map.mdat");
 
 	CGameObject* Map = new CGameObject;
@@ -45,12 +47,59 @@ void CDungeonScene::CreateMap()
 	Map->FrustumCheck(false);
 
 	// Transform 설정
-	Map->Transform()->SetLocalPos(Vec3(0.f, -2.f, 0.f));
-	Map->Transform()->SetLocalScale(Vec3(2.3f, 2.3f, 2.0f));
+	Map->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+	Map->Transform()->SetLocalScale(Vec3(1.3f, 1.3f, 1.0f));
 	Map->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.0f), XMConvertToRadians(180.0f), 0.f));
-	//Map->MeshRender()->SetDynamicShadow(true);
 	FindLayer(L"Map")->AddGameObject(Map);
 
+	Ptr<CTexture> pColor = CResMgr::GetInst()->Load<CTexture>(L"Brick", L"Texture\\Tile\\Brick.png");	
+
+	// ==================
+	// Map 오브젝트 생성
+	// ==================
+
+	for (int j = 0; j < 7; ++j)
+	{
+		for (int i = 0; i < 9; ++i)
+		{
+			CGameObject* pObject = new CGameObject;
+			pObject->SetName(L"Map Object");
+			pObject->AddComponent(new CTransform);
+			pObject->AddComponent(new CMeshRender);
+
+			// Transform 설정
+			pObject->Transform()->SetLocalPos(Vec3(i * -1000.f + 3500.f, 0.f, j * 1000.f));
+			pObject->Transform()->SetLocalScale(Vec3(1000.f, 1000.f, 1.f));
+			pObject->Transform()->SetLocalRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
+
+			// MeshRender 설정
+			pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+			pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"TileMtrl"));
+			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
+
+			// AddGameObject
+			FindLayer(L"Default")->AddGameObject(pObject);
+
+		}
+	}
+
+	// ====================
+	// Skybox 오브젝트 생성
+	// ====================
+
+	Ptr<CTexture> pSkyboxTex = CResMgr::GetInst()->Load<CTexture>(L"SB", L"Texture\\Skybox\\Deep Dusk Equirect.png");
+
+	CGameObject* pSkybox = new CGameObject;
+	pSkybox->SetName(L"SkyBox");
+	pSkybox->FrustumCheck(false);
+	pSkybox->AddComponent(new CTransform);
+	pSkybox->AddComponent(new CMeshRender);
+
+	pSkybox->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh"));
+	pSkybox->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"SkyboxMtrl"));
+	pSkybox->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pSkyboxTex.GetPointer());
+
+	FindLayer(L"Default")->AddGameObject(pSkybox, false);
 
 	// 맵 콜라이더 만들기
 
@@ -98,15 +147,30 @@ void CDungeonScene::init()
 	pLight->AddComponent(new CTransform);
 	pLight->AddComponent(new CLight3D);
 
-	pLight->Light3D()->SetLightPos(Vec3(2000.f, 3000.f, 2000.f));
+	pLight->Light3D()->SetLightPos(Vec3(-5000.f, 3000.f, 0.f));
 	pLight->Light3D()->SetLightType(LIGHT_TYPE::DIR);
 	pLight->Light3D()->SetDiffuseColor(Vec3(1.f, 1.f, 1.f));
 	pLight->Light3D()->SetSpecular(Vec3(0.1f, 0.1f, 0.1f));
 	pLight->Light3D()->SetAmbient(Vec3(0.8f, 0.8f, 0.8f));
-	pLight->Light3D()->SetLightDir(Vec3(-1.f, -1.f, -1.f));
-	pLight->Light3D()->SetLightRange(10000.f);
+	pLight->Light3D()->SetLightDir(Vec3(1.f, -1.f, 1.f));
+	pLight->Light3D()->SetLightRange(10000000000000.f);
 	//pLight->Transform()->SetLocalPos(Vec3(0.f, 1000.f, 0.f));
 	FindLayer(L"Default")->AddGameObject(pLight);
+
+	CGameObject *pObject = new CGameObject;
+	pObject->SetName(L"Light_Test");
+	pObject->AddComponent(new CTransform);
+	pObject->AddComponent(new CMeshRender);
+	// Transform 설정
+	pObject->Transform()->SetLocalPos(Vec3(-5000.f, 3000.f, 0.f));
+	pObject->Transform()->SetLocalScale(Vec3(500.f, 500.f, 500.f));
+	pObject->AddComponent(new CCollider2D);
+	// MeshRender 설정
+	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh"));
+	pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+
+	// AddGameObject
+	FindLayer(L"Default")->AddGameObject(pObject);
 
 	// ===================
 	// Player 파일 로드
@@ -121,7 +185,7 @@ void CDungeonScene::init()
 	pPlayer->FrustumCheck(false);
 
 	//pPlayer->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-	pPlayer->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	pPlayer->Transform()->SetLocalScale(Vec3(2.5f, 2.5f, 2.5f));
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 	pPlayer->AddComponent(new CCollider2D);
 
@@ -184,7 +248,7 @@ void CDungeonScene::init()
 	pPlayerCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
 
 	pPlayerCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	pPlayerCol->Collider2D()->SetOffsetScale(Vec3(70.f, 70.f, 70.f));
+	pPlayerCol->Collider2D()->SetOffsetScale(Vec3(35.f, 35.f, 35.f));
 	pPlayerCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	pPlayerCol->AddComponent(new CPlayerColScript);
 	pPlayerCol->GetScript<CPlayerColScript>()->SetPlayer(pPlayer);
@@ -219,40 +283,6 @@ void CDungeonScene::init()
 	pUICam->Camera()->SetLayerCheck(8, true);
 	
 	FindLayer(L"Default")->AddGameObject(pUICam);
-
-
-	Ptr<CTexture> pColor = CResMgr::GetInst()->Load<CTexture>(L"Tile", L"Texture\\Tile\\TILE_01.tga");
-	Ptr<CTexture> pNormal = CResMgr::GetInst()->Load<CTexture>(L"Tile_n", L"Texture\\Tile\\TILE_01_N.tga");
-	// ==================
-	// Map 오브젝트 생성
-	// ==================
-
-	for (int j = 0; j < 5; ++j)
-	{
-		for (int i = 0; i < 5; ++i)
-		{
-			CGameObject* pObject = new CGameObject;
-			pObject->SetName(L"Map Object");
-			pObject->AddComponent(new CTransform);
-			pObject->AddComponent(new CMeshRender);
-
-			// Transform 설정
-			pObject->Transform()->SetLocalPos(Vec3(i * 1000.f - 2000.f, 0.f, j * 1000.f - 1000.f));
-			pObject->Transform()->SetLocalScale(Vec3(1000.f, 1000.f, 1.f));
-			pObject->Transform()->SetLocalRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
-
-			// MeshRender 설정
-			pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-			pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pColor.GetPointer());
-			pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_1, pNormal.GetPointer());
-
-			// AddGameObject
-			FindLayer(L"Default")->AddGameObject(pObject);
-
-		}
-	}
-
 
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"PlayerSword", L"MonsterCollider");
 	CCollisionMgr::GetInst()->CheckCollisionLayer(L"MonsterSword", L"PlayerCollider");

@@ -304,6 +304,7 @@ void CAssemblyAreaScene::init()
 	pPlayer->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 	pPlayer->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
 
+	pPlayer->MeshRender()->SetDynamicShadow(true);
 	// 플레이어 스크립트 붙여주기.
 	pPlayer->AddComponent(new CPlayerScript);
 

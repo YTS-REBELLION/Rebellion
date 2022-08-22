@@ -223,6 +223,7 @@ void CM_MonsterScript::update()
 	m_pUi->Transform()->SetLocalPos(Vec3(HpUiPos.x, HpUiPos.y, HpUiPos.z));
 
 }
+
 void CM_MonsterScript::UpdateLerpPos()
 {
 	Vec3 Pos = GetObj()->Transform()->GetLocalPos();
@@ -299,7 +300,6 @@ void CM_MonsterScript::SetMonsterPacket(sc_packet_npc_attack* p)
 	m_attackPacket = p;
 }
 
-
 void CM_MonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 {
 	//if (_pOther->GetObj()->GetName() == L"Player_Sword")
@@ -347,9 +347,10 @@ void CM_MonsterScript::Skill1()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		pObject->Collider2D()->SetOffsetScale(Vec3(0.5f, 0.5f, 100.f));
+
 		// AddGameObject
 		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(pObject);
 
@@ -371,7 +372,7 @@ void CM_MonsterScript::Skill1()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		pObject->Collider2D()->SetOffsetScale(Vec3(0.5f, 0.5f, 100.f));
 		// AddGameObject
@@ -395,7 +396,7 @@ void CM_MonsterScript::Skill1()
 		pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_2, pfAlpha01.GetPointer());
 		pObject->GetScript<CFire>()->init();
 		pObject->AddComponent(new CCollider2D);
-		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
+		pObject->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 		pObject->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		pObject->Collider2D()->SetOffsetScale(Vec3(0.5f, 0.5f, 100.f));
 		// AddGameObject
@@ -429,7 +430,7 @@ void CM_MonsterScript::Skill2()
 
 
 		m_pSwordStrike->AddComponent(new CCollider2D);
-		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
+		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 		m_pSwordStrike->MeshRender()->SetDynamicShadow(true);
@@ -453,7 +454,7 @@ void CM_MonsterScript::Skill2()
 
 
 		m_pSwordStrike->AddComponent(new CCollider2D);
-		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
+		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
 		m_pSwordStrike->MeshRender()->SetDynamicShadow(true);
@@ -464,55 +465,47 @@ void CM_MonsterScript::Skill2()
 
 
 
-		m_pSwordStrike = pPMeshData->Instantiate();
-		m_pSwordStrike->SetName(L"Meteor");
-		m_pSwordStrike->FrustumCheck(false);
+		//m_pSwordStrike = pPMeshData->Instantiate();
+		//m_pSwordStrike->SetName(L"Meteor");
+		//m_pSwordStrike->FrustumCheck(false);
 
 
-		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ -500.f,800.f,500.f });
-		m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-		m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-		m_pSwordStrike->AddComponent(new CMeteor);
+		//m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ -500.f,800.f,500.f });
+		//m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+		//m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//m_pSwordStrike->AddComponent(new CMeteor);
 
 
-		m_pSwordStrike->AddComponent(new CCollider2D);
-		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
-		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
-		m_pSwordStrike->MeshRender()->SetDynamicShadow(true);
-		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
+		//m_pSwordStrike->AddComponent(new CCollider2D);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
+		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+		//m_pSwordStrike->MeshRender()->SetDynamicShadow(true);
+		//// AddGameObject
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
 
-		m_pSwordStrike = new CGameObject;
-
-
-
-		m_pSwordStrike = pPMeshData->Instantiate();
-		m_pSwordStrike->SetName(L"Meteor");
-		m_pSwordStrike->FrustumCheck(false);
-
-
-		m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 500.f,800.f,500.f });
-		m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
-		m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-		m_pSwordStrike->AddComponent(new CMeteor);
-
-
-		m_pSwordStrike->AddComponent(new CCollider2D);
-		m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
-		m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-		m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
-		m_pSwordStrike->MeshRender()->SetDynamicShadow(true);
-		// AddGameObject
-		CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
+		//m_pSwordStrike = new CGameObject;
 
 
 
-		
+		//m_pSwordStrike = pPMeshData->Instantiate();
+		//m_pSwordStrike->SetName(L"Meteor");
+		//m_pSwordStrike->FrustumCheck(false);
 
-	
+
+		//m_pSwordStrike->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{ 500.f,800.f,500.f });
+		//m_pSwordStrike->Transform()->SetLocalRot(this->Transform()->GetLocalRot());
+		//m_pSwordStrike->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//m_pSwordStrike->AddComponent(new CMeteor);
 
 
+		//m_pSwordStrike->AddComponent(new CCollider2D);
+		//m_pSwordStrike->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHEREMESH);
+		//m_pSwordStrike->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+		//m_pSwordStrike->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+		//m_pSwordStrike->MeshRender()->SetDynamicShadow(true);
+		//// AddGameObject
+		//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Monster_Skill")->AddGameObject(m_pSwordStrike);
 		MonSkill2Check = false;
 	}
 }
@@ -523,8 +516,8 @@ void CM_MonsterScript::Skill3()
 	if (MonSkill3Check)
 	{
 		//// ====================
-	////  오브젝트 생성
-	//// ====================
+		////  오브젝트 생성
+		//// ====================
 		CGameObject* m_pSwordStrike = new CGameObject;
 		Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
 
