@@ -316,6 +316,24 @@ void CPlayerScript::update()
 			PlaySound_(Sound_Type::HIT);
 			g_net.Send_Attack_Animation_Packet(GetObj()->GetID(), GetAttack());
 
+			
+			CGameObject* pObject = new CGameObject;
+		
+			pObject->SetName(L"PostEffect");
+			pObject->AddComponent(new CTransform);
+			pObject->AddComponent(new CMeshRender);
+			// Material °ª ¼ÂÆÃ
+			Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"DistortionMtrl");
+			pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh"));
+			pObject->MeshRender()->SetMaterial(pMtrl, 0);
+			pObject->Transform()->SetLocalScale(Vec3(30.f, 100.f, 30.f));
+			pObject->Transform()->SetLocalRot(Vec3(0.0f, 1.f, 0.0f));
+			
+			pObject->Transform()->SetLocalPos(this->Transform()->GetLocalPos() + Vec3{0.f,150.f,0.f}+ this->Transform()->GetLocalDir(DIR_TYPE::FRONT)*100 + this->Transform()->GetLocalDir(DIR_TYPE::RIGHT) * 50);
+			pObject->AddComponent(new CSting);
+			CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Default")->AddGameObject(pObject);
+
+
 		}
 
 		else if (KEY_AWAY(KEY_TYPE::KEY_SPACE))
