@@ -83,11 +83,7 @@ void CPlayerScript::init()
 
 
 	 Ptr<CMaterial>  pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
-
-
 	
-
-
 	//Ã¼·Â UI
 	pObject = new CGameObject;
 	pObject->SetName(L"HpUi");

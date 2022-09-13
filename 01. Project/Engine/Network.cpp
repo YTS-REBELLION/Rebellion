@@ -21,6 +21,8 @@
 #include "PlayerColScript.h"
 #include "MonsterColScript.h"
 #include "BossColScript.h"
+
+#include "SwordAttackAreaScript.h"
 #include"Boss.h"	
 
 
@@ -239,7 +241,7 @@ void CNetwork::ProcessPacket(char* ptr)
 				//PlayerScript->SetPlayerAnimationData(pMeshData->GetMesh(), 5, 0, 100);
 
 				GameObject.find(id)->second->GetScript<CPlayerScript>()->SetID(id);
-
+				//GameObject.find(id)->second->GetScript<CPlayerScript>()->init();
 				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Player", GameObject.find(id)->second, false);
 
 				Ptr<CMeshData> pSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
@@ -275,6 +277,25 @@ void CNetwork::ProcessPacket(char* ptr)
 				GameObject.find(id)->second->GetScript<CPlayerScript>()->SetColPlayer(pPlayerCol);
 
 				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"PlayerCollider", pPlayerCol, false);
+
+				CGameObject* pSwordCol = new CGameObject;
+				pSwordCol->SetName(L"PlayerSwordCol");
+				pSwordCol->AddComponent(new CCollider2D);
+				pSwordCol->AddComponent(new CTransform);
+				pSwordCol->AddComponent(new CMeshRender);
+				pSwordCol->Transform()->SetLocalPos(GameObject.find(id)->second->Transform()->GetLocalPos());
+				pSwordCol->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+				pSwordCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+				pSwordCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+				pSwordCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+				pSwordCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+				pSwordCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+				pSwordCol->AddComponent(new CSwordAttackAreaScript);
+				pSwordCol->GetScript<CSwordAttackAreaScript>()->Set_Object(GameObject.find(id)->second);
+				pSwordCol->SetActive(false);
+				GameObject.find(id)->second->GetScript<CPlayerScript>()->SetColSSA(pSwordCol);
+
+				CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"PlayerSword", pSwordCol, false);
 			}
 			else if (CheckType(id) == OBJECT_TYPE::FM_MONSTER) {
 				//// ∏ÛΩ∫≈Õ

@@ -40,9 +40,6 @@ void CM_MonsterScript::init()
 	
 	Vec3 FrameUiScale = { 350,40,1 };
 
-	
-
-
 	//Ã¼·Â UI
 	pObject = new CGameObject;
 	pObject->SetName(L"HpUi");

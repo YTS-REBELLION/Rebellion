@@ -32,7 +32,9 @@
 #include "SwordScript.h"
 #include "ToolCamScript.h"
 #include "Network.h"
+
 #include "PlayerColScript.h"
+#include "SwordAttackAreaScript.h"
 
 void CDungeonScene::CreateMap()
 {
@@ -255,6 +257,25 @@ void CDungeonScene::init()
 	pPlayer->GetScript<CPlayerScript>()->SetColPlayer(pPlayerCol);
 
 	FindLayer(L"PlayerCollider")->AddGameObject(pPlayerCol);
+
+	CGameObject* pSwordCol = new CGameObject;
+	pSwordCol->SetName(L"PlayerSwordCol");
+	pSwordCol->AddComponent(new CCollider2D);
+	pSwordCol->AddComponent(new CTransform);
+	pSwordCol->AddComponent(new CMeshRender);
+	pSwordCol->Transform()->SetLocalPos(pPlayer->Transform()->GetLocalPos());
+	pSwordCol->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pSwordCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pSwordCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	pSwordCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+	pSwordCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+	pSwordCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pSwordCol->AddComponent(new CSwordAttackAreaScript);
+	pSwordCol->GetScript<CSwordAttackAreaScript>()->Set_Object(pPlayer);
+	pSwordCol->SetActive(false);
+	pPlayer->GetScript<CPlayerScript>()->SetColSSA(pSwordCol);
+
+	FindLayer(L"PlayerSword")->AddGameObject(pSwordCol);
 
 	//Main Camera
 	CGameObject* pMainCam = new CGameObject;
