@@ -59,26 +59,6 @@ void CPlayerScript::init()
 	////CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"Sword", pSword, false);
 	////CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"Sword")->AddGameObject(pSword);
 
-	CGameObject* pSwordCol = new CGameObject;
-	pSwordCol->SetName(L"PlayerSwordCol");
-	pSwordCol->AddComponent(new CCollider2D);
-	pSwordCol->AddComponent(new CTransform);
-	pSwordCol->AddComponent(new CMeshRender);
-	pSwordCol->Transform()->SetLocalPos(GetObj()->Transform()->GetLocalPos());
-	pSwordCol->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	pSwordCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-	pSwordCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-	pSwordCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	pSwordCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
-	pSwordCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
-	pSwordCol->AddComponent(new CSwordAttackAreaScript);
-	pSwordCol->GetScript<CSwordAttackAreaScript>()->Set_Object(GetObj());
-	pSwordCol->SetActive(false);
-	GetObj()->GetScript<CPlayerScript>()->SetColSSA(pSwordCol);
-	
-	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"PlayerSword", pSwordCol, false);
-
-
 	Ptr<CTexture> pS_astrostone = CResMgr::GetInst()->Load<CTexture>(L"Astrostone", L"Texture\\Icon\\S_astrostone.png");
 	Ptr<CTexture> pS_Blood_splash = CResMgr::GetInst()->Load<CTexture>(L"Bloodsplash", L"Texture\\Icon\\S_Blood_splash.png");
 	Ptr<CTexture> pS_Blue_firework = CResMgr::GetInst()->Load<CTexture>(L"Blue_firework", L"Texture\\Icon\\S_Blue_firework.png");
@@ -94,11 +74,7 @@ void CPlayerScript::init()
 
 
 	 Ptr<CMaterial>  pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
-
-
 	
-
-
 	//체력 UI
 	pObject = new CGameObject;
 	pObject->SetName(L"HpUi");
@@ -312,9 +288,6 @@ void CPlayerScript::update()
 	Vec3 vRot = Transform()->GetLocalRot();
 
 	CPlayerScript* player = GetObj()->GetScript<CPlayerScript>();
-	cout << "플레이어posX : " << localPos.x << endl;
-	cout << "플레이어posY : " << localPos.y << endl;
-	cout << "플레이어posZ : " << localPos.z << endl;
 	if (m_isMain) {
 		if ((KEY_TAB(KEY_TYPE::KEY_W) || KEY_TAB(KEY_TYPE::KEY_A) || KEY_TAB(KEY_TYPE::KEY_S) || KEY_TAB(KEY_TYPE::KEY_D)))
 		{
