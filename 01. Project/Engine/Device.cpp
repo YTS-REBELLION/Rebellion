@@ -14,6 +14,7 @@ CDevice::CDevice()
 	: m_pDevice(nullptr)
 	, m_pFence(nullptr)
 	, m_pFactory(nullptr)
+	, m_iCurTargetIdx(0)
 	, m_hFenceEvent(nullptr)
 	, m_iFenceValue(0)
 	, m_iCurDummyIdx(0)
@@ -86,11 +87,14 @@ int CDevice::init(HWND _hWnd, const tResolution& _res, bool _bWindow)
 
 	m_pCmdListGraphic->Close();
 
+	//m_pCmdAlloc->Reset();
+	//m_pCmdListGraphic->Reset(m_pCmdAlloc.Get(), nullptr);
+
 	// SwapChain 만들기
 	CreateSwapChain();
 
 	// ViewPort 만들기
-	CreateViewPort();
+	//CreateViewPort();
 
 	// RootSignature 만들기
 	CreateRootSignature();
@@ -111,8 +115,8 @@ void CDevice::render_start(float(&_arrFloat)[4])
 	// RootSignature 설정	
 	CMDLIST->SetGraphicsRootSignature(CDevice::GetInst()->GetRootSignature(ROOT_SIG_TYPE::RENDER).Get());
 
-	m_pCmdListGraphic->RSSetViewports(1, &m_tVP);
-	m_pCmdListGraphic->RSSetScissorRects(1, &m_tScissorRect);
+	//m_pCmdListGraphic->RSSetViewports(1, &m_tVP);
+	//m_pCmdListGraphic->RSSetScissorRects(1, &m_tScissorRect);
 
 	CMRT* pSwapChainMRT = CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN);
 
@@ -161,6 +165,7 @@ void CDevice::render_present()
 
 	// 백버퍼 타겟 인덱스 변경
 	m_iCurTargetIdx == 0 ? m_iCurTargetIdx = 1 : m_iCurTargetIdx = 0;
+	//m_iCurTargetIdx = (m_iCurTargetIdx + 1) % 2;
 }
 
 void CDevice::WaitForFenceEvent()
@@ -200,6 +205,7 @@ void CDevice::WaitForFenceEvent_CS()
 void CDevice::CreateSwapChain()
 {
 	// 출력 윈도우를 지정하여, 화면 갱신역할을 담당
+
 	DXGI_SWAP_CHAIN_DESC tDesc = {};
 
 	tDesc.BufferCount = 2; // dx12 는 버퍼 카운트는 2를 넣어준다
@@ -213,7 +219,7 @@ void CDevice::CreateSwapChain()
 	tDesc.BufferDesc.RefreshRate.Denominator = 1;    // 화면 갱신 비율 
 
 	tDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT; // 출력 타겟 용도로 버퍼를 만든다.
-	tDesc.Flags = 0; // DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH
+	tDesc.Flags = 0;//DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 	tDesc.OutputWindow = m_hWnd;	// 출력 윈도우
 	tDesc.Windowed = m_bWindowed;   // 창 모드 or 전체화면 모드
@@ -221,7 +227,7 @@ void CDevice::CreateSwapChain()
 	tDesc.SampleDesc.Quality = 0;
 	tDesc.SwapEffect = DXGI_SWAP_EFFECT::DXGI_SWAP_EFFECT_FLIP_DISCARD; // 전면 후면 버퍼 교체 시 이전 프레임 정보 버림
 
-	HRESULT hr = m_pFactory->CreateSwapChain(m_pCmdQueue.Get(), &tDesc, &m_pSwapChain);
+	HRESULT hr = m_pFactory->CreateSwapChain(m_pCmdQueue.Get(), &tDesc, m_pSwapChain.GetAddressOf());
 }
 
 void CDevice::CreateViewPort()
@@ -240,6 +246,7 @@ void CDevice::CreateRootSignature()
 	vector< D3D12_DESCRIPTOR_RANGE> vecRange;
 
 	D3D12_ROOT_PARAMETER slotParam = {};
+	
 	vecRange.clear();
 
 	D3D12_DESCRIPTOR_RANGE range = {};
@@ -271,7 +278,7 @@ void CDevice::CreateRootSignature()
 	D3D12_ROOT_SIGNATURE_DESC sigDesc = {};
 	sigDesc.NumParameters = 1;
 	sigDesc.pParameters = &slotParam;
-	sigDesc.NumStaticSamplers = 2;// m_vecSamplerDesc.size();
+	sigDesc.NumStaticSamplers = m_vecSamplerDesc.size();
 	sigDesc.pStaticSamplers = &m_vecSamplerDesc[0]; // 사용 될 Sampler 정보
 	sigDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT; // 입력 조립기 단계 허용
 
@@ -293,13 +300,15 @@ void CDevice::CreateRootSignature()
 	cbvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	cbvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 
-	for (size_t i = 0; i < 512; ++i)
+	for (size_t i = 0; i < 2048; ++i)
 	{
 		ComPtr<ID3D12DescriptorHeap> pDummyDescriptor;
 		DEVICE->CreateDescriptorHeap(&cbvHeapDesc, IID_PPV_ARGS(&pDummyDescriptor));
 		m_vecDummyDescriptor.push_back(pDummyDescriptor);
 	}
-
+	// 초기화용 더미 디스크립터 힙 작성
+	cbvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	m_pDevice->CreateDescriptorHeap(&cbvHeapDesc, IID_PPV_ARGS(&m_pInitDescriptor));
 
 	// ====================================
 	// Compute Shader 전용 Signature 만들기
@@ -380,6 +389,54 @@ void CDevice::CreateSamplerDesc()
 	sampler.ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 
 	m_vecSamplerDesc.push_back(sampler);
+
+	//	PCF 표본 추출기
+	sampler.Filter = D3D12_FILTER_MIN_MAG_LINEAR_MIP_POINT;
+	sampler.AddressU = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+	sampler.AddressV = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+	sampler.AddressW = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+	sampler.MipLODBias = 0;
+	sampler.MaxAnisotropy = 16;
+	sampler.ComparisonFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL; // D3D12_COMPARISON_FUNC_LESS_EQUAL;
+	sampler.BorderColor = D3D12_STATIC_BORDER_COLOR_OPAQUE_BLACK;
+	sampler.MinLOD = 0.0f;
+	sampler.MaxLOD = D3D12_FLOAT32_MAX;
+	sampler.ShaderRegister = 2;//6;
+	sampler.RegisterSpace = 0;
+	sampler.ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+	m_vecSamplerDesc.push_back(sampler);
+
+	sampler.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
+	sampler.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	sampler.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	sampler.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	sampler.MipLODBias = 0.f;
+	sampler.MaxAnisotropy = 1;
+	sampler.ComparisonFunc = D3D12_COMPARISON_FUNC_ALWAYS;
+	sampler.BorderColor = D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;
+	sampler.MinLOD = 0.0f;
+	sampler.MaxLOD = D3D12_FLOAT32_MAX;
+	sampler.ShaderRegister = 3;//1;
+	sampler.RegisterSpace = 0;
+	sampler.ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+	m_vecSamplerDesc.push_back(sampler);
+
+	sampler.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
+	sampler.AddressU = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
+	sampler.AddressV = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
+	sampler.AddressW = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
+	sampler.MipLODBias = 0.f;
+	sampler.MaxAnisotropy = 1;
+	sampler.ComparisonFunc = D3D12_COMPARISON_FUNC_ALWAYS;
+	sampler.BorderColor = D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;
+	sampler.MinLOD = 0.0f;
+	sampler.MaxLOD = D3D12_FLOAT32_MAX;
+	sampler.ShaderRegister = 4;//1;
+	sampler.RegisterSpace = 0;
+	sampler.ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+
+	m_vecSamplerDesc.push_back(sampler);
+
 }
 
 void CDevice::CreateConstBuffer(const wstring& _strName, size_t _iSize
@@ -442,12 +499,10 @@ void CDevice::SetTextureToRegister(CTexture* _pTex, TEXTURE_REGISTER _eRegisterN
 	m_pDevice->CopyDescriptors(1, &hDescHandle, &iDestRange
 		, 1, &hSrcHandle, &iSrcRange, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
-
-	// 리소스 상태 변경
+	CD3DX12_RESOURCE_BARRIER value = CD3DX12_RESOURCE_BARRIER::Transition(_pTex->GetTex2D().Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COMMON);
 	if (_pTex->GetResState() == D3D12_RESOURCE_STATE_UNORDERED_ACCESS)
 	{
-		CMDLIST->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(_pTex->GetTex2D().Get()
-			, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COMMON));
+		CMDLIST_CS->ResourceBarrier(1, &value);
 		_pTex->SetResState(D3D12_RESOURCE_STATE_COMMON);
 	}
 }
@@ -469,8 +524,8 @@ void CDevice::SetBufferToRegister(CStructuredBuffer* _pBuffer, TEXTURE_REGISTER 
 	// 리소스 상태 변경
 	if (_pBuffer->GetResState() == D3D12_RESOURCE_STATE_UNORDERED_ACCESS)
 	{
-		CMDLIST->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(_pBuffer->GetBuffer().Get()
-			, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COMMON));
+		CD3DX12_RESOURCE_BARRIER value = CD3DX12_RESOURCE_BARRIER::Transition(_pBuffer->GetBuffer().Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COMMON);
+		CMDLIST->ResourceBarrier(1, &value);
 		_pBuffer->SetResState(D3D12_RESOURCE_STATE_COMMON);
 	}
 }
@@ -522,14 +577,7 @@ void CDevice::SetTextureToRegister_CS(CTexture* _pTex, TEXTURE_REGISTER _eRegist
 	m_pDevice->CopyDescriptors(1, &hDescHandle, &iDestRange
 		, 1, &hSrcHandle, &iSrcRange, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
-	// 리소스 상태 변경
-	if (_pTex->GetResState() == D3D12_RESOURCE_STATE_UNORDERED_ACCESS)
-	{
-		CMDLIST_CS->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(_pTex->GetTex2D().Get()
-			, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COMMON));
-
-		_pTex->SetResState(D3D12_RESOURCE_STATE_COMMON);
-	}
+	
 }
 
 void CDevice::SetUAVToRegister_CS(CTexture* _pTex, UAV_REGISTER _eRegister)
@@ -546,11 +594,15 @@ void CDevice::SetUAVToRegister_CS(CTexture* _pTex, UAV_REGISTER _eRegister)
 	m_pDevice->CopyDescriptors(1, &hDescHandle, &iDestRange
 		, 1, &hSrcHandle, &iSrcRange, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
+	CD3DX12_RESOURCE_BARRIER value = CD3DX12_RESOURCE_BARRIER::Transition(_pTex->GetTex2D().Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+
 	// 리소스 상태 변경
 	if (_pTex->GetResState() == D3D12_RESOURCE_STATE_COMMON)
 	{
-		CMDLIST_CS->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(_pTex->GetTex2D().Get()
-			, D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_UNORDERED_ACCESS));
+		CMDLIST_CS->ResourceBarrier(1, &value);
+
+		//CMDLIST_CS->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(_pTex->GetTex2D().Get()
+		//	, D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_UNORDERED_ACCESS));
 
 		_pTex->SetResState(D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
 	}
@@ -573,8 +625,8 @@ void CDevice::SetBufferToSRVRegister_CS(CStructuredBuffer* _pBuffer, TEXTURE_REG
 	// 리소스 상태 변경
 	if (_pBuffer->GetResState() == D3D12_RESOURCE_STATE_UNORDERED_ACCESS)
 	{
-		CMDLIST_CS->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(_pBuffer->GetBuffer().Get()
-			, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COMMON));
+		CD3DX12_RESOURCE_BARRIER value = CD3DX12_RESOURCE_BARRIER::Transition(_pBuffer->GetBuffer().Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_COMMON);
+		CMDLIST_CS->ResourceBarrier(1, &value);
 
 		_pBuffer->SetResState(D3D12_RESOURCE_STATE_COMMON);
 	}
@@ -597,8 +649,8 @@ void CDevice::SetBufferToUAVRegister_CS(CStructuredBuffer* _pBuffer, UAV_REGISTE
 	// 리소스 상태 변경
 	if (_pBuffer->GetResState() == D3D12_RESOURCE_STATE_COMMON)
 	{
-		CMDLIST_CS->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(_pBuffer->GetBuffer().Get()
-			, D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_UNORDERED_ACCESS));
+		CD3DX12_RESOURCE_BARRIER value = CD3DX12_RESOURCE_BARRIER::Transition(_pBuffer->GetBuffer().Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+		CMDLIST_CS->ResourceBarrier(1, &value);
 
 		_pBuffer->SetResState(D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
 	}

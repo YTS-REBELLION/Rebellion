@@ -13,6 +13,8 @@ CTexture::CTexture()
 	, m_pSRV(nullptr)
 	, m_pRTV(nullptr)
 	, m_pDSV(nullptr)	
+	, m_pUAV(nullptr)
+	, eResStates(D3D12_RESOURCE_STATE_COMMON)
 {
 }
 
@@ -36,7 +38,7 @@ void CTexture::Create(UINT _iWidth, UINT _iHeight, DXGI_FORMAT _eFormat
 	m_tDesc.Layout = D3D12_TEXTURE_LAYOUT::D3D12_TEXTURE_LAYOUT_UNKNOWN;
 
 	D3D12_CLEAR_VALUE* pValue = nullptr;
-	D3D12_RESOURCE_STATES eResStates = D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_COMMON;
+
 
 	if (_eResFlag & D3D12_RESOURCE_FLAGS::D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL)
 	{
@@ -48,7 +50,7 @@ void CTexture::Create(UINT _iWidth, UINT _iHeight, DXGI_FORMAT _eFormat
 	{
 		//m_tDesc.Flags |= D3D12_RESOURCE_FLAG_ALLOW_SIMULTANEOUS_ACCESS;
 		eResStates = D3D12_RESOURCE_STATE_COMMON;
-		float arrFloat[4] = { _vClearColor.x, _vClearColor .y, _vClearColor .z, _vClearColor .w};
+		float arrFloat[4] = { _vClearColor.x, _vClearColor.y, _vClearColor.z, _vClearColor.w};
 		CD3DX12_CLEAR_VALUE depthOptimizedClearValue(_eFormat, arrFloat);
 		pValue = &depthOptimizedClearValue;
 	}
@@ -92,7 +94,42 @@ void CTexture::Create(UINT _iWidth, UINT _iHeight, DXGI_FORMAT _eFormat
 
 			DEVICE->CreateRenderTargetView(m_pTex2D.Get(), nullptr, hRTVHeap);
 		}
+
+
+		if (_eResFlag & D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS)
+		{
+			D3D12_DESCRIPTOR_HEAP_DESC uavHeapDesc = {};
+			uavHeapDesc.NumDescriptors = 1;
+			uavHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+			uavHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+			DEVICE->CreateDescriptorHeap(&uavHeapDesc, IID_PPV_ARGS(&m_pUAV));
+
+			D3D12_CPU_DESCRIPTOR_HANDLE handle = m_pUAV->GetCPUDescriptorHandleForHeapStart();
+
+			D3D12_UNORDERED_ACCESS_VIEW_DESC uavDesc = {};
+			uavDesc.Format = _eFormat;
+			uavDesc.ViewDimension = D3D12_UAV_DIMENSION_TEXTURE2D;
+
+			DEVICE->CreateUnorderedAccessView(m_pTex2D.Get(), nullptr, &uavDesc, handle);
+		}
 		
+		if (_eResFlag & D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS)
+		{
+			D3D12_DESCRIPTOR_HEAP_DESC uavHeapDesc = {};
+			uavHeapDesc.NumDescriptors = 1;
+			uavHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+			uavHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+			DEVICE->CreateDescriptorHeap(&uavHeapDesc, IID_PPV_ARGS(&m_pUAV));
+
+			D3D12_CPU_DESCRIPTOR_HANDLE handle = m_pUAV->GetCPUDescriptorHandleForHeapStart();
+
+			D3D12_UNORDERED_ACCESS_VIEW_DESC uavDesc = {};
+			uavDesc.Format = _eFormat;
+			uavDesc.ViewDimension = D3D12_UAV_DIMENSION_TEXTURE2D;
+
+			DEVICE->CreateUnorderedAccessView(m_pTex2D.Get(), nullptr, &uavDesc, handle);
+		}
+
 		// SRV 를 저장할 DescriptorHeap Create
 		D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
 		srvHeapDesc.NumDescriptors = 1;
@@ -214,16 +251,27 @@ void CTexture::Load(const wstring & _strFullPath)
 		assert(nullptr);
 
 	// upload is implemented by application developer. Here's one solution using <d3dx12.h>
+	CD3DX12_HEAP_PROPERTIES value = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 	const UINT64 uploadBufferSize = GetRequiredIntermediateSize(m_pTex2D.Get(), 0, static_cast<unsigned int>(vecSubresources.size()));
-	
+	CD3DX12_RESOURCE_DESC value2 = CD3DX12_RESOURCE_DESC::Buffer(uploadBufferSize);
+
 	ComPtr<ID3D12Resource> textureUploadHeap;
+
 	hr = DEVICE->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+		&value,
 		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer(uploadBufferSize),
+		&value2,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(textureUploadHeap.GetAddressOf()));
+
+	//hr = DEVICE->CreateCommittedResource(
+	//	&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+	//	D3D12_HEAP_FLAG_NONE,
+	//	&CD3DX12_RESOURCE_DESC::Buffer(uploadBufferSize),
+	//	D3D12_RESOURCE_STATE_GENERIC_READ,
+	//	nullptr,
+	//	IID_PPV_ARGS(textureUploadHeap.GetAddressOf()));
 
 	if (FAILED(hr))
 		assert(nullptr);

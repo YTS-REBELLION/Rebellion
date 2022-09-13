@@ -187,8 +187,9 @@ void CMaterial::Save(const wstring & _strPath)
 	if (!m_bFileSave)
 		return;
 
-	wstring strFilePath = _strPath;
-	strFilePath += GetName();
+	wstring strFilePath = CPathMgr::GetResPath();
+	strFilePath += _strPath;
+	SetPath(_strPath);
 
 	FILE* pFile = nullptr;
 	_wfopen_s(&pFile, strFilePath.c_str(), L"wb");

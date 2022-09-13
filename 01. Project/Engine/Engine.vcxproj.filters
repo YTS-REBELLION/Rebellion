@@ -8,17 +8,11 @@
     <Filter Include="01. Header">
       <UniqueIdentifier>{6990beb8-80b9-4501-9951-fd46a863c698}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Core">
-      <UniqueIdentifier>{007ffcba-46e9-48bb-ade9-0fe8ad8e970f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Device">
       <UniqueIdentifier>{6a3df6a8-6ff0-43df-af23-1c7c8499da19}</UniqueIdentifier>
     </Filter>
     <Filter Include="ShaderCode">
       <UniqueIdentifier>{cd8a3c12-734b-42a2-967c-ed03a65c7c67}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Manager">
-      <UniqueIdentifier>{86dda3d4-ee07-4fa7-a80e-d3fe3f031029}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{fe68851c-f8ab-4cef-be15-6a359a8e6cf0}</UniqueIdentifier>
@@ -31,9 +25,6 @@
     </Filter>
     <Filter Include="04. GameObject\Component">
       <UniqueIdentifier>{0a953554-fee4-4895-8134-01109d249fa2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Manager\SceneMgr">
-      <UniqueIdentifier>{1d96dc12-b567-4188-88bc-4308ff797f37}</UniqueIdentifier>
     </Filter>
     <Filter Include="04. GameObject\Component\Animator2D">
       <UniqueIdentifier>{1ad6d4cd-3b25-4ca4-9376-52fce0a50319}</UniqueIdentifier>
@@ -50,17 +41,35 @@
     <Filter Include="04. GameObject\Script">
       <UniqueIdentifier>{cbb81f79-d307-4371-9e99-ab9e93821102}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Manager\ResMgr">
-      <UniqueIdentifier>{780d6568-f989-431b-be7a-d3c34b23aa99}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Rendering\MRT">
       <UniqueIdentifier>{4f14963d-c0d9-4fff-8025-3322001b56a0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05.Network">
-      <UniqueIdentifier>{00bc92b1-cc2f-4305-9f82-488340dc6010}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. GameObject\Script\01.AssemblyPoint">
       <UniqueIdentifier>{73003f8c-0d9d-4945-b5d2-6276ccbf79c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. GameObject\Script\02.Miro">
+      <UniqueIdentifier>{b24417d8-ec44-4cba-b201-a592bef31780}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameScene">
+      <UniqueIdentifier>{f0456b5c-7509-4655-a8ac-adcd2fc223dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{d3261fbc-246f-46f8-88c4-bd95987ffad0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\ResMgr">
+      <UniqueIdentifier>{780d6568-f989-431b-be7a-d3c34b23aa99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\SceneMgr">
+      <UniqueIdentifier>{1d96dc12-b567-4188-88bc-4308ff797f37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Network">
+      <UniqueIdentifier>{00bc92b1-cc2f-4305-9f82-488340dc6010}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. GameObject\Script\03.Skill">
+      <UniqueIdentifier>{d06cec06-6bfe-48db-b40c-a36798210a08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Core">
+      <UniqueIdentifier>{007ffcba-46e9-48bb-ade9-0fe8ad8e970f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -87,15 +96,6 @@
     <ClInclude Include="Device.h">
       <Filter>03. Device</Filter>
     </ClInclude>
-    <ClInclude Include="KeyMgr.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="TimeMgr.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="PathMgr.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Resource</Filter>
     </ClInclude>
@@ -120,9 +120,6 @@
     <ClInclude Include="d3dx12.h">
       <Filter>01. Header</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>04. GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>04. GameObject\Component</Filter>
     </ClInclude>
@@ -137,9 +134,6 @@
     </ClInclude>
     <ClInclude Include="Script.h">
       <Filter>04. GameObject\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="EventMgr.h">
-      <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="SceneMgr.h">
       <Filter>Manager\SceneMgr</Filter>
@@ -176,9 +170,6 @@
     </ClInclude>
     <ClInclude Include="Light3D.h">
       <Filter>04. GameObject\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionMgr.h">
-      <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="RenderMgr.h">
       <Filter>Rendering</Filter>
@@ -217,11 +208,8 @@
     <ClInclude Include="Animator3D.h">
       <Filter>04. GameObject\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Collider.h">
-      <Filter>04. GameObject\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Network.h">
-      <Filter>05.Network</Filter>
+      <Filter>05. Network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\RebellionServer\Server\Server\Protocol.h" />
     <ClInclude Include="GuardHouse.h">
@@ -245,6 +233,109 @@
     <ClInclude Include="StructuredBuffer.h">
       <Filter>03. Device</Filter>
     </ClInclude>
+    <ClInclude Include="SwordScript.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>04. GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Castle.h">
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="Miro.h">
+      <Filter>04. GameObject\Script\02.Miro</Filter>
+    </ClInclude>
+    <ClInclude Include="NpcMon.h">
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="AssemblyAreaScene.h">
+      <Filter>GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Dungeon.h">
+      <Filter>GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginScene.h">
+      <Filter>GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionMgr.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="EventMgr.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyMgr.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="PathMgr.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeMgr.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="M_MonsterScript.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="SwordStrike.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="MegaSlash.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Meteor.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Sting.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Swing.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="UnleashedPower.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBall.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Quest.h">
+      <Filter>04. GameObject\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Fire.h" />
+    <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="BossMap.h">
+      <Filter>GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Swing2.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Swing3.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Swing4.h">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleScript.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="BossSkill1.h" />
+    <ClInclude Include="SwordAttackAreaScript.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterColScript.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundMgr.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerColScript.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="BossFireBall.h" />
+    <ClInclude Include="BossColScript.h">
+      <Filter>04. GameObject\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -253,15 +344,6 @@
     </ClCompile>
     <ClCompile Include="Device.cpp">
       <Filter>03. Device</Filter>
-    </ClCompile>
-    <ClCompile Include="KeyMgr.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="TimeMgr.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="PathMgr.cpp">
-      <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="Resource.cpp">
       <Filter>Resource</Filter>
@@ -302,9 +384,6 @@
     <ClCompile Include="Script.cpp">
       <Filter>04. GameObject\Component</Filter>
     </ClCompile>
-    <ClCompile Include="EventMgr.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
     <ClCompile Include="SceneMgr.cpp">
       <Filter>Manager\SceneMgr</Filter>
     </ClCompile>
@@ -343,9 +422,6 @@
     </ClCompile>
     <ClCompile Include="Light3D.cpp">
       <Filter>04. GameObject\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="CollisionMgr.cpp">
-      <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="RenderMgrInit.cpp">
       <Filter>Rendering</Filter>
@@ -389,11 +465,8 @@
     <ClCompile Include="Animator3D.cpp">
       <Filter>04. GameObject\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Collider.cpp">
-      <Filter>04. GameObject\Component</Filter>
-    </ClCompile>
     <ClCompile Include="Network.cpp">
-      <Filter>05.Network</Filter>
+      <Filter>05. Network</Filter>
     </ClCompile>
     <ClCompile Include="GuardHouse.cpp">
       <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
@@ -415,6 +488,106 @@
     </ClCompile>
     <ClCompile Include="StructuredBuffer.cpp">
       <Filter>03. Device</Filter>
+    </ClCompile>
+    <ClCompile Include="SwordScript.cpp">
+      <Filter>04. GameObject\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Castle.cpp">
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="Miro.cpp">
+      <Filter>04. GameObject\Script\02.Miro</Filter>
+    </ClCompile>
+    <ClCompile Include="NpcMon.cpp">
+      <Filter>04. GameObject\Script\01.AssemblyPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="AssemblyAreaScene.cpp">
+      <Filter>GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Dungeon.cpp">
+      <Filter>GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginScene.cpp">
+      <Filter>GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyMgr.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionMgr.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="EventMgr.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="PathMgr.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeMgr.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="M_MonsterScript.cpp">
+      <Filter>04. GameObject\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="SwordStrike.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="MegaSlash.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Meteor.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Sting.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Swing.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="UnleashedPower.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="FireBall.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Quest.cpp">
+      <Filter>04. GameObject\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Fire.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="BossMap.cpp">
+      <Filter>GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>04. GameObject\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Swing2.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Swing3.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Swing4.cpp">
+      <Filter>04. GameObject\Script\03.Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleScript.cpp">
+      <Filter>04. GameObject\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="BossSkill1.cpp" />
+    <ClCompile Include="SwordAttackAreaScript.cpp">
+      <Filter>04. GameObject\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterColScript.cpp">
+      <Filter>04. GameObject\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundMgr.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerColScript.cpp">
+      <Filter>04. GameObject\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="BossFireBall.cpp" />
+    <ClCompile Include="BossColScript.cpp">
+      <Filter>04. GameObject\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -443,6 +616,16 @@
       <Filter>ShaderCode</Filter>
     </FxCompile>
     <FxCompile Include="trail.fx">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="fire.fx" />
+    <FxCompile Include="posteffect.fx">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="particle.fx">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="rain.fx">
       <Filter>ShaderCode</Filter>
     </FxCompile>
   </ItemGroup>

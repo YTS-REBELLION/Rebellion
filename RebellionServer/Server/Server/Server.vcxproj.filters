@@ -51,6 +51,9 @@
     <ClCompile Include="SimpleMath.cpp">
       <Filter>etc\DxMath</Filter>
     </ClCompile>
+    <ClCompile Include="func.cpp">
+      <Filter>etc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">
@@ -86,6 +89,12 @@
     <ClInclude Include="SimpleMath.h">
       <Filter>etc\DxMath</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\01. Project\Engine\define.h">
+      <Filter>etc</Filter>
+    </ClInclude>
+    <ClInclude Include="func.h">
+      <Filter>etc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -93,8 +102,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="lua53.lib">
-      <Filter>etc\lua</Filter>
-    </Library>
+    <Library Include="lua53.lib" />
   </ItemGroup>
 </Project>

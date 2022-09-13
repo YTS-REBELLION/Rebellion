@@ -27,7 +27,6 @@ public:
 public:
 	void SetActive(bool _bTrue);
 	bool IsActive() { return m_bActive; }
-
 public:
 	COMPONENT_TYPE GetComponentType() { return m_eComType; }
 	CGameObject* GetObj() { return m_pObject; }
@@ -40,7 +39,7 @@ public:
 	CLight2D* Light2D() { return m_pObject->Light2D(); }
 	CLight3D* Light3D() { return m_pObject->Light3D(); }
 	CCamera* Camera() { return m_pObject->Camera(); }
-
+	CParticleSystem* ParticleSystem() { return m_pObject->Particlesystem(); }
 private:
 	void SetGameObject(CGameObject* _pObject) { m_pObject = _pObject; }
 

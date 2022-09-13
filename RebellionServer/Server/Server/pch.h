@@ -13,6 +13,7 @@
 #include <chrono>
 
 #include <vector>
+#include <map>
 #include <thread>
 #include <queue>
 #include <mutex>
@@ -30,7 +31,7 @@ using namespace chrono;
 #include <MSWSock.h>
 
 #pragma comment (lib, "MSWSock.LIB")
-#pragma comment(lib, "lua53.lib")
+#pragma comment(lib, "lua54.lib")
 #pragma comment(lib,"WS2_32.lib")
 
 //extern "C" {
@@ -53,5 +54,6 @@ using DirectX::SimpleMath::Matrix;
 #include "Shared.h"
 
 
+#include "func.h"
 
 #endif //PCH_H

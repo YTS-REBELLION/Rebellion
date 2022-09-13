@@ -12,6 +12,7 @@ CAnimator3D::CAnimator3D()
 	, m_iFrameCount(30)
 	, m_pBoneFinalMat(nullptr)
 	, m_bFinalMatUpdate(false)
+	, m_bAniUse(true)
 	, CComponent(COMPONENT_TYPE::ANIMATOR3D)
 {	
 	m_pBoneMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"Animation3DUpdateMtrl");
@@ -33,8 +34,27 @@ void CAnimator3D::lateupdate()
 void CAnimator3D::finalupdate()
 {
 	m_dCurTime = 0.f;
+	float Double_DT = DT * 1.5f;
 	// 현재 재생중인 Clip 의 시간을 진행한다.
-	m_vecClipUpdateTime[m_iCurClip] += DT;
+	if (m_iCurClip == 3 && GetObj()->GetName() == L"FM_Player")
+	{
+		m_vecClipUpdateTime[m_iCurClip] += Double_DT * 1.3;
+	}
+	else if ( m_iCurClip == 4 && GetObj()->GetName() == L"FM_Player")
+	{
+		m_vecClipUpdateTime[m_iCurClip] += Double_DT* 1.5;
+	}
+	else if (m_iCurClip == 2 && GetObj()->GetName() == L"Monster1")
+	{
+		m_vecClipUpdateTime[m_iCurClip] += Double_DT;
+	}
+	else if ((m_iCurClip == 2 || m_iCurClip == 3) && GetObj()->GetName() == L"M_Monster")
+	{
+		m_vecClipUpdateTime[m_iCurClip] += Double_DT;
+	}
+	else {
+		m_vecClipUpdateTime[m_iCurClip] += DT;
+	}
 
 	if (m_vecClipUpdateTime[m_iCurClip] >= m_pVecClip->at(m_iCurClip).dTimeLength)
 	{
@@ -46,67 +66,6 @@ void CAnimator3D::finalupdate()
 	m_iFrameIdx = (int)(m_dCurTime * (float)m_iFrameCount);
 
 	m_bFinalMatUpdate = false;
-
-	return;
-
-	// 본 개수만큼 반복하며 현재 시간에 맞게 모든 본 행렬을 모두 보간해준다.
-	for (size_t i = 0; i < m_pVecBones->size(); ++i)
-	{
-		if (m_pVecBones->at(i).vecKeyFrame.empty())
-		{
-			// 키프레임 별 행렬이 없는 본일 경우
-			m_vecFinalBoneMat[i] = m_pVecBones->at(i).matBone;
-			continue;
-		}
-			   
-		// 시간을 통하여 인덱스를 구한다.
-		int	iFrameIndex = (int)(m_dCurTime * (float)m_iFrameCount);
-		int	iFrameNextIndex = 0;
-
-		/*{
-			m_vecFinalBoneMat[i] = m_pVecBones->at(i).matOffset *
-				XMMatrixAffineTransformation(m_pVecBones->at(i).vecKeyFrame[iFrameIndex].vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f)
-					, m_pVecBones->at(i).vecKeyFrame[iFrameIndex].qRot
-					, m_pVecBones->at(i).vecKeyFrame[iFrameIndex].vTranslate);
-			continue;
-		}*/
-
-		if (iFrameIndex >= m_pVecClip->at(0).iFrameLength - 1)
-		{
-			iFrameNextIndex = iFrameIndex;
-		}
-		else
-		{
-			iFrameNextIndex = iFrameIndex + 1;
-		}
-
-		const tMTKeyFrame& tKeyFrame = m_pVecBones->at(i).vecKeyFrame[iFrameIndex];
-		const tMTKeyFrame& tNextKeyFrame = m_pVecBones->at(i).vecKeyFrame[iFrameNextIndex];
-
-		double	fFrameTime = tKeyFrame.dTime;
-		double	fNextFrameTime = tNextKeyFrame.dTime;
-
-		// 프레임간의 시간에 따른 비율을 구해준다.
-		double	fPercent = (m_dCurTime - fFrameTime) / (1.f / m_iFrameCount);
-
-		XMVECTOR vS1 = tKeyFrame.vScale;
-		XMVECTOR vS2 = tNextKeyFrame.vScale;
-
-		XMVECTOR vT1 = tKeyFrame.vTranslate;
-		XMVECTOR vT2 = tNextKeyFrame.vTranslate;
-
-		XMVECTOR vQ1 = XMLoadFloat4(&tKeyFrame.qRot);
-		XMVECTOR vQ2 = XMLoadFloat4(&tNextKeyFrame.qRot);
-
-		XMVECTOR vS = XMVectorLerp(vS1, vS2, (float)fPercent);
-		XMVECTOR vT = XMVectorLerp(vT1, vT2, (float)fPercent);
-		XMVECTOR vQ = XMQuaternionSlerp(vQ1, vQ2, (float)fPercent);
-
-		XMVECTOR vQZero = XMVectorSet(0.f, 0.f, 0.f, 1.f);
-
-		// 오프셋 행렬을 곱하여 최종 본행렬을 만들어낸다.				
-		m_vecFinalBoneMat[i] = m_pVecBones->at(i).matOffset * XMMatrixAffineTransformation(vS, vQZero, vQ, vT);
-	}	
 }
 
 void CAnimator3D::SaveToScene(FILE * _pFile)

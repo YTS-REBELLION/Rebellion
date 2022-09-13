@@ -9,6 +9,18 @@
       <FullPath>C:\Users\User\Desktop\GP\Rebellion\03. External\Library\Engine\compute.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\User\Desktop\GP\Rebellion\03. External\Library\Engine\fire.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\User\Desktop\GP\Rebellion\03. External\Library\Engine\particle.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\User\Desktop\GP\Rebellion\03. External\Library\Engine\rain.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\User\Desktop\GP\Rebellion\03. External\Library\Engine\posteffect.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\User\Desktop\GP\Rebellion\03. External\Library\Engine\trail.cso</FullPath>
     </ContentFile>
   </ContentFiles>

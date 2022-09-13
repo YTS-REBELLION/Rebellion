@@ -237,3 +237,22 @@ struct tMTAnimClip
 
 	FbxTime::EMode eMode;
 };
+
+
+struct tParticle
+{
+	Vec3 vWorldPos;		// 위치	
+	Vec3 vWorldDir;		// 이동 방향
+
+	float m_fCurTime;	// 현재 시간
+	float m_fLifeTime;	// 최대 생명주기
+
+	int  iAlive;
+	int  arrPading[3];
+};
+
+struct tParticleShared
+{
+	int iAddCount;
+	int arrPading[3];
+};

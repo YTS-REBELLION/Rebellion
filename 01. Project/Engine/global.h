@@ -10,7 +10,7 @@
 #include <dxgi.h>
 #include <DirectXMath.h>
 #include <DirectXPackedVector.h>
-
+#include <math.h>
 #include <algorithm>
 #include "SimpleMath.h"
 
@@ -37,10 +37,14 @@ using namespace Microsoft::WRL;
 #include <vector>
 #include <list>
 #include <map>
+#include <unordered_map>
+
+
 
 using std::vector;
 using std::list;
 using std::map;
+using std::unordered_map;
 using std::string;
 using std::wstring;
 using std::make_pair;

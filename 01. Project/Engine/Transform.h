@@ -15,8 +15,13 @@ private:
 
 	Matrix		m_matWorld;
 	Matrix		m_matWorldInv;
+	Vec4		m_vQuaternion;
+
 
 public:
+	const Vec4 GetQuaternion()const { return m_vQuaternion; }
+	void SetQuaternion(const Vec4& _vQuaternion) { m_vQuaternion = _vQuaternion; }
+
 	const Vec3& GetLocalPos() { return m_vLocalPos; }
 	Vec3 GetWorldPos() { return m_matWorld.Translation(); }
 
@@ -29,13 +34,16 @@ public:
 	const Vec3& GetLocalDir(DIR_TYPE _eType) { return m_vLocalDir[(UINT)_eType]; }
 	const Vec3& GetWorldDir(DIR_TYPE _eType) { return m_vWorldDir[(UINT)_eType]; }
 
+	void SetWorldDir(DIR_TYPE _eType, Vec3 _vDir) { m_vWorldDir[(UINT)_eType] = _vDir; }
+	void SetLocalDir(DIR_TYPE _eType, Vec3 _vDir) { m_vLocalDir[(UINT)_eType] = _vDir; }
+
 	void SetLocalPos(const Vec3& _vPos) { if (m_vLocalPos != _vPos) { m_vLocalPos = _vPos; Changed(); } }
 	void SetLocalScale(const Vec3& _vScale) { if (m_vLocalScale != _vScale) { m_vLocalScale = _vScale; Changed(); } }
 	void SetLocalRot(const Vec3& _vRot) { if (m_vLocalRot != _vRot) { m_vLocalRot = _vRot; Changed(); } }
 
 	bool IsCasting(const Vec3& _vPos);
 	float GetMaxScale();
-
+	void LookAt(const Vec3& _vLook);
 	// Transform 정보를 상수데이터 및 레지스터로 전달한다.
 	void UpdateData();
 

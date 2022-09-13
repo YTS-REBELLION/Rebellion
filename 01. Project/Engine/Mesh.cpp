@@ -351,6 +351,7 @@ CMesh * CMesh::CreateFromContainer(CFBXLoader & _loader)
 
 void CMesh::render(UINT _iSubset)
 {
+	assert(_iSubset < m_vecIdxInfo.size());
 	CDevice::GetInst()->UpdateTable();	
 		
 	CMDLIST->IASetVertexBuffers(0, 1, &m_tVtxView);
@@ -385,6 +386,9 @@ void CMesh::Load(const wstring & _strFilePath)
 
 	UINT iByteSize = 0;
 	fread(&iByteSize, sizeof(int), 1, pFile);
+
+	m_pVtxSysMem = malloc(iByteSize);
+	fread(m_pVtxSysMem, 1, iByteSize, pFile);
 
 	// 읽은 정보로 VTX Bufffer 만들기
 	D3D12_HEAP_PROPERTIES tHeapProperty = {};

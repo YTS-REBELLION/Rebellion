@@ -14,6 +14,8 @@ class CLight3D;
 class CCamera;
 class CAnimator3D;
 
+class CParticleSystem;
+
 class CGameObject :
 	public CEntity
 {
@@ -26,6 +28,10 @@ private:
 	bool					m_bDead;
 	bool					m_bActive;
 	bool					m_bFrustumCheck;
+
+
+	int						m_iID;
+
 public:
 	void awake();
 	void start();
@@ -38,7 +44,7 @@ public:
 public:
 	void SetActive(bool _bTrue);
 	bool IsActive() { return m_bActive; }
-
+	CParticleSystem* Particlesystem() { return (CParticleSystem*)m_arrCom[(UINT)COMPONENT_TYPE::PARTICLESYSTEM]; }
 	void FrustumCheck(bool _bCheck) { m_bFrustumCheck = _bCheck; }
 	bool GetFrustumCheck() { return m_bFrustumCheck; }
 public:
@@ -68,9 +74,13 @@ public:
 	bool IsDead() { return m_bDead; }
 	void SetDead();
 
+	
+
 	void RegisterToLayer();
+	int& GetID() { return m_iID; }
+	void SetID(const int& id) { m_iID = id; }
 
-
+	//void SetID(int id) { m_iID = id; };
 public:
 	CLONE(CGameObject);
 

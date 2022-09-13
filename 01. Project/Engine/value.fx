@@ -136,7 +136,9 @@ Texture2D g_tex_anim2D : register(t12);
 // Sampler
 SamplerState g_sam_0 : register(s0); // anisotrophic
 SamplerState g_sam_1 : register(s1); // point
-
+SamplerComparisonState g_sam_2 : register(s2);    // PCF
+SamplerState g_sam_3 : register(s3);              // fire 1
+SamplerState g_sam_4 : register(s4);              // fire 1
 
 // Debugging
 int HasTex(in Texture2D _tex)

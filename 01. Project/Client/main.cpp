@@ -17,6 +17,9 @@
 
 #define MAX_LOADSTRING 100
 
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 768
+
 // 전역 변수:
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 HWND	g_hWnd;									// Main Window Handle
@@ -43,9 +46,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MyRegisterClass(hInstance);
     
 
-    //g_net.Connect();
-    //g_net.Send_LogIn_Packet();
-    //g_net.Receive();
+    g_net.Connect();
+    g_net.Send_LogIn_Packet();
+    g_net.Receive();
 
 
     // 응용 프로그램 초기화를 수행합니다:
@@ -54,7 +57,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-	if (FAILED(CCore::GetInst()->init(g_hWnd, tResolution{ 1280, 768 }, true)))
+	if (FAILED(CCore::GetInst()->init(g_hWnd, tResolution{ SCREEN_WIDTH, SCREEN_HEIGHT }, true)))
 	{
 		return 0;
 	}
@@ -75,7 +78,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				DispatchMessage(&msg);
 			}
 		}
-        //g_net.Receive();
+        g_net.Receive();
 		// Game Running
 		CCore::GetInst()->progress();
     }

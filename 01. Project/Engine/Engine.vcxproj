@@ -48,8 +48,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -156,7 +156,7 @@ call EngineCopy.bat</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -164,17 +164,28 @@ call EngineCopy.bat</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\RebellionServer\Server\Server\Protocol.h" />
     <ClInclude Include="Animation2D.h" />
     <ClInclude Include="Animator2D.h" />
     <ClInclude Include="Animator3D.h" />
+    <ClInclude Include="AssemblyAreaScene.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Boss.h" />
+    <ClInclude Include="BossColScript.h" />
+    <ClInclude Include="BossFireBall.h" />
+    <ClInclude Include="BossMap.h" />
+    <ClInclude Include="BossSkill1.h" />
     <ClInclude Include="BulletScript.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="Collider.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="Castle.h" />
     <ClInclude Include="Collider2D.h" />
     <ClInclude Include="CollisionMgr.h" />
     <ClInclude Include="Component.h" />
@@ -183,10 +194,15 @@ call EngineCopy.bat</Command>
     <ClInclude Include="d3dx12.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="Device.h" />
+    <ClInclude Include="Dungeon.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EventMgr.h" />
     <ClInclude Include="extern.h" />
     <ClInclude Include="FBXLoader.h" />
+    <ClInclude Include="Fire.h" />
+    <ClInclude Include="FireBall.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="func.h" />
     <ClInclude Include="GameObject.h" />
@@ -198,17 +214,36 @@ call EngineCopy.bat</Command>
     <ClInclude Include="Layer.h" />
     <ClInclude Include="Light2D.h" />
     <ClInclude Include="Light3D.h" />
+    <ClInclude Include="LoginScene.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Material.h" />
+    <ClInclude Include="MegaSlash.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshData.h" />
     <ClInclude Include="MeshRender.h" />
+    <ClInclude Include="Meteor.h" />
+    <ClInclude Include="Miro.h" />
+    <ClInclude Include="MonsterColScript.h" />
     <ClInclude Include="MonsterScript.h" />
     <ClInclude Include="MRT.h" />
+    <ClInclude Include="M_MonsterScript.h" />
     <ClInclude Include="Network.h" />
+    <ClInclude Include="NpcMon.h" />
+    <ClInclude Include="ParticleScript.h" />
+    <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="PathMgr.h" />
+    <ClInclude Include="PlayerColScript.h" />
     <ClInclude Include="PlayerScript.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Ptr.h" />
+    <ClInclude Include="Quest.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="RenderMgr.h" />
     <ClInclude Include="ResMgr.h" />
     <ClInclude Include="Resource.h" />
@@ -220,10 +255,19 @@ call EngineCopy.bat</Command>
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="Somethings.h" />
     <ClInclude Include="Sound.h" />
+    <ClInclude Include="SoundMgr.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Sting.h" />
     <ClInclude Include="struct.h" />
     <ClInclude Include="StructuredBuffer.h" />
+    <ClInclude Include="Swing.h" />
+    <ClInclude Include="Swing2.h" />
+    <ClInclude Include="Swing3.h" />
+    <ClInclude Include="Swing4.h" />
     <ClInclude Include="Sword.h" />
+    <ClInclude Include="SwordAttackAreaScript.h" />
+    <ClInclude Include="SwordScript.h" />
+    <ClInclude Include="SwordStrike.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestScript.h" />
     <ClInclude Include="Texture.h" />
@@ -231,16 +275,24 @@ call EngineCopy.bat</Command>
     <ClInclude Include="ToolCamScript.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Tree.h" />
+    <ClInclude Include="UnleashedPower.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation2D.cpp" />
     <ClCompile Include="Animator2D.cpp" />
     <ClCompile Include="Animator3D.cpp" />
+    <ClCompile Include="AssemblyAreaScene.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="BossColScript.cpp" />
+    <ClCompile Include="BossFireBall.cpp" />
+    <ClCompile Include="BossMap.cpp" />
+    <ClCompile Include="BossSkill1.cpp" />
     <ClCompile Include="BulletScript.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Collider.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="Castle.cpp" />
     <ClCompile Include="Collider2D.cpp" />
     <ClCompile Include="CollisionMgr.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -248,9 +300,15 @@ call EngineCopy.bat</Command>
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="desc.cpp" />
     <ClCompile Include="Device.cpp" />
+    <ClCompile Include="Dungeon.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EventMgr.cpp" />
     <ClCompile Include="FBXLoader.cpp" />
+    <ClCompile Include="Fire.cpp" />
+    <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="func.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -261,16 +319,37 @@ call EngineCopy.bat</Command>
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="Light2D.cpp" />
     <ClCompile Include="Light3D.cpp" />
+    <ClCompile Include="LoginScene.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="MegaSlash.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshData.cpp" />
     <ClCompile Include="MeshRender.cpp" />
+    <ClCompile Include="Meteor.cpp" />
+    <ClCompile Include="Miro.cpp" />
+    <ClCompile Include="MonsterColScript.cpp" />
     <ClCompile Include="MonsterScript.cpp" />
     <ClCompile Include="MRT.cpp" />
+    <ClCompile Include="M_MonsterScript.cpp" />
     <ClCompile Include="Network.cpp" />
+    <ClCompile Include="NpcMon.cpp" />
+    <ClCompile Include="ParticleScript.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="PathMgr.cpp" />
+    <ClCompile Include="PlayerColScript.cpp" />
     <ClCompile Include="PlayerScript.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="Quest.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="RenderMgr.cpp" />
     <ClCompile Include="RenderMgrInit.cpp" />
     <ClCompile Include="ResMgr.cpp" />
@@ -283,35 +362,55 @@ call EngineCopy.bat</Command>
     <ClCompile Include="SimpleMath.cpp" />
     <ClCompile Include="Somethings.cpp" />
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="SoundMgr.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Sting.cpp" />
     <ClCompile Include="StructuredBuffer.cpp" />
+    <ClCompile Include="Swing.cpp" />
+    <ClCompile Include="Swing2.cpp" />
+    <ClCompile Include="Swing3.cpp" />
+    <ClCompile Include="Swing4.cpp" />
     <ClCompile Include="Sword.cpp" />
+    <ClCompile Include="SwordAttackAreaScript.cpp" />
+    <ClCompile Include="SwordScript.cpp" />
+    <ClCompile Include="SwordStrike.cpp" />
     <ClCompile Include="TestScript.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TimeMgr.cpp" />
     <ClCompile Include="ToolCamScript.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Tree.cpp" />
+    <ClCompile Include="UnleashedPower.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="animation.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="compute.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="fire.fx">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
     </FxCompile>
     <FxCompile Include="func.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
@@ -348,6 +447,25 @@ call EngineCopy.bat</Command>
       </ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="particle.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="posteffect.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="rain.fx">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
     </FxCompile>
     <FxCompile Include="std.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
@@ -407,6 +525,10 @@ call EngineCopy.bat</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="value.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>

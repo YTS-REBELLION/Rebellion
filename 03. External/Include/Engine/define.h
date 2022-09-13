@@ -1,5 +1,6 @@
 #pragma once
 
+
 #define SINGLE(type) private: type(); ~type();\
 public:\
 static type* GetInst()\
@@ -34,7 +35,25 @@ static type* GetInst()\
 #define DBG_MSG(pStr) CDebugMgr::GetInst()->AddDbgMsg(DBG_TYPE::DBG_MSG, pStr);
 
 #define MAX_LAYER 32
-#define PLAYER_SPEED 200.f
+#define PLAYER_SPEED 300.f
+#define MONSTER_SPEED 7000.f
+//#define LV1_MONSTER_HP 200.f
+//#define LV2_MONSTER_HP 250.f
+//#define LV3_MONSTER_HP 300.f
+//#define LV4_MONSTER_HP 350.f
+//#define LV5_MONSTER_HP 400.f
+#define LV1_MONSTER_HP 20.f
+#define LV2_MONSTER_HP 25.f
+#define LV3_MONSTER_HP 30.f
+
+#define LV4_MONSTER_HP 35.f
+#define LV5_MONSTER_HP 40.f
+#define LV6_MONSTER_HP 40.f
+#define BOSS_MONSTER_HP 500.f
+
+
+
+
 
 typedef DirectX::SimpleMath::Vector2 Vec2;
 typedef DirectX::SimpleMath::Vector3 Vec3;
@@ -145,8 +164,10 @@ enum class COMPONENT_TYPE
 	ANIMATOR3D,
 	LIGHT2D,
 	LIGHT3D,
-	END,
 	SCRIPT,
+	PARTICLESYSTEM,
+	END,
+
 };
 
 enum class COLLIDER2D_TYPE
@@ -242,6 +263,7 @@ enum class EVENT_TYPE
 	ACTIVATE_COMPONENT,		// wParam : Component Adress
 	DEACTIVATE_COMPONENT,	// wParam : Component Adress
 
+	CHANGE_SCENE,
 	END,
 };
 
@@ -307,7 +329,100 @@ enum class SHADER_POV
 {
 	DEFERRED,
 	FORWARD,
-	POST_EFFECT,
+	POSTEFFECT,
 	LIGHTING,
+	PARTICLE,
 	COMPUTE, // GPGPU
+	SHADOW
+};
+
+
+enum class SCENE_TYPE {
+	LOGIN,
+	ASSEMBLY,
+	DUNGEON,
+	BOSSMAP,
+	END,
+};
+
+enum class CAMERASTATE
+{
+	FREE,
+	PLAYER,
+	CENEMATIC00,
+	CENEMATICBOSS,
+	END,
+};
+
+enum class PLAYER_ANI_TYPE
+{
+	IDLE,
+	WALK,
+	RUN,
+	ATTACK,
+	SKILL_1,
+	SKILL_2,
+	SKILL_3,
+	SKILL_5,
+	SKILL_6,
+	SKILL_7,
+	SKILL_8,
+	DIE,
+
+};
+
+enum class MONSTER_ANI_TYPE
+{
+	IDLE,
+	WALK,
+	HIT,
+	RUN,
+	ATTACK,
+};
+
+enum class PERSON_OBJ_TYPE
+{
+	WARRIOR_PLAYER,
+	WIZARD_PLAYER,
+	M_MONSTER,
+	FM_MONSTER,
+	BOSS
+};
+
+enum class COL_DIR
+{
+	FRONT,
+	BACK,
+	RIGHR,
+	LEFT,
+};
+
+enum class COL_PLANE
+{
+	X_PLANE,
+	Z_PLANE,
+};
+
+enum class QUEST
+{
+	FIRST = 1,
+	SECOND,
+	THIRD,
+	FORTH
+	
+};
+enum class MONSTER_MOVE
+{
+	START,
+	STOP,
+	RESTART
+};
+
+enum class Sound_Type
+{
+	BGM,
+	BGM2,
+	HIT,
+	BGM3,
+	END
 };

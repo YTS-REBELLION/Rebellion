@@ -48,20 +48,33 @@ void CSender::SendLoginFailPacket(SOCKET s)
 	SendPacket(s, &packet);
 }
 
-void CSender::SendLeaveObjectPacket(SOCKET s, int id, int objType)
+void CSender::SendLeaveObjectPacket(SOCKET s, int playerId,int monsterid, int monsterdieCnt)
 {
 	////printf("%d번 Leave 보냄 / 타입: %d\n", id, objType);
 
 	sc_packet_leave packet;
-	packet.id = id;
-	packet.objectType = objType;
+	packet.id = monsterid;
+	packet.playerId = playerId;
+	packet.monsterdieCnt = monsterdieCnt;
 	packet.size = sizeof(packet);
 	packet.type = SC_PACKET_LEAVE_OBJECT;
 
 	SendPacket(s, &packet);
 }
 
-void CSender::SendNPCAttackPacket(SOCKET s, int id, float x, float z)
+
+void CSender::SendLeaveObjectPacket(SOCKET s, int playerId)
+{
+	sc_packet_leave packet;
+	packet.playerId = playerId;
+	packet.size = sizeof(packet);
+	packet.type = SC_PACKET_LEAVE_OBJECT;
+
+	SendPacket(s, &packet);
+}
+
+
+void CSender::SendNPCAttackPacket(SOCKET s, int id, float x, float z,bool isAttack)
 {
 	sc_packet_npc_attack packet;
 	packet.id = id;
@@ -70,26 +83,36 @@ void CSender::SendNPCAttackPacket(SOCKET s, int id, float x, float z)
 	packet.x = x;
 	//packet.yNor = y;
 	packet.z = z;
-
+	packet.isAttack = isAttack;
 	SendPacket(s, &packet);
 }
 
-void CSender::SendMovePacket(SOCKET s, int mover, float x, float y, float z, float dx, float dy, float dz, char status, std::chrono::time_point<std::chrono::system_clock> time)
+void CSender::SendMovePacket(SOCKET s, int mover,Vec3 localPos, float dx, float dy, float dz, bool status, std::chrono::time_point<std::chrono::system_clock> time)
 {
 	sc_packet_move packet;
 	packet.id = mover;
-	packet.x = x;
-	packet.y = y;
-	packet.z = z;
+	packet.localPos = localPos;
+
 	packet.D_x = dx;
 	packet.D_y = dy;
 	packet.D_z = dz;
 	packet.time = time;
 	packet.size = sizeof(packet);
 	packet.status = status;
-	packet.type = SC_MOVE;
-
+	packet.type = SC_PACKET_MOVE;
 	SendPacket(s, &packet);
+}
+
+void CSender::SendMovePacket(SOCKET s,int mover, Vec3 localPos)
+{
+	sc_packet_move packet;
+	packet.id = mover;
+	packet.localPos = localPos;
+	packet.size = sizeof(packet);
+	packet.type = SC_PACKET_MOVE;
+	SendPacket(s, &packet);
+
+
 }
 
 void CSender::SendPutObjectPacket(SOCKET s, int id, float x, float y, float z, int objType)
@@ -106,45 +129,20 @@ void CSender::SendPutObjectPacket(SOCKET s, int id, float x, float y, float z, i
 
 	SendPacket(s, &packet);
 }
-//
-//void CSender::Send_Enter_Packet(SOCKET s, Vec3 target_pos, const short& id, const short& other_id)
-//{
-//	sc_packet_put_object p;
-//	p.id = other_id;
-//	p.size = sizeof(p);
-//	p.type = SC_PACKET_PUT_OBJECT;
-//	p.localVec = target_pos;
-//	//p.localVec = Netmgr.GetMediatorMgr()->Find(other_id)->GetLocalPosVector();
-//	//p.RotateY = Netmgr.GetMediatorMgr()->Find(other_id)->GetRoatateVector().y;
-//	//strcpy_s(p.name, Netmgr.GetMediatorMgr()->Find(other_id)->GetName());    // data race???
-//	p.o_type = 0;
-//	//if (p.id >= START_MONSTER && p.id < END_MONSTER)
-//	//{
-//	//	p.hp = dynamic_cast<CMonster*>(Netmgr.GetMediatorMgr()->Find(other_id))->GetHP();
-//
-//	//	/*   cout << "********************" << endl;
-//	//	   cout << other_id << "가 " << user_id << "에게  Enter Packet 전송" << endl;
-//	//	   cout << "Monster POS ->   <" << Netmgr.GetMediatorMgr()->Find(other_id)->GetLocalPosVector().x << ", "
-//	//		   << Netmgr.GetMediatorMgr()->Find(other_id)->GetLocalPosVector().z << ">" << endl;
-//	//	   cout << "********************" << endl << endl;*/
-//	//}
-//	p.hp = 100;
-//	{
-//		cout << "********************" << endl;
-//		cout << "********************" << endl;
-//		cout << other_id << "가 " << id << "에게 Enter Packet 전송" << endl;
-//		cout << "********************" << endl;
-//		cout << "********************" << endl;
-//	}
-//	SendPacket(s, &p);
-//}
-
-void CSender::SendStopPacket(SOCKET s, int id)
+void CSender::Send_Stop_Packet(SOCKET s, int mover_id)
 {
+	sc_packet_stop p;
+	p.size = sizeof(p);
+	p.type = SC_PACKET_STOP;
+	p.id = mover_id;
+	
+	SendPacket(s, &p);
+
 }
 
 void CSender::SendPlayerDiePacket(SOCKET s, int id)
 {
+	cout << id << "플레이어 사망" << endl;
 	sc_packet_player_die packet;
 	packet.id = id;
 	packet.size = sizeof(packet);
@@ -158,35 +156,17 @@ void CSender::SendNPCDiePacket(SOCKET s, int id, int type)
 }
 
 
-void CSender::SendPlayerAttackPacket(SOCKET s, int id)
+void CSender::SendPlayerAttackPacket(SOCKET s, int attacker, bool isAttack)
 {
 	sc_packet_player_attack packet;
-	packet.id = id;
+	packet.id = attacker;
+	packet.size = sizeof(packet);
 	packet.type = SC_PACKET_PLAYER_ATTACK;
-	packet.size = sizeof(packet);
+	packet.isAttack = isAttack;
 
 	SendPacket(s, &packet);
 }
 
-void CSender::SendTransformPacket(SOCKET s, int id, bool b)
-{
-}
-
-
-
-void CSender::SendStatChangePacket(SOCKET s, short level, short currentHp, short maxHp, short currentExp, short maxExp)
-{
-	sc_packet_stat_change packet;
-	packet.type = SC_PACKET_STAT_CHANGE;
-	packet.size = sizeof(packet);
-	packet.level = level;
-	packet.c_hp = currentHp;
-	packet.m_hp = maxHp;
-	packet.c_exp = currentExp;
-	packet.m_exp = maxExp;
-
-	SendPacket(s, &packet);
-}
 
 void CSender::SendHpPacket(SOCKET s, short currentHp)
 {
@@ -218,6 +198,136 @@ void CSender::SendDummyPacket(SOCKET s, int id, unsigned time)
 	packet.moveTime = time;
 
 	SendPacket(s, &packet);
+}
+
+void CSender::SendRotatePacket(SOCKET s, int mover, Vec3 rotate)
+{
+	sc_packet_rotate packet;
+	packet.size = sizeof(packet);
+	packet.type = SC_PACKET_ROTATE;
+	packet.id = mover;
+	packet.rotate = rotate;
+
+	SendPacket(s, &packet);
+
+}
+
+void CSender::SendRunPacket(SOCKET s, int id,Vec3 pos, bool isRun)
+{
+	sc_packet_run packet;
+	packet.id = id;
+	packet.size = sizeof(packet);
+	packet.type = SC_PACKET_RUN;
+	packet.isRun = isRun;
+	packet.pos = pos;
+	SendPacket(s, &packet);
+}
+
+void CSender::SendMonsterDiePacket(SOCKET s, const int& playerId,const int& monsterid)
+{
+	sc_packet_monsterdie packet;
+	packet.id = monsterid;
+	packet.type = SC_PACKET_MONSTERDIE;
+	packet.playerId = playerId;
+	packet.size = sizeof(packet);
+	SendPacket(s, &packet);
+
+
+}
+
+void CSender::SendMonsterDirPacket(SOCKET s, const int& targetId, const int& id, Vec3 vRot)
+{
+	sc_packet_monsterdir packet;
+	packet.id = id;
+	packet.size = sizeof(packet);
+	packet.targetId = targetId;
+	packet.type = SC_PACKET_MONSTERDIR;
+	packet.vRot = vRot;
+
+	SendPacket(s, &packet);
+
+
+}
+
+void CSender::SendTargetPlayerPacket(SOCKET s, const int& id, bool isTarget , const int& monster_id)
+{
+	sc_packet_targetplayer packet;
+	packet.id = id;
+	packet.size = sizeof(packet);
+	packet.type = SC_PACKET_TARGET;
+	packet.isTarget = isTarget;
+	packet.monster_id = monster_id;
+	SendPacket(s, &packet);
+
+}
+
+void CSender::SendQuestDonePacket(SOCKET s, int playerId, QUEST nextQuest, bool isDone)
+{
+	sc_packet_questdone packet;
+	packet.size = sizeof(packet);
+	packet.type = SC_PACKET_QUESTDONE;
+	packet.isDone = isDone;
+	packet.id = playerId;
+	packet.nextQuest = nextQuest;
+	SendPacket(s, &packet);
+
+}
+
+void CSender::SendDungeonEnterPacket(SOCKET s, const int& playerId, bool isEnter)
+{
+	sc_packet_dungeon packet;
+	packet.size = sizeof(packet);
+	packet.id = playerId;
+	packet.type = SC_PACKET_DUNGEON_ENTER;
+	packet.isEnter = isEnter;
+
+	SendPacket(s, &packet);
+}
+
+void CSender::Send_WaitRoom_Packet(SOCKET s, size_t enterNum)
+{
+	sc_packet_waitroom packet;
+	packet.size = sizeof(packet);
+	packet.type = SC_PACKET_WAITROOM;
+	packet.enterNum = enterNum;
+	SendPacket(s, &packet);
+
+}
+
+
+void CSender::SendQuestStartPacket(SOCKET s, int id, bool isStart)
+{
+	sc_packet_queststart packet;
+	packet.size = sizeof(packet);
+	packet.type = SC_PACKET_QUESTSTART;
+	packet.isStart = isStart;
+	packet.id = id;
+	SendPacket(s, &packet);
+}
+
+void CSender::SendSkillPacket(SOCKET s, const int& id, PLAYER_ANI_TYPE anitype, bool isSkill)
+{
+	sc_packet_skill packet;
+	packet.size = sizeof(packet);
+	packet.type = SC_PACKET_SKILL;
+	packet.id = id;
+	packet.anitype = anitype;
+	packet.isSkill = isSkill;
+	SendPacket(s, &packet);
+
+}
+
+void CSender::SendBossMapPacket(SOCKET s, const int& playerId, bool isEnter)
+{
+	sc_packet_bossmap packet;
+	packet.size = sizeof(packet);
+	packet.id = playerId;
+	packet.type = SC_PACKET_BOSSMAP;
+	packet.isEnter = isEnter;
+
+	SendPacket(s, &packet);
+
+
 }
 
 
