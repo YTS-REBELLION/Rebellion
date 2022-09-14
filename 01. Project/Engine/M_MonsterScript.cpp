@@ -9,6 +9,7 @@
 #include"Meteor.h"
 #include"Fire.h"
 #include"BossFireBall.h"
+#include "SwordAttackAreaScript.h"
 
 CM_MonsterScript::CM_MonsterScript()
 	: CScript((UINT)SCRIPT_TYPE::BOSSMONSTERSCRIPT)
@@ -31,7 +32,25 @@ CM_MonsterScript::~CM_MonsterScript()
 
 void CM_MonsterScript::init()
 {
-	
+	CGameObject* pSwordCol = new CGameObject;
+	pSwordCol->SetName(L"BossSwordCol");
+	pSwordCol->AddComponent(new CCollider2D);
+	pSwordCol->AddComponent(new CTransform);
+	pSwordCol->AddComponent(new CMeshRender);
+	pSwordCol->Transform()->SetLocalPos(GetObj()->Transform()->GetLocalPos());
+	pSwordCol->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pSwordCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pSwordCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	pSwordCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+	pSwordCol->Collider2D()->SetOffsetScale(Vec3(40.f, 40.f, 40.f));
+	pSwordCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pSwordCol->AddComponent(new CSwordAttackAreaScript);
+	pSwordCol->GetScript<CSwordAttackAreaScript>()->Set_Object(GetObj());
+	pSwordCol->SetActive(false);
+	GetObj()->GetScript<CM_MonsterScript>()->SetColSSA(pSwordCol);
+
+	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"MonsterSword", pSwordCol, false);
+
 	Ptr<CTexture> pBossHp = CResMgr::GetInst()->Load<CTexture>(L"BossHp", L"Texture\\HpUi\\BossHp_2.png");
 	Ptr<CTexture> pHealthMana_Cover = CResMgr::GetInst()->Load<CTexture>(L"HealthMana_Cover", L"Texture\\HpUi\\HealthMana_Cover.png");
 	
@@ -146,16 +165,6 @@ void CM_MonsterScript::update()
 
 		Monster->Transform()->SetLocalRot(vRot);
 
-
-		if (m_Is_Move) {
-			AnimationPlay(MONSTER_ANI_TYPE::WALK);
-		}
-		else if (!m_Is_Move && m_Is_Attack) {
-			AnimationPlay(MONSTER_ANI_TYPE::ATTACK);
-		}
-		else
-			AnimationPlay(MONSTER_ANI_TYPE::IDLE);
-
 		m_fskillTime += DT;
 
 		if (m_fskillTime < 5.f)
@@ -186,7 +195,7 @@ void CM_MonsterScript::update()
 
 		}
 
-		UpdateLerpPos();
+		//UpdateLerpPos();
 
 		switch (m_skill)
 		{
@@ -207,14 +216,28 @@ void CM_MonsterScript::update()
 
 	}
 
+	if (GetHit()) {
+		pSwordColObject->SetActive(true);
+		if (GetObj()->Animator3D()->GetCliTime(1) < GetObj()->Animator3D()->GetAnimClip(1).dTimeLength) {
+			AnimationPlay(Boss_ANI_TYPE::ATTACK);
+		}
+		else {
+			pSwordColObject->SetActive(false); 
+			GetObj()->Animator3D()->SetClipTime(1, 0.f); 
+			SetHit();
+		}
+	}
+	else
+		AnimationPlay(Boss_ANI_TYPE::IDLE);
+
 	//체력감소ui
 	HpUiScale = m_pUi->Transform()->GetLocalScale();
 	HpUiPos = m_pUi->Transform()->GetLocalPos();
 
-	//if (GetHit()) {
-	//	HpUiScale.x -= DT;//충돌할시 *데미지
-	//	HpUiPos.x -= DT / 2.f;
-	//}
+	if (GetDamege()) {
+		HpUiScale.x -= DT *30.f;//충돌할시 *데미지
+		HpUiPos.x -= (DT*30.f) / 2.f;
+	}
 
 	m_pUi->Transform()->SetLocalScale(Vec3(HpUiScale.x, HpUiScale.y, HpUiScale.z));
 	m_pUi->Transform()->SetLocalPos(Vec3(HpUiPos.x, HpUiPos.y, HpUiPos.z));
@@ -228,7 +251,7 @@ void CM_MonsterScript::UpdateLerpPos()
 	GetObj()->Transform()->SetLocalPos(Pos);
 }
 
-void CM_MonsterScript::SetMonsterAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
+void CM_MonsterScript::SetBossAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame)
 {
 	m_pAniData.push_back(AniDate);
 
@@ -245,41 +268,36 @@ void CM_MonsterScript::SetMonsterAnimationData(Ptr<CMesh> AniDate, const int& i,
 	GetObj()->Animator3D()->SetAnimClip(&m_pVecAnimClip);
 }
 
-void CM_MonsterScript::SetMonsterAnimation(const int& i)
+void CM_MonsterScript::SetBossAnimation(const int& i)
 {
 	GetObj()->Animator3D()->SetBones(m_pAniData[i]->GetBones());
 	GetObj()->Animator3D()->SetAnimClip(&m_pVecAnimClip);
 	GetObj()->MeshRender()->SetMesh(m_pAniData[i]);
 }
 
-void CM_MonsterScript::SetMonsterAnimation(int other_id, const int& i)
+void CM_MonsterScript::SetBossAnimation(int other_id, const int& i)
 {
 	GameObject.find(other_id)->second->Animator3D()->SetBones(m_pAniData[i]->GetBones());
 	GameObject.find(other_id)->second->Animator3D()->SetAnimClip(&m_pVecAnimClip);
 	GameObject.find(other_id)->second->MeshRender()->SetMesh(m_pAniData[i]);
 }
 
-void CM_MonsterScript::AnimationPlay(const MONSTER_ANI_TYPE& type)
+void CM_MonsterScript::AnimationPlay(const Boss_ANI_TYPE& type)
 {
-	if (type == MONSTER_ANI_TYPE::IDLE)
+	if (type == Boss_ANI_TYPE::IDLE)
 	{
 		GetObj()->Animator3D()->SetCurClip(0);
-		SetMonsterAnimation(0);
+		SetBossAnimation(0);
 	}
-	if (type == MONSTER_ANI_TYPE::WALK)
+	if (type == Boss_ANI_TYPE::ATTACK)
 	{
 		GetObj()->Animator3D()->SetCurClip(1);
-		SetMonsterAnimation(1);
+		SetBossAnimation(1);
 	}
-	if (type == MONSTER_ANI_TYPE::HIT)
+	if (type == Boss_ANI_TYPE::DIE)
 	{
 		GetObj()->Animator3D()->SetCurClip(2);
-		SetMonsterAnimation(2);
-	}
-	if (type == MONSTER_ANI_TYPE::ATTACK)
-	{
-		GetObj()->Animator3D()->SetCurClip(3);
-		SetMonsterAnimation(3);
+		SetBossAnimation(2);
 	}
 }
 
@@ -299,13 +317,14 @@ void CM_MonsterScript::SetMonsterPacket(sc_packet_npc_attack* p)
 
 void CM_MonsterScript::OnCollisionEnter(CCollider2D* _pOther)
 {
-	//if (_pOther->GetObj()->GetName() == L"Player_Sword")
-	//{
-	//	//cout << "검과 충돌" << endl;
-	//	m_bHit = true;
-	//	//g_net.Send_Player2MonsterCol_Packet(GetID(), GetObj()->GetID(), true);
-
-	//}
+	if (_pOther->GetObj()->GetName() == L"PlayerSwordCol")
+	{
+		SetDamege();
+		SetHit();
+		//if (GetHit()) {
+		//	g_net.Send_Player2MonsterCol_Packet(GetObj()->GetID(), GetID(), true, 0);
+		//}
+	}
 }
 
 void CM_MonsterScript::OnCollision(CCollider2D* _pOther)
@@ -315,8 +334,9 @@ void CM_MonsterScript::OnCollision(CCollider2D* _pOther)
 
 void CM_MonsterScript::OnCollisionExit(CCollider2D* _pOther)
 {
-
+	if (_pOther->GetObj()->GetName() == L"PlayerSwordCol") SetDamege();
 }
+
 void CM_MonsterScript::Skill1()
 {
 	if (MonSkill1Check)

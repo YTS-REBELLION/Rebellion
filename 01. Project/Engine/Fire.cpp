@@ -39,19 +39,21 @@ void CFire::update()
 
 	}
 	Vec3 PlayerRot = m_pPlayer->Transform()->GetLocalRot();
-	m_fcreate_time += DT;
-	if (m_fcreate_time >= 4.f)
-	{
-		GetObj()->SetDead();
-	}
-
-
 	Vec3 WorldDir = /*m_pPlayer->Transform()->GetLocalPos() - this->Transform()->GetLocalPos();*/ Transform()->GetWorldDir(DIR_TYPE::FRONT);
 	Vec3 localPos = Transform()->GetLocalPos();
 
+	m_fcreate_time += DT;
+
+	if (m_fcreate_time >= 1.5f) WorldDir *= -1.f;
+	if (m_fcreate_time >= 3.0f) WorldDir *= -1.f;
+	if (m_fcreate_time >= 4.5f) WorldDir *= -1.f;
+	if (m_fcreate_time >= 6.f) GetObj()->SetDead();
+
+
+
 	Vec2 vDrag = CKeyMgr::GetInst()->GetDragDir();
 	Vec3 vRot = Transform()->GetLocalRot();
-	float Temp = 125 * DT;
+	float Temp = 500 * DT;
 
 	localPos += -WorldDir * Temp;
 

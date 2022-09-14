@@ -420,10 +420,11 @@ void CAssemblyAreaScene::init()
 	FindLayer(L"UI")->AddGameObject(pUICam);
 
 
-	//// ===================
-	//// NPC 로드
-	//// ===================
-	//Ptr<CMeshData> pAS_NPCMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\FM_Idle.mdat", L"MeshData\\FM_Idle.mdat");
+	// ===================
+	// NPC 로드
+	// ===================
+
+	//Ptr<CMeshData> pAS_NPCMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\King_Idle.mdat", L"MeshData\\King_Idle.mdat");
 
 	//CGameObject* pAS_NPC = new CGameObject;
 
@@ -431,16 +432,43 @@ void CAssemblyAreaScene::init()
 	//pAS_NPC->SetName(L"AS_NPC_1");
 	//pAS_NPC->FrustumCheck(false);
 
-	//pAS_NPC->Transform()->SetLocalPos(Vec3(300.f, 100.f, 1000.f));
-	//pAS_NPC->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
-	//pAS_NPC->Transform()->SetLocalRot(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
+	//pAS_NPC->Transform()->SetLocalPos(Vec3(300.f, 0.f, 500.f));
+	//pAS_NPC->Transform()->SetLocalScale(Vec3(1.5f, 1.5f, 1.5f));
+	//pAS_NPC->Transform()->SetLocalRot(Vec3(0.f, 0.f, 0.f));
 	//pAS_NPC->AddComponent(new CCollider2D);
 	//pAS_NPC->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
 	//pAS_NPC->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	//pAS_NPC->Collider2D()->SetOffsetScale(Vec3(10.f, 10.f, 10.f));
 	//pAS_NPC->Collider2D()->SetOffsetRot(Vec3(XMConvertToRadians(90.f), 0.f, 0.f));
 	////pAS_NPC->MeshRender()->SetDynamicShadow(true);
+
+	//pAS_NPC->AddComponent(new CBossScript);
+	//CBossScript* BossScript = pAS_NPC->GetScript<CBossScript>();
+	//pAS_NPC->GetScript<CBossScript>()->init();
+
+	////// 보스 애니메이션
+	//pAS_NPC->GetScript<CBossScript>()->SetBossAnimationData(pAS_NPCMeshData->GetMesh(), 0, 0, 55);
+
+	//pAS_NPCMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\King_Attack.mdat", L"MeshData\\King_Attack.mdat");
+	//pAS_NPC->GetScript<CBossScript>()->SetBossAnimationData(pAS_NPCMeshData->GetMesh(), 1, 0, 68);
+
+	////pAS_NPCMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\King_Die.mdat", L"MeshData\\King_Die.mdat");
+	////pAS_NPC->GetScript<CBossScript>()->SetBossAnimationData(pAS_NPCMeshData->GetMesh(), 2, 0, 78);
+
 	//FindLayer(L"NPC")->AddGameObject(pAS_NPC);
+
+	//CGameObject* pbSword = new CGameObject;
+
+	//Ptr<CMeshData> pbSwordMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_FM_Weapon.mdat", L"MeshData\\Monster_FM_Weapon.mdat");
+
+	//pbSword = pbSwordMeshData->Instantiate();
+	//pbSword->SetName(L"King_Sword");
+	//pbSword->FrustumCheck(false);
+	//pbSword->Transform()->SetLocalScale(Vec3(1.7f, 1.7f, 1.7f));
+
+	//pbSword->AddComponent(new CSwordScript);
+	//pbSword->GetScript<CSwordScript>()->init(PERSON_OBJ_TYPE::BOSS, pAS_NPC, 25);
+	//pAS_NPC->AddChild(pbSword);
 
 	/*Ptr<CMeshData> pTestMeshData = CResMgr::GetInst()->Load<CMeshData>(L"MeshData\\Monster_Lv1_Idle.mdat", L"MeshData\\Monster_Lv1_Idle.mdat");
 

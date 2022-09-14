@@ -268,7 +268,10 @@ void CDungeonScene::init()
 	pSwordCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 	pSwordCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
 	pSwordCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	pSwordCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+	//pSwordCol->Collider2D()->SetOffsetScale(Vec3(100.f, 100.f, 100.f));
+	if (CSceneMgr::GetInst()->GetCurScene()->GetType() == SCENE_TYPE::DUNGEON)
+		pSwordCol->Collider2D()->SetOffsetScale(Vec3(50.f, 50.f, 50.f));
+	else pSwordCol->Collider2D()->SetOffsetScale(Vec3(80.f, 80.f, 80.f));
 	pSwordCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	pSwordCol->AddComponent(new CSwordAttackAreaScript);
 	pSwordCol->GetScript<CSwordAttackAreaScript>()->Set_Object(pPlayer);

@@ -51,6 +51,8 @@ void CSwordScript::Set_Sword_To_Fbx()
 		vRot = Vec3(0.f, 0.f, XMConvertToRadians(45.f));
 		break;
 	case PERSON_OBJ_TYPE::BOSS:
+		vTrans += Vec3(0.f, -10.f, 0.f);
+		vRot = Vec3(0.f, XMConvertToRadians(90.f), 0.f);
 		break;
 	default:
 		break;

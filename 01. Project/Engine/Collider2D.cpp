@@ -91,6 +91,7 @@ void CCollider2D::render()
 	//}
 	
 	return;
+
 	if (!IsActive())
 		return;
 

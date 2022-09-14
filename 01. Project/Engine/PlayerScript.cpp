@@ -45,7 +45,7 @@ void CPlayerScript::init()
 {	
 	cout << "이닛 " << endl;
 
-	CGameObject* pSwordCol = new CGameObject;
+	/*CGameObject* pSwordCol = new CGameObject;
 	pSwordCol->SetName(L"PlayerSwordCol");
 	pSwordCol->AddComponent(new CCollider2D);
 	pSwordCol->AddComponent(new CTransform);
@@ -65,7 +65,7 @@ void CPlayerScript::init()
 	pSwordCol->SetActive(false);
 	GetObj()->GetScript<CPlayerScript>()->SetColSSA(pSwordCol);
 	
-	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"PlayerSword", pSwordCol, false);
+	CSceneMgr::GetInst()->GetCurScene()->AddGameObject(L"PlayerSword", pSwordCol, false);*/
 
 
 	Ptr<CTexture> pS_astrostone = CResMgr::GetInst()->Load<CTexture>(L"Astrostone", L"Texture\\Icon\\S_astrostone.png");
@@ -193,71 +193,71 @@ void CPlayerScript::init()
 		}
 	}
 
-	//스킬 UI
+	////스킬 UI
 
 
-	Vec3	SkillUiScale = Vec3(50.f, 50.f, 1.f);
+	//Vec3	SkillUiScale = Vec3(50.f, 50.f, 1.f);
 
-	pObject = new CGameObject;
-	pObject->SetName(L"SkillIcon");
-	pObject->FrustumCheck(false);
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CMeshRender);
+	//pObject = new CGameObject;
+	//pObject->SetName(L"SkillIcon");
+	//pObject->FrustumCheck(false);
+	//pObject->AddComponent(new CTransform);
+	//pObject->AddComponent(new CMeshRender);
 
-	pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f), 0.f - (res.fHeight / 3.f), 1.f));
-	pObject->Transform()->SetLocalScale(SkillUiScale);
+	//pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f), 0.f - (res.fHeight / 3.f), 1.f));
+	//pObject->Transform()->SetLocalScale(SkillUiScale);
 
-	//MeshRender 설정
+	////MeshRender 설정
 
-	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 
-	pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
-	pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pS_astrostone.GetPointer());
+	//pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+	//pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pS_astrostone.GetPointer());
 
-	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+	//// AddGameObject
+	//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
 
 
-	pObject = new CGameObject;
-	pObject->SetName(L"SkillIcon");
-	pObject->FrustumCheck(false);
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CMeshRender);
+	//pObject = new CGameObject;
+	//pObject->SetName(L"SkillIcon");
+	//pObject->FrustumCheck(false);
+	//pObject->AddComponent(new CTransform);
+	//pObject->AddComponent(new CMeshRender);
 
-	pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f) + SkillUiScale.x, 0.f - (res.fHeight / 3.f), 1.f));
-	pObject->Transform()->SetLocalScale(SkillUiScale);
+	//pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f) + SkillUiScale.x, 0.f - (res.fHeight / 3.f), 1.f));
+	//pObject->Transform()->SetLocalScale(SkillUiScale);
 
-	//MeshRender 설정
+	////MeshRender 설정
 
-	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 
-	pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
-	pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pS_Blood_splash.GetPointer());
+	//pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+	//pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pS_Blood_splash.GetPointer());
 
-	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+	//// AddGameObject
+	//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
 
-	pObject = new CGameObject;
-	pObject->SetName(L"SkillIcon");
-	pObject->FrustumCheck(false);
-	pObject->AddComponent(new CTransform);
-	pObject->AddComponent(new CMeshRender);
+	//pObject = new CGameObject;
+	//pObject->SetName(L"SkillIcon");
+	//pObject->FrustumCheck(false);
+	//pObject->AddComponent(new CTransform);
+	//pObject->AddComponent(new CMeshRender);
 
-	pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f) + SkillUiScale.x * 2, 0.f - (res.fHeight / 3.f), 1.f));
-	pObject->Transform()->SetLocalScale(SkillUiScale);
+	//pObject->Transform()->SetLocalPos(Vec3((res.fWidth / 4.f) - (res.fWidth / 1.5f) + SkillUiScale.x * 2, 0.f - (res.fHeight / 3.f), 1.f));
+	//pObject->Transform()->SetLocalScale(SkillUiScale);
 
-	//MeshRender 설정
+	////MeshRender 설정
 
-	pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	//pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 
-	pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
-	pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
-	pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pS_Blue_firework.GetPointer());
+	//pMtrl2 = CResMgr::GetInst()->FindRes<CMaterial>(L"TexMtrl");
+	//pObject->MeshRender()->SetMaterial(pMtrl2->Clone());
+	//pObject->MeshRender()->GetSharedMaterial()->SetData(SHADER_PARAM::TEX_0, pS_Blue_firework.GetPointer());
 
-	// AddGameObject
-	CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
+	//// AddGameObject
+	//CSceneMgr::GetInst()->GetCurScene()->FindLayer(L"UI")->AddGameObject(pObject);
 
 	pPMeshData = CResMgr::GetInst()->LoadFBX(L"FBX\\Effect\\SwordStrike_Effect.fbx");
 }
@@ -387,6 +387,9 @@ void CPlayerScript::update()
 
 			if (GetObj()->Animator3D()->GetCliTime(3) > 0.65f)
 				pSwordColObject->SetActive(true);
+
+			if(GetObj()->Animator3D()->GetCliTime(3) > 1.4f)
+				pSwordColObject->SetActive(false);
 		}
 
 		/*else if (GetSkill())
@@ -1124,6 +1127,8 @@ void CPlayerScript::OnCollisionEnter(CCollider2D* _pOther)
 	//if (_pOther->GetObj()->GetName() == L"FM_Monster") g_net.Send_Mon2Player_Packet(GetObj()->GetID(), true);
 
 	if (_pOther->GetObj()->GetName() == L"MonsterSwordCol") SetHit(true);
+
+	if (_pOther->GetObj()->GetName() == L"BossSwordCol") SetHit(true);
 
 	if (_pOther->GetObj()->GetName() == L"FireTest" ||
 		_pOther->GetObj()->GetName() == L"FireTest2"||

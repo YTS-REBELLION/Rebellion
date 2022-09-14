@@ -380,6 +380,13 @@ enum class MONSTER_ANI_TYPE
 	ATTACK,
 };
 
+enum class Boss_ANI_TYPE
+{
+	IDLE,
+	ATTACK,
+	DIE,
+};
+
 enum class PERSON_OBJ_TYPE
 {
 	WARRIOR_PLAYER,

@@ -26,6 +26,7 @@ private:
 	bool				m_Is_Move;
 	bool				m_Is_Attack;
 	bool				m_bHit;
+	bool				m_bDamege;
 
 	bool				m_bAniOk;
 
@@ -68,16 +69,19 @@ private:
 	Vec3 HpUiPos;
 
 	CGameObject* pMonsterColObject = nullptr;
+
+	CGameObject* pSwordColObject = nullptr;
+
 public:
 	virtual void awake();
 	virtual void update();
 
 	void init();
 
-	void SetMonsterAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame);
-	void SetMonsterAnimation(const int& i);
-	void SetMonsterAnimation(int other_id, const int& i);
-	void AnimationPlay(const MONSTER_ANI_TYPE& type);
+	void SetBossAnimationData(Ptr<CMesh> AniDate, const int& i, const UINT& _StartFrame, const UINT& _EndFrame);
+	void SetBossAnimation(const int& i);
+	void SetBossAnimation(int other_id, const int& i);
+	void AnimationPlay(const Boss_ANI_TYPE& type);
 
 	Ptr<CMesh> GetAniData(const int& type) { return m_pAniData[(int)type]; }
 	bool m_bcenecheck = false;
@@ -120,6 +124,21 @@ public:
 
 	void SetColMonster(CGameObject* _obj) { pMonsterColObject = _obj; }
 	CGameObject* GetColMonster() { return pMonsterColObject; }
+
+	void SetColSSA(CGameObject* _obj) { pSwordColObject = _obj; }
+	CGameObject* GetColSSA() { return pSwordColObject; }
+
+	void SetDamege() {
+		if (m_bDamege) m_bDamege = false;
+		else m_bDamege = true;
+	}
+	bool GetDamege() const { return m_bDamege; }
+
+	void SetHit() {
+		if (m_bHit) m_bHit = false;
+		else m_bHit = true;
+	}
+	bool GetHit() const { return m_bHit; }
 public:
 	CLONE(CM_MonsterScript);
 

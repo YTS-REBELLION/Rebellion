@@ -35,6 +35,8 @@
 #include "Network.h"
 
 #include "PlayerColScript.h"
+
+#include "SwordAttackAreaScript.h"
 #include"Boss.h"
 
 void CBossMap::CreateMap()
@@ -285,6 +287,27 @@ void CBossMap::init()
 	pPlayer->GetScript<CPlayerScript>()->SetColPlayer(pPlayerCol);
 
 	FindLayer(L"PlayerCollider")->AddGameObject(pPlayerCol);
+
+	CGameObject* pSwordCol = new CGameObject;
+	pSwordCol->SetName(L"PlayerSwordCol");
+	pSwordCol->AddComponent(new CCollider2D);
+	pSwordCol->AddComponent(new CTransform);
+	pSwordCol->AddComponent(new CMeshRender);
+	pSwordCol->Transform()->SetLocalPos(pPlayer->Transform()->GetLocalPos());
+	pSwordCol->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	pSwordCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+	pSwordCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+	pSwordCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
+	if (CSceneMgr::GetInst()->GetCurScene()->GetType() == SCENE_TYPE::DUNGEON)
+		pSwordCol->Collider2D()->SetOffsetScale(Vec3(50.f, 50.f, 50.f));
+	else pSwordCol->Collider2D()->SetOffsetScale(Vec3(80.f, 80.f, 80.f));
+	pSwordCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
+	pSwordCol->AddComponent(new CSwordAttackAreaScript);
+	pSwordCol->GetScript<CSwordAttackAreaScript>()->Set_Object(pPlayer);
+	pSwordCol->SetActive(false);
+	pPlayer->GetScript<CPlayerScript>()->SetColSSA(pSwordCol);
+
+	FindLayer(L"PlayerSword")->AddGameObject(pSwordCol);
 
 	//Main Camera
 	CGameObject* pMainCam = new CGameObject;

@@ -40,7 +40,7 @@ void CMonsterScript::init()
 	pSwordCol->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
 	pSwordCol->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
 	pSwordCol->Collider2D()->SetColliderType(COLLIDER2D_TYPE::SPHERE);
-	pSwordCol->Collider2D()->SetOffsetScale(Vec3(50.f, 50.f, 50.f));
+	pSwordCol->Collider2D()->SetOffsetScale(Vec3(40.f, 40.f, 40.f));
 	pSwordCol->Collider2D()->SetOffsetPos(Vec3(0.f, 0.f, 0.f));
 	pSwordCol->AddComponent(new CSwordAttackAreaScript);
 	pSwordCol->GetScript<CSwordAttackAreaScript>()->Set_Object(GetObj());

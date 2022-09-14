@@ -12,6 +12,10 @@ CSwordAttackAreaScript::~CSwordAttackAreaScript() {
 }
 void CSwordAttackAreaScript::OnCollisionEnter(CCollider2D* _pOther)
 {
+	if (m_pObject->GetName() == L"FM_Player" && _pOther->GetObj()->GetName() == L"MonsterCol")
+		cout << "1" << endl;
+	if (m_pObject->GetName() == L"FM_Player" && _pOther->GetObj()->GetName() == L"BossCol")
+		m_pObject->GetScript<CPlayerScript>()->GetColSSA()->SetActive(false);
 }
 void CSwordAttackAreaScript::OnCollision(CCollider2D* _pOther)
 {
